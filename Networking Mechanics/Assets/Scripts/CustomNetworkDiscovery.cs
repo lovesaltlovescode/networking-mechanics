@@ -42,6 +42,7 @@ public class CustomNetworkDiscovery : MonoBehaviour
     public void Start()
     {
         Debug.Log("CustomNetworkDiscovery: Script running");
+
     }
 
     // Update is called once per frame
@@ -49,13 +50,10 @@ public class CustomNetworkDiscovery : MonoBehaviour
     {
         Debug.Log("Update: Discovered Servers: " + discoveredServers.Count);
 
-        if (Input.GetKeyDown(KeyCode.F))
-        {
-            FindServers();
-        }
-
+        
         
     }
+
 
     ////when start server button is clicked
     ////dedicated server, delete later
@@ -72,6 +70,7 @@ public class CustomNetworkDiscovery : MonoBehaviour
     //    Debug.Log("Dedicated server advertised");
     //}
 
+        
     //When start host button is clicked
     public void StartHostButton()
     {
@@ -97,10 +96,10 @@ public class CustomNetworkDiscovery : MonoBehaviour
     public void FindServers()
     {
         //Find available servers
-        Debug.Log("Discovered Servers Before Clear: " + discoveredServers.Count);
+        //Debug.Log("Discovered Servers Before Clear: " + discoveredServers.Count);
         //discoveredServers.Clear(); //clear existing servers
         networkDiscovery.StartDiscovery(); //search for more servers
-        Debug.Log("Searching for servers...");
+        //Debug.Log("Searching for servers...");
         Debug.Log("Discovered Servers: " + discoveredServers.Count);
 
         if (stopSearching == true)
@@ -109,7 +108,7 @@ public class CustomNetworkDiscovery : MonoBehaviour
             Debug.Log("Stop searching for servers...");
             return;
         }
-        //DisplayServers(); this will be called separately, on button click
+        DisplayServers(); //this will be called separately, on button click
     }
 
     //display found servers in a list on button press, for debug purposes
@@ -129,7 +128,6 @@ public class CustomNetworkDiscovery : MonoBehaviour
 
                 //TODO: AUtomatically connect to this ip address if the code input was correct
 
-                
                     Debug.Log("Connecting to: " + info.EndPoint.Address.ToString());
                     Connect(info);
                     stopSearching = true; //Stop searching for active servers now that we are connected
