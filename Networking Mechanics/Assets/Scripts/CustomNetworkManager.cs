@@ -19,7 +19,9 @@ public class CustomNetworkManager : NetworkManager
 
 
     //Scene name
+    [Header("Scenes")]
     [Scene][SerializeField] private string menuScene = string.Empty;
+
 
     [Header("Room")]
     [SerializeField] private NetworkRoom roomPlayerPrefab = null;
@@ -32,7 +34,7 @@ public class CustomNetworkManager : NetworkManager
     public List<NetworkRoom> RoomPlayers { get; } = new List<NetworkRoom>();
 
 
-    #region Network ManagementS
+    #region Network Management
 
     //Handles what happens when server/client have connected to the network
     //Spawns player prefab in a new scene
@@ -55,6 +57,11 @@ public class CustomNetworkManager : NetworkManager
             //Register each prefab with spawning system
             ClientScene.RegisterPrefab(prefab);
         }
+    }
+
+    public void Update()
+    {
+        Debug.Log("Current room players are: " + RoomPlayers.Count);
     }
 
     //Called on CLIENT when connected to server
@@ -126,7 +133,7 @@ public class CustomNetworkManager : NetworkManager
         foreach (var player in RoomPlayers)
         {
             //function in networkroom script
-            player.HandleReadyToStart(IsReadyToStart());
+            //player.HandleReadyToStart(IsReadyToStart());
         }
     }
 
@@ -144,10 +151,10 @@ public class CustomNetworkManager : NetworkManager
         {
             //Loop through list of players
             //if even 1 player is not ready, do not start
-            if (player.isReady == false)
-            {
-                return false;
-            }
+            //if (player.isReady == false)
+            //{
+            //    return false;
+            //}
         }
 
         //else, ready to start

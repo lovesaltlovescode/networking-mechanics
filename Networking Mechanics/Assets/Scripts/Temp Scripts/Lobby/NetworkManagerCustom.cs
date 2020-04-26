@@ -155,7 +155,7 @@ public class NetworkManagerCustom : NetworkManager
         foreach (var player in RoomPlayers)
         {   
             //function in networkroom script
-            player.HandleReadyToStart(IsReadyToStart()); 
+            //player.HandleReadyToStart(IsReadyToStart()); 
         }
     }
 
@@ -174,10 +174,10 @@ public class NetworkManagerCustom : NetworkManager
         {
             //Loop through list of players
             //if even 1 player is not ready, do not start
-            if(player.isReady == false)
-            {
-                return false;
-            }
+            //if(player.isReady == false)
+            //{
+            //    return false;
+            //}
         }
 
         //else, ready to start
@@ -190,13 +190,13 @@ public class NetworkManagerCustom : NetworkManager
         //if in menu scene, spawn in room player prefab and add as client
         if(SceneManager.GetActiveScene().name == menuScene)
         {
-            //If there were no room players prior, then this client is the leader
-            bool isLeader = RoomPlayers.Count == 0;
+            ////If there were no room players prior, then this client is the leader
+            //bool isLeader = RoomPlayers.Count == 0;
 
 
             NetworkRoom roomPlayerInstance = Instantiate(roomPlayerPrefab); //Reference network room script, instantiate prefab
 
-            roomPlayerInstance.IsLeader = isLeader; //if we are the leader, then set is leader property to true (show start game btn)
+            //roomPlayerInstance.IsLeader = isLeader; //if we are the leader, then set is leader property to true (show start game btn)
 
             //So server knows that game object represents us with this connection ID
             NetworkServer.AddPlayerForConnection(conn, roomPlayerInstance.gameObject);
