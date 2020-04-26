@@ -127,10 +127,9 @@ public class CustomNetworkDiscovery : MonoBehaviour
                 discoveredServerAddress.text = info.EndPoint.Address.ToString(); //IP Address of server found
 
                 //TODO: AUtomatically connect to this ip address if the code input was correct
-
-                    Debug.Log("Connecting to: " + info.EndPoint.Address.ToString());
-                    Connect(info);
-                    stopSearching = true; //Stop searching for active servers now that we are connected
+                Debug.Log("Connecting to: " + info.EndPoint.Address.ToString());
+                Connect(info);
+                stopSearching = true; //Stop searching for active servers now that we are connected
                 
             }
         }
