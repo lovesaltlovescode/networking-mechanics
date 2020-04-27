@@ -72,7 +72,7 @@ public class CustomNetworkDiscovery : MonoBehaviour
 
         
     //When start host button is clicked
-    public void StartHostButton()
+    public void StartHost()
     {
         discoveredServers.Clear(); //clear existing servers
 
@@ -117,14 +117,14 @@ public class CustomNetworkDiscovery : MonoBehaviour
     {
         if (discoveredServers.Count != 0)
         {
-            discoveredServerText.text = "Discovered Servers: " + discoveredServers.Count.ToString();
-            Debug.Log("Discovered Servers: " + discoveredServers.Count.ToString());
+            //discoveredServerText.text = "Discovered Servers: " + discoveredServers.Count.ToString();
+            //Debug.Log("Discovered Servers: " + discoveredServers.Count.ToString());
 
             //for each server found in servers
             foreach (ServerResponse info in discoveredServers.Values)
             {
                 Debug.Log("Found this server: " + info.EndPoint.Address.ToString());
-                discoveredServerAddress.text = info.EndPoint.Address.ToString(); //IP Address of server found
+                //discoveredServerAddress.text = info.EndPoint.Address.ToString(); //IP Address of server found
 
                 //TODO: AUtomatically connect to this ip address if the code input was correct
                 Debug.Log("Connecting to: " + info.EndPoint.Address.ToString());

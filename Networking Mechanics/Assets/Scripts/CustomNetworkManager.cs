@@ -34,6 +34,7 @@ public class CustomNetworkManager : NetworkManager
     public List<NetworkRoom> RoomPlayers { get; } = new List<NetworkRoom>();
 
 
+
     #region Network Management
 
     //Handles what happens when server/client have connected to the network
@@ -103,7 +104,7 @@ public class CustomNetworkManager : NetworkManager
         }
     }
 
-    //Called on SERVER when a client disconnects from server
+    //Called on SERVER when a client disconnects from server, automatically
     public override void OnServerDisconnect(NetworkConnection conn)
     {
         //Get room player script and remove from the list
@@ -118,6 +119,7 @@ public class CustomNetworkManager : NetworkManager
         }
 
         base.OnServerDisconnect(conn); //Destroys player for connection, disconnects client properly
+        Debug.Log("Removed player");
     }
 
     //When server/host is stopped
@@ -125,6 +127,20 @@ public class CustomNetworkManager : NetworkManager
     public override void OnStopServer()
     {
         RoomPlayers.Clear(); //Clear the list of existing players, ready for a new game
+    }
+
+    public override void OnStopHost()
+    {
+        RoomPlayers.Clear();
+        Debug.Log("Custom Network Manager: Stopped host");
+        StopClient();
+    }
+
+    public override void OnStopClient()
+    {
+        Debug.Log("Custom Network Manager: Stopped client");
+        SceneManager.LoadScene(0); //reload scene for client
+        RoomPlayers.Clear();
     }
 
     public void NotifyPlayersOfReadyState()

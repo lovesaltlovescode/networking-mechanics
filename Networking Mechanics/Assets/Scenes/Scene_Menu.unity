@@ -133,6 +133,7 @@ GameObject:
   - component: {fileID: 104682504}
   - component: {fileID: 104682503}
   - component: {fileID: 104682502}
+  - component: {fileID: 104682505}
   m_Layer: 5
   m_Name: Button_Yes
   m_TagString: Untagged
@@ -203,17 +204,6 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 317708277}
-        m_MethodName: DisplayServers
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: 1742385311}
         m_MethodName: SetActive
         m_Mode: 6
@@ -261,6 +251,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 104682500}
   m_CullTransparentMesh: 0
+--- !u!114 &104682505
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 104682500}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2fa64a61ed0f844b94dcaf6a724cac5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  customDiscoveryScript: {fileID: 0}
+  thisButton: {fileID: 0}
 --- !u!1 &125251031
 GameObject:
   m_ObjectHideFlags: 0
@@ -896,7 +900,7 @@ GameObject:
   - component: {fileID: 317708275}
   m_Layer: 0
   m_Name: NetworkManager
-  m_TagString: Untagged
+  m_TagString: NetworkManager
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1019,8 +1023,8 @@ MonoBehaviour:
   startOnHeadless: 1
   showDebugMessages: 0
   serverTickRate: 30
-  offlineScene: 
-  onlineScene: 
+  offlineScene: Assets/Scenes/Scene_Menu.unity
+  onlineScene: Assets/Scenes/Scene_Menu.unity
   transport: {fileID: 317708274}
   networkAddress: localhost
   maxConnections: 4
@@ -1201,6 +1205,7 @@ GameObject:
   - component: {fileID: 325084559}
   - component: {fileID: 325084558}
   - component: {fileID: 325084557}
+  - component: {fileID: 325084560}
   m_Layer: 5
   m_Name: Button_FindServers
   m_TagString: Untagged
@@ -1271,17 +1276,6 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 317708277}
-        m_MethodName: FindServers
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: 1390945920}
         m_MethodName: SetActive
         m_Mode: 6
@@ -1340,6 +1334,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 325084555}
   m_CullTransparentMesh: 0
+--- !u!114 &325084560
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 325084555}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 43b7366b97e8c174a96544ae71394c57, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  customDiscoveryScript: {fileID: 0}
+  thisButton: {fileID: 0}
 --- !u!1 &326655363
 GameObject:
   m_ObjectHideFlags: 0
@@ -2251,6 +2259,7 @@ GameObject:
   - component: {fileID: 1753632371}
   - component: {fileID: 1753632370}
   - component: {fileID: 1753632369}
+  - component: {fileID: 1753632372}
   m_Layer: 5
   m_Name: Button_StartHost
   m_TagString: Untagged
@@ -2321,17 +2330,6 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 317708277}
-        m_MethodName: StartHostButton
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: 1390945920}
         m_MethodName: SetActive
         m_Mode: 6
@@ -2379,6 +2377,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1753632367}
   m_CullTransparentMesh: 0
+--- !u!114 &1753632372
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1753632367}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ed1b1c486b161c94cb679f98b293cf14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  customDiscoveryScript: {fileID: 0}
+  thisButton: {fileID: 0}
 --- !u!1 &1788726231
 GameObject:
   m_ObjectHideFlags: 0

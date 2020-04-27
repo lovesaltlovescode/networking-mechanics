@@ -25,8 +25,8 @@ public class NetworkRoom : NetworkBehaviour
     [SerializeField] private TMP_Text[] playerReadyTexts = new TMP_Text[5]; //Array to contain player ready states
 
 
-    //[SerializeField] private Button leaveRoomButton = null; //Disable if host, clients can leave room
-    //[SerializeField] private Button deleteRoomButton = null; //Enable for host, deletes whole room
+    [SerializeField] private Button leaveRoomButton = null; //Disable if host, clients can leave room
+    [SerializeField] private Button deleteRoomButton = null; //Enable for host, deletes whole room
     //[SerializeField] private Button startGameButton = null; //Only enable for host, so they can decide when to start the game
 
     //SYNCED VARIABLES (Hooks)
@@ -53,9 +53,12 @@ public class NetworkRoom : NetworkBehaviour
 
             //toggle start game button on/off based on if player is leader, on if true
             //startGameButton.gameObject.SetActive(value);
+            deleteRoomButton.gameObject.SetActive(value);
+            leaveRoomButton.gameObject.SetActive(!value); //set inactive if leader
 
         }
     }
+
 
     public static CustomNetworkManager networkRoomManager; //Network manager object
 
@@ -106,10 +109,25 @@ public class NetworkRoom : NetworkBehaviour
     public void HandleDisplayNameChanged(string oldValue, string newValue) => UpdateDisplay();
     public void HandleReadyStatusChanged(bool oldValue, bool newValue) => UpdateDisplay();
 
+    public void Start()
+    {
+        StartCoroutine(UpdateDisplay(3.0f));
+    }
+
+    IEnumerator UpdateDisplay(float waitTime)
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(waitTime); //run every ___ seconds
+            UpdateDisplay();
+            Debug.Log("Coroutine running: " + Time.time);
+        }
+    }
+
+    
+
     //Update UI according to changed name and ready status
-    //TODO: Is there a better way to do this, so that display is updated without having to click on any buttons?
-    //Maybe a button to click for updates? It would be better than updating every frame, less expensivee
-    //Or a coroutine... that would help refresh display every few seconds automatically
+
     public void UpdateDisplay()
     {
         //If this object does not belong to us
@@ -163,42 +181,46 @@ public class NetworkRoom : NetworkBehaviour
     //    startGameButton.interactable = readyToStart;
     //}
 
+    [ClientRpc]
+    //From server to client, run on client
+    //When leave room button clicked
+    //TODO: When host clicks it, popup appears warning them the room will be destroyed
+    public void RpcDestroyRoom()
+    {
+        if (!isLeader)
+        {
+            Debug.Log("Not leader, do not do anything");
+            return;
+            
+        }
 
-    ////From server to client, run on client
-    ////When leave room button clicked
-    ////TODO: If host clicks it, prompt that tells them the whole room will be shut down
-    ////[ClientRpc]
-    ////public void RpcDestroyRoom()
-    ////{
-    ////    if (!isLeader)
-    ////    {
-    ////        return;
-    ////    }
-
-    ////    //clients all have to leave
-    ////    NetworkRoomManager.StopHost();
-    ////    NetworkRoomManager.RoomPlayers.Clear(); //Clear out existing room players
-    ////    NetworkRoomManager.RoomPlayers.Remove(this);
-    ////    SceneManager.LoadScene(0); //reloads scene for all clients
+        //clients all have to leave
+        NetworkRoomManager.StopHost();
+        //NetworkRoomManager.StopClient();
+        //Debug.Log("Stop host");
+        NetworkRoomManager.RoomPlayers.Clear(); //Clear out existing room players
+        NetworkRoomManager.RoomPlayers.Remove(this);
 
 
-    ////}
+    }
 
-    ////[Command]
-    ////public void CmdLeaveRoom()
-    ////{
-    ////    //if leader, not supposed to be runnning this
-    ////    if (isLeader)
-    ////    {
-    ////        return; //do nothing
-    ////    }
+    //from client to server, run on server
 
-    ////    Debug.Log("Not room leader, exiting room");
-    ////    NetworkRoomManager.RoomPlayers.Remove(this);
-    ////    NetworkRoomManager.StopClient();
-    ////    NetworkRoomManager.RoomPlayers.Clear();
-    ////    SceneManager.LoadScene(0);
-    ////}
+    public void LeaveRoom()
+    {
+        //if leader, not supposed to be runnning this
+        if (isLeader)
+        {
+            Debug.Log("Is leader, do not do anything");
+            return; //do nothing
+        }
+
+        
+        NetworkRoomManager.RoomPlayers.Remove(this); //remove this player from list of players
+        NetworkRoomManager.StopClient(); //stop client, runs onstopclient
+        Debug.Log("Not room leader, exiting room");
+        NetworkRoomManager.RoomPlayers.Clear(); 
+    }
 
 
     ////COMMANDS
