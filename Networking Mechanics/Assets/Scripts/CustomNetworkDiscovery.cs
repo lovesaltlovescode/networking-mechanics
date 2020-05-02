@@ -28,6 +28,9 @@ public class CustomNetworkDiscovery : MonoBehaviour
     //Bool to check if displayed found servers
     [SerializeField] private bool stopSearching; //if true, stop searching for servers
 
+    //input field for room code
+    [SerializeField] private TMP_InputField roomCodeInput = null;
+
     //Do not run if
     public void Awake()
     {
@@ -37,6 +40,7 @@ public class CustomNetworkDiscovery : MonoBehaviour
         if (NetworkServer.active || NetworkClient.active)
             return; //if currently running server or client
 
+        roomCodeInput.characterLimit = 6; //set limit to 6 digits only
     }
 
     public void Start()
@@ -108,12 +112,12 @@ public class CustomNetworkDiscovery : MonoBehaviour
             Debug.Log("Stop searching for servers...");
             return;
         }
-        DisplayServers(); //this will be called separately, on button click
+        ConnectToServer(); //this will be called separately, on button click
     }
 
     //display found servers in a list on button press, for debug purposes
     //will not be in final game, no need to display, only needed to find
-    public void DisplayServers()
+    public void ConnectToServer()
     {
         if (discoveredServers.Count != 0)
         {
@@ -126,7 +130,8 @@ public class CustomNetworkDiscovery : MonoBehaviour
                 Debug.Log("Found this server: " + info.EndPoint.Address.ToString());
                 //discoveredServerAddress.text = info.EndPoint.Address.ToString(); //IP Address of server found
 
-                //TODO: AUtomatically connect to this ip address if the code input was correct
+                //TODO: Automatically connect to this ip address if the code input was correct
+
                 Debug.Log("Connecting to: " + info.EndPoint.Address.ToString());
                 Connect(info);
                 stopSearching = true; //Stop searching for active servers now that we are connected

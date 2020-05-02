@@ -44,6 +44,7 @@ public class NetworkRoom : NetworkBehaviour
     //Check if player is the host, and the lobby leader
     [SerializeField] private bool isLeader = false;
 
+
     //Property for IsLeader, accessible from outside script
     public bool IsLeader
     {
@@ -88,6 +89,7 @@ public class NetworkRoom : NetworkBehaviour
         lobbyUI.SetActive(true);
     }
 
+
     //Called on every network behaviour on client (when script is active)
     public override void OnStartClient()
     {
@@ -104,7 +106,7 @@ public class NetworkRoom : NetworkBehaviour
         NetworkRoomManager.RoomPlayers.Remove(this); //remove this instance of the script from list of room players
     }
 
-    //Hooks for the synced name and ready variables, update UI accordingly
+    //Hooks for the synced name and ready variables, update UI accordingly (lambda)
 
     public void HandleDisplayNameChanged(string oldValue, string newValue) => UpdateDisplay();
     public void HandleReadyStatusChanged(bool oldValue, bool newValue) => UpdateDisplay();
@@ -120,7 +122,7 @@ public class NetworkRoom : NetworkBehaviour
         {
             yield return new WaitForSeconds(waitTime); //run every ___ seconds
             UpdateDisplay();
-            Debug.Log("Coroutine running: " + Time.time);
+            //Debug.Log("Coroutine running: " + Time.time);
         }
     }
 
@@ -130,6 +132,8 @@ public class NetworkRoom : NetworkBehaviour
 
     public void UpdateDisplay()
     {
+
+
         //If this object does not belong to us
         if (!hasAuthority)
         {
@@ -200,6 +204,8 @@ public class NetworkRoom : NetworkBehaviour
         //Debug.Log("Stop host");
         NetworkRoomManager.RoomPlayers.Clear(); //Clear out existing room players
         NetworkRoomManager.RoomPlayers.Remove(this);
+        //Reset existing code to 0, 
+        //since 0 cannot be used to connect, players cannot connect to the room
 
 
     }
@@ -221,18 +227,6 @@ public class NetworkRoom : NetworkBehaviour
         Debug.Log("Not room leader, exiting room");
         NetworkRoomManager.RoomPlayers.Clear(); 
     }
-
-
-    ////COMMANDS
-
-    ////[Command] 
-    //////Called from client, on server
-    //////set the display name to whatever was typed by the players in player input panel
-    //////Due to the sync var hook, when display name changes on server, it is propagated to all clients, and updates accordingly
-    ////private void CmdSetDisplayName(string playerName) //pass in player name 
-    ////{
-    ////    //displayName = playerName;
-    ////}
 
 
     //COMMANDS: Sent from clients to server ie. initiate some action

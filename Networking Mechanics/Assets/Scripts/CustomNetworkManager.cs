@@ -5,6 +5,7 @@ using Mirror;
 using System;
 using System.Linq;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 #region Summary
 
@@ -34,18 +35,20 @@ public class CustomNetworkManager : NetworkManager
     public List<NetworkRoom> RoomPlayers { get; } = new List<NetworkRoom>();
 
 
-
     #region Network Management
 
     //Handles what happens when server/client have connected to the network
     //Spawns player prefab in a new scene
+
 
     //On start server, register all spawnable prefabs
     //less cumbersome than dragging and registering under inspector
     public override void OnStartServer()
     {
         spawnPrefabs = Resources.LoadAll<GameObject>("SpawnablePrefabs").ToList();
+
     }
+
 
     //On start client, loop through spawnable prefabs
     //register prefabs 
@@ -60,10 +63,6 @@ public class CustomNetworkManager : NetworkManager
         }
     }
 
-    public void Update()
-    {
-        Debug.Log("Current room players are: " + RoomPlayers.Count);
-    }
 
     //Called on CLIENT when connected to server
     public override void OnClientConnect(NetworkConnection conn)
