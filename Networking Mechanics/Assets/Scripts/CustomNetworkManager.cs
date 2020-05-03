@@ -25,6 +25,7 @@ public class CustomNetworkManager : NetworkManager
     //Create static public events to be accessed from main menu
     public static event Action OnClientConnected;
     public static event Action OnClientDisconnected;
+    public static event Action<NetworkConnection> OnServerReadied;
 
     //Scene name
     [Header("Scenes")]
@@ -39,6 +40,8 @@ public class CustomNetworkManager : NetworkManager
 
     [Header("Game")]
     [SerializeField] private NetworkGamePlayer gamePlayerPrefab = null;
+    //player spawn system
+    [SerializeField] private GameObject playerSpawnSystem = null; //Spawn system for players
 
     //Create and store a list of game players currently in the map
     public List<NetworkGamePlayer> GamePlayers { get; } = new List<NetworkGamePlayer>();
@@ -106,7 +109,7 @@ public class CustomNetworkManager : NetworkManager
         }
 
         //If already in the game scene (game has started), do not allow for new connections
-        if (SceneManager.GetActiveScene().name != menuScene)
+        if (SceneManager.GetActiveScene().path != menuScene)
         {
             Debug.Log("NetworkManagerCustom: In game. No more players allowed to join");
         }
@@ -214,8 +217,7 @@ public class CustomNetworkManager : NetworkManager
     public void StartGame()
     {
         //if in menu scene
-        //TODO: If in lobby scene
-        if (SceneManager.GetActiveScene().name == menuScene)
+        if (SceneManager.GetActiveScene().path == menuScene)
         {
             //if not ready to start, do nothing
             if (!IsReadyToStart())
@@ -225,26 +227,63 @@ public class CustomNetworkManager : NetworkManager
 
             //If ready to start
             Debug.Log("Network Manager Custom: Starting game...");
+
             //Change Scene
+            ServerChangeScene("Scene_Map_Shop");
+            Debug.Log("Server chanigng scene...");
         }
     }
 
-    //Change scene when host/client joins, change to lobby scene
-    //Spawn clients using a spawn system, according to the order they come in
+    //called on server when a scene is completed
+    //all clients will now have a spawn system and it is owned by the server
+    //Handles change from menu to game scene
+    public override void ServerChangeScene(string newSceneName)
+    {
+        Debug.Log("Server changed scene unsuccessful");
 
-    ////called on server when a scene is completed
-    ////al clients will now have a spawn system and it is owned by the server
-    //public override void OnServerSceneChanged(string sceneName)
-    //{
-    //    //if scene is one of the levels
-    //    if (sceneName.StartsWith("Scene_Map"))
-    //    {
-    //        //spawn in the player's spawn system
-    //        GameObject playerSpawnSystemInstance = Instantiate(playerSpawnSystem);
+        //if scene we're in right now is menu, and the new scene starts with scene map, it means we are going from the menu into a new game
+        if (SceneManager.GetActiveScene().path == menuScene && newSceneName.StartsWith("Scene_Map"))
+        {
+            Debug.Log("Server changed scene successful");
 
-    //        NetworkServer.Spawn(playerSpawnSystemInstance); //if you do not pass in conn, it means the server owns it
-    //    }
-    //}
+            //loop through all room players
+            for (int i = RoomPlayers.Count - 1; i >= 0; i--)
+            {
+                var conn = RoomPlayers[i].connectionToClient; //get their connection
+                var gameplayerInstance = Instantiate(gamePlayerPrefab); //spawn in game version of the prefab
+
+                NetworkServer.Destroy(conn.identity.gameObject); //destroy the room player
+
+                NetworkServer.ReplacePlayerForConnection(conn, gameplayerInstance.gameObject);
+                //assign new game player prefab to be the player's connection, instead of what was destroyed
+            }
+        }
+
+        base.ServerChangeScene(newSceneName);
+    }
+
+    //called on server when a scene change is completed
+    //all clients will now have a spawn system and it is owned by the server
+    public override void OnServerSceneChanged(string sceneName)
+    {
+        //if scene is one of the levels
+        if (sceneName.StartsWith("Scene_Map"))
+        {
+            //spawn in the player's spawn system
+            GameObject playerSpawnSystemInstance = Instantiate(playerSpawnSystem);
+
+            NetworkServer.Spawn(playerSpawnSystemInstance); //No conn parameter is being passed in, so this is owned by the server
+        }
+    }
+
+    public override void OnServerReady(NetworkConnection conn)
+    {
+        base.OnServerReady(conn);
+
+        //raise our event
+        OnServerReadied?.Invoke(conn); //If on server readied, invoke and pass a connection
+        //know when a client is ready, called on server
+    }
 
     #endregion
 

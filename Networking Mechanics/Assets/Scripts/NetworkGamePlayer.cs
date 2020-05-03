@@ -18,21 +18,21 @@ public class NetworkGamePlayer : NetworkBehaviour
 {
     //Player in the game, outside of the lobby
 
-    public static CustomNetworkManager room; //network manager object
+    public static CustomNetworkManager networkRoomManager; //network manager object
 
     //property for custom network manager
-    private CustomNetworkManager Room
+    private CustomNetworkManager NetworkRoomManager
     {
 
         get
         {
-            if (room != null) //if there is a network manager object, return that
+            if (networkRoomManager != null) //if there is a network manager object, return that
             {
-                return room; //If not null, then just return the current room
+                return networkRoomManager; //If not null, then just return the current room
             }
 
             //if its null, then just get it
-            return room = NetworkManager.singleton as CustomNetworkManager; //Network manager from mirror has a singleton variable
+            return networkRoomManager = NetworkManager.singleton as CustomNetworkManager; //Network manager from mirror has a singleton variable
             //but we want it as our custom network manager, so we have to do a cast
         }
     }
@@ -43,7 +43,7 @@ public class NetworkGamePlayer : NetworkBehaviour
     {
         DontDestroyOnLoad(gameObject); //gameobject not destroyed when going between different scenes ie. different rooms, levels
 
-        Room.GamePlayers.Add(this); //add this instance to our list of game players
+        NetworkRoomManager.GamePlayers.Add(this); //add this instance to our list of game players
 
     }
 
@@ -51,6 +51,6 @@ public class NetworkGamePlayer : NetworkBehaviour
     //we will still recognise and remove them from the list 
     public override void OnNetworkDestroy()
     {
-        Room.GamePlayers.Remove(this); //Remove the player from our list of total game players
+        NetworkRoomManager.GamePlayers.Remove(this); //Remove the player from our list of total game players
     }
 }
