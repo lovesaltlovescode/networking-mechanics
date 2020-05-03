@@ -27,7 +27,7 @@ public class NetworkRoom : NetworkBehaviour
 
     [SerializeField] private Button leaveRoomButton = null; //Disable if host, clients can leave room
     [SerializeField] private Button deleteRoomButton = null; //Enable for host, deletes whole room
-    //[SerializeField] private Button startGameButton = null; //Only enable for host, so they can decide when to start the game
+    [SerializeField] private Button startGameButton = null; //Only enable for host, so they can decide when to start the game
 
     //SYNCED VARIABLES (Hooks)
 
@@ -52,8 +52,12 @@ public class NetworkRoom : NetworkBehaviour
        {
           isLeader = value; //True if isleader is true
 
-            //toggle start game button on/off based on if player is leader, on if true
-            //startGameButton.gameObject.SetActive(value);
+            //toggle buttons on/off based on if player is leader
+            startGameButton.gameObject.SetActive(value);
+
+            //set start game button uninteractable
+            startGameButton.interactable = false;
+
             deleteRoomButton.gameObject.SetActive(value);
             leaveRoomButton.gameObject.SetActive(!value); //set inactive if leader
 
@@ -172,18 +176,18 @@ public class NetworkRoom : NetworkBehaviour
         }
     }
 
-    //public void HandleReadyToStart(bool readyToStart)
-    //{
-    //    if (!isLeader)
-    //    {
-    //        //if not leader, dont do anything
-    //        //doesnt matter to us
-    //        return;
-    //    }
+    public void HandleReadyToStart(bool readyToStart)
+    {
+        if (!isLeader)
+        {
+            //if not leader, dont do anything
+            //doesnt matter to us
+            return;
+        }
 
-    //    //if leader and ready to start, the game button will be interactable
-    //    startGameButton.interactable = readyToStart;
-    //}
+        //if leader and ready to start, the game button will be interactable
+        startGameButton.interactable = readyToStart;
+    }
 
     [ClientRpc]
     //From server to client, run on client
@@ -256,6 +260,7 @@ public class NetworkRoom : NetworkBehaviour
         }
 
         //TODO: start game
+
         Debug.Log("Ready to start game");
 
         NetworkRoomManager.StartGame();

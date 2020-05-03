@@ -1269,17 +1269,18 @@ MonoBehaviour:
   onlineScene: Assets/Scenes/Scene_Menu.unity
   transport: {fileID: 317708274}
   networkAddress: localhost
-  maxConnections: 4
+  maxConnections: 5
   authenticator: {fileID: 0}
   playerPrefab: {fileID: 228561905065953227, guid: 7303c3a1a7284a845b3249ed79b74da0,
     type: 3}
   autoCreatePlayer: 1
   playerSpawnMethod: 0
   spawnPrefabs: []
-  minPlayers: 3
+  minPlayers: 5
   menuScene: Assets/Scenes/Scene_Menu.unity
   roomPlayerPrefab: {fileID: 1065554968133040953, guid: 0c8ff0ac31c21d24ebb6564ab4ae64f7,
     type: 3}
+  gamePlayerPrefab: {fileID: 0}
 --- !u!1 &319097959
 GameObject:
   m_ObjectHideFlags: 0

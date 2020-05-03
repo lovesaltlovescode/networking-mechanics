@@ -11,13 +11,20 @@ using TMPro;
 
 //custom network manager, handles spawning of room player prefab
 //registers spawnable prefabs
+//Handles scene change from lobby to map
+//Once in game level (map) , handles spawning of game player prefab
+//room player is replaced by game players
+
 
 #endregion
 public class CustomNetworkManager : NetworkManager
 {
 
-    [SerializeField] private int minPlayers = 3; //Minimum number of players needed to start the game
+    [SerializeField] private int minPlayers = 5; //Minimum number of players needed to start the game
 
+    //Create static public events to be accessed from main menu
+    public static event Action OnClientConnected;
+    public static event Action OnClientDisconnected;
 
     //Scene name
     [Header("Scenes")]
@@ -27,18 +34,20 @@ public class CustomNetworkManager : NetworkManager
     [Header("Room")]
     [SerializeField] private NetworkRoom roomPlayerPrefab = null;
 
-    //Create static public events to be accessed from main menu
-    public static event Action OnClientConnected;
-    public static event Action OnClientDisconnected;
-
     //Create and store a list of room players currently in the room
     public List<NetworkRoom> RoomPlayers { get; } = new List<NetworkRoom>();
 
+    [Header("Game")]
+    [SerializeField] private NetworkGamePlayer gamePlayerPrefab = null;
 
-    #region Network Management
+    //Create and store a list of game players currently in the map
+    public List<NetworkGamePlayer> GamePlayers { get; } = new List<NetworkGamePlayer>();
+
+
+    #region Lobby Management
 
     //Handles what happens when server/client have connected to the network
-    //Spawns player prefab in a new scene
+    //Spawns player prefab in to the lobby
 
 
     //On start server, register all spawnable prefabs
@@ -148,7 +157,7 @@ public class CustomNetworkManager : NetworkManager
         foreach (var player in RoomPlayers)
         {
             //function in networkroom script
-            //player.HandleReadyToStart(IsReadyToStart());
+            player.HandleReadyToStart(IsReadyToStart());
         }
     }
 
@@ -166,10 +175,10 @@ public class CustomNetworkManager : NetworkManager
         {
             //Loop through list of players
             //if even 1 player is not ready, do not start
-            //if (player.isReady == false)
-            //{
-            //    return false;
-            //}
+            if (player.isReady == false)
+            {
+                return false;
+            }
         }
 
         //else, ready to start
@@ -196,7 +205,10 @@ public class CustomNetworkManager : NetworkManager
             NetworkServer.AddPlayerForConnection(conn, roomPlayerInstance.gameObject);
         }
     }
+    #endregion
 
+
+    #region Game Scene
 
     //Start game (When start button is pressed by leader)
     public void StartGame()
@@ -213,6 +225,7 @@ public class CustomNetworkManager : NetworkManager
 
             //If ready to start
             Debug.Log("Network Manager Custom: Starting game...");
+            //Change Scene
         }
     }
 
@@ -234,4 +247,8 @@ public class CustomNetworkManager : NetworkManager
     //}
 
     #endregion
+
+
+
+
 }
