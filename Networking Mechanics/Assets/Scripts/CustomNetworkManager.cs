@@ -112,6 +112,8 @@ public class CustomNetworkManager : NetworkManager
         if (SceneManager.GetActiveScene().path != menuScene)
         {
             Debug.Log("NetworkManagerCustom: In game. No more players allowed to join");
+            conn.Disconnect(); //disconnect that client automatically
+            return;
         }
     }
 
@@ -254,8 +256,8 @@ public class CustomNetworkManager : NetworkManager
 
                 NetworkServer.Destroy(conn.identity.gameObject); //destroy the room player
 
-                NetworkServer.ReplacePlayerForConnection(conn, gameplayerInstance.gameObject);
-                //assign new game player prefab to be the player's connection, instead of what was destroyed
+                NetworkServer.ReplacePlayerForConnection(conn, gameplayerInstance.gameObject, true);
+                //assign new game player prefab to be the player's connection, instead of what was destroyed, and continue giving them the authority for this connection
             }
         }
 

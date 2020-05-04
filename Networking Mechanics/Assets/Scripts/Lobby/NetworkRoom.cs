@@ -120,7 +120,7 @@ public class NetworkRoom : NetworkBehaviour
 
     public void Start()
     {
-        StartCoroutine(UpdateDisplay(3.0f));
+        StartCoroutine(UpdateDisplay(2.0f)); //Update display every 2 seconds
     }
 
     IEnumerator UpdateDisplay(float waitTime)

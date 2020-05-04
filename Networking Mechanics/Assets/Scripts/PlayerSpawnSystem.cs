@@ -26,7 +26,13 @@ public class PlayerSpawnSystem : NetworkBehaviour
     [SerializeField] private int nextIndex = 0;
 
     //Array to contain player tags to be assigned when spawned, follows same index as next index
-    private static string[] playerTags = new string[5];
+    public static string[] playerTags = new string[] { "XiaoBen", "DaFan", "DaLi", "XiaoFan", "XiaoLi" };
+
+
+    public void Start()
+    {
+
+    }
 
     //Add spawn point, adds to list 
     public static void AddSpawnPoint(Transform transform)
@@ -63,10 +69,12 @@ public class PlayerSpawnSystem : NetworkBehaviour
 
         //spawn in the player, instantiate at spawn points index, facing same way that spawn point is facing
         GameObject playerInstance = Instantiate(playerPrefab, spawnPoints[nextIndex].position, spawnPoints[nextIndex].rotation);
+        
 
         //spawn the object on the other clients, and pass in connection belonging to that client
         //because the player object that is being spawned in belongs to this player's connection and they will have authority over it
         NetworkServer.Spawn(playerInstance, conn);
+        playerInstance.tag = playerTags[nextIndex];
 
         //increment index for next player, each player gets their own spawnpoint
         nextIndex++;

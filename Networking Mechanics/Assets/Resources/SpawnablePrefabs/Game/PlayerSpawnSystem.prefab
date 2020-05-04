@@ -63,3 +63,10 @@ MonoBehaviour:
   syncInterval: 0.1
   playerPrefab: {fileID: 8158211711435101389, guid: e260c82c6ebbf0e4982d0dbfbe25466c,
     type: 3}
+  nextIndex: 0
+  playerTags:
+  - XiaoBen
+  - DaFan
+  - DaLi
+  - XiaoFan
+  - XiaoLi
