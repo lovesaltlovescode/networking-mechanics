@@ -23,14 +23,7 @@ public class CustomNetworkDiscovery : MonoBehaviour
 
     public CustomNetworkManager customNetworkManager; //enable and disable script
 
-    //text for whether any server is available to connect
-    [SerializeField] private TextMeshProUGUI connectToRoom;
-
-    //button to connect to server
-    [SerializeField] private Button connectButton;
-
-    //button to try again
-    [SerializeField] private Button tryAgain;
+    public bool roomFound; //if true, then enable relavant buttons and text changes
 
     //Do not run if
     public void Awake()
@@ -41,11 +34,14 @@ public class CustomNetworkDiscovery : MonoBehaviour
         if (NetworkServer.active || NetworkClient.active)
             return; //if currently running server or client
 
+
     }
 
     public void Start()
     {
         Debug.Log("CustomNetworkDiscovery: Script running");
+
+        networkDiscovery.StopDiscovery();
 
     }
 
@@ -58,6 +54,7 @@ public class CustomNetworkDiscovery : MonoBehaviour
             Debug.Log("in game scene, remove network discovery");
             this.enabled = false;
         }
+
     }
 
         
@@ -86,20 +83,22 @@ public class CustomNetworkDiscovery : MonoBehaviour
         networkDiscovery.StartDiscovery(); //search for more servers
         Debug.Log("Discovered Servers: " + discoveredServers.Count);
 
-        if(discoveredServers.Count == 0)
+        CheckRooms();
+
+    }
+
+    //check how many rooms there are after searching
+    public void CheckRooms()
+    {
+        if (discoveredServers.Count == 0)
         {
             Debug.Log("No rooms found. Try again?");
-            connectToRoom.text = "No rooms found. Try again?";
-            tryAgain.gameObject.SetActive(true);
-            connectButton.gameObject.SetActive(false);
+            roomFound = false;
         }
         else
         {
-            connectToRoom.text = $"Found {discoveredServers.Count} rooms. Join this room?";
-            connectButton.gameObject.SetActive(true);
-            tryAgain.gameObject.SetActive(false);
+            roomFound = true;
         }
-
     }
 
     //display found servers in a list on button press, for debug purposes
@@ -127,6 +126,7 @@ public class CustomNetworkDiscovery : MonoBehaviour
         else
         {
             Debug.Log("No discovered servers found");
+            
         }
 
     }
@@ -142,5 +142,6 @@ public class CustomNetworkDiscovery : MonoBehaviour
 
         discoveredServers[info.serverId] = info; //pass in server id as the server response of the server
     }
+
 }
 

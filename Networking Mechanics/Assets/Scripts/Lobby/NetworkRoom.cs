@@ -5,6 +5,7 @@ using Mirror;
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine.SceneManagement;
+using System;
 
 #region Summary
 
@@ -42,6 +43,7 @@ public class NetworkRoom : NetworkBehaviour
     //when value is changed on server, update UI accordingly
     [SyncVar(hook = nameof(HandleReadyStatusChanged))]
     public bool isReady = false;
+
 
     //Check if player is the host, and the lobby leader
     [SerializeField] private bool isLeader = false;
@@ -116,6 +118,7 @@ public class NetworkRoom : NetworkBehaviour
 
     public void HandleDisplayNameChanged(string oldValue, string newValue) => UpdateDisplay();
     public void HandleReadyStatusChanged(bool oldValue, bool newValue) => UpdateDisplay();
+
 
     public void Start()
     {

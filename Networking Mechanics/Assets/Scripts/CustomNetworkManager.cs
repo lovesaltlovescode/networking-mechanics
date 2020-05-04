@@ -241,7 +241,6 @@ public class CustomNetworkManager : NetworkManager
     //Handles change from menu to game scene
     public override void ServerChangeScene(string newSceneName)
     {
-        Debug.Log("Server changed scene unsuccessful");
 
         //if scene we're in right now is menu, and the new scene starts with scene map, it means we are going from the menu into a new game
         if (SceneManager.GetActiveScene().path == menuScene && newSceneName.StartsWith("Scene_Map"))
