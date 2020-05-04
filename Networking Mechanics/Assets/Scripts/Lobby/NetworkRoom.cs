@@ -11,21 +11,20 @@ using UnityEngine.SceneManagement;
 //Checks for players in lobby, and allows them to set their ready state
 //Lobby UI shows for host, clients will join via this UI
 //Clients and host can set their ready state
+//When ready, host can start the game
+//Clients can leave the room
+//Host can destroy the room
 #endregion
 public class NetworkRoom : NetworkBehaviour
 {
 
     //VARIABLES
-   [Header("UI")]
-
-   //TODO: Add in ready button and game start button for host
+    [Header("UI")]
 
     [SerializeField] private GameObject lobbyUI = null; //Only enable for host, so there's not one for every single player
     [SerializeField] private TMP_Text[] playerNameTexts = new TMP_Text[5]; //Array to contain placeholder text when waiting for players
     [SerializeField] private TMP_Text[] playerReadyTexts = new TMP_Text[5]; //Array to contain player ready states
-
-    //Images for players
-    [SerializeField] private Image[] playerImages = new Image[5];
+    [SerializeField] private Image[] playerImages = new Image[5]; //Images for players
 
 
     [SerializeField] private Button leaveRoomButton = null; //Disable if host, clients can leave room
