@@ -24,6 +24,9 @@ public class NetworkRoom : NetworkBehaviour
     [SerializeField] private TMP_Text[] playerNameTexts = new TMP_Text[5]; //Array to contain placeholder text when waiting for players
     [SerializeField] private TMP_Text[] playerReadyTexts = new TMP_Text[5]; //Array to contain player ready states
 
+    //Images for players
+    [SerializeField] private Image[] playerImages = new Image[5];
+
 
     [SerializeField] private Button leaveRoomButton = null; //Disable if host, clients can leave room
     [SerializeField] private Button deleteRoomButton = null; //Enable for host, deletes whole room
@@ -162,12 +165,16 @@ public class NetworkRoom : NetworkBehaviour
             //Loop through all player name and readystatus and set as empty/loading, cleared text for a new round
             playerNameTexts[i].text = "Waiting For Player...";
             playerReadyTexts[i].text = string.Empty;
+            playerImages[i].GetComponent<Image>().color = Color.black;
         }
 
         for (int i = 0; i < NetworkRoomManager.RoomPlayers.Count; i++)
         {
             //Change placeholder texts to empty now that players have joined
             playerNameTexts[i].text = string.Empty;
+
+            //Change image colours to white now that players have joined
+            playerImages[i].GetComponent<Image>().color = Color.white;
 
             //if player set as ready, change text to green, else change to red
             playerReadyTexts[i].text = NetworkRoomManager.RoomPlayers[i].isReady ?

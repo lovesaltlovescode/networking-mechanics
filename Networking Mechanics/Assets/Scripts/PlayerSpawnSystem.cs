@@ -23,8 +23,10 @@ public class PlayerSpawnSystem : NetworkBehaviour
 
     //players spawn at different positions depending on the order they came (their index)
     //network manager will increment this number everytime a new player is spawned, so that players are always spawning at the next available point
-    private int nextIndex = 0; 
+    [SerializeField] private int nextIndex = 0;
 
+    //Array to contain player tags to be assigned when spawned, follows same index as next index
+    private static string[] playerTags = new string[5];
 
     //Add spawn point, adds to list 
     public static void AddSpawnPoint(Transform transform)

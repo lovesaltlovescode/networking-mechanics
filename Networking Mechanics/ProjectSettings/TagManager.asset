@@ -5,6 +5,11 @@ TagManager:
   serializedVersion: 2
   tags:
   - NetworkManager
+  - XiaoLi
+  - XiaoFan
+  - DaLi
+  - DaFan
+  - Chef
   layers:
   - Default
   - TransparentFX
