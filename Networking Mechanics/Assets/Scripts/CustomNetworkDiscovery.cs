@@ -4,11 +4,15 @@ using UnityEngine;
 using Mirror.Discovery;
 using Mirror;
 using TMPro;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 
 //Network discovery HUD
 //Responsible for establishing server connections and advertising the server
 //Clients join using this script, and are then brought to a new scene (lobby)
+//If there are no available rooms to connect to, clients have to try again
+//If there available rooms, clients can choose to connect
 
 [RequireComponent(typeof(NetworkDiscovery))]
 public class CustomNetworkDiscovery : MonoBehaviour
@@ -19,17 +23,14 @@ public class CustomNetworkDiscovery : MonoBehaviour
 
     public CustomNetworkManager customNetworkManager; //enable and disable script
 
-    //text for discovered servers
-    [SerializeField] private TextMeshProUGUI discoveredServerText = null;
+    //text for whether any server is available to connect
+    [SerializeField] private TextMeshProUGUI connectToRoom;
 
-    //text for discovered server list
-    [SerializeField] private TextMeshProUGUI discoveredServerAddress = null;
+    //button to connect to server
+    [SerializeField] private Button connectButton;
 
-    //Bool to check if displayed found servers
-    [SerializeField] private bool stopSearching; //if true, stop searching for servers
-
-    //input field for room code
-    [SerializeField] private TMP_InputField roomCodeInput = null;
+    //button to try again
+    [SerializeField] private Button tryAgain;
 
     //Do not run if
     public void Awake()
@@ -40,7 +41,6 @@ public class CustomNetworkDiscovery : MonoBehaviour
         if (NetworkServer.active || NetworkClient.active)
             return; //if currently running server or client
 
-        roomCodeInput.characterLimit = 6; //set limit to 6 digits only
     }
 
     public void Start()
@@ -52,27 +52,13 @@ public class CustomNetworkDiscovery : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log("Update: Discovered Servers: " + discoveredServers.Count);
-
-        
-        
+        if (SceneManager.GetActiveScene().name == "Scene_Map_Shop")
+        {
+            //if in game scene, do not enable network discovery
+            Debug.Log("in game scene, remove network discovery");
+            this.enabled = false;
+        }
     }
-
-
-    ////when start server button is clicked
-    ////dedicated server, delete later
-    //public void StartServerButton()
-    //{
-
-    //    discoveredServers.Clear();
-
-    //    Debug.Log("Starting as server...");
-    //    NetworkManager.singleton.StartServer();
-
-    //    networkDiscovery.AdvertiseServer();
-
-    //    Debug.Log("Dedicated server advertised");
-    //}
 
         
     //When start host button is clicked
@@ -86,10 +72,7 @@ public class CustomNetworkDiscovery : MonoBehaviour
 
         Debug.Log("Host server advertised");
 
-        //Instantiate(playerPrefab);
-
         Debug.Log("Show lobby");
-        //Go to lobby scene
 
 
 
@@ -100,19 +83,23 @@ public class CustomNetworkDiscovery : MonoBehaviour
     public void FindServers()
     {
         //Find available servers
-        //Debug.Log("Discovered Servers Before Clear: " + discoveredServers.Count);
-        //discoveredServers.Clear(); //clear existing servers
         networkDiscovery.StartDiscovery(); //search for more servers
-        //Debug.Log("Searching for servers...");
         Debug.Log("Discovered Servers: " + discoveredServers.Count);
 
-        if (stopSearching == true)
+        if(discoveredServers.Count == 0)
         {
-
-            Debug.Log("Stop searching for servers...");
-            return;
+            Debug.Log("No rooms found. Try again?");
+            connectToRoom.text = "No rooms found. Try again?";
+            tryAgain.gameObject.SetActive(true);
+            connectButton.gameObject.SetActive(false);
         }
-        ConnectToServer(); //this will be called separately, on button click
+        else
+        {
+            connectToRoom.text = $"Found {discoveredServers.Count} rooms. Join this room?";
+            connectButton.gameObject.SetActive(true);
+            tryAgain.gameObject.SetActive(false);
+        }
+
     }
 
     //display found servers in a list on button press, for debug purposes
@@ -130,11 +117,8 @@ public class CustomNetworkDiscovery : MonoBehaviour
                 Debug.Log("Found this server: " + info.EndPoint.Address.ToString());
                 //discoveredServerAddress.text = info.EndPoint.Address.ToString(); //IP Address of server found
 
-                //TODO: Automatically connect to this ip address if the code input was correct
-
                 Debug.Log("Connecting to: " + info.EndPoint.Address.ToString());
                 Connect(info);
-                stopSearching = true; //Stop searching for active servers now that we are connected
                 
             }
         }
