@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Mirror;
 
 #region Summary
 
@@ -11,13 +12,12 @@ using UnityEngine;
 //if it matches, then display that model
 
 #endregion
-public class CheckPlayerTag : MonoBehaviour
+public class CheckPlayerTag : NetworkBehaviour
 {
 
     //array of possible models to display
     //assign in the inspector
     public GameObject[] characterModels = new GameObject[5];
-
 
 
 

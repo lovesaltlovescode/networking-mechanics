@@ -23,15 +23,16 @@ public class PlayerSpawnSystem : NetworkBehaviour
 
     //players spawn at different positions depending on the order they came (their index)
     //network manager will increment this number everytime a new player is spawned, so that players are always spawning at the next available point
-    [SerializeField] private int nextIndex = 0;
+    public static int nextIndex = 0;
 
     //Array to contain player tags to be assigned when spawned, follows same index as next index
     public static string[] playerTags = new string[] { "XiaoBen", "DaFan", "DaLi", "XiaoFan", "XiaoLi" };
 
+    private GameObject playerInstance;
 
     public void Start()
     {
-
+        
     }
 
     //Add spawn point, adds to list 
@@ -68,16 +69,22 @@ public class PlayerSpawnSystem : NetworkBehaviour
         }
 
         //spawn in the player, instantiate at spawn points index, facing same way that spawn point is facing
-        GameObject playerInstance = Instantiate(playerPrefab, spawnPoints[nextIndex].position, spawnPoints[nextIndex].rotation);
+        playerInstance = Instantiate(playerPrefab, spawnPoints[nextIndex].position, spawnPoints[nextIndex].rotation);
         
 
         //spawn the object on the other clients, and pass in connection belonging to that client
         //because the player object that is being spawned in belongs to this player's connection and they will have authority over it
         NetworkServer.Spawn(playerInstance, conn);
         playerInstance.tag = playerTags[nextIndex];
-
         //increment index for next player, each player gets their own spawnpoint
         nextIndex++;
     }
+
+    //[ClientRpc]
+    //public void RpcChangePlayerTag(GameObject obj, string clientPlayerTag)
+    //{
+    //    obj.tag = clientPlayerTag;
+    //    Debug.Log("This client's player tag is: " + clientPlayerTag);
+    //}
 
 }
