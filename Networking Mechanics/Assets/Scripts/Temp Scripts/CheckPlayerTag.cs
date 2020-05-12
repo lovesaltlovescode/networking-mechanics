@@ -19,14 +19,35 @@ public class CheckPlayerTag : NetworkBehaviour
     //assign in the inspector
     public GameObject[] characterModels = new GameObject[5];
 
-
-
-    // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
-        CheckTag();
-
+        StartCoroutine(CheckPlayerTags());
     }
+
+    //coroutine to check tag of player
+    private IEnumerator CheckPlayerTags()
+    {
+        Debug.LogWarning("Coroutine still running"); //Should stop sometime, when game object tag is no longer untagged
+        WaitForSeconds wait = new WaitForSeconds(0.01f); //wait for s before starting again
+        while(true)
+        {
+            Debug.Log("Gameobject tag is " + gameObject.tag);
+            CheckTag();
+
+
+            if (gameObject.tag != "Untagged")
+            {
+                Debug.Log("Gameobjects tag is now: " + gameObject.tag);
+                break;
+            }
+                yield return wait;
+        }
+       // Debug.Log("Stopped checking");
+    }
+
+
+
+
 
     void CheckTag()
     {
@@ -59,9 +80,4 @@ public class CheckPlayerTag : NetworkBehaviour
         }
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

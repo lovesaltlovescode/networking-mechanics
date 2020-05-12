@@ -25,25 +25,10 @@ public class PlayerSpawnSystem : NetworkBehaviour
     //network manager will increment this number everytime a new player is spawned, so that players are always spawning at the next available point
     public static int nextIndex = 0;
 
-    //Array to contain player tags to be assigned when spawned, follows same index as next index
-    public static string[] playerTags = new string[] { "XiaoBen", "DaFan", "DaLi", "XiaoFan", "XiaoLi" };
+    ////List to contain player tags to be assigned when spawned, follows same index as next index
+    //public static List<string> playerTags = new List<string>{ "XiaoBen", "DaFan", "DaLi", "XiaoFan", "XiaoLi" };
 
-    ////Strings to contain the player's tags
-    //[SyncVar]
-    //[SerializeField] public string xiaoBen;
-
-    //[SyncVar]
-    //[SerializeField] public string daFan;
-
-    //[SyncVar]
-    //[SerializeField] public string daLi;
-
-    //[SyncVar]
-    //[SerializeField] public string xiaoFan;
-
-    //[SyncVar]
-    //[SerializeField] public string xiaoLi;
-
+    //player object to be spawned
     private GameObject playerInstance;
 
     //Add spawn point, adds to list 
@@ -86,7 +71,7 @@ public class PlayerSpawnSystem : NetworkBehaviour
         //spawn the object on the other clients, and pass in connection belonging to that client
         //because the player object that is being spawned in belongs to this player's connection and they will have authority over it
         NetworkServer.Spawn(playerInstance, conn);
-        playerInstance.tag = playerTags[nextIndex];
+        //playerInstance.tag = playerTags[nextIndex];
 
         //increment index for next player, each player gets their own spawnpoint
         nextIndex++;

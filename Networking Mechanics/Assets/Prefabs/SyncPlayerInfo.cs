@@ -32,10 +32,19 @@ public class SyncPlayerInfo : NetworkBehaviour
         //initialization for player when first joining the game
 
         //call function to increment the number everytime a new client spawns
-        IncreaseNo();
+        //IncreaseNo();
+        Debug.Log("Started local player!"); //only called once
         //Debug.Log(increment); //since this is run on the client's local player, it will only show up once in the editor
 
 
+    }
+
+    public override void OnStartAuthority()
+    {
+        base.OnStartAuthority();
+
+        Debug.Log("Started authority!"); //called once on every player when they start
+        IncreaseNo();
     }
 
     private void IncreaseNo()
@@ -77,6 +86,7 @@ public class SyncPlayerInfo : NetworkBehaviour
     {
         //update player tags every frame so every client knows who each other is
         CmdUpdateTags();
+        Debug.Log("Player tag is " + gameObject.tag);
     }
 
     [Command]
