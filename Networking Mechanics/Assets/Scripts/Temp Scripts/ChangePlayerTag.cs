@@ -6,50 +6,30 @@ using Mirror;
 public class ChangePlayerTag : NetworkBehaviour
 {
 
-    [SerializeField] private NetworkIdentity objNetId;
-
     // Start is called before the first frame update
-    void Start()
-    {
-        Debug.Log("ChangePlayerTag script is active!");
-    }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        if (isServer)
+        if(PlayerSpawnSystem.nextIndex == 1)
         {
-            RpcChangePlayerTag(gameObject, PlayerSpawnSystem.playerTags[0].ToString());
+            gameObject.name = "XiaoBen";
         }
-        
-    }
-
-    [ClientRpc]
-
-    //from server, retrieve the player tag and propagate them to all clients accordingly
-    public void RpcChangePlayerTag(GameObject obj, string playerTag)
-    {
-
-        var playerTagScript = gameObject.GetComponent<PlayerTag>();
-        playerTagScript.ChangeMyTag();
-
-        Debug.Log("Player tag is now: " + gameObject.tag);
-
-        
-
-        //for(var i = 0; i < PlayerSpawnSystem.playerTags.Length; i++)
-        //{
-        //    playerTag = PlayerSpawnSystem.playerTags[i];
-
-        //    if(playerTag == gameObject.tag)
-        //    {
-        //        Debug.Log("Game object tag is: " + gameObject.tag + "Player tag var is: " + playerTag);
-        //        break;
-        //    }
-        //}
-
-        //obj.tag = playerTag;
-        
+        else if(PlayerSpawnSystem.nextIndex == 2)
+        {
+            gameObject.name = "DaFan";
+        }
+        else if(PlayerSpawnSystem.nextIndex == 3)
+        {
+            gameObject.name = "DaLi";
+        }
+        else if(PlayerSpawnSystem.nextIndex == 4)
+        {
+            gameObject.name = "XiaoFan";
+        }
+        else if(PlayerSpawnSystem.nextIndex == 5)
+        {
+            gameObject.name = "XiaoLi";
+        }
     }
 
 }

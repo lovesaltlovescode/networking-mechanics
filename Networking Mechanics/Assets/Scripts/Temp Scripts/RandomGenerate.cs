@@ -1,34 +1,64 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System.Diagnostics;
+using Mirror;
+using TMPro;
 
+//Attached to player object
+//synchronize hp and mp ints across network
 
-//Generate a random 6 digit number in the most efficient way possible
-
-public class RandomGenerate : MonoBehaviour
+public class RandomGenerate : NetworkBehaviour
 {
 
-    public int number;
+    public TextMeshProUGUI hpMeter;
+    //public TextMeshProUGUI mpMeter;
 
-    // Start is called before the first frame update
-    void Start()
+    [SyncVar(hook = nameof(RandomNumberSyncCallback))]
+    public int hpNumber;
+
+    //[SyncVar]
+    //public int mpNumber;
+
+
+    public override void OnStartAuthority()
     {
-        UnityEngine.Debug.Log("Random Generate: Running");
+        hpMeter.gameObject.SetActive(true);
+        //mpMeter.gameObject.SetActive(true);
     }
 
-    private void Update()
+    public void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+
+        if (isServer)
         {
-            GenerateRandom();
+            if (Input.GetKeyDown(KeyCode.S))
+            {
+                GenerateRandom();
+            }
+            
         }
+
+
+            hpMeter.text = "My hp is: " + hpNumber;
+            //mpMeter.text = "My mp is " + mpNumber;
+
+            Debug.Log("Hp is..." + hpNumber);
+            //Debug.Log("Mp is..." + mpNumber);
+
     }
 
     public void GenerateRandom()
     {
-            number = Random.Range(100000, 999999);
-            UnityEngine.Debug.Log("Code is: " + number);
+        hpNumber = Random.Range(0, 100);
+        //mpNumber = Random.Range(0, 50);
+    }
+
+    void RandomNumberSyncCallback(int oldValue, int newValue)
+    {
+        if (isServer) return;
+        Debug.Log("I'm a client, got a new number!" + newValue);
+        hpNumber = newValue;
+        hpMeter.text = hpNumber.ToString();
     }
 
 

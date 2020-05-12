@@ -28,12 +28,23 @@ public class PlayerSpawnSystem : NetworkBehaviour
     //Array to contain player tags to be assigned when spawned, follows same index as next index
     public static string[] playerTags = new string[] { "XiaoBen", "DaFan", "DaLi", "XiaoFan", "XiaoLi" };
 
-    private GameObject playerInstance;
+    ////Strings to contain the player's tags
+    //[SyncVar]
+    //[SerializeField] public string xiaoBen;
 
-    public void Start()
-    {
-        
-    }
+    //[SyncVar]
+    //[SerializeField] public string daFan;
+
+    //[SyncVar]
+    //[SerializeField] public string daLi;
+
+    //[SyncVar]
+    //[SerializeField] public string xiaoFan;
+
+    //[SyncVar]
+    //[SerializeField] public string xiaoLi;
+
+    private GameObject playerInstance;
 
     //Add spawn point, adds to list 
     public static void AddSpawnPoint(Transform transform)
@@ -76,9 +87,12 @@ public class PlayerSpawnSystem : NetworkBehaviour
         //because the player object that is being spawned in belongs to this player's connection and they will have authority over it
         NetworkServer.Spawn(playerInstance, conn);
         playerInstance.tag = playerTags[nextIndex];
+
         //increment index for next player, each player gets their own spawnpoint
         nextIndex++;
     }
+
+
 
     //[ClientRpc]
     //public void RpcChangePlayerTag(GameObject obj, string clientPlayerTag)

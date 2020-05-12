@@ -5,13 +5,19 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Scene_Menu.unity
     guid: 271627db5f04ec443bbbd878e9cc60b8
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Scene_Map_Shop.unity
     guid: b2e8d259ec5d7f941b5b36ebdd5b92c5
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Test/PlayerMovement.unity
     guid: 9bd22eb05de360b4084c7394207847ea
+  - enabled: 0
+    path: Assets/Scenes/Test/CustomCharacterSpawning.unity
+    guid: ce67135abcc01f244ab6edb915e9e5dc
+  - enabled: 1
+    path: Assets/Scenes/Test/TestSyncVar.unity
+    guid: 12eaade6203f35f438a9e597cf7f3eb6
   m_configObjects: {}

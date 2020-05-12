@@ -9,8 +9,8 @@ public class PlayerTag : NetworkBehaviour
     {
         if (hasAuthority && !isServer)
         {
-            string n = PlayerSpawnSystem.playerTags[PlayerSpawnSystem.nextIndex].ToString();
-            gameObject.tag = n;
+           // string n = PlayerSpawnSystem.playerTags[PlayerSpawnSystem.nextIndex].ToString();
+            //gameObject.tag = n;
 
         }
         else
@@ -18,7 +18,7 @@ public class PlayerTag : NetworkBehaviour
             return;
         }
 
-        CmdChangedMyTag(PlayerSpawnSystem.playerTags[PlayerSpawnSystem.nextIndex].ToString());
+        //CmdChangedMyTag(PlayerSpawnSystem.playerTags[PlayerSpawnSystem.nextIndex].ToString());
     }
 
     [Command]
