@@ -32,8 +32,8 @@ public class MenuButtons : MonoBehaviour
     //Reference to custom network discovery script
     [SerializeField] CustomNetworkDiscovery customNetworkDiscovery;
 
+    #region PlatformDependencies
 
-    //Disable host button for android users (clients)
 
 #if UNITY_ANDROID
 
@@ -60,6 +60,11 @@ public class MenuButtons : MonoBehaviour
     }
 
 #endif
+
+    #endregion
+    //Disable host button for android users (clients)
+
+
 
     // Start is called before the first frame update
     void Start()

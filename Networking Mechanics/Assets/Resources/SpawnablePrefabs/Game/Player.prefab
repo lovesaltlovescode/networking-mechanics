@@ -655,7 +655,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8158211711435101389}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ec847ff586e712743980b12e00a3431c, type: 3}
   m_Name: 
@@ -673,10 +673,10 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8158211711435101389}
   serializedVersion: 2
-  m_Mass: 2
-  m_Drag: 5
-  m_AngularDrag: 10
-  m_UseGravity: 1
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 112
@@ -900,12 +900,12 @@ PrefabInstance:
     - target: {fileID: 824668542311962770, guid: 863cbde316550d64fa54ff80aed8b6ff,
         type: 3}
       propertyPath: m_Name
-      value: Canvas_UI
+      value: Movement_UI
       objectReference: {fileID: 0}
     - target: {fileID: 824668542311962770, guid: 863cbde316550d64fa54ff80aed8b6ff,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 824668542311962774, guid: 863cbde316550d64fa54ff80aed8b6ff,
         type: 3}

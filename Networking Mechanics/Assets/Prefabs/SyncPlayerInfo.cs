@@ -4,6 +4,9 @@ using UnityEngine;
 using Mirror;
 using TMPro;
 
+
+//Synchronize player name information so they appear the same on all clients
+//Using syncvar and static and procedure calls
 public class SyncPlayerInfo : NetworkBehaviour
 {
 

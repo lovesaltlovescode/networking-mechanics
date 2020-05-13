@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+//To toggle camera views according to what platform it is being run on
+//May include other toggling in the future
 public class ToggleCameras : MonoBehaviour
 {
 
@@ -23,10 +25,18 @@ public class ToggleCameras : MonoBehaviour
     public void Awake()
     {
         //Debug.Log("Standalone windows!");
-        //hostRoomButton.gameObject.SetActive(false);
         mobileCam.gameObject.SetActive(true);
         vrCamera.gameObject.SetActive(false);
     }
 
+
+#elif UNITY_ANDROID
+
+    public void Awake()
+    {
+        Debug.Log("On android!");
+        mobileCam.gameObject.SetActive(true);
+        vrCamera.gameObject.SetActive(false);
+    }
 #endif
 }

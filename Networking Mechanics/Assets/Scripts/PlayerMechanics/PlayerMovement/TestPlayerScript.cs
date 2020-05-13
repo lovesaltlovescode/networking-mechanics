@@ -7,18 +7,15 @@ using UnityEngine.UI;
 
 //Allow player to move using joystick controls
 //Toggles m=joystick controls on/off depending on platform
-public class PlayerScript : NetworkBehaviour
+public class TestPlayerScript : NetworkBehaviour
 {
 
     protected Joystick joystick;
     protected JoyButton joybutton;
 
-    //Control direction
-    public float moveSpeed;
-    public float rotateSpeed;
+    public float moveForce = 5;
 
-    private Rigidbody rb;
-    private Vector3 direction;
+    Rigidbody rb;
 
     //temp bool for jump
     protected bool jump;
@@ -81,7 +78,7 @@ public class PlayerScript : NetworkBehaviour
         {
             movementUI.enabled = false;
             return;
-            
+
         }
 
 
@@ -92,7 +89,7 @@ public class PlayerScript : NetworkBehaviour
 
         //rotates the object according to their current x, with the tangent of angle f (converted to deg), and the current z) 
 
-        transform.eulerAngles = new Vector3(transform.eulerAngles.x, Mathf.Atan2(joystick.Horizontal * 50f, joystick.Vertical * 50f) * Mathf.Rad2Deg, transform.eulerAngles.z);
+        //transform.eulerAngles = new Vector3(transform.eulerAngles.x, Mathf.Atan2(joystick.Horizontal * 50f, joystick.Vertical * 50f) * Mathf.Rad2Deg, transform.eulerAngles.z);
         //transform.eulerAngles = new Vector3(0, Mathf.Atan2(joystick.Vertical * 50f, joystick.Horizontal * 50f) * 180 / Mathf.PI, 0);
 
         //// Direction pointing to
