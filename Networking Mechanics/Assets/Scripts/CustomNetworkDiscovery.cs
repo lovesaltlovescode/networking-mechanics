@@ -101,8 +101,7 @@ public class CustomNetworkDiscovery : MonoBehaviour
         }
     }
 
-    //display found servers in a list on button press, for debug purposes
-    //will not be in final game, no need to display, only needed to find
+    //Connect to the server found
     public void ConnectToServer()
     {
         if (discoveredServers.Count != 0)
