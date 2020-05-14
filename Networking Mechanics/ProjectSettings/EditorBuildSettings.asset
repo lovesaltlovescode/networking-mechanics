@@ -14,4 +14,7 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/Test/TestSyncVar.unity
     guid: 12eaade6203f35f438a9e597cf7f3eb6
+  - enabled: 0
+    path: Assets/Scenes/Test/PlayerMovementJoystick.unity
+    guid: b1ebfb7b9c75ce146af25f8e48332c0c
   m_configObjects: {}
