@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 7386508274969688089}
   - component: {fileID: 7386508274969688095}
   - component: {fileID: 7386508274969688094}
+  - component: {fileID: -1847962394882124490}
   m_Layer: 5
   m_Name: PlateIcon
   m_TagString: Untagged
@@ -73,3 +74,19 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &-1847962394882124490
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7386508274969688088}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b176dc481798c74b84d4351decbd9be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  droppedItem: {fileID: 3230587281276913203, guid: 51642982cf470754a872b227ad990e55,
+    type: 3}
+  playerMovement: {fileID: 1110751229118111238, guid: c3cccdae80ae9b54fa4114383dc7557f,
+    type: 3}

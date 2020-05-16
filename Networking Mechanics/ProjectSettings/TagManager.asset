@@ -16,6 +16,7 @@ TagManager:
   - ConnectButton
   - Plate
   - DirtyPlate
+  - DropZone
   layers:
   - Default
   - TransparentFX
