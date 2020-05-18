@@ -1065,6 +1065,11 @@ PrefabInstance:
       propertyPath: joystick
       value: 
       objectReference: {fileID: 290950280}
+    - target: {fileID: 1110751229118111238, guid: c3cccdae80ae9b54fa4114383dc7557f,
+        type: 3}
+      propertyPath: moveForce
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 1110751229118111240, guid: c3cccdae80ae9b54fa4114383dc7557f,
         type: 3}
       propertyPath: slots.Array.data[0]
