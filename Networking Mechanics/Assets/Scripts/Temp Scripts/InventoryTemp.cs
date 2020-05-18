@@ -6,7 +6,7 @@ using UnityEngine;
 public class InventoryTemp : MonoBehaviour
 {
 
-    public bool[] isFull; //check if there is already an item inside the slot(s)
+    public List<bool> isFull = new List<bool>(); //check if there is already an item inside the slot(s)
     public GameObject[] slots; //assign the item we pick up to the inventory slot
 
 

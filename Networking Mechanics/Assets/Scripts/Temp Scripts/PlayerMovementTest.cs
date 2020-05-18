@@ -125,6 +125,8 @@ public class PlayerMovementTest : MonoBehaviour
             
         }
         //if in designated area and nothing to drop
+        //if in dropzone, and there is an ingredient in the floor
+        //then able to pick up
         else if(canDropItem == false && inventoryTemp.isFull[0] == false)
         {
             Debug.Log("There's nothing to drop!");
@@ -164,7 +166,6 @@ public class PlayerMovementTest : MonoBehaviour
 
             case "Plate":
                 Debug.Log("Near a plate");
-
                 for(int i = 0; i < inventoryTemp.slots.Length; i++)
                 {
                     if(inventoryTemp.isFull[i] == false)
