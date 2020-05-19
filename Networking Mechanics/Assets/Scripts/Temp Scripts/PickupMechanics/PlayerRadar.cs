@@ -17,6 +17,9 @@ public class PlayerRadar : MonoBehaviour
 
     [SerializeField] private PickUppable pickUppable;
 
+    //Bool to check if object should be dropped
+    [SerializeField] bool canDropObject = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -27,7 +30,11 @@ public class PlayerRadar : MonoBehaviour
     void Update()
     {
         //TODO: remove from update
-        DetectObject();
+        //DetectObject();
+        if(pickUppable != null)
+        {
+            HandleObjectStates();
+        }
 
     }
 
@@ -64,7 +71,6 @@ public class PlayerRadar : MonoBehaviour
 
             //set the picked up object to be the hit gameobject
             PickUppable.pickedUpObject = hit.collider.gameObject;
-            HandleObjectStates(); //Always check state of object when hit
 
             if (!IsInventoryFull())
             {
@@ -113,8 +119,24 @@ public class PlayerRadar : MonoBehaviour
 
             case PickUppable.ObjectState.Droppable:
                 Debug.Log("PlayerRadar: The object can be dropped");
-                //some function to drop the object
+                //if object can be dropped
+                canDropObject = true;
                 break;
+        }
+    }
+
+    //attached to button
+    //if object can be dropped, then call the function
+    public void HandleDropObject()
+    {
+        if (canDropObject)
+        {
+            pickUppable.DropObject();
+            canDropObject = false;
+        }
+        else
+        {
+            Debug.LogWarning("Nothing to drop");
         }
     }
    

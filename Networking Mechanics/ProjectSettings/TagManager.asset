@@ -21,6 +21,7 @@ TagManager:
   - ObjectIcon
   - HeldIngredient
   - HeldDirtyPlates
+  - FollowPlayer
   layers:
   - Default
   - TransparentFX

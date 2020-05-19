@@ -66,16 +66,20 @@ public class PickUppable : MonoBehaviour
         //Print statement
         Debug.Log("PickUppable: Picked up " + pickedUpObject);
 
-        //Set state as droppable since this object is now in the player's inventory
-        objectState = ObjectState.Droppable;
-
         //Set object on Player's head active
         heldObject.SetActive(true);
 
-        //Set pickedUpObject inactive and parent to player object
-        //pickedUpObject.transform.parent = playerPrefab.transform;
+        //Set pickedUpObject inactive 
+        //pickedUpObject.SetActive(false);
+        //parent to player object
+        pickedUpObject.transform.parent = playerPrefab.transform;
         //position the pickedUpObject behind the player
-        pickedUpObject.transform.position = new Vector3(playerPrefab.transform.position.x - 2, playerPrefab.transform.position.y, playerPrefab.transform.position.z);
+        pickedUpObject.tag = "FollowPlayer";
+
+        //Set state as droppable since this object is now in the player's inventory
+        objectState = ObjectState.Droppable;
+
+        //TODO: Change layer so that it is masked and not detected by other players
 
     }
 
@@ -84,6 +88,29 @@ public class PickUppable : MonoBehaviour
     //deactivate the icon 
     //drop the pickedUpObject on the top of the zone ie. table
     //remove from player's inventory
+    public void DropObject()
+    {
+        //Remove from inventory
+        objectsInInventory.Remove(pickedUpObject);
+
+        //Deactivate icon
+        objectIcon.gameObject.SetActive(false);
+
+        //Print statement
+        Debug.Log("PickUppable: Dropped " + pickedUpObject);
+
+        //Deactivate heldobject
+        heldObject.SetActive(false);
+
+        //Unparent object and change tag back to the original tag
+        pickedUpObject.transform.parent = null; //no more parent
+        pickedUpObject.tag = FollowObject.originalTag;
+
+        //Change state back to pickuppable
+        objectState = ObjectState.PickUppable; 
+
+        //TODO: Change layer so it can be detected by other players
+    }
 
     // Update is called once per frame
     void Update()
