@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 //Handle the inventory slots
-public class InventoryTemp : MonoBehaviour
+public class PlayerInventory : MonoBehaviour
 {
 
     public List<bool> isFull = new List<bool>(); //check if there is already an item inside the slot(s)

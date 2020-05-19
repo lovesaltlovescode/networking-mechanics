@@ -17,6 +17,10 @@ TagManager:
   - Plate
   - DirtyPlate
   - DropZone
+  - Ingredient
+  - ObjectIcon
+  - HeldIngredient
+  - HeldDirtyPlates
   layers:
   - Default
   - TransparentFX
@@ -28,7 +32,7 @@ TagManager:
   - 
   - Player
   - Environment
-  - Ingredient
+  - DropZone
   - 
   - 
   - 
