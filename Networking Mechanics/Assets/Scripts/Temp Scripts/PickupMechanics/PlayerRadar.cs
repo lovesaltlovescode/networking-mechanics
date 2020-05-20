@@ -17,8 +17,17 @@ public class PlayerRadar : MonoBehaviour
 
     [SerializeField] private PickUppable pickUppable;
 
+    //Bool to check if object can be picked up
+    [SerializeField] bool pickUpObject = false;
+
     //Bool to check if object should be dropped
     [SerializeField] bool canDropObject = false;
+
+    //Bool to check if object can be placed in sink
+    [SerializeField] bool canPlaceObjectInSink = false;
+
+    //Bool to check if object can be washed
+    [SerializeField] bool canWashObject = false;
 
     // Start is called before the first frame update
     void Start()
@@ -72,7 +81,7 @@ public class PlayerRadar : MonoBehaviour
             //set the picked up object to be the hit gameobject
             PickUppable.pickedUpObject = hit.collider.gameObject;
 
-            if (!IsInventoryFull())
+            if (!IsInventoryFull() && pickUpObject)
             {
                 pickUppable.PickUpObject(); //function to pick up object
             }
@@ -107,23 +116,9 @@ public class PlayerRadar : MonoBehaviour
         }
     }
 
-    public void HandleObjectStates()
-    {
-        //Switch statement to check object state and allow player to do different things depending on the state
-        switch (pickUppable.objectState)
-        {
-            case PickUppable.ObjectState.PickUppable:
-                Debug.Log("PlayerRadar: The object is currently pickuppable");
-                //some function here
-                break;
+    #region HandleButtonPress
 
-            case PickUppable.ObjectState.Droppable:
-                Debug.Log("PlayerRadar: The object can be dropped");
-                //if object can be dropped
-                canDropObject = true;
-                break;
-        }
-    }
+    //BOOLS TO CHECK IF FUNCTION CAN BE CALLED ON BUTTON PRESS
 
     //attached to button
     //if object can be dropped, then call the function
@@ -136,8 +131,104 @@ public class PlayerRadar : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("Nothing to drop");
+            Debug.LogWarning("PlayerRadar: Nothing to drop");
         }
     }
-   
+
+    public void HandlePlaceObjectInSink()
+    {
+        //Player can place the object in the sink
+        if(canPlaceObjectInSink)
+        {
+            pickUppable.PlaceObjectInSink();
+        }
+        else
+        {
+            Debug.LogWarning("PlayerRadar: Unable to place object in sink");
+        }
+    }
+
+    public void HandleWashObject()
+    {
+        if (canWashObject)
+        {
+            pickUppable.WashObject();
+        }
+        else
+        {
+            Debug.LogWarning("PlayerRadar: UNable to wash object");
+        }
+    }
+
+    #endregion
+
+    public void HandleObjectStates()
+    {
+        //Switch statement to check object state and allow player to do different things depending on the state
+        switch (pickUppable.objectState)
+        {
+            case PickUppable.ObjectState.PickUppable:
+                Debug.Log("PlayerRadar: The object is currently pickuppable");
+                //if object can be picked up
+                pickUpObject = true;
+                break;
+
+            case PickUppable.ObjectState.Droppable:
+                Debug.Log("PlayerRadar: The object can be dropped");
+                //if object can be dropped
+                canDropObject = true;
+                pickUpObject = false;
+                break;
+
+            case PickUppable.ObjectState.PlaceInSink:
+                Debug.Log("PlayerRadar: The object can be placed in the sink");
+                //if object can be palced in sink
+                canDropObject = false;
+                canPlaceObjectInSink = true;
+                break;
+
+            case PickUppable.ObjectState.Washable:
+                Debug.Log("PlayerRadar: The object can be washed");
+                //if object can be washed
+                canWashObject = true;
+                break;
+
+            case PickUppable.ObjectState.Washing:
+                Debug.Log("PlayerRadar: The object is being washed");
+                //if object is being washed
+                break;
+
+            case PickUppable.ObjectState.Washed:
+                Debug.Log("PlayerRadar: The object has been washed");
+                //if object is done washing
+                canPlaceObjectInSink = false;
+                canWashObject = false;
+                break;
+        }
+    }
+
+    //On trigger enter, if the zone is the sink zone
+    //Check if pickedup object tag is dirty plates
+    //Set state as washable
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.tag == "SinkZone")
+        {
+            Debug.Log("PlayerRadar: Near Sink");
+
+            //Careful!!! If the object is active, then this will be detected twice
+            if(PickUppable.pickedUpObject.tag == "DirtyPlate")
+            {
+                Debug.Log("PlayerRader: Washable object detected");
+
+                //Set state to ableto place in sink
+                pickUppable.objectState = PickUppable.ObjectState.PlaceInSink;
+            }
+        }
+    }
+
+
+    //On trigger exit, if zone is sink zone
+    //Reset washcount to 0
+    //Set state as Washed/Droppable
 }

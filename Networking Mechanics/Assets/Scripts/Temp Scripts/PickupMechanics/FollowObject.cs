@@ -8,7 +8,7 @@ using UnityEngine;
 public class FollowObject : MonoBehaviour
 {
     //the original tag of the object
-    public static string originalTag;
+    public string originalTag;
 
     //player to follow
     public Transform playerTarget;
@@ -37,13 +37,21 @@ public class FollowObject : MonoBehaviour
 
     void FollowPlayer()
     {
-        playerDirection = (playerTarget.position - transform.position).normalized; //normalized so it does not speed up as the distance changes
+        //playerDirection = (playerTarget.position - transform.position).normalized; //normalized so it does not speed up as the distance changes
 
-        //if distance between object and player is more than epsilon
-        if((transform.position - playerTarget.position).magnitude > EPSILON)
+        ////if distance between object and player is more than epsilon
+        //if((transform.position - playerTarget.position).magnitude > EPSILON)
+        //{
+        //    //maintain same speed
+        //    transform.Translate(playerDirection * Time.deltaTime * speed);
+        //}
+
+        transform.position = playerTarget.transform.position;
+
+        if((transform.position - playerTarget.position).magnitude < EPSILON)
         {
-            //maintain same speed
-            transform.Translate(playerDirection * Time.deltaTime * speed);
+            //reset tag if the object is on the player
+            gameObject.tag = originalTag;
         }
     }
 }
