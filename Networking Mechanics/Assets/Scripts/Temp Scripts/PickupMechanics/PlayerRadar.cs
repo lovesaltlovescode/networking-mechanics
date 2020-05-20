@@ -84,6 +84,7 @@ public class PlayerRadar : MonoBehaviour
             if (!IsInventoryFull() && pickUpObject)
             {
                 pickUppable.PickUpObject(); //function to pick up object
+                canDropObject = true; //object can be dropped
             }
             else
             {
@@ -124,7 +125,8 @@ public class PlayerRadar : MonoBehaviour
     //if object can be dropped, then call the function
     public void HandleDropObject()
     {
-        if (canDropObject)
+        //check if near sink
+        if (canDropObject && !pickUpObject)
         {
             pickUppable.DropObject();
             canDropObject = false;
@@ -176,7 +178,6 @@ public class PlayerRadar : MonoBehaviour
             case PickUppable.ObjectState.Droppable:
                 Debug.Log("PlayerRadar: The object can be dropped");
                 //if object can be dropped
-                canDropObject = true;
                 pickUpObject = false;
                 break;
 
@@ -216,6 +217,9 @@ public class PlayerRadar : MonoBehaviour
         {
             Debug.Log("PlayerRadar: Near Sink");
 
+            //Do not allow dropping of object when near sink
+            canDropObject = false;
+
             //Careful!!! If the object is active, then this will be detected twice
             if(PickUppable.pickedUpObject.tag == "DirtyPlate")
             {
@@ -231,4 +235,20 @@ public class PlayerRadar : MonoBehaviour
     //On trigger exit, if zone is sink zone
     //Reset washcount to 0
     //Set state as Washed/Droppable
+    private void OnTriggerExit(Collider other)
+    {
+        if(other.tag == "SinkZone")
+        {
+            Debug.Log("Player has exited sink");
+            canDropObject = true;
+
+            if(PickUppable.pickedUpObject.tag == "DirtyPlate")
+            {
+                Debug.Log("PlayerRadar: Washable object not in sink zone");
+
+                //Set state to droppable 
+                pickUppable.objectState = PickUppable.ObjectState.Droppable;
+            }
+        }
+    }
 }
