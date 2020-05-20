@@ -67,7 +67,8 @@ public class PickUppable : MonoBehaviour
         Washable, //for when plate has been placed in the sink and can be washed
         Washing, //Set when player  has tapped the button to wash
         Washed, //Set when plates are done washing after time elapsed
-        StoppedWashing //Set when player leaves the sink area and washing is interrupted
+        StoppedWashing, //Set when player leaves the sink area and washing is interrupted
+        UnInteractable //Object cannot be interacted with
     }
 
     public ObjectState objectState;
@@ -176,6 +177,10 @@ public class PickUppable : MonoBehaviour
 
         //set layer mask to ingredientontable
         pickedUpObject.layer = LayerMask.NameToLayer("IngredientOnTable");
+
+        //set state as uninteractable
+        objectState = ObjectState.UnInteractable;
+        
     }
 
     #endregion

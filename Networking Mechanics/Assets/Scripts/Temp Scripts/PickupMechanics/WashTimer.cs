@@ -10,7 +10,7 @@ public class WashTimer : MonoBehaviour
 
     private Image washTimer; //image to be filled
     public Image washIcon; //image that will be greyed
-    [SerializeField] private float waitTime = 5f; //time to wait until image is filled
+    private float waitTime = 4f; //time to wait until image is filled
 
     private void Start()
     {

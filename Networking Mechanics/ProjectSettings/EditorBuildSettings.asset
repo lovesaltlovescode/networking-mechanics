@@ -11,7 +11,10 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/Scene_Map_Shop.unity
     guid: b2e8d259ec5d7f941b5b36ebdd5b92c5
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Test/PlayerMovementJoystick.unity
     guid: b1ebfb7b9c75ce146af25f8e48332c0c
+  - enabled: 1
+    path: Assets/Scenes/Test/PlayerPickUpMechanic.unity
+    guid: 0d1aaa86534bb464db586c247d428454
   m_configObjects: {}

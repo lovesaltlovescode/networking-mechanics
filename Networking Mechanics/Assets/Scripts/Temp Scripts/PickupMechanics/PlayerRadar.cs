@@ -74,6 +74,8 @@ public class PlayerRadar : MonoBehaviour
             {
                 //reference the pickuppable script that belongs to the object hit
                 pickUppable = hit.collider.gameObject.GetComponent<PickUppable>();
+                //set the picked up object to be the hit gameobject
+                PickUppable.pickedUpObject = hit.collider.gameObject;
             }
             else
             {
@@ -81,8 +83,7 @@ public class PlayerRadar : MonoBehaviour
                 Debug.LogWarning("PlayerRadar: PickUppable already has a reference!");
             }
 
-            //set the picked up object to be the hit gameobject
-            PickUppable.pickedUpObject = hit.collider.gameObject;
+            
         }
         else //did not hit any object
         {
@@ -251,6 +252,13 @@ public class PlayerRadar : MonoBehaviour
                 canWashObject = false;
                 canPickUpObject = true;
                 break;
+
+            case PickUppable.ObjectState.UnInteractable:
+                Debug.Log("PlayerRader: Object cannot be interacted with");
+                canPlaceObjectOnIngredientTable = false;
+                canPickUpObject = false;
+                canDropObject = false;
+                break;
         }
     }
 
@@ -273,13 +281,15 @@ public class PlayerRadar : MonoBehaviour
 
             //Do not allow dropping of object when near sink
             canDropObject = false;
+            Debug.Log("Picked up object current tagL " + PickUppable.pickedUpObject.tag);
 
             //Careful!!! If the object is active, then this will be detected twice
-            if(PickUppable.pickedUpObject != null)
+            if (PickUppable.pickedUpObject != null)
             {
                 if (PickUppable.pickedUpObject.tag == "DirtyPlate" && !pickUppable.wasWashing)
                 {
                     Debug.Log("PlayerRader: Washable object detected");
+                    
 
                     //Set state to ableto place in sink
                     pickUppable.objectState = PickUppable.ObjectState.PlaceInSink;
@@ -316,11 +326,15 @@ public class PlayerRadar : MonoBehaviour
         if(other.tag == "SinkZone")
         {
             //if it was washing before this, go straight to washable state
-            if (pickUppable.objectState == PickUppable.ObjectState.StoppedWashing)
+            if (pickUppable != null)
             {
-                pickUppable.objectState = PickUppable.ObjectState.Washable;
-                Debug.Log("Player Radar: Press button to resume washing");
+                if (pickUppable.objectState == PickUppable.ObjectState.StoppedWashing)
+                {
+                    pickUppable.objectState = PickUppable.ObjectState.Washable;
+                    Debug.Log("Player Radar: Press button to resume washing");
+                }
             }
+            
         }
         
     }
@@ -360,7 +374,7 @@ public class PlayerRadar : MonoBehaviour
             
         }
 
-        else if(other.tag == "IngredientTableZone")
+        if(other.tag == "IngredientTableZone")
         {
 
             canPlaceObjectOnIngredientTable = false;
