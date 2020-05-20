@@ -35,7 +35,7 @@ public class PlayerRadar : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
@@ -43,7 +43,7 @@ public class PlayerRadar : MonoBehaviour
     {
         //TODO: remove from update
         DetectObject();
-        if(pickUppable != null)
+        if (pickUppable != null)
         {
             HandleObjectStates();
         }
@@ -70,10 +70,12 @@ public class PlayerRadar : MonoBehaviour
             Debug.Log("PlayerRadar: Hit " + hit.collider.tag);
 
             //if there is nothing currently in the inventory
-            if(PickUppable.objectsInInventory.Count == 0)
+            if (PickUppable.objectsInInventory.Count == 0)
             {
                 //reference the pickuppable script that belongs to the object hit
                 pickUppable = hit.collider.gameObject.GetComponent<PickUppable>();
+                //set the picked up object to be the hit gameobject
+                PickUppable.pickedUpObject = hit.collider.gameObject;
             }
             else
             {
@@ -81,8 +83,7 @@ public class PlayerRadar : MonoBehaviour
                 Debug.LogWarning("PlayerRadar: PickUppable already has a reference!");
             }
 
-            //set the picked up object to be the hit gameobject
-            PickUppable.pickedUpObject = hit.collider.gameObject;
+
         }
         else //did not hit any object
         {
@@ -90,7 +91,7 @@ public class PlayerRadar : MonoBehaviour
             Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * objectRadar, Color.white);
             Debug.Log("PlayerRadar: Did not hit anything");
             //PickUppable.pickedUpObject = null;
-            
+
         }
 
     }
@@ -99,7 +100,7 @@ public class PlayerRadar : MonoBehaviour
     public bool IsInventoryFull()
     {
         //returns true if inventory is full
-        if(PickUppable.objectsInInventory.Count >= 1) //if 1 object or more, then it is full 
+        if (PickUppable.objectsInInventory.Count >= 1) //if 1 object or more, then it is full 
         {
             return true;
         }
@@ -119,7 +120,7 @@ public class PlayerRadar : MonoBehaviour
         if (!IsInventoryFull() && canPickUpObject)
         {
             //if there is a pickedup object and it belongs to layer 12 (plate on sink) do not pick it up
-            if(PickUppable.pickedUpObject != null && PickUppable.pickedUpObject.layer == 12)
+            if (PickUppable.pickedUpObject != null && PickUppable.pickedUpObject.layer == 12)
             {
                 //if object is on the sink, do not pick up
                 return;
@@ -153,7 +154,7 @@ public class PlayerRadar : MonoBehaviour
     public void HandlePlaceObjectInSink()
     {
         //Player can place the object in the sink
-        if(canPlaceObjectInSink && PickUppable.pickedUpObject.tag == "DirtyPlate")
+        if (canPlaceObjectInSink && PickUppable.pickedUpObject.tag == "DirtyPlate")
         {
             pickUppable.PlaceObjectInSink();
         }
@@ -179,7 +180,7 @@ public class PlayerRadar : MonoBehaviour
 
     public void HandlePlaceIngredient()
     {
-        if(canPlaceObjectOnIngredientTable == true)
+        if (canPlaceObjectOnIngredientTable == true)
         {
             pickUppable.PlaceIngredientOnTable();
         }
@@ -251,6 +252,13 @@ public class PlayerRadar : MonoBehaviour
                 canWashObject = false;
                 canPickUpObject = true;
                 break;
+
+            case PickUppable.ObjectState.UnInteractable:
+                Debug.Log("PlayerRader: Object cannot be interacted with");
+                canPlaceObjectOnIngredientTable = false;
+                canPickUpObject = false;
+                canDropObject = false;
+                break;
         }
     }
 
@@ -259,7 +267,7 @@ public class PlayerRadar : MonoBehaviour
     //Set state as washable
     private void OnTriggerEnter(Collider other)
     {
-        if(other.tag == "SinkZone")
+        if (other.tag == "SinkZone")
         {
 
             //if it was washing before this, go straight to washable state
@@ -273,22 +281,24 @@ public class PlayerRadar : MonoBehaviour
 
             //Do not allow dropping of object when near sink
             canDropObject = false;
+            Debug.Log("Picked up object current tagL " + PickUppable.pickedUpObject.tag);
 
             //Careful!!! If the object is active, then this will be detected twice
-            if(PickUppable.pickedUpObject != null)
+            if (PickUppable.pickedUpObject != null)
             {
                 if (PickUppable.pickedUpObject.tag == "DirtyPlate" && !pickUppable.wasWashing)
                 {
                     Debug.Log("PlayerRader: Washable object detected");
 
+
                     //Set state to ableto place in sink
                     pickUppable.objectState = PickUppable.ObjectState.PlaceInSink;
                 }
             }
-            
+
         }
 
-        else if(other.tag == "IngredientTableZone")
+        else if (other.tag == "IngredientTableZone")
         {
             //Player is near ingredient table
             Debug.Log("Player Radar: Player is near ingredient table");
@@ -313,23 +323,27 @@ public class PlayerRadar : MonoBehaviour
     //if washable, show icon
     private void OnTriggerStay(Collider other)
     {
-        if(other.tag == "SinkZone")
+        if (other.tag == "SinkZone")
         {
             //if it was washing before this, go straight to washable state
-            if (pickUppable.objectState == PickUppable.ObjectState.StoppedWashing)
+            if (pickUppable != null)
             {
-                pickUppable.objectState = PickUppable.ObjectState.Washable;
-                Debug.Log("Player Radar: Press button to resume washing");
+                if (pickUppable.objectState == PickUppable.ObjectState.StoppedWashing)
+                {
+                    pickUppable.objectState = PickUppable.ObjectState.Washable;
+                    Debug.Log("Player Radar: Press button to resume washing");
+                }
             }
+
         }
-        
+
     }
 
     //On trigger exit, if zone is sink zone
     private void OnTriggerExit(Collider other)
     {
         //if exit sink zone
-        if(other.tag == "SinkZone")
+        if (other.tag == "SinkZone")
         {
 
             if (pickUppable.wasWashing)
@@ -337,7 +351,7 @@ public class PlayerRadar : MonoBehaviour
                 //if was washing, then set state
                 pickUppable.objectState = PickUppable.ObjectState.StoppedWashing;
             }
-            
+
 
             if (IsInventoryFull())
             {
@@ -347,7 +361,7 @@ public class PlayerRadar : MonoBehaviour
                 pickUppable.objectState = PickUppable.ObjectState.Droppable;
             }
             Debug.Log("Player has exited sink");
-            
+
 
             if (PickUppable.pickedUpObject != null)
             {
@@ -357,10 +371,10 @@ public class PlayerRadar : MonoBehaviour
 
                 }
             }
-            
+
         }
 
-        else if(other.tag == "IngredientTableZone")
+        if (other.tag == "IngredientTableZone")
         {
 
             canPlaceObjectOnIngredientTable = false;

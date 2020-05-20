@@ -26,6 +26,7 @@ TagManager:
   - SinkZone
   - CleanPlate
   - IngredientTableZone
+  - StoreroomZone
   layers:
   - Default
   - TransparentFX

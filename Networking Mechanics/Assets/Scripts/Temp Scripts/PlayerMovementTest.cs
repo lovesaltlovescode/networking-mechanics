@@ -57,7 +57,7 @@ public class PlayerMovementTest : MonoBehaviour
 
     void MovePlayer()
     {
-        playerPos = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y - 2, gameObject.transform.position.z);
+        //playerPos = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y - 2, gameObject.transform.position.z);
 
         //MOVE CHARACTER
 
@@ -71,7 +71,7 @@ public class PlayerMovementTest : MonoBehaviour
         }
     }
 
-    
+
     //Player interact function
     //If holding nothing and near object, pick it up and destroy the object
     //If holding something and in drop zone, drop it and instantiate an object
@@ -104,7 +104,7 @@ public class PlayerMovementTest : MonoBehaviour
     //    {
     //        Debug.Log("You're holding something!");
     //    }
-        
+
     //    //If in designated area, and holding something
     //    if(canDropItem == true)
     //    {
@@ -127,7 +127,7 @@ public class PlayerMovementTest : MonoBehaviour
 
     //            }
     //        }
-            
+
     //    }
     //    //if in designated area and nothing to drop
     //    //if in dropzone, and there is an ingredient in the floor
@@ -211,7 +211,7 @@ public class PlayerMovementTest : MonoBehaviour
     //            hasPickedUpItem = false;
     //        }
     //    }
-        
+
     //}
 
     //private void OnTriggerExit(Collider other)

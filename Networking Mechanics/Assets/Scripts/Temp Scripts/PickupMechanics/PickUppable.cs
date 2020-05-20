@@ -51,7 +51,7 @@ public class PickUppable : MonoBehaviour
     //reference to ingredient table position
     public Transform tablePos;
 
-    
+
 
     //Reference follow script
     //public FollowObject followObject;
@@ -67,7 +67,8 @@ public class PickUppable : MonoBehaviour
         Washable, //for when plate has been placed in the sink and can be washed
         Washing, //Set when player  has tapped the button to wash
         Washed, //Set when plates are done washing after time elapsed
-        StoppedWashing //Set when player leaves the sink area and washing is interrupted
+        StoppedWashing, //Set when player leaves the sink area and washing is interrupted
+        UnInteractable //Object cannot be interacted with
     }
 
     public ObjectState objectState;
@@ -106,7 +107,7 @@ public class PickUppable : MonoBehaviour
         pickedUpObject.transform.parent = playerPrefab.transform;
 
         //set picked up object to the same position as parent at 0 y
-        pickedUpObject.transform.position = pickedUpObject.transform.position = 
+        pickedUpObject.transform.position = pickedUpObject.transform.position =
             new Vector3(playerPrefab.transform.position.x, 0, playerPrefab.transform.position.z);
 
         //Set state as droppable since this object is now in the player's inventory
@@ -176,6 +177,10 @@ public class PickUppable : MonoBehaviour
 
         //set layer mask to ingredientontable
         pickedUpObject.layer = LayerMask.NameToLayer("IngredientOnTable");
+
+        //set state as uninteractable
+        objectState = ObjectState.UnInteractable;
+
     }
 
     #endregion
@@ -186,31 +191,31 @@ public class PickUppable : MonoBehaviour
     public void PlaceObjectInSink()
     {
 
-            //Remove item from inventory
-            objectsInInventory.Remove(pickedUpObject);
+        //Remove item from inventory
+        objectsInInventory.Remove(pickedUpObject);
 
-            //Set object icon inactive
-            objectIcon.gameObject.SetActive(false);
+        //Set object icon inactive
+        objectIcon.gameObject.SetActive(false);
 
-            //Set held object inactive
-            heldObject.SetActive(false);
+        //Set held object inactive
+        heldObject.SetActive(false);
 
-            //Print statement
-            Debug.Log("PickUppable: Ready to wash " + pickedUpObject);
+        //Print statement
+        Debug.Log("PickUppable: Ready to wash " + pickedUpObject);
 
-            //Move pickedup object to the sink's position
-            //if the position is null, that means this object shouldnt be washing, throw an error
-            //Unparent from player
-            pickedUpObject.transform.parent = null;
-            pickedUpObject.transform.position = sinkPos.position;
-            pickedUpObject.SetActive(true);
+        //Move pickedup object to the sink's position
+        //if the position is null, that means this object shouldnt be washing, throw an error
+        //Unparent from player
+        pickedUpObject.transform.parent = null;
+        pickedUpObject.transform.position = sinkPos.position;
+        pickedUpObject.SetActive(true);
 
-            //set wash icon active
-            washIcon.gameObject.SetActive(true);
+        //set wash icon active
+        washIcon.gameObject.SetActive(true);
 
-            //Set state as washable
-            objectState = ObjectState.Washable;
-            pickedUpObject.layer = LayerMask.NameToLayer("PlateOnSink");
+        //Set state as washable
+        objectState = ObjectState.Washable;
+        pickedUpObject.layer = LayerMask.NameToLayer("PlateOnSink");
 
 
     }
@@ -226,8 +231,8 @@ public class PickUppable : MonoBehaviour
 
         //change wash icon to gray
         washIcon.color = Color.gray;
-        
-        
+
+
 
     }
 
@@ -273,12 +278,12 @@ public class PickUppable : MonoBehaviour
     void Update()
     {
 
-        if(gameObject.tag == "DirtyPlate")
+        if (gameObject.tag == "DirtyPlate")
         {
 
             CheckForStopWashing();
 
-            if(pickedUpObject != null)
+            if (pickedUpObject != null)
             {
                 //if picked up object is at the sink
                 if (pickedUpObject.transform.position == sinkPos.transform.position)
@@ -297,13 +302,13 @@ public class PickUppable : MonoBehaviour
             }
 
             //if it is washable set icon active
-            if(objectState == ObjectState.Washable)
+            if (objectState == ObjectState.Washable)
             {
                 washIcon.gameObject.SetActive(true);
             }
         }
-        
-       
+
+
 
 
     }
