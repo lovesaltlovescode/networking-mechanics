@@ -31,7 +31,7 @@ Transform:
   m_GameObject: {fileID: 1110751229118111247}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.7, y: 4.1, z: -16.881134}
-  m_LocalScale: {x: 4, y: 4, z: 4}
+  m_LocalScale: {x: 2.8374, y: 2.8374, z: 2.8374}
   m_Children:
   - {fileID: 1110751229915763038}
   - {fileID: 1962401365479234557}
@@ -130,6 +130,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveForce: 25
   joystick: {fileID: 0}
+  interactButton: {fileID: 0}
 --- !u!114 &1110751229118111240
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -48,6 +48,9 @@ public class PickUppable : MonoBehaviour
     //reference to sink position
     public Transform sinkPos;
 
+    //reference to ingredient table position
+    public Transform tablePos;
+
     
 
     //Reference follow script
@@ -58,6 +61,7 @@ public class PickUppable : MonoBehaviour
     {
         PickUppable,
         Droppable,
+        PlaceOnIngredientTable, //for the ingredients to be placed on the table
         Servable, //for final dishes
         PlaceInSink, //for when plate can be placed in the sink (trigger enter)
         Washable, //for when plate has been placed in the sink and can be washed
@@ -101,9 +105,9 @@ public class PickUppable : MonoBehaviour
         //parent to player object
         pickedUpObject.transform.parent = playerPrefab.transform;
 
-        //set picked up object to the same position as parent
+        //set picked up object to the same position as parent at 0 y
         pickedUpObject.transform.position = pickedUpObject.transform.position = 
-            new Vector3(playerPrefab.transform.position.x, pickedUpObject.transform.position.y, playerPrefab.transform.position.z);
+            new Vector3(playerPrefab.transform.position.x, 0, playerPrefab.transform.position.z);
 
         //Set state as droppable since this object is now in the player's inventory
         objectState = ObjectState.Droppable;
@@ -150,6 +154,32 @@ public class PickUppable : MonoBehaviour
 
     #endregion
 
+    #region Place Ingredient On Table
+
+    //function to place ingredient on table
+    public void PlaceIngredientOnTable()
+    {
+        //Remove item from inventory
+        objectsInInventory.Remove(pickedUpObject);
+
+        //set object icon inactive
+        objectIcon.gameObject.SetActive(false);
+
+        //set held item inactive
+        heldObject.SetActive(false);
+
+        //set pickedup object active and move to tablepos
+        //unparent from table
+        pickedUpObject.transform.position = tablePos.position;
+        pickedUpObject.transform.parent = null;
+        pickedUpObject.SetActive(true);
+
+        //set layer mask to ingredientontable
+        pickedUpObject.layer = LayerMask.NameToLayer("IngredientOnTable");
+    }
+
+    #endregion
+
     #region Wash Object
 
     //Function to place object in sink
@@ -172,7 +202,7 @@ public class PickUppable : MonoBehaviour
             //if the position is null, that means this object shouldnt be washing, throw an error
             //Unparent from player
             pickedUpObject.transform.parent = null;
-            pickedUpObject.transform.position = sinkPos.transform.position;
+            pickedUpObject.transform.position = sinkPos.position;
             pickedUpObject.SetActive(true);
 
             //set wash icon active

@@ -25,6 +25,7 @@ TagManager:
   - Sink
   - SinkZone
   - CleanPlate
+  - IngredientTableZone
   layers:
   - Default
   - TransparentFX
@@ -39,7 +40,7 @@ TagManager:
   - Zones
   - PickedUp
   - PlateOnSink
-  - 
+  - IngredientOnTable
   - 
   - 
   - 

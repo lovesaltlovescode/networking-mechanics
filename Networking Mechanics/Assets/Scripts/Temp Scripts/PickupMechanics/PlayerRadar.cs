@@ -23,6 +23,9 @@ public class PlayerRadar : MonoBehaviour
     //Bool to check if object should be dropped
     [SerializeField] bool canDropObject = false;
 
+    //Bool to check if object can be placed on ingredient table
+    [SerializeField] bool canPlaceObjectOnIngredientTable = false;
+
     //Bool to check if object can be placed in sink
     [SerializeField] bool canPlaceObjectInSink = false;
 
@@ -174,6 +177,18 @@ public class PlayerRadar : MonoBehaviour
         }
     }
 
+    public void HandlePlaceIngredient()
+    {
+        if(canPlaceObjectOnIngredientTable == true)
+        {
+            pickUppable.PlaceIngredientOnTable();
+        }
+        else
+        {
+            Debug.LogWarning("PlayerRadar: Unable to place ingredient");
+        }
+    }
+
     #endregion
 
     public void HandleObjectStates()
@@ -192,6 +207,12 @@ public class PlayerRadar : MonoBehaviour
                 //if object can be dropped
                 canPickUpObject = false;
                 canPlaceObjectInSink = false;
+                break;
+
+            case PickUppable.ObjectState.PlaceOnIngredientTable:
+                Debug.Log("PlayerRadar: Object can be placed on ingredient table");
+                canPlaceObjectOnIngredientTable = true;
+                canDropObject = false;
                 break;
 
             case PickUppable.ObjectState.PlaceInSink:
@@ -266,6 +287,26 @@ public class PlayerRadar : MonoBehaviour
             }
             
         }
+
+        else if(other.tag == "IngredientTableZone")
+        {
+            //Player is near ingredient table
+            Debug.Log("Player Radar: Player is near ingredient table");
+            //do not allow dropping of object
+            canDropObject = false;
+
+            //Careful!!! If the object is active, then this will be detected twice
+            if (PickUppable.pickedUpObject != null)
+            {
+                if (PickUppable.pickedUpObject.tag == "Ingredient")
+                {
+                    Debug.Log("PlayerRader: Placeable ingredient detected");
+
+                    //Set state to able to place on table
+                    pickUppable.objectState = PickUppable.ObjectState.PlaceOnIngredientTable;
+                }
+            }
+        }
     }
 
     //on trigger stay, if zone is sink zone
@@ -317,6 +358,30 @@ public class PlayerRadar : MonoBehaviour
                 }
             }
             
+        }
+
+        else if(other.tag == "IngredientTableZone")
+        {
+
+            canPlaceObjectOnIngredientTable = false;
+
+            if (IsInventoryFull())
+            {
+                //if inventory full, allow to drop object
+                canDropObject = true;
+                //Set state to droppable 
+                pickUppable.objectState = PickUppable.ObjectState.Droppable;
+            }
+            Debug.Log("Player has exited ingredient table");
+
+            if (PickUppable.pickedUpObject != null)
+            {
+                if (PickUppable.pickedUpObject.tag == "Ingredient")
+                {
+                    Debug.Log("PlayerRadar: Ingredient not in ingredient table zone");
+
+                }
+            }
         }
     }
 }
