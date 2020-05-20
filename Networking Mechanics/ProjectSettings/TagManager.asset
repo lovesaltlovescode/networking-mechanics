@@ -37,8 +37,8 @@ TagManager:
   - Player
   - Environment
   - Zones
-  - 
-  - 
+  - PickedUp
+  - PlateOnSink
   - 
   - 
   - 
