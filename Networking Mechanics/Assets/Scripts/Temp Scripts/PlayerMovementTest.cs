@@ -57,7 +57,7 @@ public class PlayerMovementTest : MonoBehaviour
 
     void MovePlayer()
     {
-        //playerPos = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y - 2, gameObject.transform.position.z);
+        playerPos = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y - 2, gameObject.transform.position.z);
 
         //MOVE CHARACTER
 
