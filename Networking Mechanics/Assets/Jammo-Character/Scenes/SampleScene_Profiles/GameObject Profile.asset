@@ -104,13 +104,13 @@ MonoBehaviour:
     value: 100
   lift:
     overrideState: 1
-    value: {x: 0.940094, y: 0.95067817, z: 1, w: 0.12326658}
+    value: {x: 0.9162149, y: 0.9094008, z: 1, w: 0.12326658}
   gamma:
     overrideState: 1
     value: {x: 0.8684311, y: 0.95565057, z: 1, w: -0.030816643}
   gain:
     overrideState: 1
-    value: {x: 0.9532222, y: 1, z: 0.9444836, w: -0.061633278}
+    value: {x: 1, y: 0.63604087, z: 0.22984415, w: -0.061633278}
   masterCurve:
     overrideState: 1
     value:
@@ -1332,7 +1332,7 @@ MonoBehaviour:
     value: 3.23
   aperture:
     overrideState: 1
-    value: 1.8
+    value: 2.3
   focalLength:
     overrideState: 1
     value: 35
