@@ -43,7 +43,6 @@ public class PlayerMovementTutorial : MonoBehaviour
         if (joystick.Horizontal != 0f || joystick.Vertical != 0f)
         {
             BlendRun(0.6f); //Run state
-            NormalRun(true); //Normal run state
 
             //Makes gameobject look towards direction specified, 
             //in this case, the movement direction of the player
@@ -53,7 +52,6 @@ public class PlayerMovementTutorial : MonoBehaviour
         else
         {
             BlendRun(0f); //Idle state   
-            NormalRun(false); //Normal run state
         }
     }
 
@@ -63,13 +61,6 @@ public class PlayerMovementTutorial : MonoBehaviour
         anim.SetFloat("Blend", blend);
     }
 
-    
-
-    //function make player run (default animation state)
-    public void NormalRun(bool run)
-    {
-        anim.SetBool("run", run);
-    }
 
 
 }
