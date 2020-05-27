@@ -92,7 +92,7 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.6
+  m_Radius: 0.8
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &2741911562969698342
 MonoBehaviour:
@@ -107,6 +107,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objectIcon: {fileID: 0}
+  washIcon: {fileID: 0}
+  washingIcon: {fileID: 0}
+  wasWashing: 0
+  cleanPlate: {fileID: 0}
   heldObject: {fileID: 0}
   playerPrefab: {fileID: 0}
+  sinkPos: {fileID: 0}
+  tablePos: {fileID: 0}
   objectState: 0
