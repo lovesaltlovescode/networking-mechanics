@@ -316,7 +316,11 @@ public class PickUppable : MonoBehaviour
             }
         }
 
-        pickedUpObject.transform.rotation = Quaternion.identity;
+        if(pickedUpObject != null)
+        {
+
+            pickedUpObject.transform.rotation = Quaternion.identity;
+        }
 
 
     }

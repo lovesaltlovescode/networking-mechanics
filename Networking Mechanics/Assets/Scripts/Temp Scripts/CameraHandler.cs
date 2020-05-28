@@ -6,9 +6,7 @@ using UnityEngine;
 //if in storeroom trigger, turn on storeroom camera
 public class CameraHandler : MonoBehaviour
 {
-    public Camera shopCam;
-
-    public Camera storeroomCam;
+    public GameObject[] hiddenObjects;
 
     // Start is called before the first frame update
     void Start()
@@ -27,8 +25,10 @@ public class CameraHandler : MonoBehaviour
         if (other.tag == "StoreroomZone")
         {
             Debug.Log("CameraHandler: Player in storeroom");
-            storeroomCam.enabled = true;
-            shopCam.enabled = false;
+            for(int i = 0; i < hiddenObjects.Length; i++)
+            {
+                hiddenObjects[i].SetActive(false);
+            }
         }
 
     }
@@ -38,8 +38,10 @@ public class CameraHandler : MonoBehaviour
         if (other.tag == "StoreroomZone")
         {
             Debug.Log("CameraHandler: Player in shop");
-            storeroomCam.enabled = false;
-            shopCam.enabled = true;
+            for (int i = 0; i < hiddenObjects.Length; i++)
+            {
+                hiddenObjects[i].SetActive(true);
+            }
         }
     }
 }

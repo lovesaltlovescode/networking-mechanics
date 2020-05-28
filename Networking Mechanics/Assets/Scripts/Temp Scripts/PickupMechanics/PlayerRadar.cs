@@ -8,7 +8,7 @@ using UnityEngine;
 public class PlayerRadar : MonoBehaviour
 {
 
-    public float objectRadar; 
+    [SerializeField] float objectRadar = 3f; 
     //How far the ray must be casted
     //How close must the object be to be detected by the player
 
