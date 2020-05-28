@@ -50,7 +50,7 @@ public class PlayerRadar : MonoBehaviour
             Debug.Log("PlayerRader: Distance from " + PickUppable.pickedUpObject + " is " + dist);
 
 
-            if (dist >= 2.5)
+            if (dist >= 3)
             {
                 pickUppable = null;
             }

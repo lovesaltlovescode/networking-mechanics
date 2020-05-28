@@ -108,6 +108,7 @@ public class PickUppable : MonoBehaviour
 
         //set picked up object to the same position as parent at 0 y
         pickedUpObject.transform.position = new Vector3(playerPrefab.transform.position.x, 0.26f, playerPrefab.transform.position.z);
+        
 
         //Set state as droppable since this object is now in the player's inventory
         objectState = ObjectState.Droppable;
@@ -277,6 +278,14 @@ public class PickUppable : MonoBehaviour
     void Update()
     {
 
+        if(objectState == ObjectState.Washable)
+        {
+
+            //change collider size
+            GetComponent<BoxCollider>().size = new Vector3(2.140998f, 1.3f, 1f);
+
+        }
+
         if (gameObject.tag == "DirtyPlate")
         {
 
@@ -307,7 +316,7 @@ public class PickUppable : MonoBehaviour
             }
         }
 
-
+        pickedUpObject.transform.rotation = Quaternion.identity;
 
 
     }

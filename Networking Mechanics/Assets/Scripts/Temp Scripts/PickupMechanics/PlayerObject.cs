@@ -109,7 +109,7 @@ public class PlayerObject : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("PlayerRadar: Unable to place object in sink");
+            //Debug.LogWarning("PlayerRadar: Unable to place object in sink");
         }
     }
 
@@ -294,6 +294,8 @@ public class PlayerObject : MonoBehaviour
         //if exit sink zone
         if (other.tag == "SinkZone")
         {
+
+            playerPickUppable.washIcon.gameObject.SetActive(false);
 
             if (playerPickUppable.wasWashing)
             {
