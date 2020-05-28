@@ -107,8 +107,7 @@ public class PickUppable : MonoBehaviour
         pickedUpObject.transform.parent = playerPrefab.transform;
 
         //set picked up object to the same position as parent at 0 y
-        pickedUpObject.transform.position = pickedUpObject.transform.position =
-            new Vector3(playerPrefab.transform.position.x, 0, playerPrefab.transform.position.z);
+        pickedUpObject.transform.position = new Vector3(playerPrefab.transform.position.x, 0.26f, playerPrefab.transform.position.z);
 
         //Set state as droppable since this object is now in the player's inventory
         objectState = ObjectState.Droppable;

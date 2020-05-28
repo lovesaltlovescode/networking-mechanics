@@ -21,9 +21,12 @@ public class PlayerRadar : MonoBehaviour
 
     //when a object is detected, we will reference its  pickuppable script
     //change this back to non-static if needed
-    public static PickUppable pickUppable;
+    public PickUppable pickUppable;
 
-    
+    //bool to check if player is holding an object, if they are then, do not assign new object
+    public bool holdingPickedUpObject = false;
+
+    public float dist;
 
     // Start is called before the first frame update
     void Start()
@@ -38,6 +41,22 @@ public class PlayerRadar : MonoBehaviour
         DetectObject();
 
         Debug.Log("Current inventory: " + PickUppable.objectsInInventory.Count);
+
+
+        if(PickUppable.pickedUpObject != null)
+        {
+            //check distance between hit object and player
+            dist = Vector3.Distance(PickUppable.pickedUpObject.transform.position, transform.position);
+            Debug.Log("PlayerRader: Distance from " + PickUppable.pickedUpObject + " is " + dist);
+
+
+            if (dist >= 2.5)
+            {
+                pickUppable = null;
+            }
+        }
+
+        
     }
 
     //Detects if an object has been hit on button press using raycast
@@ -60,10 +79,6 @@ public class PlayerRadar : MonoBehaviour
             //Return the hit object tag
             Debug.Log("PlayerRadar: Hit " + hit.collider.tag);
 
-            ////check distance between hit object and player
-            //float dist = Vector3.Distance(hit.transform.position, transform.position);
-            //Debug.Log("PlayerRader: Distance from " + hit.collider.gameObject + " is " + dist);
-
 
             //if there is nothing currently in the inventory
             if (PickUppable.objectsInInventory.Count == 0)
@@ -72,6 +87,8 @@ public class PlayerRadar : MonoBehaviour
                 pickUppable = hit.collider.gameObject.GetComponent<PickUppable>();
                 //set the picked up object to be the hit gameobject
                 PickUppable.pickedUpObject = hit.collider.gameObject;
+                //there is now a picked up object that the player is holding
+                holdingPickedUpObject = true;
 
             }
             else
@@ -80,14 +97,21 @@ public class PlayerRadar : MonoBehaviour
                 Debug.LogWarning("PlayerRadar: PickUppable already has a reference!");
             }
 
-
         }
-        else //did not hit any object
+
+        //how can i make the player keep a reference to the pickedup object when they are holding it
+        //and make it null when there is nothing in front of them
+        //what to do about the sink? should i try changing its logic?
+        else if(!hitObject) 
         {
             //draw a white ray
             Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * objectRadar, Color.white);
             Debug.Log("PlayerRadar: Did not hit anything");
-            //PickUppable.pickedUpObject = null;
+
+
+
+            //pickUppable = null;
+
 
         }
 

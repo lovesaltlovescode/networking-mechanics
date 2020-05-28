@@ -1542,6 +1542,8 @@ MonoBehaviour:
   objectRadar: 4
   playerInventory: {fileID: 1892420063}
   pickUppable: {fileID: 0}
+  holdingPickedUpObject: 0
+  dist: 0
 --- !u!1 &663675109 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -8052994932809076077, guid: fb68279123031a84095a7a6441332b65,
@@ -2442,7 +2444,7 @@ MeshCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Convex: 0
+  m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 0}
 --- !u!1 &1284595477 stripped
@@ -4547,6 +4549,8 @@ MonoBehaviour:
   objectRadar: 4
   playerInventory: {fileID: 1892420063}
   pickUppable: {fileID: 0}
+  holdingPickedUpObject: 0
+  dist: 0
 --- !u!114 &1892420071
 MonoBehaviour:
   m_ObjectHideFlags: 0

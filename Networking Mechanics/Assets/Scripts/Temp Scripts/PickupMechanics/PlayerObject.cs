@@ -11,13 +11,13 @@ public class PlayerObject : MonoBehaviour
     [SerializeField] private PickUppable playerPickUppable;
 
     //Use this reference if static variable cannot be used
-    //public PlayerRadar playerRadar;
+    public PlayerRadar playerRadar;
 
     //Bool to check if object can be picked up
     [SerializeField] bool canPickUpObject = true;
 
     //Bool to check if object should be dropped
-    //[SerializeField] bool canDropObject = false;
+    [SerializeField] bool canDropObject = false;
 
     //Bool to check if object can be placed on ingredient table
     [SerializeField] bool canPlaceObjectOnIngredientTable = false;
@@ -37,7 +37,7 @@ public class PlayerObject : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        playerPickUppable = PlayerRadar.pickUppable;
+        playerPickUppable = playerRadar.pickUppable;
 
         if (playerPickUppable != null)
         {
@@ -75,7 +75,7 @@ public class PlayerObject : MonoBehaviour
                 return;
             }
             playerPickUppable.PickUpObject(); //function to pick up object
-            //canDropObject = true; //object can be dropped
+            canDropObject = true; //object can be dropped
         }
         else
         {
@@ -84,21 +84,21 @@ public class PlayerObject : MonoBehaviour
         }
     }
 
-    ////attached to button
-    ////if object can be dropped, then call the function
-    //public void HandleDropObject()
-    //{
-    //    //check if near sink
-    //    if (canDropObject && !canPickUpObject)
-    //    {
-    //        playerPickUppable.DropObject();
-    //        canDropObject = false;
-    //    }
-    //    else
-    //    {
-    //        Debug.LogWarning("PlayerRadar: Nothing to drop");
-    //    }
-    //}
+    //attached to button
+    //if object can be dropped, then call the function
+    public void HandleDropObject()
+    {
+        //check if near sink
+        if (canDropObject && !canPickUpObject)
+        {
+            playerPickUppable.DropObject();
+            canDropObject = false;
+        }
+        else
+        {
+            Debug.LogWarning("PlayerRadar: Nothing to drop");
+        }
+    }
 
     public void HandlePlaceObjectInSink()
     {
@@ -152,23 +152,23 @@ public class PlayerObject : MonoBehaviour
                 canPickUpObject = true;
                 break;
 
-            //case PickUppable.ObjectState.Droppable:
-            //    Debug.LogError("PlayerRadar: The object can be dropped");
-            //    //if object can be dropped
-            //    canPickUpObject = false;
-            //    canPlaceObjectInSink = false;
-            //    break;
+            case PickUppable.ObjectState.Droppable:
+                Debug.Log("PlayerRadar: The object can be dropped");
+                //if object can be dropped
+                canPickUpObject = false;
+                canPlaceObjectInSink = false;
+                break;
 
             case PickUppable.ObjectState.PlaceOnIngredientTable:
                 Debug.Log("PlayerRadar: Object can be placed on ingredient table");
                 canPlaceObjectOnIngredientTable = true;
-                //canDropObject = false;
+                canDropObject = false;
                 break;
 
             case PickUppable.ObjectState.PlaceInSink:
                 Debug.Log("PlayerRadar: The object can be placed in the sink");
                 //if object can be palced in sink
-                //canDropObject = false;
+                canDropObject = false;
                 canPlaceObjectInSink = true;
                 break;
 
@@ -190,7 +190,7 @@ public class PlayerObject : MonoBehaviour
                 //if object is done washing
                 canPlaceObjectInSink = false;
                 canWashObject = false;
-                //canDropObject = false;
+                canDropObject = false;
                 canPickUpObject = true;
                 break;
 
@@ -206,7 +206,7 @@ public class PlayerObject : MonoBehaviour
                 Debug.Log("PlayerRader: Object cannot be interacted with");
                 canPlaceObjectOnIngredientTable = false;
                 canPickUpObject = false;
-                //canDropObject = false;
+                canDropObject = false;
                 break;
         }
     }
@@ -229,8 +229,8 @@ public class PlayerObject : MonoBehaviour
             Debug.Log("PlayerRadar: Near Sink");
 
             //Do not allow dropping of object when near sink
-            //canDropObject = false;
-            Debug.Log("Picked up object current tagL " + PickUppable.pickedUpObject.tag);
+            canDropObject = false;
+            Debug.Log("Picked up object current tag: " + PickUppable.pickedUpObject.tag);
 
             //Careful!!! If the object is active, then this will be detected twice
             if (PickUppable.pickedUpObject != null)
@@ -305,9 +305,9 @@ public class PlayerObject : MonoBehaviour
             if (IsInventoryFull())
             {
                 //if inventory full, allow to drop object
-                //canDropObject = true;
+                canDropObject = true;
                 //Set state to droppable 
-                //playerPickUppable.objectState = PickUppable.ObjectState.Droppable;
+                playerPickUppable.objectState = PickUppable.ObjectState.Droppable;
             }
             Debug.Log("Player has exited sink");
 
@@ -331,9 +331,9 @@ public class PlayerObject : MonoBehaviour
             if (IsInventoryFull())
             {
                 //if inventory full, allow to drop object
-                //canDropObject = true;
+                canDropObject = true;
                 //Set state to droppable 
-                //playerPickUppable.objectState = PickUppable.ObjectState.Droppable;
+                playerPickUppable.objectState = PickUppable.ObjectState.Droppable;
             }
             Debug.Log("Player has exited ingredient table");
 

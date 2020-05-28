@@ -93,7 +93,7 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.8
+  m_Radius: 1.2
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &7573709594487455813
 MonoBehaviour:
@@ -124,6 +124,21 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7573709594487455809}
     m_Modifications:
+    - target: {fileID: 4528160543940693333, guid: 6ccccc93dea15884190831a3aea1b89f,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4528160543940693333, guid: 6ccccc93dea15884190831a3aea1b89f,
+        type: 3}
+      propertyPath: m_Convex
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4528160543940693333, guid: 6ccccc93dea15884190831a3aea1b89f,
+        type: 3}
+      propertyPath: m_IsTrigger
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7410417404004923652, guid: 6ccccc93dea15884190831a3aea1b89f,
         type: 3}
       propertyPath: m_LocalPosition.x
