@@ -5,13 +5,16 @@ using UnityEngine.UI;
 
 //Class for pickuppable object
 //Will be on every pickuppable object
-public class PickUppable : MonoBehaviour
+public class PickUppable : MonoBehaviour, I_Interactable
 {
 
     //VARIABLES THAT ALL OBJECTS WILL HAVE
 
     //object tag
-    private string objectTag;
+    //private string objectTag;
+
+    //Object follow script
+    FollowObject followScript;
 
     //object icon to set active/inactive on the button
     public Image objectIcon;
@@ -62,7 +65,8 @@ public class PickUppable : MonoBehaviour
         PickUppable,
         Droppable,
         PlaceOnIngredientTable, //for the ingredients to be placed on the table
-        Servable, //for final dishes
+        Servable, //for final dishes to be served to customers
+
         PlaceInSink, //for when plate can be placed in the sink (trigger enter)
         Washable, //for when plate has been placed in the sink and can be washed
         Washing, //Set when player  has tapped the button to wash
@@ -79,14 +83,16 @@ public class PickUppable : MonoBehaviour
     {
         objectState = ObjectState.PickUppable; //all objects start as pickuppables
 
+        followScript = gameObject.GetComponent<FollowObject>(); //Reference follow object script
+
     }
 
     #region PickUp Object
 
     //Function to pick up object, does not check for condition
-    //Add closest object to the inventory
-    //Instantiate a sprite icon and print a unique statement
-    //called when the button is pressed
+    //Add pickuppable object to inventory
+    //Sets icon active and held object active
+    //parents pickedupobject to player
     public void PickUpObject()
     {
         //Add to inventory
@@ -101,14 +107,19 @@ public class PickUppable : MonoBehaviour
         //Set object on Player's head active
         heldObject.SetActive(true);
 
-        //Set pickedUpObject inactive 
-        pickedUpObject.SetActive(false);
-        //parent to player object
-        pickedUpObject.transform.parent = playerPrefab.transform;
+        //Set meshrenderer disabled for optimisation
+        //Loop through all renderer in children and disable it
+        Renderer[] rend = GetComponentsInChildren<Renderer>();
+        foreach (Renderer r in rend)
+        {
+            r.enabled = false;
+        }
 
-        //set picked up object to the same position as parent at 0 y
-        pickedUpObject.transform.position = new Vector3(playerPrefab.transform.position.x, 0.26f, playerPrefab.transform.position.z);
-        
+
+        followScript.enabled = true;
+
+        //parent to player object
+        pickedUpObject.transform.parent = playerPrefab.transform;        
 
         //Set state as droppable since this object is now in the player's inventory
         objectState = ObjectState.Droppable;
@@ -146,6 +157,17 @@ public class PickUppable : MonoBehaviour
         pickedUpObject.transform.parent = null; //no more parent
         pickedUpObject.SetActive(true);
 
+        followScript.enabled = false;
+
+        //Set meshrenderer disabled for optimisation
+        //Loop through all renderer in children and disable it
+        Renderer[] rend = GetComponentsInChildren<Renderer>();
+        foreach (Renderer r in rend)
+        {
+            r.enabled = true;
+        }
+
+
         //Change state back to pickuppable
         objectState = ObjectState.PickUppable;
 
@@ -158,7 +180,7 @@ public class PickUppable : MonoBehaviour
     #region Place Ingredient On Table
 
     //function to place ingredient on table
-    public void PlaceIngredientOnTable()
+    public void PlaceOnTable()
     {
         //Remove item from inventory
         objectsInInventory.Remove(pickedUpObject);
@@ -188,7 +210,7 @@ public class PickUppable : MonoBehaviour
     #region Wash Object
 
     //Function to place object in sink
-    public void PlaceObjectInSink()
+    public void PlaceInSink()
     {
 
         //Remove item from inventory

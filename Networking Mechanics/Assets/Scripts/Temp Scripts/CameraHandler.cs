@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-//Toggles camera 
-//if in storeroom trigger, turn on storeroom camera
+//Hides the meshes of certain walls and objects if player enters the storeroom
 public class CameraHandler : MonoBehaviour
 {
     public GameObject[] hiddenObjects;
@@ -27,7 +26,7 @@ public class CameraHandler : MonoBehaviour
             Debug.Log("CameraHandler: Player in storeroom");
             for(int i = 0; i < hiddenObjects.Length; i++)
             {
-                hiddenObjects[i].SetActive(false);
+                hiddenObjects[i].GetComponent<MeshRenderer>().enabled = false;
             }
         }
 
@@ -40,7 +39,7 @@ public class CameraHandler : MonoBehaviour
             Debug.Log("CameraHandler: Player in shop");
             for (int i = 0; i < hiddenObjects.Length; i++)
             {
-                hiddenObjects[i].SetActive(true);
+                hiddenObjects[i].GetComponent<MeshRenderer>().enabled = true;
             }
         }
     }

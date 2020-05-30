@@ -24,7 +24,7 @@ public class PlayerRadar : MonoBehaviour
     public PickUppable pickUppable;
 
     //bool to check if player is holding an object, if they are then, do not assign new object
-    public bool holdingPickedUpObject = false;
+    //public bool holdingPickedUpObject = false;
 
     public float dist;
 
@@ -88,7 +88,7 @@ public class PlayerRadar : MonoBehaviour
                 //set the picked up object to be the hit gameobject
                 PickUppable.pickedUpObject = hit.collider.gameObject;
                 //there is now a picked up object that the player is holding
-                holdingPickedUpObject = true;
+                //holdingPickedUpObject = true;
 
             }
             else
@@ -107,9 +107,6 @@ public class PlayerRadar : MonoBehaviour
             //draw a white ray
             Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * objectRadar, Color.white);
             Debug.Log("PlayerRadar: Did not hit anything");
-
-
-
             //pickUppable = null;
 
 

@@ -7,8 +7,11 @@ using UnityEngine;
 
 public class PlayerObject : MonoBehaviour
 {
-
+    //reference pickuppable object scripts
     [SerializeField] private PickUppable playerPickUppable;
+
+    //reference ingredient script
+    [SerializeField] private IngredientShelf ingredientShelf;
 
     //Use this reference if static variable cannot be used
     public PlayerRadar playerRadar;
@@ -63,6 +66,11 @@ public class PlayerObject : MonoBehaviour
 
     //FUNCTION TO CHECK IF BUTTON CAN BE PRESSED
 
+    public void SpawnIngredient()
+    {
+        ingredientShelf.PickUpObject();
+    }
+
     public void HandlePickUpObject()
     {
         //if inventory is empty, and can pick up object, and object is not on the sink
@@ -105,7 +113,7 @@ public class PlayerObject : MonoBehaviour
         //Player can place the object in the sink
         if (canPlaceObjectInSink && PickUppable.pickedUpObject.tag == "DirtyPlate")
         {
-            playerPickUppable.PlaceObjectInSink();
+            playerPickUppable.PlaceInSink();
         }
         else
         {
@@ -131,7 +139,7 @@ public class PlayerObject : MonoBehaviour
     {
         if (canPlaceObjectOnIngredientTable == true)
         {
-            playerPickUppable.PlaceIngredientOnTable();
+            playerPickUppable.PlaceOnTable();
         }
         else
         {

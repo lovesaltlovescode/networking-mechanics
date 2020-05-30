@@ -2,40 +2,27 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-//Makes objects that have been picked up  follow the player
-//Only follow when the tag is right
-//When object is dropped, revert the tag
+//Makes objects that have been picked up stick to the player 
+//Script is set active when objects have been picked up
+//Disabled when object is dropped
 public class FollowObject : MonoBehaviour
 {
-    //the original tag of the object
-    public string originalTag;
 
     //player to follow
     public Transform playerTarget;
 
-    float speed = 5f;
-    Vector3 playerDirection;
-
-    const float EPSILON = 0.1f;
-
     // Start is called before the first frame update
     void Start()
     {
-        //retrive original tag
-        originalTag = gameObject.tag;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(gameObject.tag == "FollowPlayer")
-        {
-            //function to follow player
-            FollowPlayer();
-        }
+        FollowPlayer();
     }
 
-    void FollowPlayer()
+    public void FollowPlayer()
     {
         //playerDirection = (playerTarget.position - transform.position).normalized; //normalized so it does not speed up as the distance changes
 
@@ -46,12 +33,6 @@ public class FollowObject : MonoBehaviour
         //    transform.Translate(playerDirection * Time.deltaTime * speed);
         //}
 
-        transform.position = playerTarget.transform.position;
-
-        if((transform.position - playerTarget.position).magnitude < EPSILON)
-        {
-            //reset tag if the object is on the player
-            gameObject.tag = originalTag;
-        }
+        transform.position = new Vector3(playerTarget.transform.position.x, 0f, playerTarget.transform.position.z);
     }
 }
