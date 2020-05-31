@@ -47,9 +47,9 @@ TagManager:
   - PlateOnSink
   - IngredientOnTable
   - IngredientShelf
+  - Ingredient
+  - DirtyPlates
   - Pickuppable
-  - 
-  - 
   - 
   - 
   - 

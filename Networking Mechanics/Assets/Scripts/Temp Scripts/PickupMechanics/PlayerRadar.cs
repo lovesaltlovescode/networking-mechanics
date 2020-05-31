@@ -21,23 +21,19 @@ public class PlayerRadar : MonoBehaviour
 
     //when a object is detected, we will reference its  pickuppable script
     //change this back to non-static if needed
-    public PickUppable pickUppable;
+    public PickUppable pickUppableScript;
 
-    //when a shelf is detected, we will reference its ingredient shelf script
-    public IngredientShelf ingredientShelf;
+    public IngredientShelf shelfScript;
 
     //bool to check if player is holding an object, if they are then, do not assign new object
     //public bool holdingPickedUpObject = false;
 
     public float dist;
 
-    public float shelfDist; //distance from ingredient shelf
+    //when the player detects an object, this object will be set as the hit object
+    public GameObject detectedObject;
 
-    //Boolean to check if player is facing ingredient
-    public bool facingIngredient;
-
-    //Boolean to check if player is facing pickuppable
-    public bool facingPickuppable;
+    //public GameObject pickedUpIngredient;
 
     // Start is called before the first frame update
     void Start()
@@ -55,32 +51,25 @@ public class PlayerRadar : MonoBehaviour
         Debug.Log("Current inventory: " + PickUppable.objectsInInventory.Count);
 
 
+        //check distance between hit object and player
 
-        if (pickUppable != null && pickUppable.pickedUpObject != null)
+        if (detectedObject)
         {
-            //check distance between hit object and player
-            dist = Vector3.Distance(pickUppable.pickedUpObject.transform.position, transform.position);
+            dist = Vector3.Distance(detectedObject.transform.position, transform.position);
             // Debug.Log("PlayerRader: Distance from " + PickUppable.pickedUpObject + " is " + dist);
-
-
-            if (dist >= 3)
-            {
-                pickUppable = null;
-            }
-
-
         }
 
-        if (ingredientShelf != null)
+
+
+        if (dist >= 3)
         {
-            shelfDist = Vector3.Distance(ingredientShelf.transform.position, transform.position);
-            //Debug.Log("PlayerRadar: Distance from " + ingredientShelf.transform.position + " is " + shelfDist);
-
-            if (shelfDist >= 2 || pickUppable.pickedUpObject)
-            {
-                ingredientShelf = null;
-            }
+            detectedObject = null;
+            pickUppableScript = null;
+            shelfScript = null;
         }
+
+
+
 
 
     }
@@ -113,24 +102,23 @@ public class PlayerRadar : MonoBehaviour
                 //Layer 14 is the ingredient shelf layer
                 if(hit.collider.gameObject.layer == 14)
                 {
-                    Debug.Log("PlayerRadar: Object hit is an ingredient shelf of type " + hit.collider.gameObject);
+                    Debug.Log("PlayerRadar: Object hit is an ingredient shelf!");
 
-                    //Get script from ingredient shelf
-                    ingredientShelf = hit.collider.gameObject.GetComponent<IngredientShelf>();
-                    facingIngredient = true;
-                    facingPickuppable = false;
+                    //Set the shelf as the picked up object first
+                    detectedObject = hit.collider.gameObject;
+
+                    shelfScript = detectedObject.GetComponent<IngredientShelf>();
                 }
-
-                //if it is the pickuppable, reference that script
-                if(hit.collider.gameObject.layer == 15)
+                else if(hit.collider.gameObject.layer == 17)
                 {
                     Debug.Log("PlayerRadar: Object hit is a pickuppable! " + hit.collider.gameObject);
-                    //reference the pickuppable script that belongs to the object hit
-                    pickUppable = hit.collider.gameObject.GetComponent<PickUppable>();
+
+                    
                     //set the picked up object to be the hit gameobject
-                    pickUppable.pickedUpObject = hit.collider.gameObject;
-                    facingPickuppable = true;
-                    facingIngredient = false;
+                    detectedObject = hit.collider.gameObject;
+
+                    //reference pickuppable script
+                    pickUppableScript = detectedObject.GetComponent<PickUppable>();
                 }
 
                 //there is now a picked up object that the player is holding
@@ -148,14 +136,14 @@ public class PlayerRadar : MonoBehaviour
         //how can i make the player keep a reference to the pickedup object when they are holding it
         //and make it null when there is nothing in front of them
         //what to do about the sink? should i try changing its logic?
+
+        //REMOVE IN FINAL BUILD
         else if(!hitObject) 
         {
             //draw a white ray
             Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * objectRadar, Color.white);
             Debug.Log("PlayerRadar: Did not hit anything");
-            //pickUppable = null;
-            facingIngredient = false;
-            facingPickuppable = false;
+
         }
 
     }

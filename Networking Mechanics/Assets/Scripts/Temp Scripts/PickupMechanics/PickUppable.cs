@@ -5,19 +5,43 @@ using UnityEngine.UI;
 
 //Class for pickuppable object
 //Will be on every pickuppable object
+
+//Also handles the spawning of ingredients for the ingredient shelf
+//Only applies for ingredient shelf layer objects
 public class PickUppable : MonoBehaviour, I_Interactable
 {
 
-    //VARIABLES THAT ALL OBJECTS WILL HAVE
+    #region Global Variables
 
-    //object tag
-    //private string objectTag;
+    //VARIABLES THAT ALL OBJECTS WILL HAVE
+    [Header("Global Variables")]
 
     //Object follow script
     FollowObject followScript;
 
     //object icon to set active/inactive on the button
     public Image objectIcon;
+
+    //public GameObject ingredientObject; //to assign the ingredient prefab to this
+
+    //the object that the player will be holding if they pick up the object
+    //ie. a cup of rice on their head
+    //set active/inactive depending on if the player is holding the object
+    public GameObject heldObject;
+
+    //List of objects in player's inventory, static and same throughout all scripts
+    public static List<GameObject> objectsInInventory = new List<GameObject>();
+
+    //reference to the player prefab to get its transform
+    public GameObject playerPrefab;
+
+    #endregion
+
+
+    #region DirtyPlates Variables
+    [Header("Dirty Plates Variables")]
+
+    //VARIABLES THAT ONLY DIRTYPLATES WILL HAVE
 
     //wash icon to set active and gray
     public Image washIcon;
@@ -31,34 +55,42 @@ public class PickUppable : MonoBehaviour, I_Interactable
     //Gameobject for clean plate to be set active/inactive
     public GameObject cleanPlate;
 
-    //the game object that will be picked up and added to inventory
-    //set inactive and parent to player
-    public GameObject pickedUpObject;
-    //when the player detects an object, this object will be set as the hit object
 
-    //the object that the player will be holding if they pick up the object
-    //ie. a cup of rice on their head
-    //set active/inactive depending on if the player is holding the object
-    public GameObject heldObject;
-
-    //List of objects in player's inventory, static and same throughout all scripts
-    public static List<GameObject> objectsInInventory = new List<GameObject>();
-
-    //reference to the player prefab to get its transform
-    public GameObject playerPrefab;
 
     //reference to sink position
     public Transform sinkPos;
 
-    //reference to ingredient table position
-    public Transform tablePos;
+    #endregion
 
+    //#region IngredientShelf Variables
+
+    //[Header("Ingredient Shelf Variables")]
+
+    ////INGREDIENT SHELF THAT SPAWNS INGREDIENTS
+
+    //public GameObject ingredientPrefab; //ingredient to spawn according to the ingredient shelf
+
+    //#endregion
+
+    #region Ingredient Variables
+
+    [Header("Ingredient Variables")]
+
+    //INGREDIENTS THAT ARE SPAWNED FROM SHELF
+
+    public Transform trayPos; //Position of ingredient tray
+    //TODO: Change to an array of positions, loop through, check against a bool and place down if bool is false...
+
+    #endregion
 
     //Different states of the object
     public enum ObjectState
     {
+        Spawnable, //for ingredient shelf
+
         PickUppable,
         Droppable,
+
         PlaceOnIngredientTable, //for the ingredients to be placed on the table
         Servable, //for final dishes to be served to customers
 
@@ -67,6 +99,7 @@ public class PickUppable : MonoBehaviour, I_Interactable
         Washing, //Set when player  has tapped the button to wash
         Washed, //Set when plates are done washing after time elapsed
         StoppedWashing, //Set when player leaves the sink area and washing is interrupted
+
         UnInteractable //Object cannot be interacted with
     }
 
@@ -76,11 +109,26 @@ public class PickUppable : MonoBehaviour, I_Interactable
     // Start is called before the first frame update
     void Start()
     {
-        objectState = ObjectState.PickUppable; //all objects start as pickuppables
+        if(gameObject.layer == 14)
+        {
+            objectState = ObjectState.Spawnable; //if ingredient shelf, start as spawnable
+        }
+        else
+        {
 
-        followScript = gameObject.GetComponent<FollowObject>(); //Reference follow object script
+            objectState = ObjectState.PickUppable; //start as pickuppable
+        }
+
+        //followScript = gameObject.GetComponent<FollowObject>(); //Reference follow object script
 
         heldObject.GetComponentInChildren<Renderer>().enabled = false;
+
+        if(gameObject.layer == 15)
+        {
+            //if ingredient, start as droppable
+            objectState = ObjectState.Droppable;
+        }
+        
 
     }
 
@@ -111,6 +159,17 @@ public class PickUppable : MonoBehaviour, I_Interactable
     }
     #endregion
 
+    //#region Spawn Object
+    ////Function to spawn ingredient prefab as pickedup object
+    ////pickedup object will then function as normal
+    //public void SpawnIngredient()
+    //{
+
+    //    ingredientObject = Instantiate(ingredientPrefab, transform.position, Quaternion.identity);
+    //    ingredientObject.transform.parent = playerPrefab.transform;
+
+    //}
+    //#endregion
 
     #region PickUp Object
 
@@ -121,31 +180,33 @@ public class PickUppable : MonoBehaviour, I_Interactable
     public void PickUpObject()
     {
         //Add to inventory
-        objectsInInventory.Add(pickedUpObject);
+        objectsInInventory.Add(gameObject);
 
         //Activate the required icon
         objectIcon.gameObject.SetActive(true);
 
         //Print statement
-        Debug.Log("PickUppable: Picked up " + pickedUpObject);
+        Debug.Log("PickUppable: Picked up " + gameObject);
 
         //Set object on Player's head active
         heldObject.GetComponentInChildren<Renderer>().enabled = true;
 
-        DisableRenderer();
-
-
-        followScript.enabled = true;
+        //if ingredient shelf do not disable it
+        if(gameObject.layer != 14)
+        {
+            DisableRenderer();
+            followScript.enabled = true;
+        }
 
         //parent to player object
-        pickedUpObject.transform.parent = playerPrefab.transform;        
+        transform.parent = playerPrefab.transform;        
 
         //Set state as droppable since this object is now in the player's inventory
         objectState = ObjectState.Droppable;
 
         //TODO: Check if it can be detected by other players even when inactive
         // If so, Change layer so that it is masked and not detected by other players
-        pickedUpObject.layer = LayerMask.NameToLayer("PickedUp");
+        gameObject.layer = LayerMask.NameToLayer("PickedUp");
 
     }
 
@@ -161,30 +222,34 @@ public class PickUppable : MonoBehaviour, I_Interactable
     public void DropObject()
     {
         //Remove from inventory
-        objectsInInventory.Remove(pickedUpObject);
+        objectsInInventory.Remove(gameObject);
 
         //Deactivate icon
         objectIcon.gameObject.SetActive(false);
 
         //Print statement
-        Debug.Log("PickUppable: Dropped " + pickedUpObject);
+        Debug.Log("PickUppable: Dropped " + gameObject);
 
         //Deactivate heldobject
         heldObject.GetComponentInChildren<Renderer>().enabled = false;
 
         //Unparent object 
-        pickedUpObject.transform.parent = null; //no more parent
+        transform.parent = null; //no more parent
 
         EnableRenderer();
 
-        followScript.enabled = false;
+        if (followScript)
+        {
+            followScript.enabled = false;
+        }
+        
 
 
         //Change state back to pickuppable
         objectState = ObjectState.PickUppable;
 
         //TODO: Change layer so it can be detected by other players
-        pickedUpObject.layer = LayerMask.NameToLayer("Default");
+        gameObject.layer = LayerMask.NameToLayer("Default");
     }
 
     #endregion
@@ -195,7 +260,7 @@ public class PickUppable : MonoBehaviour, I_Interactable
     public void PlaceOnTable()
     {
         //Remove item from inventory
-        objectsInInventory.Remove(pickedUpObject);
+        objectsInInventory.Remove(gameObject);
 
         //set object icon inactive
         objectIcon.gameObject.SetActive(false);
@@ -206,14 +271,14 @@ public class PickUppable : MonoBehaviour, I_Interactable
         //set pickedup object active and move to tablepos
         //unparent from table
         EnableRenderer();
-        pickedUpObject.transform.position = tablePos.position;
-        pickedUpObject.transform.parent = null;
+        gameObject.transform.position = trayPos.position;
+        gameObject.transform.parent = null;
 
         followScript.enabled = false;
         
 
         //set layer mask to ingredientontable
-        //pickedUpObject.layer = LayerMask.NameToLayer("IngredientOnTable");
+        //pickedUpObject.layer = LayerMask.NameToLayer("ObjectOnTable");
 
         //set state as uninteractable
         objectState = ObjectState.UnInteractable;
@@ -229,7 +294,7 @@ public class PickUppable : MonoBehaviour, I_Interactable
     {
 
         //Remove item from inventory
-        objectsInInventory.Remove(pickedUpObject);
+        objectsInInventory.Remove(gameObject);
 
         //Set object icon inactive
         objectIcon.gameObject.SetActive(false);
@@ -238,14 +303,14 @@ public class PickUppable : MonoBehaviour, I_Interactable
         heldObject.GetComponentInChildren<Renderer>().enabled = false;
 
         //Print statement
-        Debug.Log("PickUppable: Ready to wash " + pickedUpObject);
+        Debug.Log("PickUppable: Ready to wash " + gameObject);
 
         //Move pickedup object to the sink's position
         //if the position is null, that means this object shouldnt be washing, throw an error
         //Unparent from player
         EnableRenderer();
-        pickedUpObject.transform.parent = null;
-        pickedUpObject.transform.position = sinkPos.position;
+        gameObject.transform.parent = null;
+        gameObject.transform.position = sinkPos.position;
 
         followScript.enabled = false;
 
@@ -254,26 +319,14 @@ public class PickUppable : MonoBehaviour, I_Interactable
 
         //Set state as washable
         objectState = ObjectState.Washable;
-        pickedUpObject.layer = LayerMask.NameToLayer("PlateOnSink");
+        gameObject.layer = LayerMask.NameToLayer("PlateOnSink");
 
 
     }
 
     //Function to wash object
-    //Starts timer to wash object
-    //After washed, spawn clean plate and destroy current object
-    public void WashObject()
-    {
-
-        //set wash icon active
-        //washIcon.gameObject.SetActive(true);
-
-        //change wash icon to gray
-        washIcon.color = Color.gray;
-
-
-
-    }
+    //change wash icon to gray
+    public void WashObject() => washIcon.color = Color.gray;
 
     #endregion
 
@@ -292,7 +345,7 @@ public class PickUppable : MonoBehaviour, I_Interactable
         }
 
         //if object has been washed
-        if (pickedUpObject != null && objectState == ObjectState.Washed)
+        if (objectState == ObjectState.Washed)
         {
             //Set pickedupobject in sink inactive
             DisableRenderer();
@@ -301,7 +354,7 @@ public class PickUppable : MonoBehaviour, I_Interactable
             cleanPlate.SetActive(true);
 
             //after washing, destroy the pickedup object
-            Destroy(pickedUpObject);
+            Destroy(gameObject);
 
             //set washicon inactive and back to white
             washIcon.color = Color.white;
@@ -330,10 +383,10 @@ public class PickUppable : MonoBehaviour, I_Interactable
 
             CheckForStopWashing();
 
-            if (pickedUpObject != null)
+            if (gameObject != null)
             {
                 //if picked up object is at the sink
-                if (pickedUpObject.transform.position == sinkPos.transform.position)
+                if (gameObject.transform.position == sinkPos.transform.position)
                 {
                     //then it was being washed
                     wasWashing = true;
@@ -355,10 +408,10 @@ public class PickUppable : MonoBehaviour, I_Interactable
             }
         }
 
-        if(pickedUpObject != null)
+        if(gameObject != null)
         {
 
-            pickedUpObject.transform.rotation = Quaternion.identity;
+            gameObject.transform.rotation = Quaternion.identity;
         }
 
 
