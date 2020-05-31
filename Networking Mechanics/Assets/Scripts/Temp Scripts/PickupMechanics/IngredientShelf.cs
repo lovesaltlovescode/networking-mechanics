@@ -14,6 +14,10 @@ public class IngredientShelf : MonoBehaviour, I_Interactable
 
     //VARIABLES FOR SHELVES
 
+    //Object follow script
+    FollowObject followScript;
+
+
     //Ingredient prefab to be spawned
     //Picked up and added to inventory on button press
     public GameObject ingredientPrefab;
@@ -34,10 +38,12 @@ public class IngredientShelf : MonoBehaviour, I_Interactable
     //Reference to ingredient tray position
     public Transform trayPos;
 
+
     //States of the ingredient, perform different functions at each state
+    //TODO: Move this to another script
     public enum IngredientState
     {
-        PickUppable,
+        Spawnable,
         Droppable,
         PlaceOnIngredientTable, //for the ingredients to be placed on the table
         //Servable, //for final dishes to be served to customers
@@ -49,8 +55,37 @@ public class IngredientShelf : MonoBehaviour, I_Interactable
     // Start is called before the first frame update
     void Start()
     {
-        ingredientState = IngredientState.PickUppable;
+        ingredientState = IngredientState.Spawnable;
+
+        followScript = ingredientPrefab.GetComponent<FollowObject>();
     }
+
+    #region HandleRenderers
+
+    //Handle enabling or disabling renderers of picked up object accordingly
+
+    public void EnableRenderer()
+    {
+        //Set meshrenderer enabled for optimisation
+        //Loop through all renderer in children and enable it
+        Renderer[] rend = GetComponentsInChildren<Renderer>();
+        foreach (Renderer r in rend)
+        {
+            r.enabled = true;
+        }
+    }
+
+    public void DisableRenderer()
+    {
+        //Set meshrenderer enabled for optimisation
+        //Loop through all renderer in children and enable it
+        Renderer[] rend = GetComponentsInChildren<Renderer>();
+        foreach (Renderer r in rend)
+        {
+            r.enabled = false;
+        }
+    }
+    #endregion
 
     //Function to spawn ingredient prefab as pickedup object
     //Add the spawned object to inventory
@@ -68,9 +103,18 @@ public class IngredientShelf : MonoBehaviour, I_Interactable
         Debug.Log("IngredientShelf: Picked up " + pickedUpObject);
 
         //Set object on player's head active
-        heldIngredient.SetActive(true);
+        heldIngredient.GetComponent<Renderer>().enabled = true;
 
         //Set pickedupobject inactive
+        DisableRenderer();
+
+        followScript.enabled = true;
+
+        pickedUpObject.transform.parent = playerPrefab.transform;
+
+        ingredientState = IngredientState.Droppable;
+
+        pickedUpObject.layer = LayerMask.NameToLayer("PickedUp");
 
     }
 
@@ -80,7 +124,29 @@ public class IngredientShelf : MonoBehaviour, I_Interactable
     //Unparents pickedupobject
     public void DropObject()
     {
+        //Remove from inventory
+        PickUppable.objectsInInventory.Remove(pickedUpObject);
 
+        //Deactivate icon
+        ingredientIcon.gameObject.SetActive(false);
+
+        //Print statement
+        Debug.Log("IngredientShelf: Dropped " + pickedUpObject);
+
+        //Deactivate held object
+        heldIngredient.GetComponentInChildren<Renderer>().enabled = false;
+
+        //Unparent object
+        pickedUpObject.transform.parent = null; //no more parent
+        EnableRenderer();
+
+        followScript.enabled = false;
+
+        //Change state back to pickuppable
+        ingredientState = IngredientState.Spawnable;
+
+        //set layer mask
+        pickedUpObject.layer = LayerMask.NameToLayer("Default");
     }
 
     //Function to place the ingredient prefab on the ingredient table
@@ -90,7 +156,28 @@ public class IngredientShelf : MonoBehaviour, I_Interactable
     //TODO: Check if there is space to place it on table
     public void PlaceOnTable()
     {
-        throw new System.NotImplementedException();
+        //Remove item from inventory
+        PickUppable.objectsInInventory.Remove(pickedUpObject);
+
+        //set icon inactive
+        ingredientIcon.gameObject.SetActive(false);
+
+        //set held item inactive
+        heldIngredient.GetComponentInChildren<Renderer>().enabled = false;
+
+        //set pickedup object active and move to table pos
+        //unparent from table
+        EnableRenderer();
+        pickedUpObject.transform.position = trayPos.position;
+        pickedUpObject.transform.parent = null;
+
+        followScript.enabled = false;
+
+        //set layer mask
+        pickedUpObject.layer = LayerMask.NameToLayer("IngredientOnTable");
+
+        //set state as uninteractable
+        ingredientState = IngredientState.UnInteractable;
     }
 
 

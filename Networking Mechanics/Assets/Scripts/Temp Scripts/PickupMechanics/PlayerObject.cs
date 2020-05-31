@@ -10,11 +10,12 @@ public class PlayerObject : MonoBehaviour
     //reference pickuppable object scripts
     [SerializeField] private PickUppable playerPickUppable;
 
-    //reference ingredient script
-    [SerializeField] private IngredientShelf ingredientShelf;
 
     //Use this reference if static variable cannot be used
     public PlayerRadar playerRadar;
+
+
+    #region Pickuppable Object Booleans
 
     //Bool to check if object can be picked up
     [SerializeField] bool canPickUpObject = true;
@@ -31,6 +32,12 @@ public class PlayerObject : MonoBehaviour
     //Bool to check if object can be washed
     [SerializeField] bool canWashObject = false;
 
+    #endregion
+
+   
+
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -41,11 +48,19 @@ public class PlayerObject : MonoBehaviour
     void Update()
     {
         playerPickUppable = playerRadar.pickUppable;
+        playerIngredientShelf = playerRadar.ingredientShelf;
 
         if (playerPickUppable != null)
         {
             HandleObjectStates();
         }
+
+        if(playerIngredientShelf != null)
+        {
+            HandleIngredientStates();
+        }
+
+        
     }
 
     //function to return the value of if inventory is full
@@ -66,86 +81,165 @@ public class PlayerObject : MonoBehaviour
 
     //FUNCTION TO CHECK IF BUTTON CAN BE PRESSED
 
-    public void SpawnIngredient()
+    #region IngredientFunctions
+
+    public void HandleSpawnIngredient()
     {
-        ingredientShelf.PickUpObject();
+        //If inventory is empty and can spawn ingredient
+        //When button pressed, call function for pickupobject
+
+        if (playerRadar.facingIngredient)
+        {
+
+            if (!IsInventoryFull() && canSpawnIngredient)
+            {
+                playerIngredientShelf.PickUpObject();
+                canDropIngredient = true;
+            }
+            {
+                Debug.Log("PlayerRadar: Inventory is full, cannot pick up");
+            }
+        }
     }
+
+    public void DropIngredient()
+    {
+        if (playerRadar.facingIngredient)
+        {
+
+            //check if near sink
+            if (canDropIngredient && !canSpawnIngredient)
+            {
+                playerIngredientShelf.DropObject();
+                canDropIngredient = false;
+            }
+            else
+            {
+                Debug.LogWarning("PlayerRadar: Nothing to drop");
+            }
+        }
+    }
+
+    public void PlaceIngredientOnTable()
+    {
+        if (playerRadar.facingIngredient)
+        {
+            if (canPlaceIngredientOnTable == true)
+            {
+                playerIngredientShelf.PlaceOnTable();
+            }
+            else
+            {
+                Debug.LogWarning("PlayerRadar: Unable to place ingredient on table");
+            }
+        }
+        
+    }
+
+    #endregion
+
+    #region ObjectFunctions
 
     public void HandlePickUpObject()
     {
-        //if inventory is empty, and can pick up object, and object is not on the sink
-        if (!IsInventoryFull() && canPickUpObject)
+        if (playerRadar.facingPickuppable)
         {
-            //if there is a pickedup object and it belongs to layer 12 (plate on sink) do not pick it up
-            if (PickUppable.pickedUpObject != null && PickUppable.pickedUpObject.layer == 12)
+            //if inventory is empty, and can pick up object, and object is not on the sink
+            if (!IsInventoryFull() && canPickUpObject)
             {
-                //if object is on the sink, do not pick up
-                return;
+                //if there is a pickedup object and it belongs to layer 12 (plate on sink) do not pick it up
+                if (playerPickUppable.pickedUpObject != null && playerPickUppable.pickedUpObject.layer == 12)
+                {
+                    //if object is on the sink, do not pick up
+                    return;
+                }
+
+                playerPickUppable.PickUpObject(); //function to pick up object
+                canDropObject = true; //object can be dropped
             }
-            playerPickUppable.PickUpObject(); //function to pick up object
-            canDropObject = true; //object can be dropped
+            else
+            {
+                //Inventory full do not pick up
+                Debug.Log("PlayerRadar: Inventory is full");
+            }
         }
-        else
-        {
-            //Inventory full do not pick up
-            Debug.Log("PlayerRadar: Inventory is full");
-        }
+        
     }
 
     //attached to button
     //if object can be dropped, then call the function
     public void HandleDropObject()
     {
-        //check if near sink
-        if (canDropObject && !canPickUpObject)
+        if (playerRadar.facingPickuppable)
         {
-            playerPickUppable.DropObject();
-            canDropObject = false;
+            //check if near sink
+            if (canDropObject && !canPickUpObject)
+            {
+                playerPickUppable.DropObject();
+                canDropObject = false;
+            }
+            else
+            {
+                Debug.LogWarning("PlayerRadar: Nothing to drop");
+            }
         }
-        else
-        {
-            Debug.LogWarning("PlayerRadar: Nothing to drop");
-        }
+        
     }
+
 
     public void HandlePlaceObjectInSink()
     {
-        //Player can place the object in the sink
-        if (canPlaceObjectInSink && PickUppable.pickedUpObject.tag == "DirtyPlate")
+        if (playerRadar.facingPickuppable)
         {
-            playerPickUppable.PlaceInSink();
+            //Player can place the object in the sink
+            if (canPlaceObjectInSink && playerPickUppable.pickedUpObject.tag == "DirtyPlate")
+            {
+                playerPickUppable.PlaceInSink();
+            }
+            else
+            {
+                //Debug.LogWarning("PlayerRadar: Unable to place object in sink");
+            }
         }
-        else
-        {
-            //Debug.LogWarning("PlayerRadar: Unable to place object in sink");
-        }
+       
     }
 
     public void HandleWashObject()
     {
-        if (canWashObject && PickUppable.pickedUpObject.tag == "DirtyPlate")
+        if (playerRadar.facingPickuppable)
         {
-            playerPickUppable.WashObject();
-            //change object state
-            playerPickUppable.objectState = PickUppable.ObjectState.Washing;
+            if (canWashObject && playerPickUppable.pickedUpObject.tag == "DirtyPlate")
+            {
+                playerPickUppable.WashObject();
+                //change object state
+                playerPickUppable.objectState = PickUppable.ObjectState.Washing;
+            }
+            else
+            {
+                Debug.LogWarning("PlayerRadar: Unable to wash object");
+            }
         }
-        else
-        {
-            Debug.LogWarning("PlayerRadar: Unable to wash object");
-        }
+        
     }
 
     public void HandlePlaceIngredient()
     {
-        if (canPlaceObjectOnIngredientTable == true)
+        if (playerRadar.facingPickuppable)
         {
-            playerPickUppable.PlaceOnTable();
+            if (canPlaceObjectOnIngredientTable == true)
+            {
+                playerPickUppable.PlaceOnTable();
+            }
+            else
+            {
+                Debug.LogWarning("PlayerRadar: Unable to place ingredient");
+            }
         }
-        else
-        {
-            Debug.LogWarning("PlayerRadar: Unable to place ingredient");
-        }
+        
     }
+
+    #endregion
+
 
     #endregion
 
@@ -219,6 +313,38 @@ public class PlayerObject : MonoBehaviour
         }
     }
 
+    public void HandleIngredientStates()
+    {
+        //switch statement to handle different states of the ingredient
+        switch (playerIngredientShelf.ingredientState)
+        {
+            case IngredientShelf.IngredientState.Spawnable:
+                Debug.Log("PlayerRadar: Spawn an ingredient!");
+                //if object can be picked up
+                canSpawnIngredient = true;
+                break;
+
+            case IngredientShelf.IngredientState.Droppable:
+                //if object can be dropped
+                canSpawnIngredient = false;
+                canDropIngredient = true;
+                break;
+
+            case IngredientShelf.IngredientState.PlaceOnIngredientTable:
+                Debug.Log("PlayerRadar: Ingredient can be placed on ingredient table");
+                canPlaceIngredientOnTable = true;
+                canDropIngredient = false;
+                break;
+
+            case IngredientShelf.IngredientState.UnInteractable:
+                Debug.Log("PlayerRader: Ingredient cannot be interacted with");
+                canPlaceIngredientOnTable = false;
+                canSpawnIngredient = false;
+                canDropIngredient = false;
+                break;
+        }
+    }
+
     //On trigger enter, if the zone is the sink zone
     //Check if pickedup object tag is dirty plates
     //Set state as washable
@@ -238,12 +364,12 @@ public class PlayerObject : MonoBehaviour
 
             //Do not allow dropping of object when near sink
             canDropObject = false;
-            Debug.Log("Picked up object current tag: " + PickUppable.pickedUpObject.tag);
+            Debug.Log("Picked up object current tag: " + playerPickUppable.pickedUpObject.tag);
 
             //Careful!!! If the object is active, then this will be detected twice
-            if (PickUppable.pickedUpObject != null)
+            if (playerPickUppable.pickedUpObject != null)
             {
-                if (PickUppable.pickedUpObject.tag == "DirtyPlate" && !playerPickUppable.wasWashing)
+                if (playerPickUppable.pickedUpObject.tag == "DirtyPlate" && !playerPickUppable.wasWashing)
                 {
                     Debug.Log("PlayerRader: Washable object detected");
 
@@ -263,16 +389,14 @@ public class PlayerObject : MonoBehaviour
             //canDropObject = false;
 
             //Careful!!! If the object is active, then this will be detected twice
-            if (PickUppable.pickedUpObject != null)
-            {
-                if (PickUppable.pickedUpObject.tag == "Ingredient")
+                if (playerPickUppable.pickedUpObject.tag == "Ingredient")
                 {
                     Debug.Log("PlayerRader: Placeable ingredient detected");
 
                     //Set state to able to place on table
                     playerPickUppable.objectState = PickUppable.ObjectState.PlaceOnIngredientTable;
                 }
-            }
+            
         }
     }
 
@@ -322,9 +446,9 @@ public class PlayerObject : MonoBehaviour
             Debug.Log("Player has exited sink");
 
 
-            if (PickUppable.pickedUpObject != null)
+            if (playerPickUppable.pickedUpObject != null)
             {
-                if (PickUppable.pickedUpObject.tag == "DirtyPlate")
+                if (playerPickUppable.pickedUpObject.tag == "DirtyPlate")
                 {
                     Debug.Log("PlayerRadar: Washable object not in sink zone");
 
@@ -347,9 +471,9 @@ public class PlayerObject : MonoBehaviour
             }
             Debug.Log("Player has exited ingredient table");
 
-            if (PickUppable.pickedUpObject != null)
+            if (playerPickUppable.pickedUpObject != null)
             {
-                if (PickUppable.pickedUpObject.tag == "Ingredient")
+                if (playerPickUppable.pickedUpObject.tag == "Ingredient")
                 {
                     Debug.Log("PlayerRadar: Ingredient not in ingredient table zone");
 

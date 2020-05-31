@@ -90,8 +90,8 @@ GameObject:
   - component: {fileID: 8451774286096054819}
   - component: {fileID: 8451774286096054818}
   - component: {fileID: 8451774286096055005}
-  - component: {fileID: 8451774286096055007}
   - component: {fileID: 5568889547166860282}
+  - component: {fileID: 6990474273948586565}
   m_Layer: 0
   m_Name: IngredientTemp
   m_TagString: Ingredient
@@ -129,7 +129,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8451774286096055006}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -161,28 +161,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!114 &8451774286096055007
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8451774286096055006}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b371f5038549e8b428aed96c11b80a17, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  objectIcon: {fileID: 0}
-  washIcon: {fileID: 0}
-  washingIcon: {fileID: 0}
-  wasWashing: 0
-  cleanPlate: {fileID: 0}
-  heldObject: {fileID: 0}
-  playerPrefab: {fileID: 0}
-  sinkPos: {fileID: 0}
-  tablePos: {fileID: 0}
-  objectState: 0
 --- !u!65 &5568889547166860282
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -196,3 +174,17 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.329216, y: 2.4338083, z: 1.1409582}
   m_Center: {x: -0.046958685, y: 0.54899263, z: 0.0022470355}
+--- !u!114 &6990474273948586565
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8451774286096055006}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1723b33b4ad3ed4abf8ee2717986be1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerTarget: {fileID: 7706385258555843018, guid: 2f09c5eab3c581241a82b446f8987136,
+    type: 3}

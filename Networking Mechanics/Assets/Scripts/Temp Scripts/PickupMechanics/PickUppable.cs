@@ -28,13 +28,12 @@ public class PickUppable : MonoBehaviour, I_Interactable
     //bool to check if plate was being washed
     public bool wasWashing; //set true if player was interrupted from washing
 
-
     //Gameobject for clean plate to be set active/inactive
     public GameObject cleanPlate;
 
     //the game object that will be picked up and added to inventory
     //set inactive and parent to player
-    public static GameObject pickedUpObject;
+    public GameObject pickedUpObject;
     //when the player detects an object, this object will be set as the hit object
 
     //the object that the player will be holding if they pick up the object
@@ -54,10 +53,6 @@ public class PickUppable : MonoBehaviour, I_Interactable
     //reference to ingredient table position
     public Transform tablePos;
 
-
-
-    //Reference follow script
-    //public FollowObject followObject;
 
     //Different states of the object
     public enum ObjectState
@@ -85,7 +80,37 @@ public class PickUppable : MonoBehaviour, I_Interactable
 
         followScript = gameObject.GetComponent<FollowObject>(); //Reference follow object script
 
+        heldObject.GetComponentInChildren<Renderer>().enabled = false;
+
     }
+
+    #region HandleRenderers
+
+    //Handle enabling or disabling renderers of picked up object accordingly
+
+    public void EnableRenderer()
+    {
+        //Set meshrenderer enabled for optimisation
+        //Loop through all renderer in children and enable it
+        Renderer[] rend = GetComponentsInChildren<Renderer>();
+        foreach (Renderer r in rend)
+        {
+            r.enabled = true;
+        }
+    }
+
+    public void DisableRenderer()
+    {
+        //Set meshrenderer enabled for optimisation
+        //Loop through all renderer in children and enable it
+        Renderer[] rend = GetComponentsInChildren<Renderer>();
+        foreach (Renderer r in rend)
+        {
+            r.enabled = false;
+        }
+    }
+    #endregion
+
 
     #region PickUp Object
 
@@ -105,15 +130,9 @@ public class PickUppable : MonoBehaviour, I_Interactable
         Debug.Log("PickUppable: Picked up " + pickedUpObject);
 
         //Set object on Player's head active
-        heldObject.SetActive(true);
+        heldObject.GetComponentInChildren<Renderer>().enabled = true;
 
-        //Set meshrenderer disabled for optimisation
-        //Loop through all renderer in children and disable it
-        Renderer[] rend = GetComponentsInChildren<Renderer>();
-        foreach (Renderer r in rend)
-        {
-            r.enabled = false;
-        }
+        DisableRenderer();
 
 
         followScript.enabled = true;
@@ -151,21 +170,14 @@ public class PickUppable : MonoBehaviour, I_Interactable
         Debug.Log("PickUppable: Dropped " + pickedUpObject);
 
         //Deactivate heldobject
-        heldObject.SetActive(false);
+        heldObject.GetComponentInChildren<Renderer>().enabled = false;
 
         //Unparent object 
         pickedUpObject.transform.parent = null; //no more parent
-        pickedUpObject.SetActive(true);
+
+        EnableRenderer();
 
         followScript.enabled = false;
-
-        //Set meshrenderer disabled for optimisation
-        //Loop through all renderer in children and disable it
-        Renderer[] rend = GetComponentsInChildren<Renderer>();
-        foreach (Renderer r in rend)
-        {
-            r.enabled = true;
-        }
 
 
         //Change state back to pickuppable
@@ -189,23 +201,26 @@ public class PickUppable : MonoBehaviour, I_Interactable
         objectIcon.gameObject.SetActive(false);
 
         //set held item inactive
-        heldObject.SetActive(false);
+        heldObject.GetComponentInChildren<Renderer>().enabled = false;
 
         //set pickedup object active and move to tablepos
         //unparent from table
+        EnableRenderer();
         pickedUpObject.transform.position = tablePos.position;
         pickedUpObject.transform.parent = null;
-        pickedUpObject.SetActive(true);
+
+        followScript.enabled = false;
+        
 
         //set layer mask to ingredientontable
-        pickedUpObject.layer = LayerMask.NameToLayer("IngredientOnTable");
+        //pickedUpObject.layer = LayerMask.NameToLayer("IngredientOnTable");
 
         //set state as uninteractable
         objectState = ObjectState.UnInteractable;
 
     }
 
-    #endregion
+    #endregion 
 
     #region Wash Object
 
@@ -220,7 +235,7 @@ public class PickUppable : MonoBehaviour, I_Interactable
         objectIcon.gameObject.SetActive(false);
 
         //Set held object inactive
-        heldObject.SetActive(false);
+        heldObject.GetComponentInChildren<Renderer>().enabled = false;
 
         //Print statement
         Debug.Log("PickUppable: Ready to wash " + pickedUpObject);
@@ -228,9 +243,11 @@ public class PickUppable : MonoBehaviour, I_Interactable
         //Move pickedup object to the sink's position
         //if the position is null, that means this object shouldnt be washing, throw an error
         //Unparent from player
+        EnableRenderer();
         pickedUpObject.transform.parent = null;
         pickedUpObject.transform.position = sinkPos.position;
-        pickedUpObject.SetActive(true);
+
+        followScript.enabled = false;
 
         //set wash icon active
         washIcon.gameObject.SetActive(true);
@@ -278,7 +295,7 @@ public class PickUppable : MonoBehaviour, I_Interactable
         if (pickedUpObject != null && objectState == ObjectState.Washed)
         {
             //Set pickedupobject in sink inactive
-            pickedUpObject.SetActive(false);
+            DisableRenderer();
 
             //Set clean plate active
             cleanPlate.SetActive(true);

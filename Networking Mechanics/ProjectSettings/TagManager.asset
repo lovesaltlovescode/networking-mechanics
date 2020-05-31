@@ -46,8 +46,8 @@ TagManager:
   - PickedUp
   - PlateOnSink
   - IngredientOnTable
-  - 
-  - 
+  - IngredientShelf
+  - Pickuppable
   - 
   - 
   - 

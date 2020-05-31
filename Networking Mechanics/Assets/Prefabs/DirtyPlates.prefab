@@ -13,8 +13,8 @@ GameObject:
   - component: {fileID: 7573709594487455815}
   - component: {fileID: 7573709594487455813}
   - component: {fileID: 2886096614234108643}
-  m_Layer: 0
-  m_Name: Dirty DIshes
+  m_Layer: 15
+  m_Name: DirtyPlates
   m_TagString: DirtyPlate
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -198,6 +198,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: PlateModel
+      objectReference: {fileID: 0}
+    - target: {fileID: 8806658446990376049, guid: 6ccccc93dea15884190831a3aea1b89f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 15
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6ccccc93dea15884190831a3aea1b89f, type: 3}
