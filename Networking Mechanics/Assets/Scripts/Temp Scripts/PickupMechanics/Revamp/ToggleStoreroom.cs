@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 //Hides the meshes of certain walls and objects if player enters the storeroom
-public class CameraHandler : MonoBehaviour
+public class ToggleStoreroom : MonoBehaviour
 {
     public GameObject[] hiddenObjects;
 

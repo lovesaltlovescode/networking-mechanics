@@ -31,6 +31,7 @@ TagManager:
   - ChickenShelf
   - CucumberShelf
   - RiceTub
+  - Rice
   layers:
   - Default
   - TransparentFX
@@ -45,7 +46,7 @@ TagManager:
   - Zones
   - PickedUp
   - PlateOnSink
-  - IngredientOnTable
+  - UnInteractable
   - IngredientShelf
   - Ingredient
   - DirtyPlates

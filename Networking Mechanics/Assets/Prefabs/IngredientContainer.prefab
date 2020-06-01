@@ -47,7 +47,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7900305401801374782}
-  m_Enabled: 0
+  m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -90,9 +90,8 @@ GameObject:
   - component: {fileID: 8451774286096054819}
   - component: {fileID: 8451774286096054818}
   - component: {fileID: 5568889547166860282}
-  - component: {fileID: -1376512528173413437}
   m_Layer: 15
-  m_Name: IngredientTemp
+  m_Name: IngredientContainer
   m_TagString: Ingredient
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -134,28 +133,3 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.329216, y: 2.4338083, z: 1.1409582}
   m_Center: {x: -0.046958685, y: 0.54899263, z: 0.0022470355}
---- !u!114 &-1376512528173413437
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8451774286096055006}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b371f5038549e8b428aed96c11b80a17, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  objectIcon: {fileID: 6201978281267978478, guid: dac0fea579b88194989a7319e8b05cea,
-    type: 3}
-  heldObject: {fileID: 2957440615121832657, guid: aa37fffad1ed2d04598d63c328e535be,
-    type: 3}
-  playerPrefab: {fileID: 7706385258555843008, guid: 2f09c5eab3c581241a82b446f8987136,
-    type: 3}
-  washIcon: {fileID: 0}
-  washingIcon: {fileID: 0}
-  wasWashing: 0
-  cleanPlate: {fileID: 0}
-  sinkPos: {fileID: 0}
-  trayPos: {fileID: 0}
-  objectState: 0
