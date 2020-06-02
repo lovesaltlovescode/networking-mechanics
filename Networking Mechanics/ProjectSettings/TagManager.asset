@@ -32,6 +32,8 @@ TagManager:
   - CucumberShelf
   - RiceTub
   - Rice
+  - Egg
+  - SinkPos
   layers:
   - Default
   - TransparentFX
@@ -49,7 +51,7 @@ TagManager:
   - UnInteractable
   - IngredientShelf
   - Ingredient
-  - DirtyPlates
+  - TableItem
   - Pickuppable
   - 
   - 

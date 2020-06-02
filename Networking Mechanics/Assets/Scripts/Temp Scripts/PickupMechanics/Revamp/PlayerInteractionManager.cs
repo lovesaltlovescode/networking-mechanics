@@ -28,9 +28,15 @@ public class PlayerInteractionManager : MonoBehaviour
     //List of objects in player's inventory, static and same throughout all scripts
     public static List<GameObject> objectsInInventory = new List<GameObject>();
 
+    //attach and drop off point on the player
+    public Transform attachPoint;
+    public Transform dropOffPoint;
+
     //SCRIPT INITIALISATIONS
 
     private IngredientInteraction ingredientInteraction;
+    private TableInteraction tableInteraction;
+    private SinkInteraction sinkInteraction;
 
     //Player states
     public enum PlayerState
@@ -41,6 +47,17 @@ public class PlayerInteractionManager : MonoBehaviour
         //Ingredients
         CanPickUpIngredient,
         CanDropIngredient,
+
+        //Table items: plates, money etc.
+        CanPickUpDirtyPlate,
+
+        //Sink interaction
+        CanPlacePlateInSink,
+        ExitedSink,
+        CanWashPlate,
+        WashingPlate,
+        StoppedWashingPlate,
+        FinishedWashingPlate
     }
 
     public static PlayerState playerState;
@@ -49,6 +66,8 @@ public class PlayerInteractionManager : MonoBehaviour
     {
         //initialise scripts    
         ingredientInteraction = gameObject.GetComponent<IngredientInteraction>();
+        tableInteraction = gameObject.GetComponent<TableInteraction>();
+        sinkInteraction = gameObject.GetComponent<SinkInteraction>();
 
         playerState = PlayerState.Default;
     }
@@ -121,7 +140,7 @@ public class PlayerInteractionManager : MonoBehaviour
             Debug.Log("PlayerInteractionManager -No object found");
             
         }
-        Debug.Log(!detectedObject); //return true if no detected object
+        //Debug.Log(!detectedObject); //return true if no detected object
     }
 
     public void InteractButton()
@@ -130,11 +149,24 @@ public class PlayerInteractionManager : MonoBehaviour
         switch (playerState)
         {
             case PlayerState.CanPickUpIngredient:
-                ingredientInteraction.PickUpIngredient(detectedObject, objectsInInventory);
+                ingredientInteraction.PickUpIngredient(detectedObject, objectsInInventory, attachPoint);
                 break;
 
             case PlayerState.CanDropIngredient:
-                ingredientInteraction.DropIngredient(heldObject, objectsInInventory);
+                ingredientInteraction.DropIngredient(heldObject, objectsInInventory, dropOffPoint);
+                break;
+
+            case PlayerState.CanPickUpDirtyPlate:
+                tableInteraction.PickUpTableItem(detectedObject, objectsInInventory, attachPoint);
+                break;
+
+            //Washing plate states
+            case PlayerState.CanPlacePlateInSink:
+                sinkInteraction.PlacePlateInSink(heldObject, objectsInInventory);
+                break;
+
+            case PlayerState.CanWashPlate:
+                sinkInteraction.WashDirtyPlate();
                 break;
         }
     }
@@ -160,6 +192,11 @@ public class PlayerInteractionManager : MonoBehaviour
 
         //checks for player state
         Debug.Log("PlayerInteractionManager - Player state is currently: " + playerState);
+
+        if (playerState == PlayerState.FinishedWashingPlate)
+        {
+            sinkInteraction.FinishWashingPlate();
+        }
     }
 
 

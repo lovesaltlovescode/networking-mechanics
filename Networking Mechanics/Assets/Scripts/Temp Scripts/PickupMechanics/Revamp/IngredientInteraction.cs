@@ -15,10 +15,6 @@ public class IngredientInteraction : MonoBehaviour
 
     public bool ingredientDetected;
 
-    public Transform attachPoint;
-
-    public Transform dropoffPoint;
-
     public bool nearIngredientTray; //check if player is in the ingredient tray zone
 
     public Transform trayPosition; //TODO: Change to an array of predetermine dpositions for dropping off the ingredient
@@ -31,7 +27,7 @@ public class IngredientInteraction : MonoBehaviour
 
 
     //Pickup ingredient function
-    public void PickUpIngredient(GameObject detectedIngredient, List<GameObject> Inventory)
+    public void PickUpIngredient(GameObject detectedIngredient, List<GameObject> Inventory, Transform attachPoint)
     {
        
         Debug.Log("IngredientInteraction - Pick up ingredient");
@@ -53,7 +49,7 @@ public class IngredientInteraction : MonoBehaviour
 
     //Drop ingredient function
     //If holding an ingredient -> held object
-    public void DropIngredient(GameObject heldIngredient, List<GameObject> Inventory)
+    public void DropIngredient(GameObject heldIngredient, List<GameObject> Inventory, Transform dropOffPoint)
     {
         //if near table zone, then change the transform
         if (nearIngredientTray)
@@ -71,7 +67,7 @@ public class IngredientInteraction : MonoBehaviour
         else
         {
             //set transform to dropoff point
-            heldIngredient.transform.position = dropoffPoint.position;
+            heldIngredient.transform.position = dropOffPoint.position;
             
         }
 
@@ -133,11 +129,6 @@ public class IngredientInteraction : MonoBehaviour
                 //switch the state
                 PlayerInteractionManager.playerState = PlayerInteractionManager.PlayerState.CanDropIngredient;
             }
-        }
-        else if(!PlayerInteractionManager.detectedObject)
-        {
-            //If no object detected
-            PlayerInteractionManager.playerState = PlayerInteractionManager.PlayerState.Default;
         }
     }
 

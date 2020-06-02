@@ -9,6 +9,7 @@ using UnityEngine.UI;
 /// Held object will be coloured icon
 /// Runs switch statement to check tag and which icon to display
 /// Swaps out image sprite of a preloaded blank image on the  button
+/// Takes care of wash timer, fill amount and icon
 /// </summary>
 public class UIManager : MonoBehaviour
 {
@@ -19,6 +20,19 @@ public class UIManager : MonoBehaviour
 
     //DIFFERENT SPRITES
     public Sprite riceIcon;
+    public Sprite eggIcon;
+
+    //Table items
+    public Sprite dirtyPlateIcon;
+
+    //Washing plates
+    public Sprite washIcon; //wash icon that is shown in sink zone, but will be grayed out when is washing starts
+    public Image washTimerImage; //wash icon that will fill up slowly according to timer, above the washicon
+    private float waitTime = 4f; //time to wait until image is filled
+    public bool finishedWashing = false; //if true, spawn clean plate
+
+
+    public SinkInteraction sinkInteraction;
 
     // Start is called before the first frame update
     void Start()
@@ -31,6 +45,30 @@ public class UIManager : MonoBehaviour
     {
         DisplayGrayIcon();
         DisplayHeldObjectIcon();
+
+        if (sinkInteraction.startTimer)
+        {
+            StartTimer();
+        }
+        else if(!sinkInteraction.startTimer)
+        {
+            washTimerImage.fillAmount = 0; //do not fill up image
+        }
+
+
+        if (sinkInteraction.showWashIcon)
+        {
+            ToggleWashIcons();
+        }
+
+        //if image is completely filled
+        if (washTimerImage.fillAmount == 1)
+        {
+            PlayerInteractionManager.playerState = PlayerInteractionManager.PlayerState.FinishedWashingPlate;
+        }
+
+
+
     }
 
     public void DisplayGrayIcon()
@@ -49,6 +87,13 @@ public class UIManager : MonoBehaviour
                     buttonIcon.sprite = riceIcon;
                     break;
 
+                case "Egg":
+                    buttonIcon.sprite = eggIcon;
+                    break;
+
+                case "DirtyPlate":
+                    buttonIcon.sprite = dirtyPlateIcon;
+                    break;
             }
         }else if(!PlayerInteractionManager.detectedObject)
         {
@@ -75,7 +120,50 @@ public class UIManager : MonoBehaviour
                 case "Rice":
                     buttonIcon.sprite = riceIcon;
                     break;
+
+                case "Egg":
+                    buttonIcon.sprite = eggIcon;
+                    break;
+
+                case "DirtyPlate":
+                    buttonIcon.sprite = dirtyPlateIcon;
+                    break;
             }
         }
+    }
+
+    //If in sink zone and able to wash show washable icon
+    //If start timer, set icon to gray, and start fillamount
+    public void ToggleWashIcons()
+    {
+        switch (PlayerInteractionManager.playerState)
+        {
+            case PlayerInteractionManager.PlayerState.CanPlacePlateInSink:
+                buttonIcon.color = Color.white;
+                buttonIcon.sprite = washIcon;
+                break;
+
+            case PlayerInteractionManager.PlayerState.CanWashPlate:
+                buttonIcon.color = Color.white;
+                buttonIcon.sprite = washIcon;
+                break;
+
+            case PlayerInteractionManager.PlayerState.WashingPlate:
+                buttonIcon.sprite = washIcon;
+                buttonIcon.color = Color.gray;
+                break;
+
+            case PlayerInteractionManager.PlayerState.ExitedSink:
+                sinkInteraction.showWashIcon = false;
+                break;
+        }
+    }
+
+    //increase fill amount of image
+    public void StartTimer()
+    {
+        //Increase fill amount over waittime seconds
+        washTimerImage.fillAmount += 1.0f / waitTime * Time.deltaTime;
+        Debug.Log("UI Manager: washing plates");
     }
 }
