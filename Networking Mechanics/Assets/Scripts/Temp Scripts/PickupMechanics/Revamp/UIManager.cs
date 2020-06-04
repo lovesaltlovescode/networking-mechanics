@@ -65,6 +65,8 @@ public class UIManager : MonoBehaviour
         if (washTimerImage.fillAmount == 1)
         {
             PlayerInteractionManager.playerState = PlayerInteractionManager.PlayerState.FinishedWashingPlate;
+            washTimerImage.fillAmount = 0;
+            
         }
 
 

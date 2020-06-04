@@ -22,6 +22,11 @@ public class TableInteraction : MonoBehaviour
     //pick up table item function
     public void PickUpTableItem(GameObject detectedItem, List<GameObject> Inventory, Transform attachPoint)
     {
+        //only able to pick up if inventory count is 0
+        if(PlayerInteractionManager.objectsInInventory.Count != 0)
+        {
+            return;
+        }
         Debug.Log("TableInteraction - Pick up table item");
 
         //Parent to attachment point and transform

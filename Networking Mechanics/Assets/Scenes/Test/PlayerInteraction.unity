@@ -1739,6 +1739,11 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2886096614234108643, guid: 07a5145ab429c9043bcbce10c10cbf50,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4059441969038654650, guid: 07a5145ab429c9043bcbce10c10cbf50,
         type: 3}
       propertyPath: m_Layer
@@ -1762,17 +1767,17 @@ PrefabInstance:
     - target: {fileID: 7573709594487455809, guid: 07a5145ab429c9043bcbce10c10cbf50,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 7573709594487455809, guid: 07a5145ab429c9043bcbce10c10cbf50,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 7573709594487455809, guid: 07a5145ab429c9043bcbce10c10cbf50,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 7573709594487455809, guid: 07a5145ab429c9043bcbce10c10cbf50,
         type: 3}
@@ -2165,6 +2170,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 629626963}
+  - component: {fileID: 629626964}
   m_Layer: 10
   m_Name: SinkPos
   m_TagString: SinkPos
@@ -2180,12 +2186,25 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 629626962}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.213, y: 0.415, z: 0.273}
+  m_LocalPosition: {x: 0.213, y: 0.351, z: 0.273}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1144359523}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &629626964
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 629626962}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.17335397, y: 0.53727674, z: 0.7289002}
+  m_Center: {x: 0.003840706, y: -0.12633157, z: 0.057619914}
 --- !u!1 &663675109 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -8052994932809076077, guid: fb68279123031a84095a7a6441332b65,
@@ -2674,7 +2693,7 @@ PrefabInstance:
     - target: {fileID: 8451774286096055006, guid: 262427843b272ab4fa0485dec42a7781,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 262427843b272ab4fa0485dec42a7781, type: 3}
@@ -2989,6 +3008,7 @@ Transform:
   - {fileID: 1130217388}
   - {fileID: 1392199596}
   - {fileID: 629626963}
+  - {fileID: 1363903126}
   m_Father: {fileID: 1794079875}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3521,6 +3541,50 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &1363903125
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1363903126}
+  - component: {fileID: 1363903127}
+  m_Layer: 10
+  m_Name: SinkPos2
+  m_TagString: SinkPos
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1363903126
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1363903125}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.213, y: 0.5300001, z: 0.273}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1144359523}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &1363903127
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1363903125}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.17335397, y: 0.53727674, z: 0.7289002}
+  m_Center: {x: 0.003840706, y: -0.12633157, z: 0.057619914}
 --- !u!1 &1380559932 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -8924139223193377212, guid: fb68279123031a84095a7a6441332b65,
@@ -5723,15 +5787,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sinkPosition: {fileID: 629626963}
+  sinkPosition2: {fileID: 1363903126}
+  cleanPlateSpawnPosition: {fileID: 1392199596}
   cleanPlatePrefab: {fileID: 8806658446990376049, guid: 6ccccc93dea15884190831a3aea1b89f,
     type: 3}
-  cleanPlateSpawnPosition: {fileID: 1392199596}
-  holdingDirtyPlate: 0
+  dirtyPlateInSink: {fileID: 0}
   placedPlateInSink: 0
   startTimer: 0
   stoppedWashingPlate: 0
+  holdingDirtyPlate: 0
   showWashIcon: 0
-  dirtyPlateInSink: {fileID: 0}
+  testparent: {fileID: 0}
+  platesInSink: 0
 --- !u!1001 &6173137709014827834
 PrefabInstance:
   m_ObjectHideFlags: 0
