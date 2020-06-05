@@ -17,6 +17,8 @@ public class IngredientInteraction : MonoBehaviour
 
     public bool nearIngredientTray; //check if player is in the ingredient tray zone
 
+    public bool nearIngredientShelves; //check if player is near the ingredient shelves
+
     public Transform trayPosition; //TODO: Change to an array of predetermine dpositions for dropping off the ingredient
 
     // Start is called before the first frame update
@@ -30,6 +32,12 @@ public class IngredientInteraction : MonoBehaviour
     public void PickUpIngredient(GameObject detectedIngredient, List<GameObject> Inventory, Transform attachPoint)
     {
        
+        //if there's something in the inventory, return
+        if(Inventory.Count == 1)
+        {
+            return;
+        }
+
         Debug.Log("IngredientInteraction - Pick up ingredient");
 
         //Parent to attachment point and transform
@@ -140,6 +148,12 @@ public class IngredientInteraction : MonoBehaviour
             Debug.Log("IngredientInteraction - Near the ingredient tray!");
             nearIngredientTray = true;
         }
+
+        if(other.tag == "ShelfZone")
+        {
+            //if player is in shelf zone, they cannot drop ingredients
+            nearIngredientShelves = true;
+        }
     }
 
     public void OnTriggerExit(Collider other)
@@ -148,6 +162,12 @@ public class IngredientInteraction : MonoBehaviour
         {
             Debug.Log("IngredientInteraction - Exited ingredient tray!");
             nearIngredientTray = false;
+        }
+
+        if (other.tag == "ShelfZone")
+        {
+            //if player is in shelf zone, they cannot drop ingredients
+            nearIngredientShelves = false;
         }
     }
 }

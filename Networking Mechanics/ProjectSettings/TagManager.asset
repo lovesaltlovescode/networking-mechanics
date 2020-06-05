@@ -34,6 +34,11 @@ TagManager:
   - Rice
   - Egg
   - SinkPos
+  - EggShelfZone
+  - ChickenShelfZone
+  - CucumberShelfZone
+  - RiceTubZone
+  - ShelfZone
   layers:
   - Default
   - TransparentFX

@@ -34,15 +34,24 @@ public class PlayerInteractionManager : MonoBehaviour
 
     //SCRIPT INITIALISATIONS
 
+    [Header("Reference to individual scripts")]
+    private ShelfInteraction shelfInteraction;
     private IngredientInteraction ingredientInteraction;
     private TableInteraction tableInteraction;
     private SinkInteraction sinkInteraction;
+    
 
     //Player states
     public enum PlayerState
     {
         //Default state
         Default,
+
+        //Spawning ingredients from shelf
+        CanSpawnEgg,
+        CanSpawnChicken,
+        CanSpawnCucumber,
+        CanSpawnRice,
 
         //Ingredients
         CanPickUpIngredient,
@@ -65,6 +74,7 @@ public class PlayerInteractionManager : MonoBehaviour
     void Awake()
     {
         //initialise scripts    
+        shelfInteraction = gameObject.GetComponent<ShelfInteraction>();
         ingredientInteraction = gameObject.GetComponent<IngredientInteraction>();
         tableInteraction = gameObject.GetComponent<TableInteraction>();
         sinkInteraction = gameObject.GetComponent<SinkInteraction>();
@@ -148,6 +158,11 @@ public class PlayerInteractionManager : MonoBehaviour
         //switch cases to check which function to run at which state
         switch (playerState)
         {
+            //spawning ingredients from shelves states
+            case PlayerState.CanSpawnEgg:
+                shelfInteraction.SpawnEgg(heldObject, objectsInInventory, attachPoint);
+                break;
+
             case PlayerState.CanPickUpIngredient:
                 ingredientInteraction.PickUpIngredient(detectedObject, objectsInInventory, attachPoint);
                 break;
@@ -168,6 +183,8 @@ public class PlayerInteractionManager : MonoBehaviour
             case PlayerState.CanWashPlate:
                 sinkInteraction.WashDirtyPlate();
                 break;
+
+
         }
     }
 
