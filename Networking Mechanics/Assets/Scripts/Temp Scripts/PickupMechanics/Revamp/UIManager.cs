@@ -115,20 +115,49 @@ public class UIManager : MonoBehaviour
         {
             Debug.Log("UIManager: Held object is " + PlayerInteractionManager.heldObject.tag);
             //show the actual icon
-            buttonIcon.color = Color.white;
+            
 
             switch (PlayerInteractionManager.heldObject.tag)
             {
                 case "Rice":
                     buttonIcon.sprite = riceIcon;
+
+                    if(PlayerInteractionManager.playerState != PlayerInteractionManager.PlayerState.CanDropIngredient)
+                    {
+                        buttonIcon.color = Color.grey;
+                    }
+                    else
+                    {
+                        buttonIcon.color = Color.white;
+                    }
+
                     break;
 
                 case "Egg":
                     buttonIcon.sprite = eggIcon;
+
+                    if (PlayerInteractionManager.playerState != PlayerInteractionManager.PlayerState.CanDropIngredient)
+                    {
+                        buttonIcon.color = Color.grey;
+                    }
+                    else
+                    {
+                        buttonIcon.color = Color.white;
+                    }
+
                     break;
 
                 case "DirtyPlate":
                     buttonIcon.sprite = dirtyPlateIcon;
+
+                    if(PlayerInteractionManager.playerState != PlayerInteractionManager.PlayerState.CanPlacePlateInSink)
+                    {
+                        buttonIcon.color = Color.grey;
+                    }
+                    else
+                    {
+                        buttonIcon.color = Color.white;
+                    }
                     break;
             }
         }

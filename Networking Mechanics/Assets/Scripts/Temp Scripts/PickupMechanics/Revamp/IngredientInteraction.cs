@@ -134,9 +134,21 @@ public class IngredientInteraction : MonoBehaviour
             {
                 //if inventory is full, able to drop
                 print("IngredientInteraction - Can drop ingredient");
+
+
+                //set spawned egg false so the eggprefab is now just like a normal ingredient
+                ShelfInteraction.spawnedEgg = false;
+
+
                 //switch the state
+                if(!nearIngredientShelves)
                 PlayerInteractionManager.playerState = PlayerInteractionManager.PlayerState.CanDropIngredient;
             }
+        }
+        //if there is no detected object, player state returns to default
+        if (!PlayerInteractionManager.detectedObject && !SinkInteraction.placedPlateInSink)
+        {
+            PlayerInteractionManager.playerState = PlayerInteractionManager.PlayerState.Default;
         }
     }
 

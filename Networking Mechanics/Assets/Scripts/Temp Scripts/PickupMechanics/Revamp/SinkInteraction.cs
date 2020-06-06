@@ -23,7 +23,7 @@ public class SinkInteraction : MonoBehaviour
 
     [Header("Plate states")]
 
-    public bool placedPlateInSink; //if plate has been placed in sink
+    public static bool placedPlateInSink; //if plate has been placed in sink
     public bool startTimer; //start washing the plate
     public bool stoppedWashingPlate;
 
@@ -125,18 +125,31 @@ public class SinkInteraction : MonoBehaviour
 
             //Destroy the dirty plate
             //loop through all plates being held and destroy the first one
+            //TODO: Restructure properly....
             if(platesInSink == 2)
             {
-                Destroy(platesBeingHeld[0]);
+                Destroy(platesBeingHeld[1]);
+                platesBeingHeld.Remove(platesBeingHeld[1]);
+                //reduce number of plates in sink
+                platesInSink -= 1;
             }
             else if (platesInSink == 1)
             {
-                Destroy(platesBeingHeld[1]);
+                Destroy(platesBeingHeld[0]);
+                platesBeingHeld.Remove(platesBeingHeld[0]);
+                //reduce number of plates in sink
+                platesInSink -= 1;
+
+                if (!platesBeingHeld[0])
+                {
+                    Destroy(platesBeingHeld[1]);
+                    platesBeingHeld.Remove(platesBeingHeld[1]);
+                    //reduce number of plates in sink
+                    platesInSink -= 1;
+                }
             }
 
-            //reduce number of plates in sink
-            platesInSink -= 1;
-
+            
             //Instantiate clean plate
             Instantiate(cleanPlatePrefab, cleanPlateSpawnPosition.position, Quaternion.identity);
 

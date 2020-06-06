@@ -1376,7 +1376,7 @@ Transform:
   m_GameObject: {fileID: 359171354}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 2.52, y: 1.0119774, z: 17.2}
-  m_LocalScale: {x: 0.7806, y: 1.8798, z: 1.3241757}
+  m_LocalScale: {x: 0.7806, y: 1.8798, z: 1.3812476}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 12
@@ -2249,7 +2249,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 718413328}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 2.0740454, y: -0.2723574, z: -1.7067224}
+  m_LocalPosition: {x: 2.0740454, y: -0.2723574, z: -1.68}
   m_LocalScale: {x: 4.3990517, y: 0.5319715, z: 0.688534}
   m_Children: []
   m_Father: {fileID: 1843814589}
@@ -2266,8 +2266,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.20625356, y: 1.853124, z: 1.427066}
-  m_Center: {x: -0.255867, y: 0.51753443, z: 0.24752605}
+  m_Size: {x: 0.25698876, y: 1.853124, z: 1.4985868}
+  m_Center: {x: -0.2304994, y: 0.51753443, z: 0.21176562}
 --- !u!1 &737490451 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -6427245212034505354, guid: fb68279123031a84095a7a6441332b65,
@@ -5719,7 +5719,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d00663290ace4ca448a0aa5dd8b3325e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  raycastLength: 2
+  raycastLength: 1.5
   distFromObject: 0
   attachPoint: {fileID: 1868058578}
   dropOffPoint: {fileID: 176803281}
@@ -5754,7 +5754,6 @@ MonoBehaviour:
   cleanPlatePrefab: {fileID: 8806658446990376049, guid: 6ccccc93dea15884190831a3aea1b89f,
     type: 3}
   platesBeingHeld: []
-  placedPlateInSink: 0
   startTimer: 0
   stoppedWashingPlate: 0
   holdingDirtyPlate: 0
@@ -5773,13 +5772,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shelfDetected: 0
-  facingShelf: 0
   eggPrefab: {fileID: 2144616528253818311, guid: a4d12ab05990c4140a15e5f374158c2c,
     type: 3}
   chickenPreab: {fileID: 0}
   cucumberPrefab: {fileID: 0}
   ricePrefab: {fileID: 0}
-  spawnedEgg: 0
 --- !u!1001 &6173137709014827834
 PrefabInstance:
   m_ObjectHideFlags: 0

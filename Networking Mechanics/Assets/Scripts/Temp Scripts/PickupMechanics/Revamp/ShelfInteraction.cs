@@ -12,7 +12,6 @@ public class ShelfInteraction : MonoBehaviour
 {
 
     public bool shelfDetected; //if detected object is shelf
-    public bool facingShelf; //checks if player is in the shelf zone
 
     [Header("Ingredient prefabs")]
     public GameObject eggPrefab;
@@ -22,7 +21,7 @@ public class ShelfInteraction : MonoBehaviour
 
     private GameObject spawnedEggPrefab;
 
-    public bool spawnedEgg;
+    public static bool spawnedEgg;
 
     // Start is called before the first frame update
     void Start()
@@ -64,6 +63,7 @@ public class ShelfInteraction : MonoBehaviour
 
         if (spawnedEgg)
         {
+            Debug.Log("ShelfInteraction: Spawned egg is true");
             PlayerInteractionManager.detectedObject = spawnedEggPrefab;
             PlayerInteractionManager.heldObject = spawnedEggPrefab;
         }
@@ -78,7 +78,12 @@ public class ShelfInteraction : MonoBehaviour
         if(other.tag == "ShelfZone")
         {
             //player in shelf zone, cannot drop anything here
-            Debug.Log("ShelfInteraction - Player is in the shelf zone!");    
+            Debug.Log("ShelfInteraction - Player is in the shelf zone!");
+            if (PlayerInteractionManager.IsInventoryFull())
+            {
+                //if inventory full, then set state to default
+                PlayerInteractionManager.playerState = PlayerInteractionManager.PlayerState.Default;
+            }
 
         }
         if (other.tag == "EggShelfZone" && shelfDetected)
