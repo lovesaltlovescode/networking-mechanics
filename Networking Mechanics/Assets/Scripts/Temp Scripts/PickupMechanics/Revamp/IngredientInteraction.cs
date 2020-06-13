@@ -19,7 +19,14 @@ public class IngredientInteraction : MonoBehaviour
 
     public bool nearIngredientShelves; //check if player is near the ingredient shelves
 
-    public Transform trayPosition; //TODO: Change to an array of predetermine dpositions for dropping off the ingredient
+    [Header("Ingredient Tray")]
+
+    //2 arrays, 1 array to store the gos on the tray, if there is nothing (by default) it is a null element
+    //second array will store the transform for the traypositions, public array
+
+    public Transform[] trayPositions; //array to contain all tray positions
+
+    public GameObject[] ingredientsOnTray = new GameObject[4]; //array to contain all ingredients on the tray
 
     // Start is called before the first frame update
     void Start()
@@ -59,42 +66,72 @@ public class IngredientInteraction : MonoBehaviour
     //If holding an ingredient -> held object
     public void DropIngredient(GameObject heldIngredient, List<GameObject> Inventory, Transform dropOffPoint)
     {
-        //if near table zone, then change the transform
+
+        //if near ingredient tray
         if (nearIngredientTray)
         {
-            heldIngredient.transform.position = trayPosition.position;
-            
 
-            //set layer to uninteractable
-            heldIngredient.layer = LayerMask.NameToLayer("UnInteractable");
+            //function to loop through game object array, check for a null element, if an index is null
+            for (int i = 0; i < ingredientsOnTray.Length; i++)
+            {
+                if(ingredientsOnTray[i] == null)
+                {
+                    //if the gameobject is null, assign it as held ingredient
+                    ingredientsOnTray[i] = heldIngredient;
+                    heldIngredient.transform.position = trayPositions[i].transform.position;
 
-            //remove detected object, player should not be seeing this object anymore
-            PlayerInteractionManager.detectedObject = null;
+                    //set layer to uninteractable
+                    heldIngredient.layer = LayerMask.NameToLayer("UnInteractable");
+
+                    //remove detected object, player should not be seeing this object anymore
+                    PlayerInteractionManager.detectedObject = null;
+
+                    //Generic function regardless of drop off location
+                    Debug.Log("IngredientInteraction - Drop ingredient");
+
+                    //Remove from inventory
+                    Inventory.Remove(heldIngredient);
+
+                    //unparent
+                    heldIngredient.transform.parent = null;
+
+                    //Set rotation back to 0
+                    heldIngredient.transform.rotation = Quaternion.identity;
+
+                    //set held object to null, player is not holding anything
+                    PlayerInteractionManager.heldObject = null;
+                    return;
+                }
+                //else if(i == 4 && ingredientsOnTray[i] != null)
+                //{
+                //    Debug.Log("All ingredient slots have been filled");
+                //}
+            }
+           
 
         }
         else
         {
-            //set transform to dropoff point
+            //normal drop function
             heldIngredient.transform.position = dropOffPoint.position;
-            
+            //Generic function regardless of drop off location
+            Debug.Log("IngredientInteraction - Drop ingredient");
+
+            //Remove from inventory
+            Inventory.Remove(heldIngredient);
+
+            //unparent
+            heldIngredient.transform.parent = null;
+
+            //Set rotation back to 0
+            heldIngredient.transform.rotation = Quaternion.identity;
+
+            //set held object to null, player is not holding anything
+            PlayerInteractionManager.heldObject = null;
         }
 
-        //Generic function regardless of drop off location
-        Debug.Log("IngredientInteraction - Drop ingredient");
-
-        //unparent
-        heldIngredient.transform.parent = null;
-
-        //Remove from inventory
-        Inventory.Remove(heldIngredient);
-
-        //Set rotation back to 0
-        heldIngredient.transform.rotation = Quaternion.identity;
         
-        //set held object to null, player is not holding anything
-        PlayerInteractionManager.heldObject = null;
 
-        //Change layer back to ingredient
 
 
     }

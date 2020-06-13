@@ -126,7 +126,7 @@ public class SinkInteraction : MonoBehaviour
             //Destroy the dirty plate
             //loop through all plates being held and destroy the first one
             //TODO: Restructure properly....
-            if(platesInSink == 2)
+            if (platesInSink == 2)
             {
                 Destroy(platesBeingHeld[1]);
                 platesBeingHeld.Remove(platesBeingHeld[1]);
@@ -149,15 +149,15 @@ public class SinkInteraction : MonoBehaviour
                 }
             }
 
-            
+
             //Instantiate clean plate
             Instantiate(cleanPlatePrefab, cleanPlateSpawnPosition.position, Quaternion.identity);
 
             //set all bools to false
             startTimer = false;
-            
-            
-            if(platesInSink != 0)
+
+
+            if (platesInSink != 0)
             {
                 showWashIcon = true;
                 placedPlateInSink = true;
@@ -179,7 +179,7 @@ public class SinkInteraction : MonoBehaviour
         {
 
             CheckForWashingCriteria();
-            
+
 
         }
 
@@ -189,7 +189,7 @@ public class SinkInteraction : MonoBehaviour
     //changes state of player accordingly
     public void CheckForWashingCriteria()
     {
-        if(PlayerInteractionManager.heldObject.tag == "DirtyPlate")
+        if (PlayerInteractionManager.heldObject.tag == "DirtyPlate")
         {
             Debug.Log("SinkInteraction - Player is holding a dirty plate!");
             holdingDirtyPlate = true;
@@ -203,16 +203,16 @@ public class SinkInteraction : MonoBehaviour
     public void OnTriggerEnter(Collider other)
     {
         //if it is the sink zone
-        if(other.tag == "SinkZone")
+        if (other.tag == "SinkZone")
         {
             Debug.Log("SinkInteraction - Player in sink zone!");
 
             //If player is holding a  plate
-            if(holdingDirtyPlate)
+            if (holdingDirtyPlate)
             {
-               Debug.Log("SinkInteraction - Player able to place plate in sink!");
-               PlayerInteractionManager.playerState = PlayerInteractionManager.PlayerState.CanPlacePlateInSink;
-                
+                Debug.Log("SinkInteraction - Player able to place plate in sink!");
+                PlayerInteractionManager.playerState = PlayerInteractionManager.PlayerState.CanPlacePlateInSink;
+
             }
             //if player was washing plate, then if they enter the sink zone again they can resume
             //TODO: CHANGE TO ELSE
@@ -235,13 +235,13 @@ public class SinkInteraction : MonoBehaviour
     public void OnTriggerExit(Collider other)
     {
         //if exit sink zone
-        if(other.tag == "SinkZone")
+        if (other.tag == "SinkZone")
         {
             Debug.Log("SinkInteraction - Exited sink zone");
             showWashIcon = false;
 
             //if holding a dirty plate
-            if(holdingDirtyPlate || platesInSink != 0)
+            if (holdingDirtyPlate || platesInSink != 0)
             {
                 //DELETE LATER
                 Debug.Log("SinkInteraction - You should wash the plate!");
@@ -250,7 +250,7 @@ public class SinkInteraction : MonoBehaviour
             }
 
             //if was washing a dirty plate
-            if(PlayerInteractionManager.playerState == PlayerInteractionManager.PlayerState.WashingPlate)
+            if (PlayerInteractionManager.playerState == PlayerInteractionManager.PlayerState.WashingPlate)
             {
                 //change state to stopped washing plate
                 PlayerInteractionManager.playerState = PlayerInteractionManager.PlayerState.StoppedWashingPlate;
@@ -265,3 +265,4 @@ public class SinkInteraction : MonoBehaviour
         }
     }
 }
+
