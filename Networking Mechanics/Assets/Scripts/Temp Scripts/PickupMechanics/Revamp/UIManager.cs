@@ -32,8 +32,8 @@ public class UIManager : MonoBehaviour
     public bool finishedWashing = false; //if true, spawn clean plate
 
 
-    public SinkInteraction sinkInteraction;
-
+    public WashInteraction washInteraction;
+         
     // Start is called before the first frame update
     void Start()
     {
@@ -46,32 +46,15 @@ public class UIManager : MonoBehaviour
         DisplayGrayIcon();
         DisplayHeldObjectIcon();
 
-        if (sinkInteraction.startTimer)
-        {
-            StartTimer();
-        }
-        else if(!sinkInteraction.startTimer)
-        {
-            washTimerImage.fillAmount = 0; //do not fill up image
-        }
-
-
-        if (sinkInteraction.showWashIcon)
-        {
-            ToggleWashIcons();
-        }
-
-        //if image is completely filled
-        if (washTimerImage.fillAmount == 1)
-        {
-            PlayerInteractionManager.playerState = PlayerInteractionManager.PlayerState.FinishedWashingPlate;
-            washTimerImage.fillAmount = 0;
-            
-        }
+        //wash dirty plates
+        CheckWashTimer(); 
+        
 
 
 
     }
+
+
 
     public void DisplayGrayIcon()
     {
@@ -185,8 +168,35 @@ public class UIManager : MonoBehaviour
                 break;
 
             case PlayerInteractionManager.PlayerState.ExitedSink:
-                sinkInteraction.showWashIcon = false;
+                washInteraction.showWashIcon = false;
                 break;
+        }
+    }
+
+    //check if the timer has been started to wash plates
+    public void CheckWashTimer()
+    {
+        if (washInteraction.startTimer)
+        {
+            StartTimer();
+        }
+        else if (!washInteraction.startTimer)
+        {
+            washTimerImage.fillAmount = 0; //do not fill up image
+        }
+
+
+        if (washInteraction.showWashIcon)
+        {
+            ToggleWashIcons();
+        }
+
+        //if image is completely filled, reset fill to 0
+        if (washTimerImage.fillAmount == 1)
+        {
+            PlayerInteractionManager.playerState = PlayerInteractionManager.PlayerState.FinishedWashingPlate;
+            washTimerImage.fillAmount = 0;
+
         }
     }
 

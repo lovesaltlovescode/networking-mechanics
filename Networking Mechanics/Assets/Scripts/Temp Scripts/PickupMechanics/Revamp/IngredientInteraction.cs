@@ -86,7 +86,8 @@ public class IngredientInteraction : MonoBehaviour
                     //remove detected object, player should not be seeing this object anymore
                     PlayerInteractionManager.detectedObject = null;
 
-                    //Generic function regardless of drop off location
+                    //Generic functions
+
                     Debug.Log("IngredientInteraction - Drop ingredient");
 
                     //Remove from inventory
@@ -102,10 +103,6 @@ public class IngredientInteraction : MonoBehaviour
                     PlayerInteractionManager.heldObject = null;
                     return;
                 }
-                //else if(i == 4 && ingredientsOnTray[i] != null)
-                //{
-                //    Debug.Log("All ingredient slots have been filled");
-                //}
             }
            
 
@@ -183,7 +180,7 @@ public class IngredientInteraction : MonoBehaviour
             }
         }
         //if there is no detected object, player state returns to default
-        if (!PlayerInteractionManager.detectedObject && !SinkInteraction.placedPlateInSink)
+        if (!PlayerInteractionManager.detectedObject && !WashInteraction.placedPlateInSink)
         {
             PlayerInteractionManager.playerState = PlayerInteractionManager.PlayerState.Default;
         }

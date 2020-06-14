@@ -38,7 +38,7 @@ public class PlayerInteractionManager : MonoBehaviour
     private ShelfInteraction shelfInteraction;
     private IngredientInteraction ingredientInteraction;
     private TableInteraction tableInteraction;
-    private SinkInteraction sinkInteraction;
+    private WashInteraction washInteraction;
     
 
     //Player states
@@ -60,7 +60,7 @@ public class PlayerInteractionManager : MonoBehaviour
         //Table items: plates, money etc.
         CanPickUpDirtyPlate,
 
-        //Sink interaction
+        //Wash interaction
         CanPlacePlateInSink,
         ExitedSink,
         CanWashPlate,
@@ -77,7 +77,7 @@ public class PlayerInteractionManager : MonoBehaviour
         shelfInteraction = gameObject.GetComponent<ShelfInteraction>();
         ingredientInteraction = gameObject.GetComponent<IngredientInteraction>();
         tableInteraction = gameObject.GetComponent<TableInteraction>();
-        sinkInteraction = gameObject.GetComponent<SinkInteraction>();
+        washInteraction = gameObject.GetComponent<WashInteraction>();
 
         playerState = PlayerState.Default;
     }
@@ -177,11 +177,11 @@ public class PlayerInteractionManager : MonoBehaviour
 
             //Washing plate states
             case PlayerState.CanPlacePlateInSink:
-                sinkInteraction.PlacePlateInSink(heldObject, objectsInInventory);
+                washInteraction.PlacePlateInSink(heldObject, objectsInInventory);
                 break;
 
             case PlayerState.CanWashPlate:
-                sinkInteraction.WashDirtyPlate();
+                washInteraction.WashDirtyPlate();
                 break;
 
 
@@ -212,7 +212,7 @@ public class PlayerInteractionManager : MonoBehaviour
 
         if (playerState == PlayerState.FinishedWashingPlate)
         {
-            sinkInteraction.FinishWashingPlate();
+            washInteraction.FinishWashingPlate();
         }
     }
 

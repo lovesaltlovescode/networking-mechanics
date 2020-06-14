@@ -22,6 +22,18 @@ public class TableInteraction : MonoBehaviour
     //pick up table item function
     public void PickUpTableItem(GameObject detectedItem, List<GameObject> Inventory, Transform attachPoint)
     {
+
+        if(detectedItem.tag == "DirtyPlate")
+        {
+            //if its a dirty plate, check how many plates there are in the sink
+            if(WashInteraction.platesInSinkCount == 2)
+            {
+                //do not allow pick up
+                Debug.Log("TableInteraction - Unable to pick up plate! Wash the rest first!");
+                return;
+            }
+        }
+
         //only able to pick up if inventory count is 0
         if(PlayerInteractionManager.objectsInInventory.Count != 0)
         {
