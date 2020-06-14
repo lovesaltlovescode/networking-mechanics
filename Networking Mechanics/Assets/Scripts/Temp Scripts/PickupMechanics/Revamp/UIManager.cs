@@ -19,12 +19,18 @@ public class UIManager : MonoBehaviour
     public Sprite defaultIcon;
 
     //DIFFERENT SPRITES
-    public Sprite riceIcon;
+    [Header("Ingredient Icons")]
     public Sprite eggIcon;
+    public Sprite chickenIcon;
+    public Sprite cucumberIcon;
+    public Sprite riceIcon;
+
 
     //Table items
+    [Header("Table Item Icons")]
     public Sprite dirtyPlateIcon;
 
+    [Header("Wash icons")]
     //Washing plates
     public Sprite washIcon; //wash icon that is shown in sink zone, but will be grayed out when is washing starts
     public Image washTimerImage; //wash icon that will fill up slowly according to timer, above the washicon
@@ -68,12 +74,40 @@ public class UIManager : MonoBehaviour
 
             switch (PlayerInteractionManager.detectedObject.tag)
             {
+
+                //shelves
+                case "EggShelf":
+                    buttonIcon.sprite = eggIcon;
+                    break;
+
+                case "ChickenShelf":
+                    buttonIcon.sprite = chickenIcon;
+                    break;
+
+                case "CucumberShelf":
+                    buttonIcon.sprite = cucumberIcon;
+                    break;
+
+                case "RiceTub":
+                    buttonIcon.sprite = riceIcon;
+                    break;
+
+                //ingredients
+
                 case "Rice":
                     buttonIcon.sprite = riceIcon;
                     break;
 
                 case "Egg":
                     buttonIcon.sprite = eggIcon;
+                    break;
+
+                case "Chicken":
+                    buttonIcon.sprite = chickenIcon;
+                    break;
+
+                case "Cucumber":
+                    buttonIcon.sprite = cucumberIcon;
                     break;
 
                 case "DirtyPlate":
@@ -118,6 +152,34 @@ public class UIManager : MonoBehaviour
 
                 case "Egg":
                     buttonIcon.sprite = eggIcon;
+
+                    if (PlayerInteractionManager.playerState != PlayerInteractionManager.PlayerState.CanDropIngredient)
+                    {
+                        buttonIcon.color = Color.grey;
+                    }
+                    else
+                    {
+                        buttonIcon.color = Color.white;
+                    }
+
+                    break;
+
+                case "Chicken":
+                    buttonIcon.sprite = chickenIcon;
+
+                    if (PlayerInteractionManager.playerState != PlayerInteractionManager.PlayerState.CanDropIngredient)
+                    {
+                        buttonIcon.color = Color.grey;
+                    }
+                    else
+                    {
+                        buttonIcon.color = Color.white;
+                    }
+
+                    break;
+
+                case "Cucumber":
+                    buttonIcon.sprite = cucumberIcon;
 
                     if (PlayerInteractionManager.playerState != PlayerInteractionManager.PlayerState.CanDropIngredient)
                     {

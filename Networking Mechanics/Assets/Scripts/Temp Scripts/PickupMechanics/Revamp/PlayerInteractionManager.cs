@@ -163,6 +163,20 @@ public class PlayerInteractionManager : MonoBehaviour
                 shelfInteraction.SpawnEgg(heldObject, objectsInInventory, attachPoint);
                 break;
 
+            case PlayerState.CanSpawnChicken:
+                shelfInteraction.SpawnChicken(heldObject, objectsInInventory, attachPoint);
+                break;
+
+            case PlayerState.CanSpawnCucumber:
+                shelfInteraction.SpawnCucumber(heldObject, objectsInInventory, attachPoint);
+                break;
+
+            case PlayerState.CanSpawnRice:
+                shelfInteraction.SpawnRice(heldObject, objectsInInventory, attachPoint);
+                break;
+                
+
+
             case PlayerState.CanPickUpIngredient:
                 ingredientInteraction.PickUpIngredient(detectedObject, objectsInInventory, attachPoint);
                 break;

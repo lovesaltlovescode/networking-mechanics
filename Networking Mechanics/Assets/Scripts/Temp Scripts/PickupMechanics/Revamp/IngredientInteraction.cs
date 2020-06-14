@@ -170,8 +170,12 @@ public class IngredientInteraction : MonoBehaviour
                 print("IngredientInteraction - Can drop ingredient");
 
 
-                //set spawned egg false so the eggprefab is now just like a normal ingredient
+                //set spawned prefab bools false so they are now just like any normal ingredient
+                //removes them from being permanently detected object
                 ShelfInteraction.spawnedEgg = false;
+                ShelfInteraction.spawnedChicken = false;
+                ShelfInteraction.spawnedCucumber = false;
+                ShelfInteraction.spawnedRice = false;
 
 
                 //switch the state

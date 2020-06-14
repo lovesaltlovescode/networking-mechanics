@@ -15,19 +15,28 @@ public class ShelfInteraction : MonoBehaviour
 
     [Header("Ingredient prefabs")]
     public GameObject eggPrefab;
-    public GameObject chickenPreab;
+    public GameObject chickenPrefab;
     public GameObject cucumberPrefab;
     public GameObject ricePrefab;
 
     private GameObject spawnedEggPrefab;
+    private GameObject spawnedChickenPrefab;
+    private GameObject spawnedCucumberPrefab;
+    private GameObject spawnedRicePrefab;
 
+    //bool to check if player spawned any ingredient
+    //while this is true, the detected object/held object will always be the prefab spawned
     public static bool spawnedEgg;
+    public static bool spawnedChicken;
+    public static bool spawnedCucumber;
+    public static bool spawnedRice;
 
     // Start is called before the first frame update
     void Start()
     {
         Debug.Log("ShelfInteraction - Script Initialised");
     }
+
 
     //spawn egg when player state is can spawn egg
     public void SpawnEgg(GameObject heldIngredient, List<GameObject> Inventory, Transform attachPoint)
@@ -41,12 +50,58 @@ public class ShelfInteraction : MonoBehaviour
         Inventory.Add(spawnedEggPrefab);
 
         heldIngredient = spawnedEggPrefab;
-        Debug.Log("ShelfInteraction - Currently held ingredient is " + heldIngredient + "and spawned ingredient is " + spawnedEgg);
+        Debug.Log("ShelfInteraction - Currently held ingredient is " + heldIngredient + "and spawned ingredient is " + spawnedEggPrefab);
 
         spawnedEgg = true;
 
-        //TODO: Check what is the detected object and change to the spawned prefab
+    }
 
+    //spawn chicken when player state is can spawn chicken
+    public void SpawnChicken(GameObject heldIngredient, List<GameObject> Inventory, Transform attachPoint)
+    {
+        //attach to the player's attachment point
+        spawnedChickenPrefab = Instantiate(chickenPrefab, attachPoint.position, Quaternion.identity);
+        spawnedChickenPrefab.transform.parent = attachPoint.transform;
+
+        //add to inventory
+        Inventory.Add(spawnedChickenPrefab);
+
+        heldIngredient = spawnedChickenPrefab;
+        Debug.Log("ShelfInteraction - Currently held ingredient is " + heldIngredient + "and spawned ingredient is " + spawnedChickenPrefab);
+
+        spawnedChicken = true;
+    }
+
+    //spawn cucumber when player state is can spawn cucumber
+    public void SpawnCucumber(GameObject heldIngredient, List<GameObject> Inventory, Transform attachPoint)
+    {
+        //attach to the player's attachment point
+        spawnedCucumberPrefab = Instantiate(cucumberPrefab, attachPoint.position, Quaternion.identity);
+        spawnedCucumberPrefab.transform.parent = attachPoint.transform;
+
+        //add to inventory
+        Inventory.Add(spawnedCucumberPrefab);
+
+        heldIngredient = spawnedCucumberPrefab;
+        Debug.Log("ShelfInteraction - Currently held ingredient is " + heldIngredient + "and spawned ingredient is " + spawnedCucumberPrefab);
+
+        spawnedCucumber = true;
+    }
+
+    //spawn rice when player state is can spawn rice
+    public void SpawnRice(GameObject heldIngredient, List<GameObject> Inventory, Transform attachPoint)
+    {
+        //attach to the player's attachment point
+        spawnedRicePrefab = Instantiate(ricePrefab, attachPoint.position, Quaternion.identity);
+        spawnedRicePrefab.transform.parent = attachPoint.transform;
+
+        //add to inventory
+        Inventory.Add(spawnedRicePrefab);
+
+        heldIngredient = spawnedRicePrefab;
+        Debug.Log("ShelfInteraction - Currently held ingredient is " + heldIngredient + "and spawned ingredient is " + spawnedRicePrefab);
+
+        spawnedRice = true;
     }
 
     // Update is called once per frame
@@ -61,14 +116,52 @@ public class ShelfInteraction : MonoBehaviour
             shelfDetected = false;
         }
 
+        CheckSpawnedIngredient();
+    }
+
+    //handle all booleans to check if ingredient is spawned
+    public void CheckSpawnedIngredient()
+    {
         if (spawnedEgg)
         {
             Debug.Log("ShelfInteraction: Spawned egg is true");
             PlayerInteractionManager.detectedObject = spawnedEggPrefab;
             PlayerInteractionManager.heldObject = spawnedEggPrefab;
+            spawnedChicken = false;
+            spawnedCucumber = false;
+            spawnedRice = false;
+        }
+
+        if (spawnedChicken)
+        {
+            Debug.Log("ShelfInteraction: Spawned chicken is true");
+            PlayerInteractionManager.detectedObject = spawnedChickenPrefab;
+            PlayerInteractionManager.heldObject = spawnedChickenPrefab;
+            spawnedCucumber = false;
+            spawnedRice = false;
+            spawnedEgg = false;
+        }
+
+        if (spawnedCucumber)
+        {
+            Debug.Log("ShelfInteraction: Spawned cucumber is true");
+            PlayerInteractionManager.detectedObject = spawnedCucumberPrefab;
+            PlayerInteractionManager.heldObject = spawnedCucumberPrefab;
+            spawnedChicken = false;
+            spawnedRice = false;
+            spawnedEgg = false;
+        }
+
+        if (spawnedRice)
+        {
+            Debug.Log("ShelfInteraction: Spawned rice is true");
+            PlayerInteractionManager.detectedObject = spawnedRicePrefab;
+            PlayerInteractionManager.heldObject = spawnedRicePrefab;
+            spawnedChicken = false;
+            spawnedCucumber = false;
+            spawnedEgg = false;
         }
     }
-
 
     //if enter shelf trigger and shelf detected is true
     //player is facing shelf
@@ -86,25 +179,40 @@ public class ShelfInteraction : MonoBehaviour
             }
 
         }
-        if (other.tag == "EggShelfZone" && shelfDetected)
+        if (shelfDetected)
         {
-            Debug.Log("help");
-            //entered egg shelf zone
+
+            //if player inventory is not full
+            //if player inventory is not full
             if (!PlayerInteractionManager.IsInventoryFull())
             {
-                //if inventory not full
-                PlayerInteractionManager.playerState = PlayerInteractionManager.PlayerState.CanSpawnEgg;
-                Debug.Log("ShelfInteraction - Player can spawn an egg!");
+                var detectedObject = PlayerInteractionManager.detectedObject.tag;
+                if (detectedObject == "EggShelf")
+                {
+                    PlayerInteractionManager.playerState = PlayerInteractionManager.PlayerState.CanSpawnEgg;
+                    Debug.Log("ShelfInteraction - Player can spawn an egg!");
+                }
+
+                if (detectedObject == "ChickenShelf")
+                {
+                    PlayerInteractionManager.playerState = PlayerInteractionManager.PlayerState.CanSpawnChicken;
+                    Debug.Log("ShelfInteraction - Player can spawn a chicken!");
+                }
+
+                if (detectedObject == "CucumberShelf")
+                {
+                    PlayerInteractionManager.playerState = PlayerInteractionManager.PlayerState.CanSpawnCucumber;
+                    Debug.Log("ShelfInteraction - Player can spawn a cucumber!");
+                }
+
+                if (detectedObject == "RiceTub")
+                {
+                    PlayerInteractionManager.playerState = PlayerInteractionManager.PlayerState.CanSpawnRice;
+                    Debug.Log("ShelfInteraction - Player can spawn some rice!");
+                }
             }
         }
 
-
-    }
-
-
-    private void OnTriggerStay(Collider other)
-    {
-        
     }
 
 

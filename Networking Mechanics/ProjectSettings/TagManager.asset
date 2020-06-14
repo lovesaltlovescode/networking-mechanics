@@ -39,6 +39,8 @@ TagManager:
   - CucumberShelfZone
   - RiceTubZone
   - ShelfZone
+  - Chicken
+  - Cucumber
   layers:
   - Default
   - TransparentFX

@@ -120,37 +120,44 @@ public class WashInteraction : MonoBehaviour
             {
                 if (platesInSink[i] != null)
                 {
-                    Destroy(platesInSink[i].gameObject); //will this destroy the plate or the player?
+                    Destroy(platesInSink[i].gameObject); 
                     platesInSink[i] = null;
                     //reduce number of plates in sink
                     platesInSinkCount -= 1;
 
-
-                    var cleanPlate = Instantiate(cleanPlatePrefab, cleanPlateSpawnPositions[i].position, Quaternion.identity);
-                    cleanPlatesOnTable[i] = cleanPlate;
-                    cleanPlatesCount += 1;
-
-                    //set all bools to false
-                    startTimer = false;
-
-
-                    //if there are still plates in the sink
-                    if (platesInSinkCount != 0)
+                    for(int x = 0; x < cleanPlatesOnTable.Length; x++)
                     {
-                        showWashIcon = true;
-                        placedPlateInSink = true;
+                        //if there is no clean plate in that position, instantiate one
+                        if(cleanPlatesOnTable[x] == null)
+                        {
+                            var cleanPlate = Instantiate(cleanPlatePrefab, cleanPlateSpawnPositions[x].position, Quaternion.identity);
+                            cleanPlatesOnTable[x] = cleanPlate;
+                            cleanPlatesCount += 1;
 
-                        //continue washing plate
-                        PlayerInteractionManager.playerState = PlayerInteractionManager.PlayerState.CanWashPlate;
-                        return;
-                    }
-                    else
-                    {
-                        showWashIcon = false;
-                        placedPlateInSink = false;
-                    }
+                            //set all bools to false
+                            startTimer = false;
 
+                            //if there are still plates in the sink
+                            if (platesInSinkCount != 0)
+                            {
+                                showWashIcon = true;
+                                placedPlateInSink = true;
+
+                                //continue washing plate
+                                PlayerInteractionManager.playerState = PlayerInteractionManager.PlayerState.CanWashPlate;
+                                return;
+                            }
+                            else
+                            {
+                                showWashIcon = false;
+                                placedPlateInSink = false;
+                            }
+                            return;
+                        }
+                        
+                    }
                 }
+
             }
         }
     }

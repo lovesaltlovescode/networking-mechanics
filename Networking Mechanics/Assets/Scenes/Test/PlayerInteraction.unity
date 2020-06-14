@@ -1248,7 +1248,7 @@ PrefabInstance:
     - target: {fileID: 7573709594487455809, guid: 07a5145ab429c9043bcbce10c10cbf50,
         type: 3}
       propertyPath: m_RootOrder
-      value: 18
+      value: 19
       objectReference: {fileID: 0}
     - target: {fileID: 7573709594487455809, guid: 07a5145ab429c9043bcbce10c10cbf50,
         type: 3}
@@ -1299,7 +1299,6 @@ GameObject:
   - component: {fileID: 359171357}
   - component: {fileID: 359171356}
   - component: {fileID: 359171355}
-  - component: {fileID: 359171360}
   m_Layer: 14
   m_Name: EggShelf
   m_TagString: EggShelf
@@ -1377,28 +1376,11 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 2.52, y: 1.0119774, z: 17.2}
   m_LocalScale: {x: 0.7806, y: 1.8798, z: 1.3812476}
-  m_Children: []
+  m_Children:
+  - {fileID: 718413329}
   m_Father: {fileID: 0}
   m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &359171360
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 359171354}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 31d1b8144673e594b83dd25472cb82df, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ingredientPrefab: {fileID: 8451774286096055006, guid: 262427843b272ab4fa0485dec42a7781,
-    type: 3}
-  ingredientObject: {fileID: 0}
-  heldObject: {fileID: 0}
-  playerPrefab: {fileID: 4564944154993550074}
-  ingredientIcon: {fileID: 895410904}
 --- !u!1 &371315980
 GameObject:
   m_ObjectHideFlags: 0
@@ -1596,13 +1578,13 @@ GameObject:
   - component: {fileID: 519656207}
   - component: {fileID: 519656206}
   - component: {fileID: 519656205}
-  m_Layer: 16
+  m_Layer: 14
   m_Name: CucumberShelf
   m_TagString: CucumberShelf
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!65 &519656205
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1673,9 +1655,10 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 2.52, y: 1.0119774, z: 20.031}
   m_LocalScale: {x: 0.7806, y: 1.8798, z: 1.3241757}
-  m_Children: []
+  m_Children:
+  - {fileID: 1007542939}
   m_Father: {fileID: 0}
-  m_RootOrder: 15
+  m_RootOrder: 14
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &526144187
 PrefabInstance:
@@ -1742,7 +1725,7 @@ PrefabInstance:
     - target: {fileID: 7573709594487455809, guid: 07a5145ab429c9043bcbce10c10cbf50,
         type: 3}
       propertyPath: m_RootOrder
-      value: 17
+      value: 18
       objectReference: {fileID: 0}
     - target: {fileID: 7573709594487455809, guid: 07a5145ab429c9043bcbce10c10cbf50,
         type: 3}
@@ -1821,6 +1804,36 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 7125588456923784904, guid: fb68279123031a84095a7a6441332b65, type: 3}
+--- !u!1 &556609003
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 556609004}
+  m_Layer: 15
+  m_Name: -----------------------------------------------------------
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &556609004
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 556609003}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 15
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &558896818
 GameObject:
   m_ObjectHideFlags: 0
@@ -2308,10 +2321,10 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 718413328}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 2.0740454, y: -0.2723574, z: -1.68}
-  m_LocalScale: {x: 4.3990517, y: 0.5319715, z: 0.688534}
+  m_LocalPosition: {x: 2.0740454, y: -0.2723574, z: -0.14089893}
+  m_LocalScale: {x: 4.3990517, y: 0.5319715, z: 0.66008437}
   m_Children: []
-  m_Father: {fileID: 1843814589}
+  m_Father: {fileID: 359171358}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &718413330
@@ -2325,8 +2338,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.25698876, y: 1.853124, z: 1.4985868}
-  m_Center: {x: -0.2304994, y: 0.51753443, z: 0.21176562}
+  m_Size: {x: 0.25698876, y: 1.853124, z: 1.1342027}
+  m_Center: {x: -0.2304994, y: 0.51753443, z: 0.21619107}
 --- !u!1 &737490451 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -6427245212034505354, guid: fb68279123031a84095a7a6441332b65,
@@ -2537,18 +2550,50 @@ Transform:
   m_Father: {fileID: 1794079875}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &895410904 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6201978281267978478, guid: dac0fea579b88194989a7319e8b05cea,
-    type: 3}
-  m_PrefabInstance: {fileID: 6201978280920515126}
+--- !u!1 &897336371
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 897336372}
+  - component: {fileID: 897336373}
+  m_Layer: 10
+  m_Name: ChickenShelfZone
+  m_TagString: ChickenShelfZone
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &897336372
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 897336371}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 2.0740454, y: -0.2723574, z: -0.148}
+  m_LocalScale: {x: 4.3990517, y: 0.5319715, z: 0.68853396}
+  m_Children: []
+  m_Father: {fileID: 1318801040}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &897336373
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 897336371}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
   m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  serializedVersion: 2
+  m_Size: {x: 0.25698876, y: 1.853124, z: 1.1342027}
+  m_Center: {x: -0.2304994, y: 0.51753443, z: 0.21619107}
 --- !u!1 &915151783 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2524834484228294371, guid: fb68279123031a84095a7a6441332b65,
@@ -2642,6 +2687,50 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 664456749670281567, guid: fb68279123031a84095a7a6441332b65, type: 3}
+--- !u!1 &1007542938
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1007542939}
+  - component: {fileID: 1007542940}
+  m_Layer: 10
+  m_Name: CucumberShelfZone
+  m_TagString: CucumberShelfZone
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1007542939
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1007542938}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 2.0740454, y: -0.2723574, z: -0.148}
+  m_LocalScale: {x: 4.3990517, y: 0.5319715, z: 0.68853396}
+  m_Children: []
+  m_Father: {fileID: 519656208}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &1007542940
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1007542938}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.25698876, y: 1.853124, z: 1.1342027}
+  m_Center: {x: -0.2304994, y: 0.51753443, z: 0.21619107}
 --- !u!1 &1013975938 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -8722937868233432214, guid: fb68279123031a84095a7a6441332b65,
@@ -3209,13 +3298,13 @@ GameObject:
   - component: {fileID: 1318801039}
   - component: {fileID: 1318801038}
   - component: {fileID: 1318801037}
-  m_Layer: 15
+  m_Layer: 14
   m_Name: ChickenShelf
   m_TagString: ChickenShelf
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!65 &1318801037
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3286,7 +3375,8 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 2.52, y: 1.0119774, z: 18.62}
   m_LocalScale: {x: 0.7806, y: 1.8798, z: 1.3241757}
-  m_Children: []
+  m_Children:
+  - {fileID: 897336372}
   m_Father: {fileID: 0}
   m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -4377,7 +4467,7 @@ PrefabInstance:
     - target: {fileID: -4214649139821668147, guid: fb68279123031a84095a7a6441332b65,
         type: 3}
       propertyPath: m_Layer
-      value: 0
+      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: -4214649139821668147, guid: fb68279123031a84095a7a6441332b65,
         type: 3}
@@ -4797,8 +4887,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   buttonIcon: {fileID: 1451496241}
   defaultIcon: {fileID: 21300000, guid: f3ee5fd8638443649a03ef1c280d3874, type: 3}
-  riceIcon: {fileID: 21300000, guid: 70251df13674bba41923496f8fc6095e, type: 3}
   eggIcon: {fileID: 21300000, guid: 0ede888c60a40b643b4b023e4aeaa772, type: 3}
+  chickenIcon: {fileID: 21300000, guid: 2c68c7e1557f9bb4c9458fbc7605b210, type: 3}
+  cucumberIcon: {fileID: 21300000, guid: 20307a625081298448c166ddda5adf0f, type: 3}
+  riceIcon: {fileID: 21300000, guid: 70251df13674bba41923496f8fc6095e, type: 3}
   dirtyPlateIcon: {fileID: 21300000, guid: 23279e78a432ae84b84b520e3c78825b, type: 3}
   washIcon: {fileID: 21300000, guid: ffcf3930df68f40439ac047cbf79230d, type: 3}
   washTimerImage: {fileID: 585132986}
@@ -5059,8 +5151,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1.0000004, y: 2.6740167, z: 1.2479476}
-  m_Center: {x: -0.0000018350494, y: 0.837008, z: 0.0044450862}
+  m_Size: {x: 1.0000004, y: 2.6068888, z: 1.2479476}
+  m_Center: {x: -0.0000018350494, y: 0.8034441, z: 0.0044450862}
 --- !u!1 &1678394858 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -1775822738447280836, guid: fb68279123031a84095a7a6441332b65,
@@ -5297,6 +5389,7 @@ Transform:
   - {fileID: 1694448720}
   - {fileID: 880215531}
   - {fileID: 1843814589}
+  - {fileID: 1984625611}
   m_Father: {fileID: 0}
   m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -5387,8 +5480,7 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 2.52, y: 1.0119774, z: 19.23}
   m_LocalScale: {x: 0.7806, y: 1.8798, z: 1.3241757}
-  m_Children:
-  - {fileID: 718413329}
+  m_Children: []
   m_Father: {fileID: 1794079875}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -5715,6 +5807,50 @@ Transform:
   m_Father: {fileID: 1549282912}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1984625610
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1984625611}
+  - component: {fileID: 1984625612}
+  m_Layer: 10
+  m_Name: RiceTubZone
+  m_TagString: RiceTubZone
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1984625611
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1984625610}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 4.139, y: 0.5, z: 20.896}
+  m_LocalScale: {x: 3.4338999, y: 1, z: 0.91174}
+  m_Children: []
+  m_Father: {fileID: 1794079875}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &1984625612
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1984625610}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.25698876, y: 1.853124, z: 0.7133426}
+  m_Center: {x: -0.2304994, y: 0.51753443, z: 0.36198077}
 --- !u!1 &1991836100
 GameObject:
   m_ObjectHideFlags: 0
@@ -5868,7 +6004,7 @@ PrefabInstance:
     - target: {fileID: 7573709594487455809, guid: 07a5145ab429c9043bcbce10c10cbf50,
         type: 3}
       propertyPath: m_RootOrder
-      value: 19
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 7573709594487455809, guid: 07a5145ab429c9043bcbce10c10cbf50,
         type: 3}
@@ -5972,7 +6108,7 @@ PrefabInstance:
     - target: {fileID: 5074317808852224523, guid: 08731529c14c84142a3299d89fc78294,
         type: 3}
       propertyPath: m_RootOrder
-      value: 16
+      value: 17
       objectReference: {fileID: 0}
     - target: {fileID: 5074317808852224523, guid: 08731529c14c84142a3299d89fc78294,
         type: 3}
@@ -6049,8 +6185,8 @@ MonoBehaviour:
   - {fileID: 629626963}
   - {fileID: 1363903126}
   cleanPlateSpawnPositions:
-  - {fileID: 1850641806}
   - {fileID: 1392199596}
+  - {fileID: 1850641806}
   cleanPlatePrefab: {fileID: 4898602195233053226, guid: 3eaae0040726bab4394d2d6b24700917,
     type: 3}
   platesInSink:
@@ -6131,9 +6267,12 @@ MonoBehaviour:
   shelfDetected: 0
   eggPrefab: {fileID: 2144616528253818311, guid: a4d12ab05990c4140a15e5f374158c2c,
     type: 3}
-  chickenPreab: {fileID: 0}
-  cucumberPrefab: {fileID: 0}
-  ricePrefab: {fileID: 0}
+  chickenPrefab: {fileID: 4359587278762571012, guid: b3ba3cdce76c9f047bb120db3234a5d2,
+    type: 3}
+  cucumberPrefab: {fileID: 2376572526644023733, guid: db0ec2627ac3534438fb6e546e962040,
+    type: 3}
+  ricePrefab: {fileID: 5074317808852224758, guid: 08731529c14c84142a3299d89fc78294,
+    type: 3}
 --- !u!1001 &6173137709014827834
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6463,7 +6602,7 @@ PrefabInstance:
     - target: {fileID: 2144616528253818170, guid: a4d12ab05990c4140a15e5f374158c2c,
         type: 3}
       propertyPath: m_RootOrder
-      value: 14
+      value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 2144616528253818170, guid: a4d12ab05990c4140a15e5f374158c2c,
         type: 3}
