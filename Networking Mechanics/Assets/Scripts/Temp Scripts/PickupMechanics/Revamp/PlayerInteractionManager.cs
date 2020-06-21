@@ -160,19 +160,19 @@ public class PlayerInteractionManager : MonoBehaviour
         {
             //spawning ingredients from shelves states
             case PlayerState.CanSpawnEgg:
-                shelfInteraction.SpawnEgg(heldObject, objectsInInventory, attachPoint);
+                shelfInteraction.SpawnEgg(detectedObject, objectsInInventory, attachPoint);
                 break;
 
             case PlayerState.CanSpawnChicken:
-                shelfInteraction.SpawnChicken(heldObject, objectsInInventory, attachPoint);
+                shelfInteraction.SpawnChicken(detectedObject, objectsInInventory, attachPoint);
                 break;
 
             case PlayerState.CanSpawnCucumber:
-                shelfInteraction.SpawnCucumber(heldObject, objectsInInventory, attachPoint);
+                shelfInteraction.SpawnCucumber(detectedObject, objectsInInventory, attachPoint);
                 break;
 
             case PlayerState.CanSpawnRice:
-                shelfInteraction.SpawnRice(heldObject, objectsInInventory, attachPoint);
+                shelfInteraction.SpawnRice(detectedObject, objectsInInventory, attachPoint);
                 break;
                 
 
@@ -182,7 +182,7 @@ public class PlayerInteractionManager : MonoBehaviour
                 break;
 
             case PlayerState.CanDropIngredient:
-                ingredientInteraction.DropIngredient(heldObject, objectsInInventory, dropOffPoint);
+                ingredientInteraction.DropIngredient(detectedObject, objectsInInventory, dropOffPoint);
                 break;
 
             case PlayerState.CanPickUpDirtyPlate:
@@ -191,7 +191,7 @@ public class PlayerInteractionManager : MonoBehaviour
 
             //Washing plate states
             case PlayerState.CanPlacePlateInSink:
-                washInteraction.PlacePlateInSink(heldObject, objectsInInventory);
+                washInteraction.PlacePlateInSink(detectedObject, objectsInInventory);
                 break;
 
             case PlayerState.CanWashPlate:
