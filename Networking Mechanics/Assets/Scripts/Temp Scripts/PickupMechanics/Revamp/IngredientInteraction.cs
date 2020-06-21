@@ -70,7 +70,6 @@ public class IngredientInteraction : MonoBehaviour
         //if near ingredient tray
         if (nearIngredientTray)
         {
-
             //function to loop through game object array, check for a null element, if an index is null
             for (int i = 0; i < ingredientsOnTray.Length; i++)
             {
@@ -79,6 +78,7 @@ public class IngredientInteraction : MonoBehaviour
                     //if the gameobject is null, assign it as held ingredient
                     ingredientsOnTray[i] = heldIngredient;
                     heldIngredient.transform.position = trayPositions[i].transform.position;
+                    heldIngredient.transform.parent = trayPositions[i].transform;
 
                     //set layer to uninteractable
                     heldIngredient.layer = LayerMask.NameToLayer("UnInteractable");
@@ -93,9 +93,6 @@ public class IngredientInteraction : MonoBehaviour
                     //Remove from inventory
                     Inventory.Remove(heldIngredient);
 
-                    //unparent
-                    heldIngredient.transform.parent = null;
-
                     //Set rotation back to 0
                     heldIngredient.transform.rotation = Quaternion.identity;
 
@@ -104,7 +101,6 @@ public class IngredientInteraction : MonoBehaviour
                     return;
                 }
             }
-           
 
         }
         else

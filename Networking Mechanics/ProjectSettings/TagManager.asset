@@ -41,6 +41,7 @@ TagManager:
   - ShelfZone
   - Chicken
   - Cucumber
+  - Floor
   layers:
   - Default
   - TransparentFX
@@ -60,7 +61,7 @@ TagManager:
   - Ingredient
   - TableItem
   - Pickuppable
-  - 
+  - Floor
   - 
   - 
   - 

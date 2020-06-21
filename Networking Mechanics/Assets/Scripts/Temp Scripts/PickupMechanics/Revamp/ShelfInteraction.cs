@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
@@ -179,40 +178,48 @@ public class ShelfInteraction : MonoBehaviour
             }
 
         }
+
+    }
+
+    public void OnTriggerStay(Collider other)
+    {
         if (shelfDetected)
         {
-
-            //if player inventory is not full
             //if player inventory is not full
             if (!PlayerInteractionManager.IsInventoryFull())
             {
                 var detectedObject = PlayerInteractionManager.detectedObject.tag;
-                if (detectedObject == "EggShelf")
+
+                if (other.tag == "EggShelfZone")
                 {
-                    PlayerInteractionManager.playerState = PlayerInteractionManager.PlayerState.CanSpawnEgg;
-                    Debug.Log("ShelfInteraction - Player can spawn an egg!");
+                    if(detectedObject == "EggShelf")
+                    {
+                        PlayerInteractionManager.playerState = PlayerInteractionManager.PlayerState.CanSpawnEgg;
+                        Debug.Log("ShelfInteraction - Player can spawn an egg!");
+                    }
+                    
                 }
 
-                if (detectedObject == "ChickenShelf")
+                else if (other.tag == "ChickenShelfZone" && detectedObject == "ChickenShelf")
                 {
                     PlayerInteractionManager.playerState = PlayerInteractionManager.PlayerState.CanSpawnChicken;
                     Debug.Log("ShelfInteraction - Player can spawn a chicken!");
                 }
 
-                if (detectedObject == "CucumberShelf")
+                else if (other.tag == "CucumberShelfZone" && detectedObject == "CucumberShelf")
                 {
                     PlayerInteractionManager.playerState = PlayerInteractionManager.PlayerState.CanSpawnCucumber;
                     Debug.Log("ShelfInteraction - Player can spawn a cucumber!");
                 }
 
-                if (detectedObject == "RiceTub")
+                else if (other.tag == "RiceTubZone" && detectedObject == "RiceTub")
                 {
                     PlayerInteractionManager.playerState = PlayerInteractionManager.PlayerState.CanSpawnRice;
                     Debug.Log("ShelfInteraction - Player can spawn some rice!");
                 }
             }
         }
-
+        
     }
 
 
@@ -228,5 +235,8 @@ public class ShelfInteraction : MonoBehaviour
                 PlayerInteractionManager.playerState = PlayerInteractionManager.PlayerState.CanDropIngredient;
             }
         }
+
+
+
     }
 }
