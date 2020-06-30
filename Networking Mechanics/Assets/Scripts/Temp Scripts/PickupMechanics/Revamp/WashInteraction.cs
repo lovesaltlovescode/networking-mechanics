@@ -94,7 +94,7 @@ public class WashInteraction : MonoBehaviour
     //only if CAN WASH PLATE state
     public void WashDirtyPlate()
     {
-        if(cleanPlatesCount == 2)
+        if(cleanPlatesCount == cleanPlateSpawnPositions.Length)
         {
             Debug.Log("WashInteraction - Too many clean plates");
             return;
