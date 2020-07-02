@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 7706385258555843017}
   - component: {fileID: 6173137709824592602}
   m_Layer: 8
-  m_Name: PlayerObject
+  m_Name: TempPlayerObject
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -128,7 +128,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveForce: 10
   joystick: {fileID: 0}
-  interactButton: {fileID: 0}
 --- !u!114 &6173137709824592602
 MonoBehaviour:
   m_ObjectHideFlags: 0

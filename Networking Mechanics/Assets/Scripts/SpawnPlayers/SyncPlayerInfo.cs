@@ -23,8 +23,8 @@ public class SyncPlayerInfo : NetworkBehaviour
     //synchronized across the network, when this value is changed, all clients will get the updated value
     public string myTag;
 
-    //name displayed on top of character
-    public TextMeshProUGUI nameDisplay;
+    ////name displayed on top of character
+    //public TextMeshProUGUI nameDisplay;
 
 
     //On start local player, called on the client's local player
@@ -104,14 +104,14 @@ public class SyncPlayerInfo : NetworkBehaviour
 
     private void UpdateTagName()
     {
-        nameDisplay.text = myTag;
+        //nameDisplay.text = myTag;
         gameObject.tag = myTag; //change tag name to be the current tag ie. xiaoben
     }
 
     [ClientRpc]
     private void RpcUpdateTagName()
     {
-        nameDisplay.text = myTag;
+        //nameDisplay.text = myTag;
         gameObject.tag = myTag;
     }
 

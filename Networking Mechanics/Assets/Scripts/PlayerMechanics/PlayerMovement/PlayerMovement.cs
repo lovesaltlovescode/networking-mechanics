@@ -5,22 +5,23 @@ using Mirror;
 
 public class PlayerMovement : NetworkBehaviour
 {
-    private Rigidbody myBody;
-    public float moveForce = 25f;
+    public Rigidbody xiaoBenBody;
+    public float moveForce = 10f;
 
     [SerializeField] private FixedJoystick joystick = null;
     
-    //private player animation
+    //movement UI canvas, toggle on off for clients
     public Canvas movementUI;
 
-    #region
+
+    #region Platform Specifics
 
 #if UNITY_EDITOR
 
     public void Awake()
     {
         Debug.Log("In editor!");
-        movementUI.enabled = false;
+        //movementUI.enabled = false;
 
     }
 
@@ -44,32 +45,34 @@ public class PlayerMovement : NetworkBehaviour
 
     void Start()
     {
-        myBody = GetComponent<Rigidbody>();
         
-        //TODO: get button component and call function to interact
-
     }
 
     // Update is called once per frame
     void Update()
+    {   
+        MovePlayer();
+    }
+
+    //function to move the player
+    void MovePlayer()
     {
 
         if (!hasAuthority)
         {
-            movementUI.enabled = false;
+            Debug.Log("Player does not have authority");
+            //movementUI.enabled = false;
             return;
         }
 
-        myBody.velocity = new Vector3(joystick.Horizontal * moveForce, myBody.velocity.y, joystick.Vertical * moveForce);
+        xiaoBenBody.velocity = new Vector3(joystick.Horizontal * moveForce, xiaoBenBody.velocity.y, joystick.Vertical * moveForce);
 
-        print(joystick.Horizontal);
+        //print(joystick.Horizontal);
 
-        if(joystick.Horizontal != 0f || joystick.Vertical != 0f)
+        if (joystick.Horizontal != 0f || joystick.Vertical != 0f)
         {
-            transform.rotation = Quaternion.LookRotation(myBody.velocity);
+            transform.rotation = Quaternion.LookRotation(xiaoBenBody.velocity);
         }
-
     }
 
-    //TODO: player interact function
 }
