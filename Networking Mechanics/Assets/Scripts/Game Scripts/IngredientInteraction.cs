@@ -24,7 +24,9 @@ public class IngredientInteraction : MonoBehaviour
     //2 arrays, 1 array to store the gos on the tray, if there is nothing (by default) it is a null element
     //second array will store the transform for the traypositions, public array
 
-    public Transform[] trayPositions; //array to contain all tray positions
+    public static GameObject trayParentZone; //Tray object that contains all ingredient tray positions
+
+    private Transform[] trayPositions; //array to contain all tray positions
 
     public GameObject[] ingredientsOnTray = new GameObject[4]; //array to contain all ingredients on the tray
 
@@ -193,6 +195,8 @@ public class IngredientInteraction : MonoBehaviour
         {
             Debug.Log("IngredientInteraction - Near the ingredient tray!");
             nearIngredientTray = true;
+            trayParentZone = other.gameObject; //hit zone is the tray parent zone
+            trayPositions = trayParentZone.GetComponent<IngredientTrayZones>().trayPositions;
         }
 
         if(other.tag == "ShelfZone")

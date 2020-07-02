@@ -18,10 +18,12 @@ public class CheckPlayerTag : NetworkBehaviour
     //array of possible models to display
     //assign in the inspector
     public GameObject[] characterModels = new GameObject[5];
+    public SpriteRenderer playerCircle;
 
     private void Start()
     {
         StartCoroutine(CheckPlayerTags());
+        
     }
 
     //coroutine to check tag of player
@@ -51,31 +53,37 @@ public class CheckPlayerTag : NetworkBehaviour
 
     void CheckTag()
     {
+        //check which tag this gameobject has and activate the corresponding models/sprites
         switch(gameObject.tag)
         {
             case "XiaoBen":
                 Debug.Log("This player is Xiao Ben!");
                 characterModels[0].SetActive(true);
+                
                 break;
 
             case "DaFan":
                 Debug.Log("This player is Da Fan!");
                 characterModels[1].SetActive(true);
+                playerCircle.color = Color.blue;
                 break;
 
             case "DaLi":
                 Debug.Log("This player is Da Li!");
                 characterModels[2].SetActive(true);
+                playerCircle.color = Color.green;
                 break;
 
             case "XiaoFan":
-                Debug.Log("This player is Xiao Dan!");
+                Debug.Log("This player is Xiao Fan!");
                 characterModels[3].SetActive(true);
+                playerCircle.color = Color.red;
                 break;
 
             case "XiaoLi":
                 Debug.Log("This player is Xiao Li!");
                 characterModels[4].SetActive(true);
+                playerCircle.color = Color.yellow;
                 break;
         }
     }

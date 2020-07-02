@@ -10,9 +10,9 @@ using UnityEngine;
 public class WashInteraction : MonoBehaviour
 {
     [Header("Sink Positions")]
-    public Transform[] sinkPositions; //array of sink positions
-
-    public Transform[] cleanPlateSpawnPositions; //array of possible spawn positions for the clean plates
+    private Transform[] sinkPositions; //array of sink positions
+    private Transform[] cleanPlateSpawnPositions; //array of possible spawn positions for the clean plates
+    public static GameObject sinkParentZone; //parent sink zone, where the positions array will be retrieved from
 
     [Header("Plate game objects")]
     public GameObject cleanPlatePrefab; //clean plate to spawn
@@ -43,6 +43,7 @@ public class WashInteraction : MonoBehaviour
     //only if PLACE PLATE IN SINK state
     public void PlacePlateInSink(GameObject heldPlate, List<GameObject> Inventory)
     {
+
         //loop through plate in sink array
         //if the gameobject is null, assign heldplate to it
         for(int i = 0; i < platesInSink.Length; i++)
@@ -94,7 +95,8 @@ public class WashInteraction : MonoBehaviour
     //only if CAN WASH PLATE state
     public void WashDirtyPlate()
     {
-        if(cleanPlatesCount == cleanPlateSpawnPositions.Length)
+
+        if (cleanPlatesCount == cleanPlateSpawnPositions.Length)
         {
             Debug.Log("WashInteraction - Too many clean plates");
             return;
@@ -113,9 +115,11 @@ public class WashInteraction : MonoBehaviour
     //when done washing plate, reset timer and spawn clean plate
     public void FinishWashingPlate()
     {
+
         //if starttimer is true, destroy the dirty plate in the sink (washed)
         if (startTimer)
         {
+            //loop through the plates in sink
             for (int i = platesInSink.Length - 1; i >= 0; i--)
             {
                 if (platesInSink[i] != null)
@@ -125,6 +129,7 @@ public class WashInteraction : MonoBehaviour
                     //reduce number of plates in sink
                     platesInSinkCount -= 1;
 
+                    //loop through the clean plates on table
                     for(int x = 0; x < cleanPlatesOnTable.Length; x++)
                     {
                         //if there is no clean plate in that position, instantiate one
@@ -191,6 +196,13 @@ public class WashInteraction : MonoBehaviour
         //if player is in sink zone
         if(other.tag == "SinkZone")
         {
+            Debug.Log("WashInteraction - Entered sink zone!");
+            sinkParentZone = other.gameObject; //assign the sink zone as the hit object
+
+            //Get the cleanplate and sink positions from the SinkZones script
+            cleanPlateSpawnPositions = sinkParentZone.GetComponent<SinkZones>().cleanPlateSpawnPositions;
+            sinkPositions = sinkParentZone.GetComponent<SinkZones>().sinkPositions;
+
             //if player is holding a plate
             if (holdingDirtyPlate)
             {   

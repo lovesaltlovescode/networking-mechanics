@@ -39,7 +39,7 @@ public class TableInteraction : MonoBehaviour
         {
             return;
         }
-        Debug.Log("TableInteraction - Pick up table item");
+        Debug.Log("TableInteraction - Picked up table item");
 
         //Parent to attachment point and transform
         detectedItem.transform.parent = attachPoint.transform;

@@ -147,7 +147,7 @@ public class PlayerInteractionManager : MonoBehaviour
         {
             //no object hit
             Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * raycastLength, Color.white);
-            Debug.Log("PlayerInteractionManager -No object found");
+            Debug.Log("PlayerInteractionManager - No object found");
             
         }
         //Debug.Log(!detectedObject); //return true if no detected object
