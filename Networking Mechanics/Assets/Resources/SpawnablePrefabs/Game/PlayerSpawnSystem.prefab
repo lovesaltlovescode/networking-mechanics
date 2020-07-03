@@ -45,7 +45,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sceneId: 0
-  serverOnly: 0
+  serverOnly: 1
   m_AssetId: 
 --- !u!114 &3229230106449455541
 MonoBehaviour:
@@ -61,5 +61,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  playerPrefab: {fileID: 8158211711435101389, guid: e260c82c6ebbf0e4982d0dbfbe25466c,
+  xiaoBenPrefab: {fileID: 9049289429361172239, guid: e260c82c6ebbf0e4982d0dbfbe25466c,
+    type: 3}
+  daFanPrefab: {fileID: 4624551783861701830, guid: ab472d2aad9f5974fbba9af517171831,
     type: 3}

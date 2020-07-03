@@ -15,7 +15,11 @@ using System.Linq;
 
 public class PlayerSpawnSystem : NetworkBehaviour
 {
-    [SerializeField] private GameObject playerPrefab = null; //reference to player prefab to be spawned
+    //DIFFERENT PREFABS TO BE SPAWNED BASED ON INDEX
+    [SerializeField] private GameObject xiaoBenPrefab = null;
+    [SerializeField] private GameObject daFanPrefab = null;
+    
+
 
     //list of transforms in the scene
     //the different transforms will be the spawn points of players
@@ -28,7 +32,7 @@ public class PlayerSpawnSystem : NetworkBehaviour
     ////List to contain player tags to be assigned when spawned, follows same index as next index
     //public static List<string> playerTags = new List<string>{ "XiaoBen", "DaFan", "DaLi", "XiaoFan", "XiaoLi" };
 
-    //player object to be spawned
+    //temp variable to assign prefab as and assign authority to
     private GameObject playerInstance;
 
     //Add spawn point, adds to list 
@@ -36,7 +40,7 @@ public class PlayerSpawnSystem : NetworkBehaviour
     {
         spawnPoints.Add(transform); //add the transform to the list
 
-        //Order the spawn points by how they are arranged in the hierarchy, and adds them to the list in that 
+        //Order the spawn points by how they are arranged in the hierarchy, and adds them to the list in that order
         spawnPoints = spawnPoints.OrderBy(x => x.GetSiblingIndex()).ToList(); 
     }
 
@@ -48,7 +52,6 @@ public class PlayerSpawnSystem : NetworkBehaviour
     public override void OnStartServer() => CustomNetworkManager.OnServerReadied += SpawnPlayer;
 
     [ServerCallback] //prevents clients from using this method
-
     //when this object gets destroyed, unsubscribe from event
     private void OnDestroy() => CustomNetworkManager.OnServerReadied -= SpawnPlayer;
 
@@ -64,8 +67,23 @@ public class PlayerSpawnSystem : NetworkBehaviour
             return;
         }
 
-        //spawn in the player, instantiate at spawn points index, facing same way that spawn point is facing
-        playerInstance = Instantiate(playerPrefab, spawnPoints[nextIndex].position, spawnPoints[nextIndex].rotation);
+        //check for nextindex, and spawn the corresponding prefab in the corresponding position
+        switch (nextIndex)
+        {
+            case 0:
+                //spawn in the player, instantiate at spawn points index, facing same way that spawn point is facing
+                playerInstance = Instantiate(xiaoBenPrefab, spawnPoints[nextIndex].position, spawnPoints[nextIndex].rotation);
+                Debug.Log("PlayerSpawnSystem - Spawned in Xiao Ben!");
+                break;
+
+            case 1:
+                //spawn in the player, instantiate at spawn points index, facing same way that spawn point is facing
+                playerInstance = Instantiate(daFanPrefab, spawnPoints[nextIndex].position, spawnPoints[nextIndex].rotation);
+                Debug.Log("PlayerSpawnSystem - Spawned in Da Fan!");
+                break;
+        }
+
+        
         
 
         //spawn the object on the other clients, and pass in connection belonging to that client

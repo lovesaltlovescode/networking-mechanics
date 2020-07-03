@@ -5,13 +5,13 @@ using Mirror;
 
 public class PlayerMovement : NetworkBehaviour
 {
-    public Rigidbody xiaoBenBody;
+    public Rigidbody controllerBody;
     public float moveForce = 10f;
 
     [SerializeField] private FixedJoystick joystick = null;
-    
+
     //movement UI canvas, toggle on off for clients
-    public Canvas movementUI;
+    public GameObject UI;
 
 
     #region Platform Specifics
@@ -61,17 +61,19 @@ public class PlayerMovement : NetworkBehaviour
         if (!hasAuthority)
         {
             Debug.Log("Player does not have authority");
-            //movementUI.enabled = false;
             return;
         }
 
-        xiaoBenBody.velocity = new Vector3(joystick.Horizontal * moveForce, xiaoBenBody.velocity.y, joystick.Vertical * moveForce);
+        controllerBody.velocity = new Vector3(joystick.Horizontal * moveForce, controllerBody.velocity.y, joystick.Vertical * moveForce);
 
         //print(joystick.Horizontal);
 
+
+        UI.gameObject.SetActive(true);
+
         if (joystick.Horizontal != 0f || joystick.Vertical != 0f)
         {
-            transform.rotation = Quaternion.LookRotation(xiaoBenBody.velocity);
+            transform.rotation = Quaternion.LookRotation(controllerBody.velocity);
         }
     }
 
