@@ -22,9 +22,6 @@ public class PlayerInteractionManager : MonoBehaviour
 
     public static GameObject detectedObject;
 
-    //Static variable for currentlyheld object
-    public static GameObject heldObject;
-
     //List of objects in player's inventory, static and same throughout all scripts
     public static List<GameObject> objectsInInventory = new List<GameObject>();
 

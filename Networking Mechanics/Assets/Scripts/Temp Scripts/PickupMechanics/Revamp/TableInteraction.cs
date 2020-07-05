@@ -52,8 +52,8 @@ public class TableInteraction : MonoBehaviour
         // detectedObject.layer = LayerMask.NameToLayer("PickedUp");
 
         //change held object to be the detected object
-        PlayerInteractionManager.heldObject = detectedItem;
-        Debug.Log("Table interaction - Player is holding " + PlayerInteractionManager.heldObject);
+        PlayerInteractionManager.detectedObject = detectedItem;
+        Debug.Log("Table interaction - Player is holding " + PlayerInteractionManager.detectedObject);
     }
 
     // Update is called once per frame

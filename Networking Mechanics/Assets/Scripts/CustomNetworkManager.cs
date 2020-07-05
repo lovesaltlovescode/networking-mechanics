@@ -228,7 +228,7 @@ public class CustomNetworkManager : NetworkManager
             Debug.Log("Network Manager Custom: Starting game...");
 
             //Change Scene
-            ServerChangeScene("Scene_Map_Shop");
+            ServerChangeScene("Scene_Map_Test");
             Debug.Log("Server changing scene...");
         }
     }

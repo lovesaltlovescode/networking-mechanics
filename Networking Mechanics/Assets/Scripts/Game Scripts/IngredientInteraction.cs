@@ -60,8 +60,6 @@ public class IngredientInteraction : MonoBehaviour
         // detectedObject.layer = LayerMask.NameToLayer("PickedUp");
 
         //change held object to be the detected object
-        PlayerInteractionManager.heldObject = detectedIngredient;
-        Debug.Log("Ingredient Interaction - Player is holding " + PlayerInteractionManager.heldObject);
     }
 
     //Drop ingredient function
@@ -99,7 +97,6 @@ public class IngredientInteraction : MonoBehaviour
                     heldIngredient.transform.rotation = Quaternion.identity;
 
                     //set held object to null, player is not holding anything
-                    PlayerInteractionManager.heldObject = null;
                     return;
                 }
             }
@@ -122,7 +119,6 @@ public class IngredientInteraction : MonoBehaviour
             heldIngredient.transform.rotation = Quaternion.identity;
 
             //set held object to null, player is not holding anything
-            PlayerInteractionManager.heldObject = null;
         }
 
         

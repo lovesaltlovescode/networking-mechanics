@@ -125,7 +125,7 @@ public class ShelfInteraction : MonoBehaviour
         {
             Debug.Log("ShelfInteraction: Spawned egg is true");
             PlayerInteractionManager.detectedObject = spawnedEggPrefab;
-            PlayerInteractionManager.heldObject = spawnedEggPrefab;
+            PlayerInteractionManager.detectedObject = spawnedEggPrefab;
             spawnedChicken = false;
             spawnedCucumber = false;
             spawnedRice = false;
@@ -135,7 +135,7 @@ public class ShelfInteraction : MonoBehaviour
         {
             Debug.Log("ShelfInteraction: Spawned chicken is true");
             PlayerInteractionManager.detectedObject = spawnedChickenPrefab;
-            PlayerInteractionManager.heldObject = spawnedChickenPrefab;
+            PlayerInteractionManager.detectedObject = spawnedChickenPrefab;
             spawnedCucumber = false;
             spawnedRice = false;
             spawnedEgg = false;
@@ -145,7 +145,7 @@ public class ShelfInteraction : MonoBehaviour
         {
             Debug.Log("ShelfInteraction: Spawned cucumber is true");
             PlayerInteractionManager.detectedObject = spawnedCucumberPrefab;
-            PlayerInteractionManager.heldObject = spawnedCucumberPrefab;
+            PlayerInteractionManager.detectedObject = spawnedCucumberPrefab;
             spawnedChicken = false;
             spawnedRice = false;
             spawnedEgg = false;
@@ -155,7 +155,7 @@ public class ShelfInteraction : MonoBehaviour
         {
             Debug.Log("ShelfInteraction: Spawned rice is true");
             PlayerInteractionManager.detectedObject = spawnedRicePrefab;
-            PlayerInteractionManager.heldObject = spawnedRicePrefab;
+            PlayerInteractionManager.detectedObject = spawnedRicePrefab;
             spawnedChicken = false;
             spawnedCucumber = false;
             spawnedEgg = false;

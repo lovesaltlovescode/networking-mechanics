@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// check for tag of heldobject
-/// if heldobject is a dirty plate and player has entered sink zone, change player state
+/// check for tag of detectedObject
+/// if detectedObject is a dirty plate and player has entered sink zone, change player state
 /// handle changing of player state according to if player is in sink zone or not
 /// </summary>
 public class WashInteraction : MonoBehaviour
@@ -76,7 +76,7 @@ public class WashInteraction : MonoBehaviour
                 heldPlate.transform.rotation = Quaternion.identity;
 
                 //set held object to null, player is not holding anything
-                PlayerInteractionManager.heldObject = null;
+                PlayerInteractionManager.detectedObject = null;
 
                 placedPlateInSink = true; //player has placed plate in sink
                 holdingDirtyPlate = false;
@@ -171,16 +171,16 @@ public class WashInteraction : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (PlayerInteractionManager.heldObject)
+        if (PlayerInteractionManager.detectedObject)
         {
             CheckForWashingCriteria();
         }
     }
 
-    //checks if player is able to wash by checking tag of heldobject
+    //checks if player is able to wash by checking tag of detectedObject
     public void CheckForWashingCriteria()
     {
-        if(PlayerInteractionManager.heldObject.tag == "DirtyPlate")
+        if(PlayerInteractionManager.detectedObject.tag == "DirtyPlate")
         {
             Debug.Log("WashInteraction - Player is holding a dirty plate!");
             holdingDirtyPlate = true;

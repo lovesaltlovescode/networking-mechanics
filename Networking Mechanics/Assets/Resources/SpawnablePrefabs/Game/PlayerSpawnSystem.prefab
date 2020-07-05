@@ -61,7 +61,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  xiaoBenPrefab: {fileID: 9049289429361172239, guid: e260c82c6ebbf0e4982d0dbfbe25466c,
+  xiaoBenPrefab: {fileID: 3168919871882200351, guid: 3dd7c97e522b9eb49a9720634329c415,
     type: 3}
-  daFanPrefab: {fileID: 4624551783861701830, guid: ab472d2aad9f5974fbba9af517171831,
+  daFanPrefab: {fileID: 3168919871882200351, guid: 3dd7c97e522b9eb49a9720634329c415,
     type: 3}

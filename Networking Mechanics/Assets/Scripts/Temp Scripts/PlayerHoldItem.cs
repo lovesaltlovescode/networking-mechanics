@@ -111,9 +111,9 @@ public class PlayerHoldItem : NetworkBehaviour
 
     //sends a command from client to server to change the helditem to the selected item via update
     [Command]
-    void CmdChangeHeldItem(HeldItem selecedItem)
+    void CmdChangeHeldItem(HeldItem selectedItem)
     {
-        heldItem = selecedItem;
+        heldItem = selectedItem;
     }
 
     //sends a command from client to server to drop the held item in the scene
