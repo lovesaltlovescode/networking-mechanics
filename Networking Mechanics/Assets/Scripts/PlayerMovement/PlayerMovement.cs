@@ -10,43 +10,60 @@ public class PlayerMovement : NetworkBehaviour
 
     [SerializeField] private FixedJoystick joystick = null;
 
+    //A list of all active players in the game scene
+    //To be accessed in the scripts that require specific players
+    public static List<GameObject> ActivePlayers = new List<GameObject>();
+
+    //A list of all active players' ID in the game scene
+    public static List<string> PlayerIDs = new List<string>();
+
     //movement UI canvas, toggle on off for clients
     public GameObject UI;
 
 
-    #region Platform Specifics
+    //    #region Platform Specifics
 
-#if UNITY_EDITOR
+    //#if UNITY_EDITOR
 
-    public void Awake()
+    //    public void Awake()
+    //    {
+    //        Debug.Log("In editor!");
+    //        //movementUI.enabled = false;
+
+    //    }
+
+    //#elif UNITY_STANDALONE_WIN
+
+    //    public void Awake()
+    //    {
+    //        //Debug.Log("Standalone windows!");
+    //    }
+
+
+    //#elif UNITY_ANDROID
+
+    //    public void Awake()
+    //    {
+    //        Debug.Log("On android!");
+    //    }
+    //#endif
+
+    //#endregion
+
+    private void Start()
     {
-        Debug.Log("In editor!");
-        //movementUI.enabled = false;
+        ActivePlayers.Add(this.gameObject);
+        PlayerIDs.Add(gameObject.GetComponent<NetworkIdentity>().netId.ToString());
 
+        for (int i = 0; i < ActivePlayers.Count; i++)
+        {
+            Debug.Log($"Player Movement - Player {i} is {ActivePlayers[i]}");
+            Debug.Log($"Player Movement - Player {i}'s ID is {PlayerIDs[i]}");
+        }
     }
 
-#elif UNITY_STANDALONE_WIN
-
-    public void Awake()
-    {
-        //Debug.Log("Standalone windows!");
-    }
 
 
-#elif UNITY_ANDROID
-
-    public void Awake()
-    {
-        Debug.Log("On android!");
-    }
-#endif
-
-#endregion
-
-    void Start()
-    {
-        
-    }
 
     // Update is called once per frame
     void Update()

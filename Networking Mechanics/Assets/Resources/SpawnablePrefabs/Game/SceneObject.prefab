@@ -173,7 +173,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &3119484818873207055
 RectTransform:
   m_ObjectHideFlags: 0
@@ -266,11 +266,12 @@ GameObject:
   - component: {fileID: 3119484819004831900}
   - component: {fileID: 3119484819004831901}
   - component: {fileID: 3119484819004831970}
-  - component: {fileID: 6489167912173185749}
-  - component: {fileID: 2646878356808332091}
-  - component: {fileID: -1573156324658678108}
+  - component: {fileID: 3415044942263602170}
+  - component: {fileID: -2852036913858095369}
+  - component: {fileID: 7135500494049819918}
+  - component: {fileID: 4829705672936208232}
   m_Layer: 0
-  m_Name: Cube
+  m_Name: SceneObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -306,7 +307,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3119484819004831971}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -351,7 +352,44 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &6489167912173185749
+--- !u!114 &3415044942263602170
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3119484819004831971}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c3afce3674fedfa43b02995b6d17651a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+  heldItem: 0
+  cucumberPrefab: {fileID: 2376572526644023733, guid: db0ec2627ac3534438fb6e546e962040,
+    type: 3}
+  eggPrefab: {fileID: 2144616528253818311, guid: a4d12ab05990c4140a15e5f374158c2c,
+    type: 3}
+  chickenPrefab: {fileID: 4359587278762571012, guid: b3ba3cdce76c9f047bb120db3234a5d2,
+    type: 3}
+--- !u!54 &-2852036913858095369
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3119484819004831971}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!114 &7135500494049819918
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -366,30 +404,7 @@ MonoBehaviour:
   sceneId: 0
   serverOnly: 0
   m_AssetId: 
---- !u!114 &2646878356808332091
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3119484819004831971}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2bec025449dba85499e3547d79fa566c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  syncMode: 0
-  syncInterval: 0.1
-  tagNames:
-  - XiaoBen
-  - DaFan
-  - DaLi
-  - XiaoFan
-  - XiaoLi
-  generatedNo: 0
-  nameDisplay: {fileID: 3119484818192295452}
-  health: 0
---- !u!114 &-1573156324658678108
+--- !u!114 &4829705672936208232
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -403,7 +418,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  clientAuthority: 0
+  clientAuthority: 1
   localPositionSensitivity: 0.01
   localRotationSensitivity: 0.01
   localScaleSensitivity: 0.01

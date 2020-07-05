@@ -3793,25 +3793,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1101458437}
   m_Mesh: {fileID: 4072002285621725883, guid: fb68279123031a84095a7a6441332b65, type: 3}
---- !u!1 &1117983790 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2081404878930878360, guid: 720096dfa9d21d34395d411ef1c72c79,
-    type: 3}
-  m_PrefabInstance: {fileID: 2081404880040390151}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1117983791
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1117983790}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 129ade8ba329e9a47af374d2489de5e3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  followPlayerTrans: {fileID: 0}
 --- !u!1 &1130217387
 GameObject:
   m_ObjectHideFlags: 0
@@ -4974,7 +4955,7 @@ GameObject:
   - component: {fileID: 1470816394}
   - component: {fileID: 1470816393}
   - component: {fileID: 1470816396}
-  m_Layer: 8
+  m_Layer: 19
   m_Name: ShopCamera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5020,7 +5001,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 1048375
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -7928,6 +7909,16 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2081404878930878360, guid: 720096dfa9d21d34395d411ef1c72c79,
+        type: 3}
+      propertyPath: m_TagString
+      value: Untagged
+      objectReference: {fileID: 0}
+    - target: {fileID: 2081404878930878360, guid: 720096dfa9d21d34395d411ef1c72c79,
+        type: 3}
+      propertyPath: m_Layer
+      value: 19
+      objectReference: {fileID: 0}
     - target: {fileID: 2081404878930878374, guid: 720096dfa9d21d34395d411ef1c72c79,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -7994,6 +7985,21 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 4564944154993550064}
     - target: {fileID: 2081404878930878375, guid: 720096dfa9d21d34395d411ef1c72c79,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2081404880036575272, guid: 720096dfa9d21d34395d411ef1c72c79,
+        type: 3}
+      propertyPath: m_Layer
+      value: 19
+      objectReference: {fileID: 0}
+    - target: {fileID: 2081404880036575286, guid: 720096dfa9d21d34395d411ef1c72c79,
+        type: 3}
+      propertyPath: m_BindingMode
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6576665616746309768, guid: 720096dfa9d21d34395d411ef1c72c79,
         type: 3}
       propertyPath: m_Enabled
       value: 1
