@@ -41,31 +41,34 @@ public class CameraFollow : MonoBehaviour
     {
         //depending on which player has client authority ie. who the local player is
         //the camera will follow that player on each device
-
-        if (PlayerMovement.ActivePlayers[0].GetComponent<NetworkIdentity>().hasAuthority)
+        if (PlayerMovement.ActivePlayers.Count >= 1)
         {
-            followPlayerTrans = PlayerMovement.ActivePlayers[0].GetComponent<Transform>();
-            Debug.Log("CameraFollow - Looking for player" + PlayerMovement.ActivePlayers[0]);
-            vCam.Follow = followPlayerTrans;
-            vCam.LookAt = followPlayerTrans;
+            if (PlayerMovement.ActivePlayers[0].GetComponent<NetworkIdentity>().hasAuthority)
+            {
+                followPlayerTrans = PlayerMovement.ActivePlayers[0].GetComponent<Transform>();
+                Debug.Log("CameraFollow - Looking for player" + PlayerMovement.ActivePlayers[0]);
+                vCam.Follow = followPlayerTrans;
+                vCam.LookAt = followPlayerTrans;
+            }
+
+            if (PlayerMovement.ActivePlayers[1].GetComponent<NetworkIdentity>().hasAuthority)
+            {
+                followPlayerTrans = PlayerMovement.ActivePlayers[1].GetComponent<Transform>();
+                Debug.Log("CameraFollow - Looking for player" + PlayerMovement.ActivePlayers[1]);
+                vCam.Follow = followPlayerTrans;
+                vCam.LookAt = followPlayerTrans;
+            }
+
+            //TODO: ADD IN THE OTHER PLAYERS' CAMERA FOLLOW SCRIPTS
         }
 
-        if (PlayerMovement.ActivePlayers[1].GetComponent<NetworkIdentity>().hasAuthority)
-        {
-            followPlayerTrans = PlayerMovement.ActivePlayers[1].GetComponent<Transform>();
-            Debug.Log("CameraFollow - Looking for player" + PlayerMovement.ActivePlayers[1]);
-            vCam.Follow = followPlayerTrans;
-            vCam.LookAt = followPlayerTrans;
-        }
 
-        //TODO: ADD IN THE OTHER PLAYERS' CAMERA FOLLOW SCRIPTS
 
-                
-            
 
-           
-        
 
-        
+
+
+
+
     }
 }

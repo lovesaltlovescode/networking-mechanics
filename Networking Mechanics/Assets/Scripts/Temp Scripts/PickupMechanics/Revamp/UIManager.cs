@@ -37,13 +37,12 @@ public class UIManager : MonoBehaviour
     private float waitTime = 4f; //time to wait until image is filled
     public bool finishedWashing = false; //if true, spawn clean plate
 
-
     public WashInteraction washInteraction;
-         
+
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
@@ -53,8 +52,8 @@ public class UIManager : MonoBehaviour
         DisplaydetectedObjectIcon();
 
         //wash dirty plates
-        CheckWashTimer(); 
-        
+        CheckWashTimer();
+
 
 
 
@@ -114,32 +113,33 @@ public class UIManager : MonoBehaviour
                     buttonIcon.sprite = dirtyPlateIcon;
                     break;
             }
-        }else if(!PlayerInteractionManager.detectedObject)
+        }
+        else if (!PlayerInteractionManager.detectedObject)
         {
 
             //no detected object
             buttonIcon.sprite = defaultIcon;
             buttonIcon.color = Color.white;
         }
-        
+
     }
 
     public void DisplaydetectedObjectIcon()
     {
-        
-        //if there is a held object
+
+        //if there is a detected object
         if (PlayerInteractionManager.detectedObject)
         {
-            Debug.Log("UIManager: Held object is " + PlayerInteractionManager.detectedObject.tag);
+            // Debug.Log("UIManager: Detected object is " + PlayerInteractionManager.detectedObject.tag);
             //show the actual icon
-            
+
 
             switch (PlayerInteractionManager.detectedObject.tag)
             {
                 case "Rice":
                     buttonIcon.sprite = riceIcon;
 
-                    if(PlayerInteractionManager.playerState != PlayerInteractionManager.PlayerState.CanDropIngredient)
+                    if (PlayerInteractionManager.playerState != PlayerInteractionManager.PlayerState.CanDropIngredient)
                     {
                         buttonIcon.color = Color.grey;
                     }
@@ -195,7 +195,7 @@ public class UIManager : MonoBehaviour
                 case "DirtyPlate":
                     buttonIcon.sprite = dirtyPlateIcon;
 
-                    if(PlayerInteractionManager.playerState != PlayerInteractionManager.PlayerState.CanPlacePlateInSink)
+                    if (PlayerInteractionManager.playerState != PlayerInteractionManager.PlayerState.CanPlacePlateInSink)
                     {
                         buttonIcon.color = Color.grey;
                     }
@@ -270,3 +270,4 @@ public class UIManager : MonoBehaviour
         Debug.Log("UI Manager: washing plates");
     }
 }
+

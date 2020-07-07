@@ -52,11 +52,12 @@ public class PlayerMovement : NetworkBehaviour
 
     private void Start()
     {
-        ActivePlayers.Add(this.gameObject);
+        ActivePlayers.Add(gameObject);
         PlayerIDs.Add(gameObject.GetComponent<NetworkIdentity>().netId.ToString());
 
         for (int i = 0; i < ActivePlayers.Count; i++)
         {
+            Debug.Log($"There are {ActivePlayers.Count} active players");
             Debug.Log($"Player Movement - Player {i} is {ActivePlayers[i]}");
             Debug.Log($"Player Movement - Player {i}'s Net ID is {PlayerIDs[i]}");
         }

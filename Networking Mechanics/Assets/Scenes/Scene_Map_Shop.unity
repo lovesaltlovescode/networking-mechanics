@@ -1448,7 +1448,7 @@ PrefabInstance:
     - target: {fileID: 7573709594487455818, guid: 07a5145ab429c9043bcbce10c10cbf50,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8875668592787277643, guid: 07a5145ab429c9043bcbce10c10cbf50,
         type: 3}
@@ -1469,9 +1469,9 @@ GameObject:
   - component: {fileID: 359171357}
   - component: {fileID: 359171356}
   - component: {fileID: 359171355}
-  m_Layer: 14
+  m_Layer: 9
   m_Name: EggShelf
-  m_TagString: EggShelf
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1544,10 +1544,11 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 359171354}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 2.52, y: 1.0119774, z: 17.2}
-  m_LocalScale: {x: 0.7806, y: 1.8798, z: 1.3812476}
+  m_LocalPosition: {x: 2.41, y: 1.0119774, z: 17.2}
+  m_LocalScale: {x: 0.7, y: 1.8798, z: 1.3812476}
   m_Children:
   - {fileID: 718413329}
+  - {fileID: 1961507609}
   m_Father: {fileID: 0}
   m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1772,9 +1773,9 @@ GameObject:
   - component: {fileID: 519656207}
   - component: {fileID: 519656206}
   - component: {fileID: 519656205}
-  m_Layer: 14
+  m_Layer: 9
   m_Name: CucumberShelf
-  m_TagString: CucumberShelf
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1847,10 +1848,11 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 519656204}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.52, y: 1.0119774, z: 20.031}
-  m_LocalScale: {x: 0.7806, y: 1.8798, z: 1.3241757}
+  m_LocalPosition: {x: 2.41, y: 1.0119774, z: 20.031}
+  m_LocalScale: {x: 0.7, y: 1.8798, z: 1.3241757}
   m_Children:
   - {fileID: 1007542939}
+  - {fileID: 1835629344}
   m_Father: {fileID: 0}
   m_RootOrder: 14
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1949,7 +1951,7 @@ PrefabInstance:
     - target: {fileID: 7573709594487455818, guid: 07a5145ab429c9043bcbce10c10cbf50,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8875668592787277643, guid: 07a5145ab429c9043bcbce10c10cbf50,
         type: 3}
@@ -2638,7 +2640,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &718413329
 Transform:
   m_ObjectHideFlags: 0
@@ -3199,7 +3201,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &897336372
 Transform:
   m_ObjectHideFlags: 0
@@ -3560,7 +3562,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1007542939
 Transform:
   m_ObjectHideFlags: 0
@@ -4318,9 +4320,9 @@ GameObject:
   - component: {fileID: 1318801039}
   - component: {fileID: 1318801038}
   - component: {fileID: 1318801037}
-  m_Layer: 14
+  m_Layer: 9
   m_Name: ChickenShelf
-  m_TagString: ChickenShelf
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4393,10 +4395,11 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1318801036}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.52, y: 1.0119774, z: 18.62}
-  m_LocalScale: {x: 0.7806, y: 1.8798, z: 1.3241757}
+  m_LocalPosition: {x: 2.41, y: 1.0119774, z: 18.62}
+  m_LocalScale: {x: 0.7, y: 1.8798, z: 1.3241757}
   m_Children:
   - {fileID: 897336372}
+  - {fileID: 1617552926}
   m_Father: {fileID: 0}
   m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -5406,7 +5409,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1602044703}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e88278ddc69865844a294e4e7e3c65f2, type: 3}
+  m_Script: {fileID: 11500000, guid: 7d051b52474a72042840848afce79d63, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   buttonIcon: {fileID: 1451496241}
@@ -5514,6 +5517,50 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 22
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1617552925
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1617552926}
+  - component: {fileID: 1617552927}
+  m_Layer: 14
+  m_Name: ChickenShelfTrigger
+  m_TagString: ChickenShelf
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1617552926
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1617552925}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1318801040}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &1617552927
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1617552925}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.4195662, y: 1, z: 0.99999994}
+  m_Center: {x: -0.30191666, y: 0, z: 0}
 --- !u!64 &1624704955
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -6006,6 +6053,50 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!1 &1835629343
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1835629344}
+  - component: {fileID: 1835629345}
+  m_Layer: 14
+  m_Name: CucumberShelfTrigger
+  m_TagString: CucumberShelf
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1835629344
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1835629343}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 519656208}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &1835629345
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1835629343}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.41331282, y: 1, z: 0.99999994}
+  m_Center: {x: -0.29878995, y: 0, z: 0}
 --- !u!1 &1843814588
 GameObject:
   m_ObjectHideFlags: 0
@@ -6362,6 +6453,50 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1953704451}
   m_Mesh: {fileID: 789159680707793117, guid: fb68279123031a84095a7a6441332b65, type: 3}
+--- !u!1 &1961507608
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1961507609}
+  - component: {fileID: 1961507610}
+  m_Layer: 14
+  m_Name: EggShelfTrigger
+  m_TagString: EggShelf
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1961507609
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1961507608}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 359171358}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &1961507610
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1961507608}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.383284, y: 1, z: 0.9999999}
+  m_Center: {x: -0.28377554, y: 0, z: 0}
 --- !u!1 &1984625610
 GameObject:
   m_ObjectHideFlags: 0
@@ -6555,7 +6690,7 @@ PrefabInstance:
     - target: {fileID: 7573709594487455818, guid: 07a5145ab429c9043bcbce10c10cbf50,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8875668592787277643, guid: 07a5145ab429c9043bcbce10c10cbf50,
         type: 3}
@@ -7999,13 +8134,27 @@ PrefabInstance:
       propertyPath: m_BindingMode
       value: 4
       objectReference: {fileID: 0}
-    - target: {fileID: 6576665616746309768, guid: 720096dfa9d21d34395d411ef1c72c79,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 720096dfa9d21d34395d411ef1c72c79, type: 3}
+--- !u!1 &2081404880040390152 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2081404878930878360, guid: 720096dfa9d21d34395d411ef1c72c79,
+    type: 3}
+  m_PrefabInstance: {fileID: 2081404880040390151}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2081404880040390153
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2081404880040390152}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 129ade8ba329e9a47af374d2489de5e3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  followPlayerTrans: {fileID: 0}
 --- !u!33 &2163969080322982549
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -9181,6 +9330,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: RiceContainer
+      objectReference: {fileID: 0}
+    - target: {fileID: 5074317808852224758, guid: 08731529c14c84142a3299d89fc78294,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 08731529c14c84142a3299d89fc78294, type: 3}
@@ -12370,6 +12524,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: EggContainer
       objectReference: {fileID: 0}
+    - target: {fileID: 2144616528253818311, guid: a4d12ab05990c4140a15e5f374158c2c,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2720496572672339171, guid: a4d12ab05990c4140a15e5f374158c2c,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a4d12ab05990c4140a15e5f374158c2c, type: 3}
 --- !u!4 &7566996254039595337
@@ -13663,6 +13827,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlayerPrefab
       objectReference: {fileID: 0}
+    - target: {fileID: 4922863473034440112, guid: 5a47dd1e50bf4544b9272af50f0b6986,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4922863473034440118, guid: 5a47dd1e50bf4544b9272af50f0b6986,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8814152829493993001, guid: 5a47dd1e50bf4544b9272af50f0b6986,
         type: 3}
       propertyPath: sinkPositions.Array.size
@@ -13693,6 +13867,11 @@ PrefabInstance:
       propertyPath: cleanPlateSpawnPositions.Array.data[2]
       value: 
       objectReference: {fileID: 1307570948}
+    - target: {fileID: 8814152829493993001, guid: 5a47dd1e50bf4544b9272af50f0b6986,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5a47dd1e50bf4544b9272af50f0b6986, type: 3}
 --- !u!4 &8866068618294092135

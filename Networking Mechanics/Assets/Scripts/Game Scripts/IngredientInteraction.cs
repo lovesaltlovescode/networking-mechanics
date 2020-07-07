@@ -26,9 +26,9 @@ public class IngredientInteraction : MonoBehaviour
 
     public static GameObject trayParentZone; //Tray object that contains all ingredient tray positions
 
-    private Transform[] trayPositions; //array to contain all tray positions
+    private static Transform[] trayPositions; //array to contain all tray positions
 
-    public GameObject[] ingredientsOnTray = new GameObject[4]; //array to contain all ingredients on the tray
+    public static GameObject[] ingredientsOnTray = new GameObject[4]; //array to contain all ingredients on the tray
 
     // Start is called before the first frame update
     void Start()

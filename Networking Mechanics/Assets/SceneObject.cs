@@ -12,7 +12,6 @@ using Mirror;
 
 public class SceneObject : NetworkBehaviour
 {
-
     //sync held item and call onchangeitem method
     [SyncVar(hook = nameof(OnChangeItem))]
     public HeldItem heldItem;

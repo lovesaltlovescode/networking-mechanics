@@ -131,7 +131,6 @@ public class PlayerHoldItem : NetworkBehaviour
         //get sceneobject script from the sceneobject prefab
         SceneObject sceneObject = newSceneObject.GetComponent<SceneObject>();
 
-
         //set child object of the scene object from server
         sceneObject.SetHeldItem(heldItem);
 

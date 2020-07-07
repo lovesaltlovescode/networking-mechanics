@@ -16,7 +16,7 @@ public class PlayerInteractionManager : MonoBehaviour
 
     [SerializeField] private float distFromObject; //distance from the object looking at
 
-    //shift layer bits to 8 and 9 (player, environment, zones, uninteractable)
+    //shift layer bits (player, environment, zones, uninteractable)
     //mask these layers, they do not need to be raycasted
     private int layerMask = 1 << 8 | 1 << 9 | 1 << 10 | 1 << 13;
 
