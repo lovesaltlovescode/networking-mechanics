@@ -39,7 +39,7 @@ public class NetworkedUIManager : MonoBehaviour
 
     public NetworkedPlayerInteraction networkedPlayerInteraction;
 
-    public WashInteraction washInteraction;
+    public NetworkedWashInteraction networkedWashInteraction;
          
     // Start is called before the first frame update
     void Start()
@@ -137,74 +137,74 @@ public class NetworkedUIManager : MonoBehaviour
 
             switch (networkedPlayerInteraction.detectedObject.tag)
             {
-                //case "Rice":
-                //    buttonIcon.sprite = riceIcon;
+                case "Rice":
+                    buttonIcon.sprite = riceIcon;
 
-                //    if(networkedPlayerInteraction.playerState != networkedPlayerInteraction.PlayerState.CanDropIngredient)
-                //    {
-                //        buttonIcon.color = Color.grey;
-                //    }
-                //    else
-                //    {
-                //        buttonIcon.color = Color.white;
-                //    }
+                    if (networkedPlayerInteraction.playerState != PlayerState.CanDropIngredient)
+                    {
+                        buttonIcon.color = Color.grey;
+                    }
+                    else
+                    {
+                        buttonIcon.color = Color.white;
+                    }
 
-                //    break;
+                    break;
 
-                //case "Egg":
-                //    buttonIcon.sprite = eggIcon;
+                case "Egg":
+                    buttonIcon.sprite = eggIcon;
 
-                //    if (networkedPlayerInteraction.playerState != networkedPlayerInteraction.PlayerState.CanDropIngredient)
-                //    {
-                //        buttonIcon.color = Color.grey;
-                //    }
-                //    else
-                //    {
-                //        buttonIcon.color = Color.white;
-                //    }
+                    if (networkedPlayerInteraction.playerState != PlayerState.CanDropIngredient)
+                    {
+                        buttonIcon.color = Color.grey;
+                    }
+                    else
+                    {
+                        buttonIcon.color = Color.white;
+                    }
 
-                //    break;
+                    break;
 
-                //case "Chicken":
-                //    buttonIcon.sprite = chickenIcon;
+                case "Chicken":
+                    buttonIcon.sprite = chickenIcon;
 
-                //    if (networkedPlayerInteraction.playerState != networkedPlayerInteraction.PlayerState.CanDropIngredient)
-                //    {
-                //        buttonIcon.color = Color.grey;
-                //    }
-                //    else
-                //    {
-                //        buttonIcon.color = Color.white;
-                //    }
+                    if (networkedPlayerInteraction.playerState != PlayerState.CanDropIngredient)
+                    {
+                        buttonIcon.color = Color.grey;
+                    }
+                    else
+                    {
+                        buttonIcon.color = Color.white;
+                    }
 
-                //    break;
+                    break;
 
-                //case "Cucumber":
-                //    buttonIcon.sprite = cucumberIcon;
+                case "Cucumber":
+                    buttonIcon.sprite = cucumberIcon;
 
-                //    if (networkedPlayerInteraction.playerState != networkedPlayerInteraction.PlayerState.CanDropIngredient)
-                //    {
-                //        buttonIcon.color = Color.grey;
-                //    }
-                //    else
-                //    {
-                //        buttonIcon.color = Color.white;
-                //    }
+                    if (networkedPlayerInteraction.playerState != PlayerState.CanDropIngredient)
+                    {
+                        buttonIcon.color = Color.grey;
+                    }
+                    else
+                    {
+                        buttonIcon.color = Color.white;
+                    }
 
-                //    break;
+                    break;
 
-                //case "DirtyPlate":
-                //    buttonIcon.sprite = dirtyPlateIcon;
+                case "DirtyPlate":
+                    buttonIcon.sprite = dirtyPlateIcon;
 
-                //    if(networkedPlayerInteraction.playerState != networkedPlayerInteraction.PlayerState.CanPlacePlateInSink)
-                //    {
-                //        buttonIcon.color = Color.grey;
-                //    }
-                //    else
-                //    {
-                //        buttonIcon.color = Color.white;
-                //    }
-                //    break;
+                    if (networkedPlayerInteraction.playerState != PlayerState.CanPlacePlateInSink)
+                    {
+                        buttonIcon.color = Color.grey;
+                    }
+                    else
+                    {
+                        buttonIcon.color = Color.white;
+                    }
+                    break;
             }
         }
     }
@@ -215,59 +215,59 @@ public class NetworkedUIManager : MonoBehaviour
     {
         switch (networkedPlayerInteraction.playerState)
         {
-            //case networkedPlayerInteraction.PlayerState.CanPlacePlateInSink:
-            //    buttonIcon.color = Color.white;
-            //    buttonIcon.sprite = washIcon;
-            //    break;
+            case PlayerState.CanPlacePlateInSink:
+                buttonIcon.color = Color.white;
+                buttonIcon.sprite = washIcon;
+                break;
 
-            //case networkedPlayerInteraction.PlayerState.CanWashPlate:
-            //    buttonIcon.color = Color.white;
-            //    buttonIcon.sprite = washIcon;
-            //    break;
+            case PlayerState.CanWashPlate:
+                buttonIcon.color = Color.white;
+                buttonIcon.sprite = washIcon;
+                break;
 
-            //case networkedPlayerInteraction.PlayerState.WashingPlate:
-            //    buttonIcon.sprite = washIcon;
-            //    buttonIcon.color = Color.gray;
-            //    break;
+            case PlayerState.WashingPlate:
+                buttonIcon.sprite = washIcon;
+                buttonIcon.color = Color.gray;
+                break;
 
-            //case networkedPlayerInteraction.PlayerState.ExitedSink:
-            //    washInteraction.showWashIcon = false;
-            //    break;
+            case PlayerState.ExitedSink:
+                networkedWashInteraction.showWashIcon = false;
+                break;
         }
     }
 
     //check if the timer has been started to wash plates
     public void CheckWashTimer()
     {
-        //if (washInteraction.startTimer)
-        //{
-        //    StartTimer();
-        //}
-        //else if (!washInteraction.startTimer)
-        //{
-        //    washTimerImage.fillAmount = 0; //do not fill up image
-        //}
+        if (networkedWashInteraction.startTimer)
+        {
+            StartTimer();
+        }
+        else if (!networkedWashInteraction.startTimer)
+        {
+            washTimerImage.fillAmount = 0; //do not fill up image
+        }
 
 
-        //if (washInteraction.showWashIcon)
-        //{
-        //    ToggleWashIcons();
-        //}
+        if (networkedWashInteraction.showWashIcon)
+        {
+            ToggleWashIcons();
+        }
 
-        ////if image is completely filled, reset fill to 0
-        //if (washTimerImage.fillAmount == 1)
-        //{
-        //    networkedPlayerInteraction.playerState = networkedPlayerInteraction.PlayerState.FinishedWashingPlate;
-        //    washTimerImage.fillAmount = 0;
+        //if image is completely filled, reset fill to 0
+        if (washTimerImage.fillAmount == 1)
+        {
+            networkedPlayerInteraction.playerState = PlayerState.FinishedWashingPlate;
+            washTimerImage.fillAmount = 0;
 
-        //}
+        }
     }
 
     //increase fill amount of image
     public void StartTimer()
     {
-        ////Increase fill amount over waittime seconds
-        //washTimerImage.fillAmount += 1.0f / waitTime * Time.deltaTime;
-        //Debug.Log("UI Manager: washing plates");
+        //Increase fill amount over waittime seconds
+        washTimerImage.fillAmount += 1.0f / waitTime * Time.deltaTime;
+        Debug.Log("UI Manager: washing plates");
     }
 }

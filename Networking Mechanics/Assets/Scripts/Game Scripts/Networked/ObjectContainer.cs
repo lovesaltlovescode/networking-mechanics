@@ -18,6 +18,8 @@ public class ObjectContainer : NetworkBehaviour
     public GameObject cucumberPrefab;
     public GameObject eggPrefab;
     public GameObject chickenPrefab;
+    public GameObject dirtyPlatePrefab;
+    public GameObject cleanPlatePrefab;
 
     void OnChangeIngredient(HeldIngredient oldIngredient, HeldIngredient newIngredient)
     {
@@ -56,6 +58,12 @@ public class ObjectContainer : NetworkBehaviour
                 break;
             case HeldIngredient.cucumber:
                 Instantiate(cucumberPrefab, transform);
+                break;
+            case HeldIngredient.dirtyplate:
+                Instantiate(dirtyPlatePrefab, transform);
+                break;
+            case HeldIngredient.cleanplate:
+                Instantiate(cleanPlatePrefab, transform);
                 break;
         }
 

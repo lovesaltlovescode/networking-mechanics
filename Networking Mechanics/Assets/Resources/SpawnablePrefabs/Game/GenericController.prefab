@@ -169,9 +169,9 @@ GameObject:
   - component: {fileID: 4030835099698572918}
   - component: {fileID: 1422875891317161630}
   - component: {fileID: 7568278799730186342}
-  - component: {fileID: 8727769393343395757}
-  - component: {fileID: 3095350765768733121}
   - component: {fileID: 4615440117277981385}
+  - component: {fileID: 3095350765768733121}
+  - component: {fileID: 3583419821404010333}
   m_Layer: 8
   m_Name: GenericController
   m_TagString: Untagged
@@ -296,61 +296,6 @@ MonoBehaviour:
   localRotationSensitivity: 0.01
   localScaleSensitivity: 0.01
   target: {fileID: 3182775207599277572}
---- !u!114 &8727769393343395757
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1817381823316905504}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ad6d8ee9bad420e489062a1fca92c97c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  syncMode: 0
-  syncInterval: 0.1
-  sceneObjectPrefab: {fileID: 3119484819004831971, guid: 0c65bd13f95769341b01e0e069a7ad50,
-    type: 3}
-  attachmentPoint: {fileID: 3182775207599277575}
-  dropPoint: {fileID: 3182775208208598022}
-  cucumberPrefab: {fileID: 2376572526644023733, guid: db0ec2627ac3534438fb6e546e962040,
-    type: 3}
-  eggPrefab: {fileID: 2144616528253818311, guid: a4d12ab05990c4140a15e5f374158c2c,
-    type: 3}
-  chickenPrefab: {fileID: 4359587278762571012, guid: b3ba3cdce76c9f047bb120db3234a5d2,
-    type: 3}
-  heldItem: 0
---- !u!114 &3095350765768733121
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1817381823316905504}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e36d434cbc75e9f44a57b74ea09a33c8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  syncMode: 0
-  syncInterval: 0.1
-  attachmentPoint: {fileID: 3182775207599277575}
-  dropPoint: {fileID: 3182775208208598022}
-  objectContainerPrefab: {fileID: 3119484819004831971, guid: 0c65bd13f95769341b01e0e069a7ad50,
-    type: 3}
-  cucumberPrefab: {fileID: 2376572526644023733, guid: db0ec2627ac3534438fb6e546e962040,
-    type: 3}
-  eggPrefab: {fileID: 2144616528253818311, guid: a4d12ab05990c4140a15e5f374158c2c,
-    type: 3}
-  chickenPrefab: {fileID: 4359587278762571012, guid: b3ba3cdce76c9f047bb120db3234a5d2,
-    type: 3}
-  heldIngredient: 0
-  networkedPlayerInteraction: {fileID: 4615440117277981385}
-  ingredientDetected: 0
-  nearIngredientTray: 0
-  nearIngredientShelves: 0
-  detectedShelf: 0
 --- !u!114 &4615440117277981385
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -365,12 +310,76 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
+  objectContainerPrefab: {fileID: 3119484819004831971, guid: 0c65bd13f95769341b01e0e069a7ad50,
+    type: 3}
+  cucumberPrefab: {fileID: 2376572526644023733, guid: db0ec2627ac3534438fb6e546e962040,
+    type: 3}
+  eggPrefab: {fileID: 2144616528253818311, guid: a4d12ab05990c4140a15e5f374158c2c,
+    type: 3}
+  chickenPrefab: {fileID: 4359587278762571012, guid: b3ba3cdce76c9f047bb120db3234a5d2,
+    type: 3}
+  dirtyPlatePrefab: {fileID: 7752808417109432923, guid: 8750cf14d568ea441a6c6a4b60675d2f,
+    type: 3}
+  cleanPlatePrefab: {fileID: 440951575337714852, guid: 299cd296e0e6c924ba6e9ab118b79b05,
+    type: 3}
   raycastLength: 1.5
   distFromObject: 0
   detectedObject: {fileID: 0}
+  attachmentPoint: {fileID: 3182775207599277575}
+  dropPoint: {fileID: 3182775208208598022}
   objectsInInventory: []
+  networkedIngredientInteraction: {fileID: 0}
+  networkedWashInteraction: {fileID: 0}
   playerState: 0
-  networkedIngredientInteraction: {fileID: 3095350765768733121}
+--- !u!114 &3095350765768733121
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1817381823316905504}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e36d434cbc75e9f44a57b74ea09a33c8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+  heldIngredient: 0
+  networkedPlayerInteraction: {fileID: 4615440117277981385}
+  nearIngredientTray: 0
+  detectedShelf: 0
+  detectedPlate: 0
+--- !u!114 &3583419821404010333
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1817381823316905504}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c5a68e53207a9c44ba33475c0cf06165, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+  platesInSink:
+  - {fileID: 0}
+  - {fileID: 0}
+  cleanPlatesOnTable:
+  - {fileID: 0}
+  - {fileID: 0}
+  holdingDirtyPlate: 0
+  placedPlateInSink: 0
+  startTimer: 0
+  stoppedWashingPlate: 0
+  showWashIcon: 0
+  platesInSinkCount: 0
+  cleanPlatesCount: 0
+  heldIngredient: 0
+  networkedPlayerInteraction: {fileID: 0}
+  networkedIngredientInteraction: {fileID: 0}
 --- !u!1 &2166442203535815449
 GameObject:
   m_ObjectHideFlags: 0
@@ -1306,7 +1315,7 @@ MonoBehaviour:
   washTimerImage: {fileID: 5666408925667302262}
   finishedWashing: 0
   networkedPlayerInteraction: {fileID: 4615440117277981385}
-  washInteraction: {fileID: 0}
+  networkedWashInteraction: {fileID: 3583419821404010333}
 --- !u!1 &9089199834932616866
 GameObject:
   m_ObjectHideFlags: 0

@@ -6,9 +6,22 @@ using Mirror;
 /// <summary>
 /// Networked player interaction
 /// Player raycast for detected object
-/// Depending on which object is is, change the function
+/// Depending on which object it is, change the function
 /// </summary>
-/// 
+
+//enums of ingredients that could be spawned, placed outside class so it can be accessed elsewhere
+public enum HeldIngredient
+{
+    nothing,
+    egg,
+    chicken,
+    cucumber,
+
+    //Plates
+    dirtyplate,
+    cleanplate
+}
+
 //State of player
 public enum PlayerState
 {
@@ -21,10 +34,37 @@ public enum PlayerState
     CanSpawnChicken,
     CanSpawnEgg,
     CanSpawnCucumber,
+
+    //Table items
+    CanPickUpDirtyPlate,
+    HoldingDirtyPlate,
+
+    //Wash interaction
+    CanPlacePlateInSink,
+    ExitedSink,
+    CanWashPlate,
+    WashingPlate,
+    StoppedWashingPlate,
+    FinishedWashingPlate
 }
 
 public class NetworkedPlayerInteraction : NetworkBehaviour
 {
+
+    [Header("Spawnable Objects")]
+    public GameObject objectContainerPrefab;
+
+    //PREFABS to be spawned
+    [Header("Ingredients")]
+    public GameObject cucumberPrefab;
+    public GameObject eggPrefab;
+    public GameObject chickenPrefab;
+
+    [Header("Plates")]
+    public GameObject dirtyPlatePrefab;
+    public GameObject cleanPlatePrefab;
+
+
     //RAYCAST VARIABLES
     [Header("Raycast Variables")]
     public float raycastLength = 1.5f; //how far the raycast extends
@@ -38,16 +78,23 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
     //Detected object, object player is looking at
     public GameObject detectedObject;
 
-    public List<GameObject> objectsInInventory = new List<GameObject>();
+    //player attachment point
+    public GameObject attachmentPoint;
+    //player drop point, where items should be dropped
+    public GameObject dropPoint;
 
-    public PlayerState playerState;
+    public List<GameObject> objectsInInventory = new List<GameObject>();
 
     //different scripts to reference
     [SerializeField] private NetworkedIngredientInteraction networkedIngredientInteraction;
+    [SerializeField] private NetworkedWashInteraction networkedWashInteraction;
+
+    public PlayerState playerState;
 
     private void Awake()
     {
         networkedIngredientInteraction = GetComponent<NetworkedIngredientInteraction>();
+        networkedWashInteraction = GetComponent<NetworkedWashInteraction>();
     }
 
 
@@ -153,6 +200,23 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
                 networkedIngredientInteraction.PickUpIngredient();
                 break;
 
+            //PLATES
+            case PlayerState.CanPickUpDirtyPlate:
+                Debug.Log("NetworkedPlayerInteraction - Pick up the dirty plate!");
+                networkedIngredientInteraction.PickUpPlate();
+                break;
+
+            case PlayerState.CanPlacePlateInSink:
+                Debug.Log("NetworkedPlayerInteraction - Place plate in sink!");
+                networkedWashInteraction.PlacePlateInSink();
+                break;
+
+            case PlayerState.CanWashPlate:
+                Debug.Log("NetworkedPlayerInteraction - Wash plate in sink!");
+                networkedWashInteraction.WashPlate();
+                break;
+                
+
         }
     }
 
@@ -175,10 +239,10 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
 
         CheckPlayerStateAndInventory();
 
-        if (!detectedObject && !IsInventoryFull())
-        {
-            playerState = PlayerState.Default;
-        }
+        //if (!detectedObject && !IsInventoryFull())
+        //{
+        //    playerState = PlayerState.Default;
+        //}
 
     }
 
@@ -196,9 +260,9 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
         //checks for player state
         Debug.Log("NetworkedPlayerInteraction - Player state is currently: " + playerState);
 
-        //if (playerState == PlayerState.FinishedWashingPlate)
-        //{
-        //    washInteraction.FinishWashingPlate();
-        //}
+        if (playerState == PlayerState.FinishedWashingPlate)
+        {
+            networkedWashInteraction.CmdFinishWashingPlate();
+        }
     }
 }

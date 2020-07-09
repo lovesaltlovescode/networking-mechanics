@@ -10,8 +10,8 @@ using UnityEngine;
 public class WashInteraction : MonoBehaviour
 {
     [Header("Sink Positions")]
-    private Transform[] sinkPositions; //array of sink positions
-    private Transform[] cleanPlateSpawnPositions; //array of possible spawn positions for the clean plates
+    private static Transform[] sinkPositions; //array of sink positions
+    private static Transform[] cleanPlateSpawnPositions; //array of possible spawn positions for the clean plates
     public static GameObject sinkParentZone; //parent sink zone, where the positions array will be retrieved from
 
     [Header("Plate game objects")]
