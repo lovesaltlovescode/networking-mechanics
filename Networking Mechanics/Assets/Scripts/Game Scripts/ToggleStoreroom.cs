@@ -1,13 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Mirror;
 
 //Hides the meshes of certain walls and objects if player enters the storeroom
-public class ToggleStoreroom : MonoBehaviour
+public class ToggleStoreroom : NetworkBehaviour
 {
     public GameObject hiddenObjects;
 
     [SerializeField] private MeshRenderer[] meshesToHide;
+    
 
     // Start is called before the first frame update
     void Start()
@@ -30,6 +32,12 @@ public class ToggleStoreroom : MonoBehaviour
         {
             Debug.Log("CameraHandler: Player in storeroom");
 
+            if (!other.GetComponent<NetworkIdentity>().hasAuthority)
+            {
+                Debug.Log("ToggleStoreroom: Not my local player, ignore!");
+                return;
+            }
+
             //hide meshes
             for (int i = 0; i < meshesToHide.Length; i++)
             {
@@ -44,6 +52,12 @@ public class ToggleStoreroom : MonoBehaviour
         if (other.gameObject.layer == 8)
         {
             Debug.Log("CameraHandler: Player in shop");
+
+            if (!other.GetComponent<NetworkIdentity>().hasAuthority)
+            {
+                Debug.Log("ToggleStoreroom: Not my local player, ignore!");
+                return;
+            }
 
             //show meshes
             for (int i = 0; i < meshesToHide.Length; i++)

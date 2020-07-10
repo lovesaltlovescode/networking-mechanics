@@ -12,24 +12,25 @@ public class ObjectContainer : NetworkBehaviour
 {
     //sync held item and call onchangeingredinet method
     [SyncVar(hook = nameof(OnChangeIngredient))]
-    public HeldIngredient heldIngredient;
+    public HeldItem heldItem;
 
     //PREFABS to be dropped
     public GameObject cucumberPrefab;
     public GameObject eggPrefab;
     public GameObject chickenPrefab;
+    public GameObject ricePrefab;
     public GameObject dirtyPlatePrefab;
     public GameObject cleanPlatePrefab;
 
-    void OnChangeIngredient(HeldIngredient oldIngredient, HeldIngredient newIngredient)
+    void OnChangeIngredient(HeldItem oldItem, HeldItem newItem)
     {
         //Debug.Log("NetworkedIngredientInteraction - Starting coroutine!");
-        StartCoroutine(ChangeIngredient(newIngredient));
+        StartCoroutine(ChangeIngredient(newItem));
     }
 
     //destroy is delayed to end of current frame, so we use a coroutine
     //clear any child object before instantiating the new one
-    IEnumerator ChangeIngredient(HeldIngredient newIngredient)
+    IEnumerator ChangeIngredient(HeldItem newIngredient)
     {
         //if this object has a child, destroy them
         while (transform.childCount > 0)
@@ -39,30 +40,33 @@ public class ObjectContainer : NetworkBehaviour
         }
 
         //use the new value
-        SetHeldIngredient(newIngredient);
+        SetHeldItem(newIngredient);
     }
 
     //called on client from onchangeingredient method
     //and on the server from cmddropitem in networkedingredientinteraction script
-    public void SetHeldIngredient(HeldIngredient heldIngredient)
+    public void SetHeldItem(HeldItem heldItem)
     {
         //instantiates the right prefab as a child of this object
-        switch (heldIngredient)
+        switch (heldItem)
         {
            
-            case HeldIngredient.chicken:
+            case HeldItem.chicken:
                 Instantiate(chickenPrefab, transform);
                 break;
-            case HeldIngredient.egg:
+            case HeldItem.egg:
                 Instantiate(eggPrefab, transform);
                 break;
-            case HeldIngredient.cucumber:
+            case HeldItem.cucumber:
                 Instantiate(cucumberPrefab, transform);
                 break;
-            case HeldIngredient.dirtyplate:
+            case HeldItem.rice:
+                Instantiate(ricePrefab, transform);
+                break;
+            case HeldItem.dirtyplate:
                 Instantiate(dirtyPlatePrefab, transform);
                 break;
-            case HeldIngredient.cleanplate:
+            case HeldItem.cleanplate:
                 Instantiate(cleanPlatePrefab, transform);
                 break;
         }

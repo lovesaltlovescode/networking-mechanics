@@ -25,7 +25,7 @@ public class NetworkedIngredientInteraction : NetworkBehaviour
 
     //when the helditem changes, call onchangeingredient method
     [SyncVar(hook = nameof(OnChangeIngredient))]
-    public HeldIngredient heldIngredient;
+    public HeldItem heldItem;
 
     [SerializeField] private NetworkedPlayerInteraction networkedPlayerInteraction;
 
@@ -46,19 +46,19 @@ public class NetworkedIngredientInteraction : NetworkBehaviour
 
     #region SyncVar
 
-    void OnChangeIngredient(HeldIngredient oldIngredient, HeldIngredient newIngredient)
+    void OnChangeIngredient(HeldItem oldIngredient, HeldItem newIngredient)
     {
         //Debug.Log("NetworkedIngredientInteraction - Starting coroutine!");
         StartCoroutine(ChangeIngredient(newIngredient));
     }
 
-    IEnumerator ChangeIngredient(HeldIngredient newIngredient)
+    IEnumerator ChangeIngredient(HeldItem newIngredient)
     {
         //If the player is holding something
         while (networkedPlayerInteraction.attachmentPoint.transform.childCount > 0)
         {
             //if player is holding nothing, destroy the existing child
-            if (newIngredient == HeldIngredient.nothing)
+            if (newIngredient == HeldItem.nothing)
             {
                 Debug.Log("NetworkedIngredientInteraction - Destroying held object");
                 Destroy(networkedPlayerInteraction.attachmentPoint.transform.GetChild(0).gameObject);
@@ -72,22 +72,27 @@ public class NetworkedIngredientInteraction : NetworkBehaviour
         //instantiate the corresponding prefab
         switch (newIngredient)
         {
-            case HeldIngredient.chicken:
+            case HeldItem.chicken:
                 var chicken = Instantiate(networkedPlayerInteraction.chickenPrefab, networkedPlayerInteraction.attachmentPoint.transform);
                 networkedPlayerInteraction.objectsInInventory.Add(chicken);
                 break;
 
-            case HeldIngredient.egg:
+            case HeldItem.egg:
                 var egg = Instantiate(networkedPlayerInteraction.eggPrefab, networkedPlayerInteraction.attachmentPoint.transform);
                 networkedPlayerInteraction.objectsInInventory.Add(egg);
                 break;
 
-            case HeldIngredient.cucumber:
+            case HeldItem.cucumber:
                 var cucumber = Instantiate(networkedPlayerInteraction.cucumberPrefab, networkedPlayerInteraction.attachmentPoint.transform);
                 networkedPlayerInteraction.objectsInInventory.Add(cucumber);
                 break;
 
-            case HeldIngredient.dirtyplate:
+            case HeldItem.rice:
+                var rice = Instantiate(networkedPlayerInteraction.ricePrefab, networkedPlayerInteraction.attachmentPoint.transform);
+                networkedPlayerInteraction.objectsInInventory.Add(rice);
+                break;
+
+            case HeldItem.dirtyplate:
                 var dirtyPlate = Instantiate(networkedPlayerInteraction.dirtyPlatePrefab, networkedPlayerInteraction.attachmentPoint.transform);
                 break;
 
@@ -202,6 +207,12 @@ public class NetworkedIngredientInteraction : NetworkBehaviour
                         Debug.Log("NetworkedIngredientInteraction - Able to spawn cucumber!");
                         networkedPlayerInteraction.playerState = PlayerState.CanSpawnCucumber;
                         break;
+
+                    case "RiceTub":
+                        //change player state
+                        Debug.Log("NetworkedIngredientInteraction - Able to spawn rice!");
+                        networkedPlayerInteraction.playerState = PlayerState.CanSpawnRice;
+                        break;
                 }
             }
 
@@ -231,6 +242,12 @@ public class NetworkedIngredientInteraction : NetworkBehaviour
                     case "DirtyPlate":
                         //change player state
                         Debug.Log("NetworkedIngredientInteraction - Able to pick up dirty plate!");
+
+                        if(NetworkedWashInteraction.platesInSinkCount >= 2)
+                        {
+                            Debug.Log("NetworkedWashInteraction - Too many plates in sink!");
+                            return;
+                        }
                         networkedPlayerInteraction.playerState = PlayerState.CanPickUpDirtyPlate;
                         break;
                 }
@@ -256,7 +273,7 @@ public class NetworkedIngredientInteraction : NetworkBehaviour
     {
         CmdPickUpIngredient();
 
-        heldIngredient = HeldIngredient.dirtyplate;
+        heldItem = HeldItem.dirtyplate;
         networkedPlayerInteraction.playerState = PlayerState.HoldingDirtyPlate;
 
         //if (networkedPlayerInteraction.IsInventoryFull())
@@ -271,10 +288,10 @@ public class NetworkedIngredientInteraction : NetworkBehaviour
     //Method to be called from player interaction script
     //Since playerinteraction shouldn't be networked, unable to call the CMD directly
     //Instead, call this method and change the ingredient according to the state
-    public void UpdateIngredient(HeldIngredient selectedIngredient)
+    public void UpdateIngredient(HeldItem selectedIngredient)
     {
 
-        CmdChangeHeldIngredient(selectedIngredient);
+        CmdChangeHeldItem(selectedIngredient);
         networkedPlayerInteraction.playerState = PlayerState.CanDropIngredient;
 
     }
@@ -299,7 +316,7 @@ public class NetworkedIngredientInteraction : NetworkBehaviour
     {
         CmdPickUpIngredient();
 
-        heldIngredient = networkedPlayerInteraction.detectedObject.GetComponent<ObjectContainer>().heldIngredient;
+        heldItem = networkedPlayerInteraction.detectedObject.GetComponent<ObjectContainer>().heldItem;
 
         if (networkedPlayerInteraction.IsInventoryFull())
         {
@@ -316,10 +333,10 @@ public class NetworkedIngredientInteraction : NetworkBehaviour
     //change held ingredient to the new ingredient
     //triggers sync var -> Coroutine to instantiate the corresponding prefab
     [Command]
-    public void CmdChangeHeldIngredient(HeldIngredient selectedIngredient)
+    public void CmdChangeHeldItem(HeldItem selectedIngredient)
     {
         Debug.Log("NetworkedIngredientInteraction - Held ingredient has been changed!");
-        heldIngredient = selectedIngredient;
+        heldItem = selectedIngredient;
     }
 
     //sends a command from client to server to drop the held item in the scene
@@ -353,13 +370,13 @@ public class NetworkedIngredientInteraction : NetworkBehaviour
                     ObjectContainer ingredientContainer = trayIngredient.GetComponent<ObjectContainer>();
 
                     //instantiate the right ingredient as a child of the object
-                    ingredientContainer.SetHeldIngredient(heldIngredient);
+                    ingredientContainer.SetHeldItem(heldItem);
 
                     //sync var the helditem in scene object to the helditem in the player
-                    ingredientContainer.heldIngredient = heldIngredient;
+                    ingredientContainer.heldItem = heldItem;
 
                     //set player's sync var to nothing so clients won't see the ingredient anymore
-                    heldIngredient = HeldIngredient.nothing;
+                    heldItem = HeldItem.nothing;
 
                     //spawn the scene object on network for everyone to see
                     NetworkServer.Spawn(trayIngredient);
@@ -383,25 +400,25 @@ public class NetworkedIngredientInteraction : NetworkBehaviour
             //instantiate scene object on the server at the drop point
             Vector3 pos = networkedPlayerInteraction.dropPoint.transform.position;
             Quaternion rot = networkedPlayerInteraction.dropPoint.transform.rotation;
-            GameObject newContainer = Instantiate(networkedPlayerInteraction.objectContainerPrefab, pos, rot);
+            GameObject droppedIngredient = Instantiate(networkedPlayerInteraction.objectContainerPrefab, pos, rot);
 
             //set Rigidbody as non-kinematic on SERVER only (isKinematic = true in prefab)
-            newContainer.GetComponent<Rigidbody>().isKinematic = false;
+            droppedIngredient.GetComponent<Rigidbody>().isKinematic = false;
 
             //get sceneobject script from the sceneobject prefab
-            ObjectContainer objectContainer = newContainer.GetComponent<ObjectContainer>();
+            ObjectContainer objectContainer = droppedIngredient.GetComponent<ObjectContainer>();
 
             //instantiate the right ingredient as a child of the object
-            objectContainer.SetHeldIngredient(heldIngredient);
+            objectContainer.SetHeldItem(heldItem);
 
             //sync var the helditem in scene object to the helditem in the player
-            objectContainer.heldIngredient = heldIngredient;
+            objectContainer.heldItem = heldItem;
 
             //set player's sync var to nothing so clients won't see the ingredient anymore
-            heldIngredient = HeldIngredient.nothing;
+            heldItem = HeldItem.nothing;
 
             //spawn the scene object on network for everyone to see
-            NetworkServer.Spawn(newContainer);
+            NetworkServer.Spawn(droppedIngredient);
 
             //clear inventory after dropping
             networkedPlayerInteraction.objectsInInventory.Clear();
@@ -426,10 +443,10 @@ public class NetworkedIngredientInteraction : NetworkBehaviour
         ObjectContainer objectContainer = dirtyPlateContainer.GetComponent<ObjectContainer>();
 
         //instantiate the right item as a child of the object
-        objectContainer.SetHeldIngredient(HeldIngredient.dirtyplate);
+        objectContainer.SetHeldItem(HeldItem.dirtyplate);
 
         //sync var the helditem in scene object to the helditem in the player
-        objectContainer.heldIngredient = heldIngredient;
+        objectContainer.heldItem = heldItem;
 
         //change layer of the container
         dirtyPlateContainer.layer = LayerMask.NameToLayer("TableItem");

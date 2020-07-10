@@ -318,6 +318,8 @@ MonoBehaviour:
     type: 3}
   chickenPrefab: {fileID: 4359587278762571012, guid: b3ba3cdce76c9f047bb120db3234a5d2,
     type: 3}
+  ricePrefab: {fileID: 5074317808852224758, guid: 08731529c14c84142a3299d89fc78294,
+    type: 3}
   dirtyPlatePrefab: {fileID: 7752808417109432923, guid: 8750cf14d568ea441a6c6a4b60675d2f,
     type: 3}
   cleanPlatePrefab: {fileID: 440951575337714852, guid: 299cd296e0e6c924ba6e9ab118b79b05,
@@ -345,7 +347,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  heldIngredient: 0
+  heldItem: 0
   networkedPlayerInteraction: {fileID: 4615440117277981385}
   nearIngredientTray: 0
   detectedShelf: 0
@@ -364,10 +366,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
+  sinkParentZone: {fileID: 0}
   platesInSink:
   - {fileID: 0}
   - {fileID: 0}
   cleanPlatesOnTable:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
   holdingDirtyPlate: 0
@@ -375,9 +391,8 @@ MonoBehaviour:
   startTimer: 0
   stoppedWashingPlate: 0
   showWashIcon: 0
-  platesInSinkCount: 0
   cleanPlatesCount: 0
-  heldIngredient: 0
+  heldItem: 0
   networkedPlayerInteraction: {fileID: 0}
   networkedIngredientInteraction: {fileID: 0}
 --- !u!1 &2166442203535815449

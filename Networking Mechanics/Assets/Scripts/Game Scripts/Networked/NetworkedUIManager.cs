@@ -129,13 +129,12 @@ public class NetworkedUIManager : MonoBehaviour
     {
         
         //if there is a detected object
-        if (networkedPlayerInteraction.detectedObject)
+        if (networkedPlayerInteraction.attachmentPoint.transform.childCount == 1)
         {
             // Debug.Log("UIManager: Detected object is " + networkedPlayerInteraction.detectedObject.tag);
             //show the actual icon
-            
 
-            switch (networkedPlayerInteraction.detectedObject.tag)
+            switch (networkedPlayerInteraction.attachmentPoint.transform.GetChild(0).tag)
             {
                 case "Rice":
                     buttonIcon.sprite = riceIcon;

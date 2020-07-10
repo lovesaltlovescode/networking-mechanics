@@ -10,12 +10,13 @@ using Mirror;
 /// </summary>
 
 //enums of ingredients that could be spawned, placed outside class so it can be accessed elsewhere
-public enum HeldIngredient
+public enum HeldItem
 {
     nothing,
     egg,
     chicken,
     cucumber,
+    rice,
 
     //Plates
     dirtyplate,
@@ -34,6 +35,7 @@ public enum PlayerState
     CanSpawnChicken,
     CanSpawnEgg,
     CanSpawnCucumber,
+    CanSpawnRice,
 
     //Table items
     CanPickUpDirtyPlate,
@@ -59,6 +61,7 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
     public GameObject cucumberPrefab;
     public GameObject eggPrefab;
     public GameObject chickenPrefab;
+    public GameObject ricePrefab;
 
     [Header("Plates")]
     public GameObject dirtyPlatePrefab;
@@ -177,17 +180,22 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
         {
             case PlayerState.CanSpawnChicken:
                 Debug.Log("NetworkedPlayerInteraction - Spawn a chicken!");
-                networkedIngredientInteraction.UpdateIngredient(HeldIngredient.chicken);
+                networkedIngredientInteraction.UpdateIngredient(HeldItem.chicken);
                 break;
 
             case PlayerState.CanSpawnEgg:
                 Debug.Log("NetworkedPlayerInteraction - Spawn a chicken!");
-                networkedIngredientInteraction.UpdateIngredient(HeldIngredient.egg);
+                networkedIngredientInteraction.UpdateIngredient(HeldItem.egg);
                 break;
 
             case PlayerState.CanSpawnCucumber:
                 Debug.Log("NetworkedPlayerInteraction - Spawn a chicken!");
-                networkedIngredientInteraction.UpdateIngredient(HeldIngredient.cucumber);
+                networkedIngredientInteraction.UpdateIngredient(HeldItem.cucumber);
+                break;
+
+            case PlayerState.CanSpawnRice:
+                Debug.Log("NetworkedPlayerInteraction - Spawn some rice!");
+                networkedIngredientInteraction.UpdateIngredient(HeldItem.rice);
                 break;
 
             case PlayerState.CanDropIngredient:

@@ -30,12 +30,12 @@ public class NetworkedWashInteraction : NetworkBehaviour
     public bool showWashIcon; //bool to check if wash icon should be shown (UI)
 
     [Header("Plate counts")]
-    public int platesInSinkCount; //number of plates in the sink STATIC
+    public static int platesInSinkCount; //number of plates in the sink STATIC
     public int cleanPlatesCount; //number of clean plates on table
 
     //when the helditem changes, call onchangeingredient method
     [SyncVar(hook = nameof(OnChangeIngredient))]
-    public HeldIngredient heldIngredient;
+    public HeldItem heldItem;
 
     [SerializeField] private NetworkedPlayerInteraction networkedPlayerInteraction;
     [SerializeField] private NetworkedIngredientInteraction networkedIngredientInteraction;
@@ -48,19 +48,19 @@ public class NetworkedWashInteraction : NetworkBehaviour
 
     #region SyncVar
 
-    void OnChangeIngredient(HeldIngredient oldIngredient, HeldIngredient newIngredient)
+    void OnChangeIngredient(HeldItem oldItem, HeldItem newItem)
     {
         //Debug.Log("NetworkedIngredientInteraction - Starting coroutine!");
-        StartCoroutine(ChangeIngredient(newIngredient));
+        StartCoroutine(ChangeIngredient(newItem));
     }
 
-    IEnumerator ChangeIngredient(HeldIngredient newIngredient)
+    IEnumerator ChangeIngredient(HeldItem newIngredient)
     {
         //If the player is holding something
         while (networkedPlayerInteraction.attachmentPoint.transform.childCount > 0)
         {
             //if player is holding nothing, destroy the existing child
-            if (newIngredient == HeldIngredient.nothing)
+            if (newIngredient == HeldItem.nothing)
             {
                 Debug.Log("NetworkedWashInteraction - Destroying held object");
                 Destroy(networkedPlayerInteraction.attachmentPoint.transform.GetChild(0).gameObject);
@@ -161,13 +161,13 @@ public class NetworkedWashInteraction : NetworkBehaviour
                 ObjectContainer dirtyPlateContainer = dirtyPlateInSink.GetComponent<ObjectContainer>();
 
                 //instantiate the right ingredient as a child of the object
-                dirtyPlateContainer.SetHeldIngredient(HeldIngredient.dirtyplate);
+                dirtyPlateContainer.SetHeldItem(HeldItem.dirtyplate);
 
                 ////sync var the helditem in scene object to the helditem in the player
-                networkedIngredientInteraction.heldIngredient = heldIngredient;
+                networkedIngredientInteraction.heldItem = heldItem;
 
                 //set player's sync var to nothing so clients won't see the ingredient anymore
-                heldIngredient = HeldIngredient.nothing;
+                heldItem = HeldItem.nothing;
 
                 //spawn the scene object on network for everyone to see
                 NetworkServer.Spawn(dirtyPlateInSink);
@@ -200,74 +200,76 @@ public class NetworkedWashInteraction : NetworkBehaviour
         if (startTimer)
         {
             //LOOP THROUGH PLATES IN THE SINK
-            for (int i = 0; i < platesInSink.Length; i++)
+            for (int i = platesInSink.Length - 1; i >= 0; i--)
             {
-                 Debug.Log("NetworkedWashInteraction - Plate:" + i);
-                 //destroy dirty plates in the sink
-                 Debug.Log("NetworkedWashInteraction - Plate in sink: " + platesInSink[i]);
-                 Destroy(platesInSink[i].gameObject);
-                 platesInSink[i] = null;
-                 //reduce number of plates in sink
-                 platesInSinkCount -= 1;
-                
-
-                //LOOP THROUGH CLEAN PLATES ON TABLE
-                for (int x = 0; x < cleanPlatesOnTable.Length; x++)
+                if (platesInSink[i] != null)
                 {
-                    //IF NO CLEAN PLATE
-                    if (cleanPlatesOnTable[x] == null)
+                    Debug.Log("NetworkedWashInteraction - Plate:" + i);
+                    //destroy dirty plates in the sink
+                    Debug.Log("NetworkedWashInteraction - Plate in sink: " + platesInSink[i]);
+                    NetworkServer.Destroy(platesInSink[i].gameObject);
+                    platesInSink[i] = null;
+                    //reduce number of plates in sink
+                    platesInSinkCount -= 1;
+
+                    //LOOP THROUGH CLEAN PLATES ON TABLE
+                    for (int x = 0; x < cleanPlatesOnTable.Length; x++)
                     {
-                        var platePos = cleanPlateSpawnPositions[x].position;
-
-                        //Instantiate container at the spawn pos
-                        GameObject cleanPlateOnTray = Instantiate(networkedPlayerInteraction.objectContainerPrefab, platePos, Quaternion.identity);
-
-                        //set the cleanplate gameobject to be the plate on the tray
-                        cleanPlatesOnTable[x] = cleanPlateOnTray;
-
-                        //Set rigidbody as non-kinematic
-                        cleanPlateOnTray.GetComponent<Rigidbody>().isKinematic = false;
-
-                        //get script from the prefab
-                        ObjectContainer objectContainer = cleanPlateOnTray.GetComponent<ObjectContainer>();
-
-                        //Instantiate the right ingredient as a child of the object
-                        objectContainer.SetHeldIngredient(HeldIngredient.cleanplate);
-
-                        //set player's sync var to nothing so clients won't see the ingredient anymore
-                        heldIngredient = HeldIngredient.nothing;
-
-                        //spawn the scene object on network for everyone to see
-                        NetworkServer.Spawn(cleanPlateOnTray);
-
-                        //set layer to uninteractable
-                        cleanPlateOnTray.layer = LayerMask.NameToLayer("UnInteractable");
-
-                        //set starttimer to false
-                        startTimer = false;
-
-                        //if there are still plates in the sink
-                        if(platesInSinkCount != 0)
+                        //IF NO CLEAN PLATE
+                        if (cleanPlatesOnTable[x] == null)
                         {
-                            showWashIcon = true;
-                            placedPlateInSink = true;
+                            var platePos = cleanPlateSpawnPositions[x].position;
 
-                            //allow player to wash plate
-                            networkedPlayerInteraction.playerState = PlayerState.CanWashPlate;
+                            //Instantiate container at the spawn pos
+                            GameObject cleanPlateOnTray = Instantiate(networkedPlayerInteraction.objectContainerPrefab, platePos, Quaternion.identity);
+
+                            //set the cleanplate gameobject to be the plate on the tray
+                            cleanPlatesOnTable[x] = cleanPlateOnTray;
+
+                            //Set rigidbody as non-kinematic
+                            cleanPlateOnTray.GetComponent<Rigidbody>().isKinematic = false;
+
+                            //get script from the prefab
+                            ObjectContainer objectContainer = cleanPlateOnTray.GetComponent<ObjectContainer>();
+
+                            //Instantiate the right ingredient as a child of the object
+                            objectContainer.SetHeldItem(HeldItem.cleanplate);
+
+                            //set player's sync var to nothing so clients won't see the ingredient anymore
+                            heldItem = HeldItem.nothing;
+
+                            //spawn the scene object on network for everyone to see
+                            NetworkServer.Spawn(cleanPlateOnTray);
+
+                            //set layer to uninteractable
+                            cleanPlateOnTray.layer = LayerMask.NameToLayer("UnInteractable");
+
+                            //set starttimer to false
+                            startTimer = false;
+
+                            //if there are still plates in the sink
+                            if (platesInSinkCount != 0)
+                            {
+                                showWashIcon = true;
+                                placedPlateInSink = true;
+
+                                //allow player to wash plate
+                                networkedPlayerInteraction.playerState = PlayerState.CanWashPlate;
+                                return;
+                            }
+                            else
+                            {
+                                //unable to wash anymore
+                                showWashIcon = false;
+                                placedPlateInSink = false;
+                            }
                             return;
                         }
-                        else
-                        {
-                            //unable to wash anymore
-                            showWashIcon = false;
-                            placedPlateInSink = false;
-                        }
-                        return;
                     }
                 }
             }
         }
-    }   
+    }
 
     #endregion
 
@@ -316,22 +318,22 @@ public class NetworkedWashInteraction : NetworkBehaviour
         //if exit sink zone
         if (other.tag == "SinkZone")
         {
-            Debug.Log("WashInteraction - Player has exited the sink! Disable wash icon");
+            Debug.Log("NetworkedWashInteraction - Player has exited the sink! Disable wash icon");
 
             showWashIcon = false; //hide wash icon
 
             if (holdingDirtyPlate || platesInSinkCount != 0)
             {
                 //player exited sink
-                PlayerInteractionManager.playerState = PlayerInteractionManager.PlayerState.ExitedSink;
+                networkedPlayerInteraction.playerState = PlayerState.ExitedSink;
                 startTimer = false;
             }
 
             //if player was washing a dirty plate
-            if (PlayerInteractionManager.playerState == PlayerInteractionManager.PlayerState.WashingPlate)
+            if (networkedPlayerInteraction.playerState == PlayerState.WashingPlate)
             {
                 //change state
-                PlayerInteractionManager.playerState = PlayerInteractionManager.PlayerState.StoppedWashingPlate;
+                networkedPlayerInteraction.playerState = PlayerState.StoppedWashingPlate;
 
                 //set bool true
                 stoppedWashingPlate = true;

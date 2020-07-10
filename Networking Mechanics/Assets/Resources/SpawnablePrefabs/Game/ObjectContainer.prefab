@@ -160,12 +160,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  heldIngredient: 0
+  heldItem: 0
   cucumberPrefab: {fileID: 2376572526644023733, guid: db0ec2627ac3534438fb6e546e962040,
     type: 3}
   eggPrefab: {fileID: 2144616528253818311, guid: a4d12ab05990c4140a15e5f374158c2c,
     type: 3}
   chickenPrefab: {fileID: 4359587278762571012, guid: b3ba3cdce76c9f047bb120db3234a5d2,
+    type: 3}
+  ricePrefab: {fileID: 5074317808852224758, guid: 08731529c14c84142a3299d89fc78294,
     type: 3}
   dirtyPlatePrefab: {fileID: 7752808417109432923, guid: 8750cf14d568ea441a6c6a4b60675d2f,
     type: 3}
