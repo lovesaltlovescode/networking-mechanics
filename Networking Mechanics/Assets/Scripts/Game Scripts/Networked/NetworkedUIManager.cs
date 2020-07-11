@@ -117,10 +117,13 @@ public class NetworkedUIManager : MonoBehaviour
             }
         }else if(!networkedPlayerInteraction.detectedObject)
         {
-
             //no detected object
             buttonIcon.sprite = defaultIcon;
             buttonIcon.color = Color.white;
+            if(networkedPlayerInteraction.attachmentPoint.transform.childCount < 1 && NetworkedWashInteraction.platesInSinkCount == 0)
+            {
+                networkedPlayerInteraction.playerState = PlayerState.Default;
+            }
         }
         
     }
@@ -145,6 +148,7 @@ public class NetworkedUIManager : MonoBehaviour
                     }
                     else
                     {
+                        Debug.Log("NetworkedUIManager - Coloured rice");
                         buttonIcon.color = Color.white;
                     }
 
@@ -222,6 +226,7 @@ public class NetworkedUIManager : MonoBehaviour
             case PlayerState.CanWashPlate:
                 buttonIcon.color = Color.white;
                 buttonIcon.sprite = washIcon;
+                Debug.Log("Player can wash plate");
                 break;
 
             case PlayerState.WashingPlate:

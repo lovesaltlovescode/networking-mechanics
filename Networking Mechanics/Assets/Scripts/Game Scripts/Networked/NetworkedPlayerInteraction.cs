@@ -30,6 +30,7 @@ public enum PlayerState
 
     CanDropIngredient,
     CanPickUpIngredient,
+    CanThrowIngredient,
 
     //Spawning ingredients from shelf
     CanSpawnChicken,
@@ -206,6 +207,11 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
             case PlayerState.CanPickUpIngredient:
                 Debug.Log("NetworkedPlayerInteraction - Pick up the ingredient!");
                 networkedIngredientInteraction.PickUpIngredient();
+                break;
+
+            case PlayerState.CanThrowIngredient:
+                Debug.Log("NetworkedPlayerInteraction - Throw the ingredient!");
+                networkedIngredientInteraction.ThrowIngredient();
                 break;
 
             //PLATES

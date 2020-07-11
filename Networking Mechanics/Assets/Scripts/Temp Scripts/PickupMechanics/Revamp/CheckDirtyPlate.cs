@@ -14,22 +14,18 @@ public class CheckDirtyPlate : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        dirtyPlates.SetActive(true);
+        stackedDirtyPlates.SetActive(false);
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(transform.parent == null)
+        if(transform.parent.tag == "AttachPoint")
         {
             //if not child
             dirtyPlates.SetActive(true);
             stackedDirtyPlates.SetActive(false);
-        }
-        else
-        {
-            stackedDirtyPlates.SetActive(true);
-            dirtyPlates.SetActive(false);
         }
     }
 }

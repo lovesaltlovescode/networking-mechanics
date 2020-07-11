@@ -10,10 +10,6 @@ TagManager:
   - DaLi
   - DaFan
   - XiaoBen
-  - ConnectToServerText
-  - TryAgainButton
-  - NoButton
-  - ConnectButton
   - Plate
   - DirtyPlate
   - DropZone
@@ -21,11 +17,9 @@ TagManager:
   - ObjectIcon
   - HeldIngredient
   - HeldDirtyPlates
-  - FollowPlayer
   - Sink
   - SinkZone
   - CleanPlate
-  - IngredientTableZone
   - StoreroomZone
   - EggShelf
   - ChickenShelf
@@ -34,18 +28,25 @@ TagManager:
   - Rice
   - Egg
   - SinkPos
-  - EggShelfZone
-  - ChickenShelfZone
-  - CucumberShelfZone
-  - RiceTubZone
-  - ShelfZone
   - Chicken
   - Cucumber
   - Floor
   - DaFanCam
   - DaLiCam
-  - XiaoFanCam
   - XiaoLiCam
+  - AttachPoint
+  - IngredientTableZone
+  - ConnectButton
+  - ConnectToServerText
+  - NoButton
+  - TryAgainButton
+  - EggShelfZone
+  - ChickenShelfZone
+  - CucumberShelfZone
+  - ShelfZone
+  - RiceTubZone
+  - TrashBin
+  - TrashZone
   layers:
   - Default
   - TransparentFX

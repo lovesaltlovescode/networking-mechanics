@@ -225,6 +225,7 @@ public class NetworkedWashInteraction : NetworkBehaviour
 
                             //set the cleanplate gameobject to be the plate on the tray
                             cleanPlatesOnTable[x] = cleanPlateOnTray;
+                            cleanPlatesCount += 1;
 
                             //Set rigidbody as non-kinematic
                             cleanPlateOnTray.GetComponent<Rigidbody>().isKinematic = false;

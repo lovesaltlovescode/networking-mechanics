@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5074317808852224522}
   - component: {fileID: 9108962694582383570}
   - component: {fileID: 5183521058737928564}
-  m_Layer: 15
+  m_Layer: 2
   m_Name: RiceContainer
   m_TagString: Rice
   m_Icon: {fileID: 0}
@@ -52,7 +52,7 @@ BoxCollider:
   m_GameObject: {fileID: 5074317808852224758}
   m_Material: {fileID: 0}
   m_IsTrigger: 1
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Size: {x: 1.329216, y: 2.1888359, z: 1.1409582}
   m_Center: {x: -0.046958685, y: 0.67147887, z: 0.0022470355}
@@ -86,7 +86,7 @@ GameObject:
   - component: {fileID: 8710267352623665701}
   - component: {fileID: 7180893338682138641}
   - component: {fileID: 5600256329853309856}
-  m_Layer: 15
+  m_Layer: 2
   m_Name: RiceModel
   m_TagString: Rice
   m_Icon: {fileID: 0}
@@ -165,6 +165,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: TimeMeter_Canvas
+      objectReference: {fileID: 0}
+    - target: {fileID: 2755934612965150563, guid: 0f7df1b2006fb8b4b9a9d537c3fb4a00,
+        type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5300936113083522253, guid: 0f7df1b2006fb8b4b9a9d537c3fb4a00,
+        type: 3}
+      propertyPath: m_Layer
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8328357724099119695, guid: 0f7df1b2006fb8b4b9a9d537c3fb4a00,
         type: 3}
