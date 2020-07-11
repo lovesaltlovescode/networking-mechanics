@@ -92,7 +92,7 @@ public class MenuButtons : MonoBehaviour
         if(customNetworkDiscovery.roomFound == false)
         {
             //enable try again text, button
-            connectText.text = "No rooms found. Try again?";
+            //connectText.text = "No rooms found. Try again?";
             //Debug.Log("Unable to find rooms");
             tryAgainButton.gameObject.SetActive(true);
             joinRoomButton.gameObject.SetActive(false);
@@ -100,8 +100,8 @@ public class MenuButtons : MonoBehaviour
         else if(customNetworkDiscovery.roomFound == true)
         {
             //enable connect text, button
-            connectText.text = "Found a room! Join this room?";
-            //Debug.Log("Found a room!");
+            //connectText.text = "Found a room! Join this room?";
+            Debug.Log("Found a room!");
             tryAgainButton.gameObject.SetActive(false);
             joinRoomButton.gameObject.SetActive(true);
         }
