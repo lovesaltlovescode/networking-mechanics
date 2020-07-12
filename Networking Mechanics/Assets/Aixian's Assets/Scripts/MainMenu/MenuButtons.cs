@@ -26,11 +26,8 @@ public class MenuButtons : MonoBehaviour
     //Button to connect to room, if room is found
     [SerializeField] private Button joinRoomButton = null;
 
-    //Text for connection to server, toggle between connect and try again
-    [SerializeField] private TextMeshProUGUI connectText = null;
-
     //Reference to custom network discovery script
-    [SerializeField] CustomNetworkDiscovery customNetworkDiscovery;
+    CustomNetworkDiscovery customNetworkDiscovery;
 
     #region PlatformDependencies
 
@@ -93,7 +90,7 @@ public class MenuButtons : MonoBehaviour
         {
             //enable try again text, button
             //connectText.text = "No rooms found. Try again?";
-            //Debug.Log("Unable to find rooms");
+            Debug.Log("Unable to find rooms");
             tryAgainButton.gameObject.SetActive(true);
             joinRoomButton.gameObject.SetActive(false);
         }

@@ -23,7 +23,7 @@ public class NetworkRoom : NetworkBehaviour
     [Header("UI")]
 
     [SerializeField] private GameObject lobbyUI = null; //Only enable for host, so there's not one for every single player
-    [SerializeField] private TMP_Text[] playerNameTexts = new TMP_Text[5]; //Array to contain placeholder text when waiting for players
+    [SerializeField] private TMP_Text[] playerWaitTexts = new TMP_Text[5]; //Array to contain placeholder text when waiting for players
     [SerializeField] private TMP_Text[] playerReadyTexts = new TMP_Text[5]; //Array to contain player ready states
     [SerializeField] private Image[] playerImages = new Image[5]; //Images for players
 
@@ -165,23 +165,37 @@ public class NetworkRoom : NetworkBehaviour
         for (int i = 0; i < playerReadyTexts.Length; i++)
         {
             //Loop through all player name and readystatus and set as empty/loading, cleared text for a new round
-            playerNameTexts[i].text = "Waiting For Player...";
+            playerWaitTexts[i].text = "Waiting For Player...";
             playerReadyTexts[i].text = string.Empty;
-            playerImages[i].GetComponent<Image>().color = Color.black;
+            playerImages[i].GetComponent<Image>().enabled = false;
         }
 
         for (int i = 0; i < NetworkRoomManager.RoomPlayers.Count; i++)
         {
             //Change placeholder texts to empty now that players have joined
-            playerNameTexts[i].text = string.Empty;
+            playerWaitTexts[i].text = string.Empty;
 
             //Change image colours to white now that players have joined
-            playerImages[i].GetComponent<Image>().color = Color.white;
+            playerImages[i].GetComponent<Image>().enabled = true;
+
+            
 
             //if player set as ready, change text to green, else change to red
-            playerReadyTexts[i].text = NetworkRoomManager.RoomPlayers[i].isReady ?
-                "<color=green>Ready</color>" :
-                "<color=red>Not Ready</color>";
+            if (NetworkRoomManager.RoomPlayers[i].isReady)
+            {
+                //Green ready colour
+                float r = 0.02f, g = 0.45f, b = 0.041f, a = 1f;
+                playerReadyTexts[i].text = "Ready";
+                playerReadyTexts[i].color = Color.white;
+            }
+            else
+            {
+                //Red not ready colour
+                float r = 0.6f, g = 0.02f, b = 0.02f, a = 1f;
+                playerReadyTexts[i].text = "Not Ready";
+                playerReadyTexts[i].color = Color.red;
+            }
+
         }
     }
 
