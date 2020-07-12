@@ -1277,6 +1277,9 @@ MonoBehaviour:
   findRoomButton: {fileID: 325084557}
   tryAgainButton: {fileID: 1463627132}
   joinRoomButton: {fileID: 2060185034}
+  connectPanel: {fileID: 0}
+  roomFound: {fileID: 0}
+  roomNotFound: {fileID: 0}
 --- !u!1 &1164391950
 GameObject:
   m_ObjectHideFlags: 0
@@ -2621,10 +2624,20 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4639397092995651513, guid: 2d7b3e71dabc0ef4495a2b1e80093b4f,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5544510818695218959, guid: 2d7b3e71dabc0ef4495a2b1e80093b4f,
         type: 3}
       propertyPath: m_Name
       value: MenuScreen
+      objectReference: {fileID: 0}
+    - target: {fileID: 5544510818695218959, guid: 2d7b3e71dabc0ef4495a2b1e80093b4f,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5746815105416033124, guid: 2d7b3e71dabc0ef4495a2b1e80093b4f,
         type: 3}

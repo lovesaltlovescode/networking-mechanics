@@ -29,6 +29,10 @@ public class MenuButtons : MonoBehaviour
     //Reference to custom network discovery script
     CustomNetworkDiscovery customNetworkDiscovery;
 
+    public Image connectPanel;
+    public Sprite roomFound;
+    public Sprite roomNotFound;
+
     #region PlatformDependencies
 
 
@@ -93,6 +97,8 @@ public class MenuButtons : MonoBehaviour
             Debug.Log("Unable to find rooms");
             tryAgainButton.gameObject.SetActive(true);
             joinRoomButton.gameObject.SetActive(false);
+            connectPanel.sprite = roomNotFound;
+            
         }
         else if(customNetworkDiscovery.roomFound == true)
         {
@@ -101,6 +107,7 @@ public class MenuButtons : MonoBehaviour
             Debug.Log("Found a room!");
             tryAgainButton.gameObject.SetActive(false);
             joinRoomButton.gameObject.SetActive(true);
+            connectPanel.sprite = roomFound;
         }
     }
 }

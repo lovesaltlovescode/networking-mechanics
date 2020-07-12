@@ -350,6 +350,7 @@ MonoBehaviour:
   heldItem: 0
   networkedPlayerInteraction: {fileID: 4615440117277981385}
   nearIngredientTray: 0
+  nearTrashBin: 0
   detectedShelf: 0
   detectedPlate: 0
 --- !u!114 &3583419821404010333
@@ -861,7 +862,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &5942192291477057068
 Transform:
   m_ObjectHideFlags: 0
@@ -1041,7 +1042,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 010a6e5305fa7004f89c5d317b7b47d4, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 84abdfdf9d3b5cd4fa46f394d30f1aa4, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1120,7 +1121,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 54628aafa20f64b40ae661038ee7abf0, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 489c5e0dfbc540d439e7f40b904753ab, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -1249,7 +1250,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 5b56d9fa0e8bd6e409ed188db38a692c, type: 3}
+  m_Sprite: {fileID: 21300000, guid: c66ce49acd98af042b85bad3519e9594, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1323,12 +1324,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   buttonIcon: {fileID: 4590608265888959337}
   defaultIcon: {fileID: 21300000, guid: f3ee5fd8638443649a03ef1c280d3874, type: 3}
-  eggIcon: {fileID: 21300000, guid: 0ede888c60a40b643b4b023e4aeaa772, type: 3}
-  chickenIcon: {fileID: 21300000, guid: 2c68c7e1557f9bb4c9458fbc7605b210, type: 3}
-  cucumberIcon: {fileID: 21300000, guid: 20307a625081298448c166ddda5adf0f, type: 3}
-  riceIcon: {fileID: 21300000, guid: 70251df13674bba41923496f8fc6095e, type: 3}
-  dirtyPlateIcon: {fileID: 21300000, guid: 23279e78a432ae84b84b520e3c78825b, type: 3}
-  washIcon: {fileID: 21300000, guid: ffcf3930df68f40439ac047cbf79230d, type: 3}
+  eggIcon: {fileID: 21300000, guid: 256a1b8f95e7a344692e4d24e1d1a959, type: 3}
+  chickenIcon: {fileID: 21300000, guid: 98b935a3d2aca874584abe4d8decbb25, type: 3}
+  cucumberIcon: {fileID: 21300000, guid: 90441338102d3af45af56c99685d3774, type: 3}
+  riceIcon: {fileID: 21300000, guid: 744b765931d7d604dbf68d0500318432, type: 3}
+  dirtyPlateIcon: {fileID: 21300000, guid: e554c25fdeb290045be78c655ff8b715, type: 3}
+  washIcon: {fileID: 21300000, guid: 43ae8afb78e2b0447ae7c7754560f828, type: 3}
   washTimerImage: {fileID: 5666408925667302262}
   finishedWashing: 0
   networkedPlayerInteraction: {fileID: 4615440117277981385}

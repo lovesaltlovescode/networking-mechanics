@@ -809,7 +809,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &4639397092995651462
 RectTransform:
   m_ObjectHideFlags: 0
@@ -888,7 +888,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &5746815105416033124
 RectTransform:
   m_ObjectHideFlags: 0
@@ -999,6 +999,9 @@ MonoBehaviour:
   findRoomButton: {fileID: 2036842704258085134}
   tryAgainButton: {fileID: 4639397092053881597}
   joinRoomButton: {fileID: 4639397092043902460}
+  connectPanel: {fileID: 4639397092995651463}
+  roomFound: {fileID: 21300000, guid: 194186883eb4f674dbbfcb503152c4cc, type: 3}
+  roomNotFound: {fileID: 21300000, guid: a4be587c7a55465408dd2d291c7b2e4d, type: 3}
 --- !u!1 &5925180351796280624
 GameObject:
   m_ObjectHideFlags: 0

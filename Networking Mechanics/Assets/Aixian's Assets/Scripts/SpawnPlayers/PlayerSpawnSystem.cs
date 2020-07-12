@@ -18,6 +18,9 @@ public class PlayerSpawnSystem : NetworkBehaviour
     //DIFFERENT PREFABS TO BE SPAWNED BASED ON INDEX
     [SerializeField] private GameObject xiaoBenPrefab = null;
     [SerializeField] private GameObject daFanPrefab = null;
+    [SerializeField] private GameObject xiaoFanPrefab = null;
+    [SerializeField] private GameObject xiaoLiPrefab = null;
+    [SerializeField] private GameObject daLiPrefab = null;
     
 
 
@@ -81,10 +84,25 @@ public class PlayerSpawnSystem : NetworkBehaviour
                 playerInstance = Instantiate(daFanPrefab, spawnPoints[nextIndex].position, spawnPoints[nextIndex].rotation);
                 Debug.Log("PlayerSpawnSystem - Spawned in Da Fan!");
                 break;
-        }
 
-        
-        
+            case 2:
+                //spawn in the player, instantiate at spawn points index, facing same way that spawn point is facing
+                playerInstance = Instantiate(xiaoFanPrefab, spawnPoints[nextIndex].position, spawnPoints[nextIndex].rotation);
+                Debug.Log("PlayerSpawnSystem - Spawned in Xiao Fan!");
+                break;
+
+            case 3:
+                //spawn in the player, instantiate at spawn points index, facing same way that spawn point is facing
+                playerInstance = Instantiate(xiaoLiPrefab, spawnPoints[nextIndex].position, spawnPoints[nextIndex].rotation);
+                Debug.Log("PlayerSpawnSystem - Spawned in Xiao Li!");
+                break;
+
+            case 4:
+                //spawn in the player, instantiate at spawn points index, facing same way that spawn point is facing
+                playerInstance = Instantiate(daLiPrefab, spawnPoints[nextIndex].position, spawnPoints[nextIndex].rotation);
+                Debug.Log("PlayerSpawnSystem - Spawned in Da Li!");
+                break;
+        }
 
         //spawn the object on the other clients, and pass in connection belonging to that client
         //because the player object that is being spawned in belongs to this player's connection and they will have authority over it
