@@ -15,7 +15,7 @@ public class IngredientBehaviour : MonoBehaviour
     [SerializeField] private ParticleSystem spoiledPFX;
     [SerializeField] private Image spoiledIcon;
 
-    [HideInInspector] public bool isRotten = false;
+    public bool isRotten = false;
     private Coroutine timerCoroutine;
     private bool isCoroutineRunning = false; //bool used to ensure that coroutine does not get called while coroutine is running
 
@@ -101,6 +101,32 @@ public class IngredientBehaviour : MonoBehaviour
         {
             //play particle effects
             spoiledPFX.Play();
+        }
+    }
+
+    public void Update()
+    {
+        if (!isRotten)
+        {
+            return;
+        }
+
+        RottenIngredient();
+    }
+
+    public void RottenIngredient()
+    {
+        if (isRotten)
+        {
+            //disable the normal ingredient
+            gameObject.transform.GetChild(0).gameObject.SetActive(false);
+
+            //enable the rotten ingredient
+            gameObject.transform.GetChild(1).gameObject.SetActive(true);
+
+            //change tag of parent and object
+            gameObject.transform.parent.tag = "RottenIngredient";
+            gameObject.tag = "RottenIngredient";
         }
     }
 

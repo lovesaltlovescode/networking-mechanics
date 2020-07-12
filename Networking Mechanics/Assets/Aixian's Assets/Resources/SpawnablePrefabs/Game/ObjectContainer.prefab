@@ -173,3 +173,5 @@ MonoBehaviour:
     type: 3}
   cleanPlatePrefab: {fileID: 440951575337714852, guid: 299cd296e0e6c924ba6e9ab118b79b05,
     type: 3}
+  rottenPrefab: {fileID: 6811657128323775590, guid: 870937c884c4f604180e5f8dd16d52f3,
+    type: 3}

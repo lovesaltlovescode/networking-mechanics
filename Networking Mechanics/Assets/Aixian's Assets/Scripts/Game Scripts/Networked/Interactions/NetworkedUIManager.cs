@@ -25,6 +25,10 @@ public class NetworkedUIManager : MonoBehaviour
     public Sprite cucumberIcon;
     public Sprite riceIcon;
 
+    [Header("Trash")]
+    public Sprite trashIcon;
+    public Sprite rottenIcon;
+
 
     //Table items
     [Header("Table Item Icons")]
@@ -111,10 +115,16 @@ public class NetworkedUIManager : MonoBehaviour
                     buttonIcon.sprite = cucumberIcon;
                     break;
 
+                case "RottenIngredient":
+                    buttonIcon.sprite = rottenIcon;
+                    break;
+
                 case "DirtyPlate":
                     buttonIcon.sprite = dirtyPlateIcon;
                     break;
+
             }
+
         }else if(!networkedPlayerInteraction.detectedObject)
         {
             //no detected object
@@ -125,6 +135,7 @@ public class NetworkedUIManager : MonoBehaviour
                 networkedPlayerInteraction.playerState = PlayerState.Default;
             }
         }
+
         
     }
 
@@ -145,10 +156,15 @@ public class NetworkedUIManager : MonoBehaviour
                     if (networkedPlayerInteraction.playerState != PlayerState.CanDropIngredient)
                     {
                         buttonIcon.color = Color.grey;
+
+                        if (networkedPlayerInteraction.playerState == PlayerState.CanThrowIngredient)
+                        {
+                            buttonIcon.sprite = trashIcon;
+                            buttonIcon.color = Color.white;
+                        }
                     }
                     else
                     {
-                        Debug.Log("NetworkedUIManager - Coloured rice");
                         buttonIcon.color = Color.white;
                     }
 
@@ -160,6 +176,12 @@ public class NetworkedUIManager : MonoBehaviour
                     if (networkedPlayerInteraction.playerState != PlayerState.CanDropIngredient)
                     {
                         buttonIcon.color = Color.grey;
+
+                        if (networkedPlayerInteraction.playerState == PlayerState.CanThrowIngredient)
+                        {
+                            buttonIcon.sprite = trashIcon;
+                            buttonIcon.color = Color.white;
+                        }
                     }
                     else
                     {
@@ -174,6 +196,12 @@ public class NetworkedUIManager : MonoBehaviour
                     if (networkedPlayerInteraction.playerState != PlayerState.CanDropIngredient)
                     {
                         buttonIcon.color = Color.grey;
+
+                        if (networkedPlayerInteraction.playerState == PlayerState.CanThrowIngredient)
+                        {
+                            buttonIcon.sprite = trashIcon;
+                            buttonIcon.color = Color.white;
+                        }
                     }
                     else
                     {
@@ -188,12 +216,38 @@ public class NetworkedUIManager : MonoBehaviour
                     if (networkedPlayerInteraction.playerState != PlayerState.CanDropIngredient)
                     {
                         buttonIcon.color = Color.grey;
+
+                        if(networkedPlayerInteraction.playerState == PlayerState.CanThrowIngredient)
+                        {
+                            buttonIcon.sprite = trashIcon;
+                            buttonIcon.color = Color.white;
+                        }
                     }
                     else
                     {
                         buttonIcon.color = Color.white;
                     }
 
+                    break;
+
+
+                //rotten ingredient
+                case "RottenIngredient":
+                    if (networkedPlayerInteraction.playerState == PlayerState.CanPickUpRottenIngredient)
+                    {
+                        buttonIcon.sprite = rottenIcon;
+                        buttonIcon.color = Color.gray;
+                    }
+                    else if(networkedPlayerInteraction.playerState == PlayerState.HoldingRottenIngredient)
+                    {
+                        buttonIcon.sprite = rottenIcon;
+                        buttonIcon.color = Color.white;
+                    }
+                    else if(networkedPlayerInteraction.playerState == PlayerState.CanThrowIngredient)
+                    {
+                        buttonIcon.sprite = trashIcon;
+                        buttonIcon.color = Color.white;
+                    }
                     break;
 
                 case "DirtyPlate":
@@ -209,6 +263,7 @@ public class NetworkedUIManager : MonoBehaviour
                     }
                     break;
             }
+
         }
     }
 

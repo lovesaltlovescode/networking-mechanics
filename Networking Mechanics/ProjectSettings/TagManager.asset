@@ -47,6 +47,7 @@ TagManager:
   - RiceTubZone
   - TrashBin
   - TrashZone
+  - RottenIngredient
   layers:
   - Default
   - TransparentFX

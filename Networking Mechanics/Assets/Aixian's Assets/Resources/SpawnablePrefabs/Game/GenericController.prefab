@@ -320,6 +320,8 @@ MonoBehaviour:
     type: 3}
   ricePrefab: {fileID: 5074317808852224758, guid: 08731529c14c84142a3299d89fc78294,
     type: 3}
+  rottenPrefab: {fileID: 6811657128323775590, guid: 870937c884c4f604180e5f8dd16d52f3,
+    type: 3}
   dirtyPlatePrefab: {fileID: 7752808417109432923, guid: 8750cf14d568ea441a6c6a4b60675d2f,
     type: 3}
   cleanPlatePrefab: {fileID: 440951575337714852, guid: 299cd296e0e6c924ba6e9ab118b79b05,
@@ -662,7 +664,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.6, y: 0}
+  m_AnchoredPosition: {x: -0.10001006, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4590608265888959336
@@ -808,7 +810,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.6, y: 0}
+  m_AnchoredPosition: {x: -0.1, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3352374814321936504
@@ -862,7 +864,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &5942192291477057068
 Transform:
   m_ObjectHideFlags: 0
@@ -1328,6 +1330,8 @@ MonoBehaviour:
   chickenIcon: {fileID: 21300000, guid: 98b935a3d2aca874584abe4d8decbb25, type: 3}
   cucumberIcon: {fileID: 21300000, guid: 90441338102d3af45af56c99685d3774, type: 3}
   riceIcon: {fileID: 21300000, guid: 744b765931d7d604dbf68d0500318432, type: 3}
+  trashIcon: {fileID: 21300000, guid: e26f342a2e2a42f4590f25ce253bc6ed, type: 3}
+  rottenIcon: {fileID: 21300000, guid: efc023dd29feeb54185c5b838f6ba1a8, type: 3}
   dirtyPlateIcon: {fileID: 21300000, guid: e554c25fdeb290045be78c655ff8b715, type: 3}
   washIcon: {fileID: 21300000, guid: 43ae8afb78e2b0447ae7c7754560f828, type: 3}
   washTimerImage: {fileID: 5666408925667302262}

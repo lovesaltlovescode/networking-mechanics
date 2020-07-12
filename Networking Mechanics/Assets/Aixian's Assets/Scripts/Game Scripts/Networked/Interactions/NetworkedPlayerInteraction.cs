@@ -17,6 +17,7 @@ public enum HeldItem
     chicken,
     cucumber,
     rice,
+    rotten,
 
     //Plates
     dirtyplate,
@@ -31,6 +32,10 @@ public enum PlayerState
     CanDropIngredient,
     CanPickUpIngredient,
     CanThrowIngredient,
+
+    //Rotten Ingredients
+    CanPickUpRottenIngredient,
+    HoldingRottenIngredient,
 
     //Spawning ingredients from shelf
     CanSpawnChicken,
@@ -63,6 +68,7 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
     public GameObject eggPrefab;
     public GameObject chickenPrefab;
     public GameObject ricePrefab;
+    public GameObject rottenPrefab;
 
     [Header("Plates")]
     public GameObject dirtyPlatePrefab;
@@ -181,22 +187,22 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
         {
             case PlayerState.CanSpawnChicken:
                 Debug.Log("NetworkedPlayerInteraction - Spawn a chicken!");
-                networkedIngredientInteraction.UpdateIngredient(HeldItem.chicken);
+                networkedIngredientInteraction.SpawnIngredient(HeldItem.chicken);
                 break;
 
             case PlayerState.CanSpawnEgg:
                 Debug.Log("NetworkedPlayerInteraction - Spawn a chicken!");
-                networkedIngredientInteraction.UpdateIngredient(HeldItem.egg);
+                networkedIngredientInteraction.SpawnIngredient(HeldItem.egg);
                 break;
 
             case PlayerState.CanSpawnCucumber:
                 Debug.Log("NetworkedPlayerInteraction - Spawn a chicken!");
-                networkedIngredientInteraction.UpdateIngredient(HeldItem.cucumber);
+                networkedIngredientInteraction.SpawnIngredient(HeldItem.cucumber);
                 break;
 
             case PlayerState.CanSpawnRice:
                 Debug.Log("NetworkedPlayerInteraction - Spawn some rice!");
-                networkedIngredientInteraction.UpdateIngredient(HeldItem.rice);
+                networkedIngredientInteraction.SpawnIngredient(HeldItem.rice);
                 break;
 
             case PlayerState.CanDropIngredient:
@@ -212,6 +218,12 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
             case PlayerState.CanThrowIngredient:
                 Debug.Log("NetworkedPlayerInteraction - Throw the ingredient!");
                 networkedIngredientInteraction.ThrowIngredient();
+                break;
+
+            //ROTTEN INGREDIENT
+            case PlayerState.CanPickUpRottenIngredient:
+                Debug.Log("NetworkedPlayerInteraction - Pick up rotten ingredient");
+                networkedIngredientInteraction.PickUpRottenIngredient();
                 break;
 
             //PLATES
