@@ -93,7 +93,8 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
     //player drop point, where items should be dropped
     public GameObject dropPoint;
 
-    public List<GameObject> objectsInInventory = new List<GameObject>();
+    //player's inventory
+    public GameObject playerInventory;
 
     //different scripts to reference
     [SerializeField] private NetworkedIngredientInteraction networkedIngredientInteraction;
@@ -112,7 +113,7 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
     public bool IsInventoryFull()
     {
 
-        if (objectsInInventory.Count >= 1)
+        if (playerInventory != null)
         {
             return true;
         }
@@ -159,7 +160,7 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
             Debug.Log("NetworkedPlayer - Object has been found! \n Object tag is: " + hit.collider.tag);
 
             //if nothing in inventory
-            if (objectsInInventory.Count == 0)
+            if (!playerInventory)
             {
                 //set hit object as detectedobject
                 detectedObject = hit.collider.gameObject;
@@ -280,13 +281,11 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
     public void CheckPlayerStateAndInventory()
     {
         //checks for inventory contents
-        foreach (var inventoryObject in objectsInInventory)
-        {
-            Debug.Log("NetworkedPlayerInteraction - Inventory currently contains: " + inventoryObject);
-        }
+        Debug.Log("NetworkedPlayerInteraction - Inventory currently contains: " + playerInventory);
+        
 
-        ////check inventory count
-        Debug.Log("NetworkedPlayerInteraction - Inventory count: " + objectsInInventory.Count);
+        //////check inventory count
+        //Debug.Log("NetworkedPlayerInteraction - Inventory count: " + objectsInInventory.Count);
 
         //checks for player state
         Debug.Log("NetworkedPlayerInteraction - Player state is currently: " + playerState);

@@ -57,13 +57,13 @@ public class NetworkedWashInteraction : NetworkBehaviour
     IEnumerator ChangeIngredient(HeldItem newIngredient)
     {
         //If the player is holding something
-        while (networkedPlayerInteraction.attachmentPoint.transform.childCount > 0)
+        while (networkedPlayerInteraction.playerInventory)
         {
             //if player is holding nothing, destroy the existing child
             if (newIngredient == HeldItem.nothing)
             {
                 Debug.Log("NetworkedWashInteraction - Destroying held object");
-                Destroy(networkedPlayerInteraction.attachmentPoint.transform.GetChild(0).gameObject);
+                Destroy(networkedPlayerInteraction.playerInventory);
             }
             //if player is holding something, do nothing
             //Debug.Log("NetworkedIngredient - Inventory is full!");
@@ -77,8 +77,8 @@ public class NetworkedWashInteraction : NetworkBehaviour
     void Update()
     {
         //Check if player is holding a dirty plate
-        if (networkedPlayerInteraction.IsInventoryFull() &&
-            networkedPlayerInteraction.attachmentPoint.transform.GetChild(0).tag == "DirtyPlate")
+        if (networkedPlayerInteraction.playerInventory &&
+            networkedPlayerInteraction.playerInventory.tag == "DirtyPlate")
         {
             Debug.Log("NetworkedWashInteraction - Player is holding a dirty plate!");
             holdingDirtyPlate = true;
@@ -177,7 +177,7 @@ public class NetworkedWashInteraction : NetworkBehaviour
 
 
                 //clear the inventory after placing in sink
-                networkedPlayerInteraction.objectsInInventory.Clear();
+                networkedPlayerInteraction.playerInventory = null;
 
                 placedPlateInSink = true; //player has placed plate in sink
                 holdingDirtyPlate = false;

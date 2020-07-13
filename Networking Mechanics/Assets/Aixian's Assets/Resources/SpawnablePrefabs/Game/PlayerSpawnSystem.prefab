@@ -63,7 +63,7 @@ MonoBehaviour:
   syncInterval: 0.1
   xiaoBenPrefab: {fileID: 1817381823316905504, guid: a0c4c2e7212866e4dbf3106a6f26ffa4,
     type: 3}
-  daFanPrefab: {fileID: 1817381823316905504, guid: a0c4c2e7212866e4dbf3106a6f26ffa4,
+  daFanPrefab: {fileID: 5863649735653253740, guid: 29a78c3f58d3ba54488a10f5972c991d,
     type: 3}
   xiaoFanPrefab: {fileID: 1817381823316905504, guid: a0c4c2e7212866e4dbf3106a6f26ffa4,
     type: 3}

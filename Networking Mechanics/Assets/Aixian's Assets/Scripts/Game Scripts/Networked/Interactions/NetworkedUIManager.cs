@@ -130,7 +130,7 @@ public class NetworkedUIManager : MonoBehaviour
             //no detected object
             buttonIcon.sprite = defaultIcon;
             buttonIcon.color = Color.white;
-            if(networkedPlayerInteraction.attachmentPoint.transform.childCount < 1 && NetworkedWashInteraction.platesInSinkCount == 0)
+            if(!networkedPlayerInteraction.playerInventory && NetworkedWashInteraction.platesInSinkCount == 0)
             {
                 networkedPlayerInteraction.playerState = PlayerState.Default;
             }
@@ -142,13 +142,13 @@ public class NetworkedUIManager : MonoBehaviour
     public void DisplaydetectedObjectIcon()
     {
         
-        //if there is a detected object
-        if (networkedPlayerInteraction.attachmentPoint.transform.childCount == 1)
+        //if player is holding something
+        if (networkedPlayerInteraction.playerInventory)
         {
             // Debug.Log("UIManager: Detected object is " + networkedPlayerInteraction.detectedObject.tag);
             //show the actual icon
 
-            switch (networkedPlayerInteraction.attachmentPoint.transform.GetChild(0).tag)
+            switch (networkedPlayerInteraction.playerInventory.tag)
             {
                 case "Rice":
                     buttonIcon.sprite = riceIcon;
