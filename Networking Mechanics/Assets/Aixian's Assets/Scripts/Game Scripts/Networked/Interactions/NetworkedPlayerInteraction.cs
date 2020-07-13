@@ -127,17 +127,22 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
     //Raycast function
     public void DetectObjects()
     {
+        if (!hasAuthority)
+        {
+            Debug.Log("NOT LOCAL PLAYER");
+            return;
+        }
+
         //check for distance from detected object
         if (detectedObject)
         {
             distFromObject = Vector3.Distance(detectedObject.transform.position, transform.position);
 
-            if (distFromObject >= raycastLength)
+            if (distFromObject >= raycastLength && !IsInventoryFull())
             {
                 detectedObject = null;
             }
         }
-
 
 
         RaycastHit hit;

@@ -577,7 +577,8 @@ MonoBehaviour:
     type: 3}
   autoCreatePlayer: 1
   playerSpawnMethod: 0
-  spawnPrefabs: []
+  spawnPrefabs:
+  - {fileID: 3119484819004831971, guid: 0c65bd13f95769341b01e0e069a7ad50, type: 3}
   minPlayers: 1
   menuScene: Assets/Scenes/Scene_Menu.unity
   roomPlayerPrefab: {fileID: 1065554968133040953, guid: 0c8ff0ac31c21d24ebb6564ab4ae64f7,
@@ -2912,6 +2913,11 @@ PrefabInstance:
     - target: {fileID: 5746815105416033124, guid: 2d7b3e71dabc0ef4495a2b1e80093b4f,
         type: 3}
       propertyPath: m_Pivot.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6515180766984375338, guid: 2d7b3e71dabc0ef4495a2b1e80093b4f,
+        type: 3}
+      propertyPath: m_MatchWidthOrHeight
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

@@ -99,10 +99,14 @@ public class NetworkedIngredientInteraction : NetworkBehaviour
 
             case HeldItem.dirtyplate:
                 var dirtyPlate = Instantiate(networkedPlayerInteraction.dirtyPlatePrefab, networkedPlayerInteraction.attachmentPoint.transform);
+                networkedPlayerInteraction.objectsInInventory.Add(dirtyPlate);
+                dirtyPlate.tag = "DirtyPlate";
                 break;
 
             case HeldItem.rotten:
                 var rotten = Instantiate(networkedPlayerInteraction.rottenPrefab, networkedPlayerInteraction.attachmentPoint.transform);
+                networkedPlayerInteraction.objectsInInventory.Add(rotten);
+                rotten.tag = "RottenIngredient";
                 break;
 
         }
@@ -110,6 +114,7 @@ public class NetworkedIngredientInteraction : NetworkBehaviour
 
     #endregion
 
+    #region Update
 
     // Update is called once per frame
     void Update()
@@ -133,7 +138,7 @@ public class NetworkedIngredientInteraction : NetworkBehaviour
         }
 
         //check for detected object and if it is a plate
-        if(networkedPlayerInteraction.detectedObject && networkedPlayerInteraction.detectedObject.layer == 16)
+        if (networkedPlayerInteraction.detectedObject && networkedPlayerInteraction.detectedObject.layer == 16)
         {
             detectedPlate = true;
             Debug.Log("NetworkedIngredientInteraction - Detected a plate!");
@@ -161,14 +166,14 @@ public class NetworkedIngredientInteraction : NetworkBehaviour
         if (networkedPlayerInteraction.objectsInInventory.Count > 0)
         {
             //if player is holding a dirty plate
-            if(networkedPlayerInteraction.attachmentPoint.transform.GetChild(0).tag == "DirtyPlate")
+            if (networkedPlayerInteraction.attachmentPoint.transform.GetChild(0).tag == "DirtyPlate")
             {
                 Debug.Log("NetworkedIngredientInteraction - Unable to drop plate");
                 return;
             }
 
             //if player is holding a rotten ingredient
-            if(networkedPlayerInteraction.attachmentPoint.transform.GetChild(0).tag == "RottenIngredient")
+            if (networkedPlayerInteraction.attachmentPoint.transform.GetChild(0).tag == "RottenIngredient")
             {
                 Debug.Log("NetworkedIngredientInteraction - Unable to drop rotten ingredient");
 
@@ -183,7 +188,6 @@ public class NetworkedIngredientInteraction : NetworkBehaviour
 
                 return;
 
-                
             }
 
             if (nearTrashBin)
@@ -197,6 +201,7 @@ public class NetworkedIngredientInteraction : NetworkBehaviour
             networkedPlayerInteraction.playerState = PlayerState.CanDropIngredient;
         }
 
+        //Temp spawn plate
         if (Input.GetKeyDown(KeyCode.S))
         {
             Debug.Log("NetworkedIngredientInteraction - Spawning dirty plate!");
@@ -204,7 +209,7 @@ public class NetworkedIngredientInteraction : NetworkBehaviour
         }
 
         //if player sees a rotten ingredient
-        if(networkedPlayerInteraction.detectedObject && networkedPlayerInteraction.detectedObject.tag == "RottenIngredient")
+        if (networkedPlayerInteraction.detectedObject && networkedPlayerInteraction.detectedObject.tag == "RottenIngredient")
         {
             Debug.Log("NetworkedIngredientInteraction - Rotten ingredient spotted!");
 
@@ -228,11 +233,11 @@ public class NetworkedIngredientInteraction : NetworkBehaviour
         }
 
         //ingredient shelf layer
-        if(detectedShelf)
+        if (detectedShelf)
         {
 
             //if player is not holding anything
-            if(networkedPlayerInteraction.attachmentPoint.transform.childCount == 0)
+            if (networkedPlayerInteraction.attachmentPoint.transform.childCount == 0)
             {
                 Debug.Log("NetworkedIngredientInteraction - Able to spawn ingredient!");
 
@@ -264,7 +269,7 @@ public class NetworkedIngredientInteraction : NetworkBehaviour
                 }
             }
 
-            
+
         }
     }
 
@@ -291,7 +296,7 @@ public class NetworkedIngredientInteraction : NetworkBehaviour
                         //change player state
                         Debug.Log("NetworkedIngredientInteraction - Able to pick up dirty plate!");
 
-                        if(NetworkedWashInteraction.platesInSinkCount >= 4)
+                        if (NetworkedWashInteraction.platesInSinkCount >= 4)
                         {
                             Debug.Log("NetworkedWashInteraction - Too many plates in sink!");
                             return;
@@ -305,6 +310,8 @@ public class NetworkedIngredientInteraction : NetworkBehaviour
 
         }
     }
+
+    #endregion
 
 
     #region RemoteMethods
@@ -485,6 +492,7 @@ public class NetworkedIngredientInteraction : NetworkBehaviour
 
             //clear inventory after dropping
             networkedPlayerInteraction.objectsInInventory.Clear();
+            
         }
 
     }
@@ -492,7 +500,6 @@ public class NetworkedIngredientInteraction : NetworkBehaviour
     [Command]
     void CmdThrowIngredient()
     {
-
         var thrownIngredient = networkedPlayerInteraction.attachmentPoint.transform.GetChild(0).gameObject;
 
         //destroy the thrown ingredient
@@ -543,13 +550,9 @@ public class NetworkedIngredientInteraction : NetworkBehaviour
         //according to which item the sceneobject currently contains
         Debug.Log("NetworkedIngredientInteraction - " + networkedPlayerInteraction.detectedObject.tag + " was picked up!");
 
-        if (networkedPlayerInteraction.detectedObject.tag == "DirtyPlate" || networkedPlayerInteraction.detectedObject.tag == "RottenIngredient")
-        {
-            networkedPlayerInteraction.objectsInInventory.Add(networkedPlayerInteraction.detectedObject);
-        }
-
         //destroy the scene object when it has been picked up
         NetworkServer.Destroy(networkedPlayerInteraction.detectedObject);
+        networkedPlayerInteraction.detectedObject = null;
 
     }
 

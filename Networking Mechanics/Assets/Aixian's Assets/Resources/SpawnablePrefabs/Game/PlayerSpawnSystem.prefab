@@ -65,3 +65,9 @@ MonoBehaviour:
     type: 3}
   daFanPrefab: {fileID: 1817381823316905504, guid: a0c4c2e7212866e4dbf3106a6f26ffa4,
     type: 3}
+  xiaoFanPrefab: {fileID: 1817381823316905504, guid: a0c4c2e7212866e4dbf3106a6f26ffa4,
+    type: 3}
+  xiaoLiPrefab: {fileID: 1817381823316905504, guid: a0c4c2e7212866e4dbf3106a6f26ffa4,
+    type: 3}
+  daLiPrefab: {fileID: 1817381823316905504, guid: a0c4c2e7212866e4dbf3106a6f26ffa4,
+    type: 3}

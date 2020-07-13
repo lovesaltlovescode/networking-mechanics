@@ -77,30 +77,35 @@ public class PlayerSpawnSystem : NetworkBehaviour
                 //spawn in the player, instantiate at spawn points index, facing same way that spawn point is facing
                 playerInstance = Instantiate(xiaoBenPrefab, spawnPoints[nextIndex].position, spawnPoints[nextIndex].rotation);
                 Debug.Log("PlayerSpawnSystem - Spawned in Xiao Ben!");
+                playerInstance.tag = "XiaoBen";
                 break;
 
             case 1:
                 //spawn in the player, instantiate at spawn points index, facing same way that spawn point is facing
                 playerInstance = Instantiate(daFanPrefab, spawnPoints[nextIndex].position, spawnPoints[nextIndex].rotation);
                 Debug.Log("PlayerSpawnSystem - Spawned in Da Fan!");
+                playerInstance.tag = "DaFan";
                 break;
 
             case 2:
                 //spawn in the player, instantiate at spawn points index, facing same way that spawn point is facing
                 playerInstance = Instantiate(xiaoFanPrefab, spawnPoints[nextIndex].position, spawnPoints[nextIndex].rotation);
                 Debug.Log("PlayerSpawnSystem - Spawned in Xiao Fan!");
+                playerInstance.tag = "XiaoFan";
                 break;
 
             case 3:
                 //spawn in the player, instantiate at spawn points index, facing same way that spawn point is facing
                 playerInstance = Instantiate(xiaoLiPrefab, spawnPoints[nextIndex].position, spawnPoints[nextIndex].rotation);
                 Debug.Log("PlayerSpawnSystem - Spawned in Xiao Li!");
+                playerInstance.tag = "XiaoLi";
                 break;
 
             case 4:
                 //spawn in the player, instantiate at spawn points index, facing same way that spawn point is facing
                 playerInstance = Instantiate(daLiPrefab, spawnPoints[nextIndex].position, spawnPoints[nextIndex].rotation);
                 Debug.Log("PlayerSpawnSystem - Spawned in Da Li!");
+                playerInstance.tag = "DaLi";
                 break;
         }
 
