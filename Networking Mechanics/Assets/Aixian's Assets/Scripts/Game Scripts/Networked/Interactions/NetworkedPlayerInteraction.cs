@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
+using System;
 
 /// <summary>
 /// Networked player interaction
@@ -89,9 +90,9 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
     public GameObject detectedObject;
 
     //player attachment point
-    public GameObject attachmentPoint;
+    public GameObject attachmentPoint = null;
     //player drop point, where items should be dropped
-    public GameObject dropPoint;
+    public GameObject dropPoint = null;
 
     //player's inventory
     public GameObject playerInventory;
@@ -106,7 +107,10 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
     {
         networkedIngredientInteraction = GetComponent<NetworkedIngredientInteraction>();
         networkedWashInteraction = GetComponent<NetworkedWashInteraction>();
+        attachmentPoint = gameObject.transform.GetChild(0).GetChild(1).gameObject;
+        dropPoint = gameObject.transform.GetChild(0).GetChild(2).gameObject;
     }
+
 
 
     //bool to check if inventory is full
@@ -130,7 +134,7 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
     {
         if (!hasAuthority)
         {
-            Debug.Log("NOT LOCAL PLAYER");
+            ////Debug.Log("NOT LOCAL PLAYER");
             return;
         }
 
@@ -156,8 +160,8 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
         {
 
             //draw a yellow ray from object position (origin) forward to the distance of the cast 
-            Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * raycastLength, Color.yellow);
-            Debug.Log("NetworkedPlayer - Object has been found! \n Object tag is: " + hit.collider.tag);
+            //Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * raycastLength, Color.yellow);
+            //Debug.Log("NetworkedPlayer - Object has been found! \n Object tag is: " + hit.collider.tag);
 
             //if nothing in inventory
             if (!playerInventory)
@@ -168,18 +172,18 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
             else
             {
                 //Throw a warning
-                Debug.LogWarning("NetworkedPlayer - Detected object already has a reference!");
+                //Debug.LogWarning("NetworkedPlayer - Detected object already has a reference!");
             }
 
 
             //returns the detectedobject's layer (number) as a name
-            //Debug.Log("NetworkedPlayer - Detected object layer: " + LayerMask.LayerToName(detectedObject.layer) + " of layer " + detectedObject.layer);
+            ////Debug.Log("NetworkedPlayer - Detected object layer: " + LayerMask.LayerToName(detectedObject.layer) + " of layer " + detectedObject.layer);
         }
         else
         {
             //no object hit
-            Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * raycastLength, Color.white);
-            Debug.Log("NetworkedPlayer - No object found");
+            //Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * raycastLength, Color.white);
+            //Debug.Log("NetworkedPlayer - No object found");
 
         }
     }
@@ -192,59 +196,59 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
         switch (playerState)
         {
             case PlayerState.CanSpawnChicken:
-                Debug.Log("NetworkedPlayerInteraction - Spawn a chicken!");
+                //Debug.Log("NetworkedPlayerInteraction - Spawn a chicken!");
                 networkedIngredientInteraction.SpawnIngredient(HeldItem.chicken);
                 break;
 
             case PlayerState.CanSpawnEgg:
-                Debug.Log("NetworkedPlayerInteraction - Spawn a chicken!");
+                //Debug.Log("NetworkedPlayerInteraction - Spawn a chicken!");
                 networkedIngredientInteraction.SpawnIngredient(HeldItem.egg);
                 break;
 
             case PlayerState.CanSpawnCucumber:
-                Debug.Log("NetworkedPlayerInteraction - Spawn a chicken!");
+                //Debug.Log("NetworkedPlayerInteraction - Spawn a chicken!");
                 networkedIngredientInteraction.SpawnIngredient(HeldItem.cucumber);
                 break;
 
             case PlayerState.CanSpawnRice:
-                Debug.Log("NetworkedPlayerInteraction - Spawn some rice!");
+                //Debug.Log("NetworkedPlayerInteraction - Spawn some rice!");
                 networkedIngredientInteraction.SpawnIngredient(HeldItem.rice);
                 break;
 
             case PlayerState.CanDropIngredient:
-                Debug.Log("NetworkedPlayerInteraction - Drop the ingredient!");
+                //Debug.Log("NetworkedPlayerInteraction - Drop the ingredient!");
                 networkedIngredientInteraction.DropIngredient();
                 break;
 
             case PlayerState.CanPickUpIngredient:
-                Debug.Log("NetworkedPlayerInteraction - Pick up the ingredient!");
+                //Debug.Log("NetworkedPlayerInteraction - Pick up the ingredient!");
                 networkedIngredientInteraction.PickUpIngredient();
                 break;
 
             case PlayerState.CanThrowIngredient:
-                Debug.Log("NetworkedPlayerInteraction - Throw the ingredient!");
+                //Debug.Log("NetworkedPlayerInteraction - Throw the ingredient!");
                 networkedIngredientInteraction.ThrowIngredient();
                 break;
 
             //ROTTEN INGREDIENT
             case PlayerState.CanPickUpRottenIngredient:
-                Debug.Log("NetworkedPlayerInteraction - Pick up rotten ingredient");
+                //Debug.Log("NetworkedPlayerInteraction - Pick up rotten ingredient");
                 networkedIngredientInteraction.PickUpRottenIngredient();
                 break;
 
             //PLATES
             case PlayerState.CanPickUpDirtyPlate:
-                Debug.Log("NetworkedPlayerInteraction - Pick up the dirty plate!");
+                //Debug.Log("NetworkedPlayerInteraction - Pick up the dirty plate!");
                 networkedIngredientInteraction.PickUpPlate();
                 break;
 
             case PlayerState.CanPlacePlateInSink:
-                Debug.Log("NetworkedPlayerInteraction - Place plate in sink!");
+                //Debug.Log("NetworkedPlayerInteraction - Place plate in sink!");
                 networkedWashInteraction.PlacePlateInSink();
                 break;
 
             case PlayerState.CanWashPlate:
-                Debug.Log("NetworkedPlayerInteraction - Wash plate in sink!");
+                //Debug.Log("NetworkedPlayerInteraction - Wash plate in sink!");
                 networkedWashInteraction.WashPlate();
                 break;
                 
@@ -252,7 +256,11 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
         }
     }
 
-    
+    public void PrintString()
+    {
+        //Debug.Log("Hello?");
+        networkedIngredientInteraction.InitialiseString("Help me");
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -265,6 +273,15 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
         if (!hasAuthority)
         {
             return;
+        }
+
+        if (!playerInventory && attachmentPoint.transform.childCount > 0)
+        {
+            playerInventory = attachmentPoint.transform.GetChild(0).gameObject;
+        }
+        else if (!playerInventory)
+        {
+            playerInventory = null;
         }
 
         DetectObjects();
@@ -281,14 +298,13 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
     public void CheckPlayerStateAndInventory()
     {
         //checks for inventory contents
-        Debug.Log("NetworkedPlayerInteraction - Inventory currently contains: " + playerInventory);
-        
+        //Debug.Log("NetworkedPlayerInteraction - Inventory currently contains: " + playerInventory);
 
         //////check inventory count
-        //Debug.Log("NetworkedPlayerInteraction - Inventory count: " + objectsInInventory.Count);
+        ////Debug.Log("NetworkedPlayerInteraction - Inventory count: " + objectsInInventory.Count);
 
         //checks for player state
-        Debug.Log("NetworkedPlayerInteraction - Player state is currently: " + playerState);
+        //Debug.Log("NetworkedPlayerInteraction - Player state is currently: " + playerState);
 
         if (playerState == PlayerState.FinishedWashingPlate)
         {

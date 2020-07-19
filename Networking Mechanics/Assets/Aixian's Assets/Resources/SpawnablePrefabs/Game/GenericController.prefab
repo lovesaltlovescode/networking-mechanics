@@ -168,7 +168,6 @@ GameObject:
   - component: {fileID: 8662618684159450209}
   - component: {fileID: 4030835099698572918}
   - component: {fileID: 1422875891317161630}
-  - component: {fileID: 7568278799730186342}
   - component: {fileID: 4615440117277981385}
   - component: {fileID: 3095350765768733121}
   - component: {fileID: 3583419821404010333}
@@ -278,25 +277,6 @@ CapsuleCollider:
   m_Height: 1.4629974
   m_Direction: 1
   m_Center: {x: -0.0006788671, y: 0.0011134148, z: 0.004609823}
---- !u!114 &7568278799730186342
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1817381823316905504}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 734b48bea0b204338958ee3d885e11f0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  syncMode: 0
-  syncInterval: 0.1
-  clientAuthority: 1
-  localPositionSensitivity: 0.01
-  localRotationSensitivity: 0.01
-  localScaleSensitivity: 0.01
-  target: {fileID: 3182775207599277572}
 --- !u!114 &4615440117277981385
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -327,13 +307,12 @@ MonoBehaviour:
     type: 3}
   cleanPlatePrefab: {fileID: 440951575337714852, guid: 299cd296e0e6c924ba6e9ab118b79b05,
     type: 3}
-  debugText: {fileID: 0}
   raycastLength: 1.5
   distFromObject: 0
   detectedObject: {fileID: 0}
-  attachmentPoint: {fileID: 3182775207599277575}
-  dropPoint: {fileID: 3182775208208598022}
-  objectsInInventory: []
+  attachmentPoint: {fileID: 0}
+  dropPoint: {fileID: 0}
+  playerInventory: {fileID: 0}
   networkedIngredientInteraction: {fileID: 0}
   networkedWashInteraction: {fileID: 0}
   playerState: 0
@@ -357,6 +336,7 @@ MonoBehaviour:
   nearTrashBin: 0
   detectedShelf: 0
   detectedPlate: 0
+  testString: 
 --- !u!114 &3583419821404010333
 MonoBehaviour:
   m_ObjectHideFlags: 0

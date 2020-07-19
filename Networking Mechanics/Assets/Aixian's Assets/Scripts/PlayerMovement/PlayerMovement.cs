@@ -78,7 +78,7 @@ public class PlayerMovement : NetworkBehaviour
 
         if (!hasAuthority)
         {
-            Debug.Log("Player does not have authority");
+            //Debug.Log("Player does not have authority");
             return;
         }
 

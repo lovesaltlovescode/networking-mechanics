@@ -130,7 +130,7 @@ public class IngredientInteraction : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-       if(PlayerInteractionManager.detectedObject && PlayerInteractionManager.detectedObject.layer == 15)
+       if(PlayerInteractionManager.detectedObject && PlayerInteractionManager.detectedObject.layer == 13)
         {
             ingredientDetected = true;
         }

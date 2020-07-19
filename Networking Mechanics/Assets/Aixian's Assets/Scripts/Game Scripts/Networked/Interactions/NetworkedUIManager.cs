@@ -73,7 +73,8 @@ public class NetworkedUIManager : MonoBehaviour
         //if there is a detected object
         if (networkedPlayerInteraction.detectedObject)
         {
-            Debug.Log("UIManager: Detected object is " + networkedPlayerInteraction.detectedObject.tag);
+            //Debug.Log("UIManager: Detected object is " + networkedPlayerInteraction.detectedObject.tag);
+            //Debug.Log("UIManager - Detected object is " + networkedPlayerInteraction.detectedObject.tag);
             //gray out the icon
             buttonIcon.color = Color.gray;
 
@@ -145,7 +146,7 @@ public class NetworkedUIManager : MonoBehaviour
         //if player is holding something
         if (networkedPlayerInteraction.playerInventory)
         {
-            // Debug.Log("UIManager: Detected object is " + networkedPlayerInteraction.detectedObject.tag);
+            // ////Debug.Log("UIManager: Detected object is " + networkedPlayerInteraction.detectedObject.tag);
             //show the actual icon
 
             switch (networkedPlayerInteraction.playerInventory.tag)
@@ -281,7 +282,7 @@ public class NetworkedUIManager : MonoBehaviour
             case PlayerState.CanWashPlate:
                 buttonIcon.color = Color.white;
                 buttonIcon.sprite = washIcon;
-                Debug.Log("Player can wash plate");
+                ////Debug.Log("Player can wash plate");
                 break;
 
             case PlayerState.WashingPlate:
@@ -327,6 +328,6 @@ public class NetworkedUIManager : MonoBehaviour
     {
         //Increase fill amount over waittime seconds
         washTimerImage.fillAmount += 1.0f / waitTime * Time.deltaTime;
-        Debug.Log("UI Manager: washing plates");
+        //Debug.Log("UI Manager: washing plates");
     }
 }

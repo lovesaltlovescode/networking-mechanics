@@ -57,6 +57,7 @@ public class MenuButtons : MonoBehaviour
     public void Awake()
     {
         Debug.Log("Standalone windows!");
+        //hostRoomButton.gameObject.SetActive(false);
     }
 
 #endif

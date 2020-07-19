@@ -36,6 +36,7 @@ public class PlayerInteractionManager : MonoBehaviour
     private IngredientInteraction ingredientInteraction;
     private TableInteraction tableInteraction;
     private WashInteraction washInteraction;
+    private DrinkInteraction drinkInteraction;
     
 
     //Player states
@@ -43,6 +44,11 @@ public class PlayerInteractionManager : MonoBehaviour
     {
         //Default state
         Default,
+
+        //spawning drinks
+        CanSpawnDrink,
+        CanPickUpDrink,
+        HoldingDrink,
 
         //Spawning ingredients from shelf
         CanSpawnEgg,
@@ -75,6 +81,7 @@ public class PlayerInteractionManager : MonoBehaviour
         ingredientInteraction = gameObject.GetComponent<IngredientInteraction>();
         tableInteraction = gameObject.GetComponent<TableInteraction>();
         washInteraction = gameObject.GetComponent<WashInteraction>();
+        drinkInteraction = gameObject.GetComponent<DrinkInteraction>();
 
         playerState = PlayerState.Default;
     }
@@ -103,7 +110,7 @@ public class PlayerInteractionManager : MonoBehaviour
         {
             distFromObject = Vector3.Distance(detectedObject.transform.position, transform.position);
 
-            if (distFromObject >= 2)
+            if (distFromObject >= 1.5f)
             {
                 detectedObject = null;
             }
@@ -155,6 +162,15 @@ public class PlayerInteractionManager : MonoBehaviour
         //switch cases to check which function to run at which state
         switch (playerState)
         {
+            //spawning drinks
+            case PlayerState.CanSpawnDrink:
+                drinkInteraction.SpawnDrink();
+                break;
+
+            case PlayerState.CanPickUpDrink:
+                drinkInteraction.PickUpDrink(detectedObject, attachPoint, objectsInInventory);
+                break;
+
             //spawning ingredients from shelves states
             case PlayerState.CanSpawnEgg:
                 shelfInteraction.SpawnEgg(detectedObject, objectsInInventory, attachPoint);

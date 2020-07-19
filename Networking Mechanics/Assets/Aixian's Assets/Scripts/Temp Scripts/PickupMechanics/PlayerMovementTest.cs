@@ -13,7 +13,7 @@ using UnityEngine.UI;
 public class PlayerMovementTest : MonoBehaviour
 {
     private Rigidbody myBody;
-    public float moveForce = 25f;
+    public float moveForce = 10f;
 
     [SerializeField] private FixedJoystick joystick = null;
 
