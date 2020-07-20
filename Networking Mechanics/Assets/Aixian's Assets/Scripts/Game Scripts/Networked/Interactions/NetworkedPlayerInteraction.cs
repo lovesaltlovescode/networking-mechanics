@@ -177,7 +177,8 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
 
 
             //returns the detectedobject's layer (number) as a name
-            ////Debug.Log("NetworkedPlayer - Detected object layer: " + LayerMask.LayerToName(detectedObject.layer) + " of layer " + detectedObject.layer);
+            //Debug.Log("NetworkedPlayer - Detected object layer: " + LayerMask.LayerToName(detectedObject.layer) + " of layer " + detectedObject.layer);
+            Debug.Log("Detected object: " + detectedObject.name);
         }
         else
         {

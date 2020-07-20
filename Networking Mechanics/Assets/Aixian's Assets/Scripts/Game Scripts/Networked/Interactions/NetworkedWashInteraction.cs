@@ -13,12 +13,12 @@ public class NetworkedWashInteraction : NetworkBehaviour
     //public GameObject objectContainerPrefab;
 
     [Header("Sink Positions")]
-    private Transform[] sinkPositions; //array of sink positions STATIC
-    private Transform[] cleanPlateSpawnPositions; //array of possible spawn positions for the clean plates STATIC
+    private static Transform[] sinkPositions; //array of sink positions STATIC
+    private static Transform[] cleanPlateSpawnPositions; //array of possible spawn positions for the clean plates STATIC
     public GameObject sinkParentZone; //parent sink zone, where the positions array will be retrieved from STATIC
 
-    public GameObject[] platesInSink = new GameObject[2]; //array for plates in sink, null by default
-    public GameObject[] cleanPlatesOnTable = new GameObject[2]; //array for the clean plates spawned on the table
+    public static GameObject[] platesInSink = new GameObject[4]; //array for plates in sink, null by default
+    public static GameObject[] cleanPlatesOnTable = new GameObject[15]; //array for the clean plates spawned on the table
 
     public bool holdingDirtyPlate; //check if player is holding a dirty plate
 
@@ -94,7 +94,10 @@ public class NetworkedWashInteraction : NetworkBehaviour
 
     public void PlacePlateInSink()
     {
+
         CmdPlacePlateInSink();
+
+        networkedIngredientInteraction.CmdChangeHeldItem(HeldItem.nothing);
 
         //change state to can wash
         networkedPlayerInteraction.playerState = PlayerState.CanWashPlate;
@@ -135,6 +138,15 @@ public class NetworkedWashInteraction : NetworkBehaviour
     {
         //loop through plate in sink array
         //if the gameobject is null, assign heldplate to it
+        RpcPlacePlateInSink();
+
+    }
+
+    [ClientRpc]
+    public void RpcPlacePlateInSink()
+    {
+        //loop through plate in sink array
+        //if the gameobject is null, assign heldplate to it
         for (int i = 0; i < platesInSink.Length; i++)
         {
             if (platesInSink[i] == null)
@@ -161,7 +173,7 @@ public class NetworkedWashInteraction : NetworkBehaviour
                 ObjectContainer dirtyPlateContainer = dirtyPlateInSink.GetComponent<ObjectContainer>();
 
                 //instantiate the right ingredient as a child of the object
-                dirtyPlateContainer.SetHeldItem(HeldItem.dirtyplate);
+                dirtyPlateContainer.SetObjToSpawn(HeldItem.dirtyplate);
 
                 ////sync var the helditem in scene object to the helditem in the player
                 networkedIngredientInteraction.heldItem = heldItem;
@@ -169,12 +181,8 @@ public class NetworkedWashInteraction : NetworkBehaviour
                 //set player's sync var to nothing so clients won't see the ingredient anymore
                 heldItem = HeldItem.nothing;
 
-                //spawn the scene object on network for everyone to see
-                NetworkServer.Spawn(dirtyPlateInSink);
-
                 //set layer to uninteractable
                 dirtyPlateInSink.layer = LayerMask.NameToLayer("UnInteractable");
-
 
                 //clear the inventory after placing in sink
                 networkedPlayerInteraction.playerInventory = null;
@@ -188,7 +196,6 @@ public class NetworkedWashInteraction : NetworkBehaviour
                 return;
             }
         }
-
     }
 
 
@@ -234,7 +241,7 @@ public class NetworkedWashInteraction : NetworkBehaviour
                             ObjectContainer objectContainer = cleanPlateOnTray.GetComponent<ObjectContainer>();
 
                             //Instantiate the right ingredient as a child of the object
-                            objectContainer.SetHeldItem(HeldItem.cleanplate);
+                            objectContainer.SetObjToSpawn(HeldItem.cleanplate);
 
                             //set player's sync var to nothing so clients won't see the ingredient anymore
                             heldItem = HeldItem.nothing;

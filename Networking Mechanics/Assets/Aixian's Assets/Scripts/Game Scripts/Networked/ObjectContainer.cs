@@ -12,7 +12,7 @@ public class ObjectContainer : NetworkBehaviour
 {
     //sync held item and call onchangeingredinet method
     [SyncVar(hook = nameof(OnChangeIngredient))]
-    public HeldItem heldItem;
+    public HeldItem objToSpawn;
 
     //PREFABS to be dropped
     public GameObject cucumberPrefab;
@@ -26,12 +26,12 @@ public class ObjectContainer : NetworkBehaviour
     void OnChangeIngredient(HeldItem oldItem, HeldItem newItem)
     {
         //Debug.Log("NetworkedIngredientInteraction - Starting coroutine!");
-        StartCoroutine(ChangeIngredient(newItem));
+        StartCoroutine(ChangeItem(newItem));
     }
 
     //destroy is delayed to end of current frame, so we use a coroutine
     //clear any child object before instantiating the new one
-    IEnumerator ChangeIngredient(HeldItem newIngredient)
+    IEnumerator ChangeItem(HeldItem newItem)
     {
         //if this object has a child, destroy them
         while (transform.childCount > 0)
@@ -41,15 +41,15 @@ public class ObjectContainer : NetworkBehaviour
         }
 
         //use the new value
-        SetHeldItem(newIngredient);
+        SetObjToSpawn(newItem);
     }
 
     //called on client from onchangeingredient method
     //and on the server from cmddropitem in networkedingredientinteraction script
-    public void SetHeldItem(HeldItem heldItem)
+    public void SetObjToSpawn(HeldItem objToSpawn)
     {
         //instantiates the right prefab as a child of this object
-        switch (heldItem)
+        switch (objToSpawn)
         {
            
             case HeldItem.chicken:
