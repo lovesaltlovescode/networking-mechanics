@@ -103,6 +103,94 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
 
     public PlayerState playerState;
 
+    //when the helditem changes, call onchangeingredient method
+    [SyncVar(hook = nameof(OnChangeHeldItem))]
+    public HeldItem heldItem;
+
+    #region SyncVar
+
+    void OnChangeHeldItem(HeldItem oldItem, HeldItem newItem)
+    {
+        //Debug.Log("NetworkedIngredientInteraction - Starting coroutine!");
+        StartCoroutine(ChangeHeldItem(newItem));
+    }
+
+    IEnumerator ChangeHeldItem(HeldItem newItem)
+    {
+        //If the player is holding something
+        while (playerInventory)
+        {
+            //if player is holding nothing, destroy the existing child
+            if (newItem == HeldItem.nothing)
+            {
+                Debug.Log("NetworkedIngredientInteraction - Destroying held object");
+                Destroy(playerInventory);
+            }
+            //if player is holding something, do nothing
+            //Debug.Log("NetworkedIngredient - Inventory is full!");
+            yield return null;
+        }
+
+        //depending on which held item is being held by player (in update)
+        //instantiate the corresponding prefab
+        switch (newItem)
+        {
+            case HeldItem.chicken:
+                var chicken = Instantiate(chickenPrefab, attachmentPoint.transform);
+                playerInventory = chicken;
+                chicken.tag = "Chicken";
+                break;
+
+            case HeldItem.egg:
+                var egg = Instantiate(eggPrefab, attachmentPoint.transform);
+                playerInventory = egg;
+                egg.tag = "Egg";
+                break;
+
+            case HeldItem.cucumber:
+                var cucumber = Instantiate(cucumberPrefab, attachmentPoint.transform);
+                playerInventory = cucumber;
+                cucumber.tag = "Cucumber";
+                break;
+
+            case HeldItem.rice:
+                var rice = Instantiate(ricePrefab, attachmentPoint.transform);
+                playerInventory = rice;
+                rice.tag = "Rice";
+                break;
+
+            case HeldItem.dirtyplate:
+                var dirtyPlate = Instantiate(dirtyPlatePrefab, attachmentPoint.transform);
+                playerInventory = dirtyPlate;
+                dirtyPlate.tag = "DirtyPlate";
+                break;
+
+            case HeldItem.rotten:
+                var rotten = Instantiate(rottenPrefab, attachmentPoint.transform);
+                playerInventory = rotten;
+                rotten.tag = "RottenIngredient";
+                break;
+
+        }
+    }
+
+    #endregion
+
+    #region Commands
+
+    //called on server, main function to change the held ingredient
+    //change held ingredient to the new ingredient
+    //triggers sync var -> Coroutine to instantiate the corresponding prefab
+    [Command]
+    public void CmdChangeHeldItem(HeldItem selectedIngredient)
+    {
+        //Debug.Log("RPC Spawning - Update held item");
+        //Change ingredient the player is holding
+        heldItem = selectedIngredient;
+    }
+
+    #endregion
+
     private void Awake()
     {
         networkedIngredientInteraction = GetComponent<NetworkedIngredientInteraction>();
@@ -178,7 +266,7 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
 
             //returns the detectedobject's layer (number) as a name
             //Debug.Log("NetworkedPlayer - Detected object layer: " + LayerMask.LayerToName(detectedObject.layer) + " of layer " + detectedObject.layer);
-            Debug.Log("Detected object: " + detectedObject.name);
+            //Debug.Log("Detected object: " + detectedObject.name);
         }
         else
         {
