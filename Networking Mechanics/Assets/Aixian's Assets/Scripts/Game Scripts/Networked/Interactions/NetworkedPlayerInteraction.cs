@@ -397,7 +397,7 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
 
         if (playerState == PlayerState.FinishedWashingPlate)
         {
-            networkedWashInteraction.CmdFinishWashingPlate();
+            networkedWashInteraction.FinishWashingPlate();
         }
     }
 }

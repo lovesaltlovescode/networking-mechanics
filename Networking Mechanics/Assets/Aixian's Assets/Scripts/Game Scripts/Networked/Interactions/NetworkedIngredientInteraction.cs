@@ -290,7 +290,7 @@ public class NetworkedIngredientInteraction : NetworkBehaviour
     {
         //spawn a plate on the server
         //for now, on key press
-        CmdSpawnDirtyPlate();
+        SpawnDirtyPlate();
 
     }
 
@@ -498,14 +498,8 @@ public class NetworkedIngredientInteraction : NetworkBehaviour
     }
 
     //server will spawn a dirty plate
-    [Command]
-    void CmdSpawnDirtyPlate()
-    {
-        RpcSpawnDirtyPlate();
-    }
-
-    [ClientRpc]
-    public void RpcSpawnDirtyPlate()
+    [ServerCallback]
+    void SpawnDirtyPlate()
     {
         //Instantiate scene object on the server at a fixed position
         //Temporarily at drop pos
@@ -531,8 +525,7 @@ public class NetworkedIngredientInteraction : NetworkBehaviour
         //Debug.Log("Spawn plates - Spawned plate");
 
         ////spawn the scene object on network for everyone to see
-        //NetworkServer.Spawn(dirtyPlate);
-
+        NetworkServer.Spawn(dirtyPlate);
     }
 
     //called from client to server to pick up item
