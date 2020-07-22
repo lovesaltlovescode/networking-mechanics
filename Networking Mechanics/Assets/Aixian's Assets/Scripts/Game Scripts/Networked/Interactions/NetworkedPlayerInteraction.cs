@@ -345,11 +345,6 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
         }
     }
 
-    public void PrintString()
-    {
-        //Debug.Log("Hello?");
-        networkedIngredientInteraction.InitialiseString("Help me");
-    }
 
     // Start is called before the first frame update
     void Start()

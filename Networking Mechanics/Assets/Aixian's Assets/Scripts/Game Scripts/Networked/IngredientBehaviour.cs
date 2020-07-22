@@ -127,6 +127,10 @@ public class IngredientBehaviour : MonoBehaviour
             //change tag of parent and object
             gameObject.transform.parent.tag = "RottenIngredient";
             gameObject.tag = "RottenIngredient";
+
+            gameObject.transform.parent.gameObject.layer = LayerMask.NameToLayer("RottenIngredient");
+            gameObject.layer = LayerMask.NameToLayer("RottenIngredient");
+            
         }
     }
 

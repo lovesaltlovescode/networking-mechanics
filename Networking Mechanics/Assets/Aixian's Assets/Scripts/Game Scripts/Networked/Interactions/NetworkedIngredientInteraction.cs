@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 using Mirror;
 
@@ -35,48 +36,122 @@ public class NetworkedIngredientInteraction : NetworkBehaviour
 
     public bool detectedPlate = false; //if detectedobj is a plate, this is true
 
-    [SerializeField] private string testString = null;
-
     private void Awake()
     {
         networkedPlayerInteraction = GetComponent<NetworkedPlayerInteraction>();
     }
 
-    #region Test Methods
+    #region Methods to Detect
 
-    public void InitialiseString(string secretString)
+    //Check if player has detected a shelf
+    public void DetectShelf()
     {
-        if (!isServer)
+        if (!hasAuthority)
         {
-            //Debug.Log("Secret - Secret string is " + secretString);
-            //Debug.Log("Secret - I am not a server");
-            CmdSendString(secretString);
             return;
         }
-            //Debug.Log("Secret - I am a server, call CMD instead");
-            CmdSendString(secretString);
-       
+
+            //if player is not holding anything
+            if (!networkedPlayerInteraction.playerInventory)
+            {
+                //Debug.Log("NetworkedIngredientInteraction - Able to spawn ingredient!");
+
+                switch (networkedPlayerInteraction.detectedObject.tag)
+                {
+                    case "ChickenShelf":
+                        //change player state
+                        //Debug.Log("NetworkedIngredientInteraction - Able to spawn chicken!");
+                        networkedPlayerInteraction.playerState = PlayerState.CanSpawnChicken;
+                        break;
+
+                    case "EggShelf":
+                        //change player state
+                        //Debug.Log("NetworkedIngredientInteraction - Able to spawn egg!");
+                        networkedPlayerInteraction.playerState = PlayerState.CanSpawnEgg;
+                        break;
+
+                    case "CucumberShelf":
+                        //change player state
+                        //Debug.Log("NetworkedIngredientInteraction - Able to spawn cucumber!");
+                        networkedPlayerInteraction.playerState = PlayerState.CanSpawnCucumber;
+                        break;
+
+                    case "RiceTub":
+                        //change player state
+                        //Debug.Log("NetworkedIngredientInteraction - Able to spawn rice!");
+                        networkedPlayerInteraction.playerState = PlayerState.CanSpawnRice;
+                        break;
+                }
+        }
     }
 
-    [Command]
-    public void CmdSendString(string secretString)
+    //Check if player has detected a plate
+    public void DetectPlate()
     {
-        //Debug.Log("Secret - Calling RPC");
-        //Debug.Log("Cmd Secret - Secret string is " + secretString);
-        RpcUpdateString(secretString);
-        
+        if (!hasAuthority)
+        {
+            return;
+        }
+
+            //if player is not holding anything
+            if (!networkedPlayerInteraction.playerInventory)
+            {
+                //Debug.Log("NetworkedIngredientInteraction - Able to pick up plate!");
+
+                switch (networkedPlayerInteraction.detectedObject.tag)
+                {
+                    case "DirtyPlate":
+                        //change player state
+                        //Debug.Log("NetworkedIngredientInteraction - Able to pick up dirty plate!");
+
+                        if (NetworkedWashInteraction.platesInSinkCount >= 4)
+                        {
+                            Debug.Log("NetworkedWashInteraction - Too many plates in sink!");
+                            return;
+                        }
+                        networkedPlayerInteraction.playerState = PlayerState.CanPickUpDirtyPlate;
+                        break;
+                }
+        }
     }
 
-    [ClientRpc]
-    public void RpcUpdateString(string secretString)
+    public void DetectObject(GameObject detectedObject, bool detected, int layer, Action callback)
     {
-        //Debug.Log("RPC Secret - Secret string is " + secretString);
-        testString = secretString;
-        //Debug.Log("RPC Secret - Test string is " + secretString);
+        //Check for detected object and if it is a shelf
+        if (networkedPlayerInteraction.detectedObject && networkedPlayerInteraction.detectedObject.layer == layer)
+        {
+            detected = true;
+            Debug.Log("NetworkedIngredientInteraction - Detected a shelf!");
+
+            callback?.Invoke();
+
+            Debug.Log(detectedObject);
+            Debug.Log(detected);
+            Debug.Log(layer);
+            Debug.Log(callback);
+        }
+        else
+        {
+            detected = false;
+        }
+    }
+
+    public void PickUpObject(GameObject detectedObject, int layer, bool inventoryFull, PlayerState _playerState)
+    {
+        //pickuppable layer
+        if (detectedObject && detectedObject.layer == layer)
+        {
+            //Debug.Log("ObjectContainer - Pickuppable ingredient detected!");
+
+            if (!inventoryFull)
+            {
+                //if not holding anything, change state
+                networkedPlayerInteraction.playerState = _playerState;
+            }
+        }
     }
 
     #endregion
-
 
     #region Update
 
@@ -88,48 +163,12 @@ public class NetworkedIngredientInteraction : NetworkBehaviour
             return;
         }
 
-        if (networkedPlayerInteraction.attachmentPoint.transform.childCount > 0)
-        {
-            //Debug.Log("Update NetworkedIngredientInteraction - Ingredient tag: " + networkedPlayerInteraction.attachmentPoint.transform.GetChild(0).gameObject);
-        }
-        
-        //Check for detected object and if it is a shelf
-        if (networkedPlayerInteraction.detectedObject && networkedPlayerInteraction.detectedObject.layer == 14)
-        {
-            detectedShelf = true;
-            //Debug.Log("NetworkedIngredientInteraction - Detected a shelf!");
+        DetectObject(networkedPlayerInteraction.detectedObject, detectedShelf, 14, DetectShelf);
 
-            DetectShelf(networkedPlayerInteraction.detectedObject);
-        }
-        else
-        {
-            detectedShelf = false;
-        }
-
-        //check for detected object and if it is a plate
-        if (networkedPlayerInteraction.detectedObject && networkedPlayerInteraction.detectedObject.layer == 16)
-        {
-            detectedPlate = true;
-            //Debug.Log("NetworkedIngredientInteraction - Detected a plate!");
-
-            DetectPlate(networkedPlayerInteraction.detectedObject);
-        }
-        else
-        {
-            detectedPlate = false;
-        }
+        DetectObject(networkedPlayerInteraction.detectedObject, detectedPlate, 16, DetectPlate);
 
         //pickuppable layer
-        if (networkedPlayerInteraction.detectedObject && networkedPlayerInteraction.detectedObject.layer == 17)
-        {
-            //Debug.Log("ObjectContainer - Pickuppable ingredient detected!");
-
-            if (!networkedPlayerInteraction.IsInventoryFull())
-            {
-                //if not holding anything, change state
-                networkedPlayerInteraction.playerState = PlayerState.CanPickUpIngredient;
-            }
-        }
+        PickUpObject(networkedPlayerInteraction.detectedObject, 17, networkedPlayerInteraction.IsInventoryFull(), PlayerState.CanPickUpIngredient);
 
         //if player is holding something
         if (networkedPlayerInteraction.IsInventoryFull())
@@ -178,110 +217,11 @@ public class NetworkedIngredientInteraction : NetworkBehaviour
         }
 
         //if player sees a rotten ingredient
-        if (networkedPlayerInteraction.detectedObject && networkedPlayerInteraction.detectedObject.tag == "RottenIngredient")
-        {
-            //Debug.Log("NetworkedIngredientInteraction - Rotten ingredient spotted!");
+        PickUpObject(networkedPlayerInteraction.detectedObject, 23, networkedPlayerInteraction.IsInventoryFull(), PlayerState.CanPickUpRottenIngredient);
 
-            if (!networkedPlayerInteraction.IsInventoryFull())
-            {
-                //if player not holding anything
-                networkedPlayerInteraction.playerState = PlayerState.CanPickUpRottenIngredient;
-            }
-        }
-
-
-
-    }
-
-    //Check if player has detected a shelf
-    public void DetectShelf(GameObject detectedObject)
-    {
-        if (!hasAuthority)
-        {
-            return;
-        }
-
-        //ingredient shelf layer
-        if (detectedShelf)
-        {
-
-            //if player is not holding anything
-            if (!networkedPlayerInteraction.playerInventory)
-            {
-                //Debug.Log("NetworkedIngredientInteraction - Able to spawn ingredient!");
-
-                switch (detectedObject.tag)
-                {
-                    case "ChickenShelf":
-                        //change player state
-                        //Debug.Log("NetworkedIngredientInteraction - Able to spawn chicken!");
-                        networkedPlayerInteraction.playerState = PlayerState.CanSpawnChicken;
-                        break;
-
-                    case "EggShelf":
-                        //change player state
-                        //Debug.Log("NetworkedIngredientInteraction - Able to spawn egg!");
-                        networkedPlayerInteraction.playerState = PlayerState.CanSpawnEgg;
-                        break;
-
-                    case "CucumberShelf":
-                        //change player state
-                        //Debug.Log("NetworkedIngredientInteraction - Able to spawn cucumber!");
-                        networkedPlayerInteraction.playerState = PlayerState.CanSpawnCucumber;
-                        break;
-
-                    case "RiceTub":
-                        //change player state
-                        //Debug.Log("NetworkedIngredientInteraction - Able to spawn rice!");
-                        networkedPlayerInteraction.playerState = PlayerState.CanSpawnRice;
-                        break;
-                }
-            }
-
-
-        }
-    }
-
-    //Check if player has detected a plate
-    public void DetectPlate(GameObject detectedObject)
-    {
-        if (!hasAuthority)
-        {
-            return;
-        }
-
-        //ingredient shelf layer
-        if (detectedPlate)
-        {
-
-            //if player is not holding anything
-            if (!networkedPlayerInteraction.playerInventory)
-            {
-                //Debug.Log("NetworkedIngredientInteraction - Able to pick up plate!");
-
-                switch (detectedObject.tag)
-                {
-                    case "DirtyPlate":
-                        //change player state
-                        //Debug.Log("NetworkedIngredientInteraction - Able to pick up dirty plate!");
-
-                        if (NetworkedWashInteraction.platesInSinkCount >= 4)
-                        {
-                            Debug.Log("NetworkedWashInteraction - Too many plates in sink!");
-                            return;
-                        }
-                        networkedPlayerInteraction.playerState = PlayerState.CanPickUpDirtyPlate;
-                        break;
-                }
-            }
-
-
-
-        }
     }
 
     #endregion
-
 
     #region RemoteMethods
     //Methods that are called in the playerinteraction script
@@ -328,7 +268,7 @@ public class NetworkedIngredientInteraction : NetworkBehaviour
         //Debug.Log("NetworkedIngredientInteraction - Inventory: " + networkedPlayerInteraction.playerInventory);
         //Debug.Log("//Debugging dropping - Part 1");
 
-        CmdDropIngredient();
+        CmdDropIngredient(networkedPlayerInteraction.playerInventory);
         networkedPlayerInteraction.CmdChangeHeldItem(HeldItem.nothing);
         //Debug.Log("//Debugging dropping - Part 2");
 
@@ -364,9 +304,11 @@ public class NetworkedIngredientInteraction : NetworkBehaviour
     //throw ingredient
     public void ThrowIngredient()
     {
-        CmdThrowIngredient();
+        CmdThrowIngredient(networkedPlayerInteraction.playerInventory);
+
+        networkedPlayerInteraction.CmdChangeHeldItem(HeldItem.nothing);
         //Debug.Log("NetworkedIngredientInteraction - Player has thrown an ingredient");
-       
+
     }
 
     public void PickUpRottenIngredient()
@@ -389,7 +331,7 @@ public class NetworkedIngredientInteraction : NetworkBehaviour
 
     //sends a command from client to server to drop the held item in the scene
     [Command]
-    void CmdDropIngredient()
+    void CmdDropIngredient(GameObject playerInventory)
     {
 
         //if near ingredient tray
@@ -399,9 +341,6 @@ public class NetworkedIngredientInteraction : NetworkBehaviour
             {
                 if (ingredientsOnTray[i] == null)
                 {
-                    //if null, assign it as held ingredient
-                    var detectedIngredient = networkedPlayerInteraction.detectedObject;
-                    //Debug.Log("Ingredienttray - detected ingredient " + detectedIngredient);
 
                     Vector3 trayPos = trayPositions[i].transform.position;
                     //Debug.Log("Ingredienttray - tray pos " + trayPos);
@@ -423,9 +362,6 @@ public class NetworkedIngredientInteraction : NetworkBehaviour
                     //sync var the helditem in scene object to the helditem in the player
                     ingredientContainer.objToSpawn = networkedPlayerInteraction.heldItem;
 
-                    //set player's sync var to nothing so clients won't see the ingredient anymore
-                    networkedPlayerInteraction.heldItem = HeldItem.nothing;
-
                     //spawn the scene object on network for everyone to see
                     NetworkServer.Spawn(trayIngredient);
 
@@ -437,7 +373,7 @@ public class NetworkedIngredientInteraction : NetworkBehaviour
                     ingredientsOnTray[i] = trayIngredient;
 
                     //clear the inventory after dropping on tray
-                    networkedPlayerInteraction.playerInventory = null;
+                    playerInventory = null;
 
                     return;
                 }
@@ -464,16 +400,13 @@ public class NetworkedIngredientInteraction : NetworkBehaviour
             //sync var the helditem in scene object to the helditem in the player
             objectContainer.objToSpawn = networkedPlayerInteraction.heldItem;
 
-            //set player's held item to nothing
-            networkedPlayerInteraction.heldItem = HeldItem.nothing;
-
             //spawn the scene object on network for everyone to see
             NetworkServer.Spawn(droppedIngredient);
             //Debug.Log("//Debugging dropping - Part 7");
             droppedIngredient.transform.GetChild(0).gameObject.layer = LayerMask.NameToLayer("Ingredient");
 
             //clear inventory after dropping
-            networkedPlayerInteraction.playerInventory = null;
+            playerInventory = null;
             //Debug.Log("//Debugging dropping - Part 8");
 
         }
@@ -481,7 +414,7 @@ public class NetworkedIngredientInteraction : NetworkBehaviour
     }
 
     [Command]
-    void CmdThrowIngredient()
+    void CmdThrowIngredient(GameObject playerInventory)
     {
         var thrownIngredient = networkedPlayerInteraction.playerInventory;
         //Debug.Log("NetworkedIngredientInteraction - Thrown ingredient is " + thrownIngredient);
@@ -492,7 +425,7 @@ public class NetworkedIngredientInteraction : NetworkBehaviour
         networkedPlayerInteraction.heldItem = HeldItem.nothing;
 
         //clear the inventory after throwing the ingredient
-        networkedPlayerInteraction.playerInventory = null;
+        playerInventory = null;
 
         return;
     }
