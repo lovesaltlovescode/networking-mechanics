@@ -22,6 +22,7 @@ public class ObjectContainer : NetworkBehaviour
     public GameObject dirtyPlatePrefab;
     public GameObject cleanPlatePrefab;
     public GameObject rottenPrefab;
+    public GameObject drinkPrefab;
 
     void OnChangeIngredient(HeldItem oldItem, HeldItem newItem)
     {
@@ -72,6 +73,9 @@ public class ObjectContainer : NetworkBehaviour
                 break;
             case HeldItem.rotten:
                 Instantiate(rottenPrefab, transform);
+                break;
+            case HeldItem.drink:
+                Instantiate(drinkPrefab, transform);
                 break;
         }
 

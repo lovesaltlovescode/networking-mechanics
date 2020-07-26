@@ -86,8 +86,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 1.6617668, z: 1}
-  m_Center: {x: 0, y: 0.70307267, z: 0}
+  m_Size: {x: 1, y: 2.616761, z: 1}
+  m_Center: {x: 0, y: 0.22557557, z: 0}
 --- !u!54 &-2852036913858095369
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -165,4 +165,6 @@ MonoBehaviour:
   cleanPlatePrefab: {fileID: 440951575337714852, guid: 299cd296e0e6c924ba6e9ab118b79b05,
     type: 3}
   rottenPrefab: {fileID: 6811657128323775590, guid: 870937c884c4f604180e5f8dd16d52f3,
+    type: 3}
+  drinkPrefab: {fileID: 984478579084921841, guid: 764a10c51db38de42822d1e76ad68260,
     type: 3}

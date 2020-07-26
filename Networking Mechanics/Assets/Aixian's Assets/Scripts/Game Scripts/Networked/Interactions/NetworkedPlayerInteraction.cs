@@ -19,6 +19,7 @@ public enum HeldItem
     cucumber,
     rice,
     rotten,
+    drink,
 
     //Plates
     dirtyplate,
@@ -43,6 +44,11 @@ public enum PlayerState
     CanSpawnEgg,
     CanSpawnCucumber,
     CanSpawnRice,
+
+    //Drinks
+    CanSpawnDrink,
+    CanPickUpDrink,
+    HoldingDrink,
 
     //Table items
     CanPickUpDirtyPlate,
@@ -70,6 +76,7 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
     public GameObject chickenPrefab;
     public GameObject ricePrefab;
     public GameObject rottenPrefab;
+    public GameObject drinkPrefab;
 
     [Header("Plates")]
     public GameObject dirtyPlatePrefab;
@@ -90,9 +97,9 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
     public GameObject detectedObject;
 
     //player attachment point
-    public GameObject attachmentPoint = null;
+    public GameObject attachmentPoint;
     //player drop point, where items should be dropped
-    public GameObject dropPoint = null;
+    public GameObject dropPoint;
 
     //player's inventory
     public GameObject playerInventory;
@@ -100,12 +107,46 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
     //different scripts to reference
     [SerializeField] private NetworkedIngredientInteraction networkedIngredientInteraction;
     [SerializeField] private NetworkedWashInteraction networkedWashInteraction;
+    [SerializeField] private NetworkedDrinkInteraction networkedDrinkInteraction;
 
     public PlayerState playerState;
 
     //when the helditem changes, call onchangeingredient method
     [SyncVar(hook = nameof(OnChangeHeldItem))]
     public HeldItem heldItem;
+
+
+    #region DetectMethods
+
+    public void DetectObject(GameObject detectedObject, int layer, Action callback)
+    {
+        //Check for detected object and if it is a certain layer
+        if (detectedObject && detectedObject.layer == layer)
+        {
+            //detected = true;
+            
+
+            callback?.Invoke();
+        }
+    }
+
+    public void PickUpObject(GameObject detectedObject, int layer, bool inventoryFull, PlayerState _playerState)
+    {
+        //pickuppable layer
+        if (detectedObject && detectedObject.layer == layer)
+        {
+            //Debug.Log("ObjectContainer - Pickuppable ingredient detected!");
+
+            if (!inventoryFull)
+            {
+                //if not holding anything, change state
+                playerState = _playerState;
+            }
+        }
+    }
+
+    #endregion
+
 
     #region SyncVar
 
@@ -171,6 +212,12 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
                 rotten.tag = "RottenIngredient";
                 break;
 
+            case HeldItem.drink:
+                var drink = Instantiate(drinkPrefab, attachmentPoint.transform);
+                playerInventory = drink;
+                drink.tag = "Drink";
+                break;
+
         }
     }
 
@@ -195,8 +242,8 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
     {
         networkedIngredientInteraction = GetComponent<NetworkedIngredientInteraction>();
         networkedWashInteraction = GetComponent<NetworkedWashInteraction>();
-        attachmentPoint = gameObject.transform.GetChild(0).GetChild(1).gameObject;
-        dropPoint = gameObject.transform.GetChild(0).GetChild(2).gameObject;
+        networkedDrinkInteraction = GetComponent<NetworkedDrinkInteraction>();
+
     }
 
 
@@ -248,8 +295,9 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
         {
 
             //draw a yellow ray from object position (origin) forward to the distance of the cast 
-            //Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * raycastLength, Color.yellow);
+            Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * raycastLength, Color.yellow);
             //Debug.Log("NetworkedPlayer - Object has been found! \n Object tag is: " + hit.collider.tag);
+            //Debug.Log("NetworkedPlayer - Object has been found! \n Object tag is: " + hit.collider.gameObject.layer);
 
             //if nothing in inventory
             if (!playerInventory)
@@ -271,7 +319,7 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
         else
         {
             //no object hit
-            //Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * raycastLength, Color.white);
+            Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * raycastLength, Color.white);
             //Debug.Log("NetworkedPlayer - No object found");
 
         }
@@ -316,7 +364,7 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
 
             case PlayerState.CanThrowIngredient:
                 //Debug.Log("NetworkedPlayerInteraction - Throw the ingredient!");
-                networkedIngredientInteraction.ThrowIngredient();
+                networkedIngredientInteraction.TrashIngredient();
                 break;
 
             //ROTTEN INGREDIENT
@@ -324,6 +372,16 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
                 //Debug.Log("NetworkedPlayerInteraction - Pick up rotten ingredient");
                 networkedIngredientInteraction.PickUpRottenIngredient();
                 break;
+
+            //DRINKS
+            case PlayerState.CanSpawnDrink:
+                networkedDrinkInteraction.SpawnDrink();
+                break;
+
+            case PlayerState.CanPickUpDrink:
+                networkedDrinkInteraction.PickUpDrink();
+                break;
+
 
             //PLATES
             case PlayerState.CanPickUpDirtyPlate:
@@ -345,6 +403,27 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
         }
     }
 
+    #region Commands
+
+    //called from client to server to pick up item
+    //Pass in a detectedobject parameter so that the server knows which object to look for
+    //It should be looking for client's local detectedobject, not the servers''s
+    [Command]
+    public void CmdPickUpObject(GameObject detectedObject)
+    {
+        //set player's syncvar so clients can show the right ingredient
+        //according to which item the sceneobject currently contains
+        //Debug.Log("Debugging ingredient - Part 3" + detectedObject);
+
+        //destroy the scene object when it has been picked up, on the SERVER
+        Debug.Log("Destroying detected object: " + detectedObject);
+        NetworkServer.Destroy(detectedObject);
+        //Debug.Log("//Debugging ingredient - Part 5");
+
+    }
+
+
+    #endregion
 
     // Start is called before the first frame update
     void Start()

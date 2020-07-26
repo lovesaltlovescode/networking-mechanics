@@ -117,6 +117,11 @@ PrefabInstance:
       propertyPath: m_TagString
       value: DirtyPlate
       objectReference: {fileID: 0}
+    - target: {fileID: 7337338829665462737, guid: d4c93126bb95a804bbf317443b6a5cee,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d4c93126bb95a804bbf317443b6a5cee, type: 3}
 --- !u!4 &1844007422577163222 stripped

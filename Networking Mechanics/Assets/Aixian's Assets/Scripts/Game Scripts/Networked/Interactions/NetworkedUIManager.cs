@@ -131,7 +131,7 @@ public class NetworkedUIManager : MonoBehaviour
             //no detected object
             buttonIcon.sprite = defaultIcon;
             buttonIcon.color = Color.white;
-            if(!networkedPlayerInteraction.playerInventory && NetworkedWashInteraction.platesInSinkCount == 0)
+            if(!networkedPlayerInteraction.playerInventory && GameManager.Instance.platesInSinkCount == 0)
             {
                 networkedPlayerInteraction.playerState = PlayerState.Default;
             }

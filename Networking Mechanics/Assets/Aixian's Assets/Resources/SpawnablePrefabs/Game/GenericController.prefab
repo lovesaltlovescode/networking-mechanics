@@ -170,6 +170,7 @@ GameObject:
   - component: {fileID: 1422875891317161630}
   - component: {fileID: 4615440117277981385}
   - component: {fileID: 3095350765768733121}
+  - component: {fileID: 8668585866358223757}
   - component: {fileID: 3583419821404010333}
   m_Layer: 8
   m_Name: GenericController
@@ -303,6 +304,8 @@ MonoBehaviour:
     type: 3}
   rottenPrefab: {fileID: 6811657128323775590, guid: 870937c884c4f604180e5f8dd16d52f3,
     type: 3}
+  drinkPrefab: {fileID: 984478579084921841, guid: 764a10c51db38de42822d1e76ad68260,
+    type: 3}
   dirtyPlatePrefab: {fileID: 7752808417109432923, guid: 8750cf14d568ea441a6c6a4b60675d2f,
     type: 3}
   cleanPlatePrefab: {fileID: 440951575337714852, guid: 299cd296e0e6c924ba6e9ab118b79b05,
@@ -310,12 +313,14 @@ MonoBehaviour:
   raycastLength: 1.5
   distFromObject: 0
   detectedObject: {fileID: 0}
-  attachmentPoint: {fileID: 0}
-  dropPoint: {fileID: 0}
+  attachmentPoint: {fileID: 3182775207599277575}
+  dropPoint: {fileID: 3182775208208598022}
   playerInventory: {fileID: 0}
   networkedIngredientInteraction: {fileID: 0}
   networkedWashInteraction: {fileID: 0}
+  networkedDrinkInteraction: {fileID: 0}
   playerState: 0
+  heldItem: 0
 --- !u!114 &3095350765768733121
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -330,13 +335,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  heldItem: 0
   networkedPlayerInteraction: {fileID: 4615440117277981385}
   nearIngredientTray: 0
   nearTrashBin: 0
-  detectedShelf: 0
-  detectedPlate: 0
-  testString: 
+--- !u!114 &8668585866358223757
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1817381823316905504}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 783cb1183db245f42a5a8093ef14f170, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+  spawnedDrink: 0
+  cooldownImg: {fileID: 0}
+  cooldown: 5
+  isCooldown: 0
 --- !u!114 &3583419821404010333
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -351,37 +370,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  sinkParentZone: {fileID: 0}
-  platesInSink:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  cleanPlatesOnTable:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
   holdingDirtyPlate: 0
   placedPlateInSink: 0
   startTimer: 0
   stoppedWashingPlate: 0
   showWashIcon: 0
-  cleanPlatesCount: 0
-  heldItem: 0
+  atSink: 0
+  canWash: 0
   networkedPlayerInteraction: {fileID: 0}
-  networkedIngredientInteraction: {fileID: 0}
 --- !u!1 &2166442203535815449
 GameObject:
   m_ObjectHideFlags: 0
@@ -495,7 +491,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3182775208208598023}
   m_Layer: 2
-  m_Name: DropOffPoint
+  m_Name: DropPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -35,7 +35,6 @@ TagManager:
   - DaLiCam
   - XiaoLiCam
   - AttachPoint
-  - IngredientTableZone
   - ConnectButton
   - ConnectToServerText
   - NoButton
@@ -50,6 +49,7 @@ TagManager:
   - RottenIngredient
   - Drink
   - DrinkZone
+  - IngredientTrayZone
   layers:
   - Default
   - TransparentFX
