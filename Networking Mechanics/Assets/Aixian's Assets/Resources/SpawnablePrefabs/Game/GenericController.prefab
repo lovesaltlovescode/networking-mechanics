@@ -352,10 +352,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  spawnedDrink: 0
-  cooldownImg: {fileID: 0}
-  cooldown: 5
-  isCooldown: 0
 --- !u!114 &3583419821404010333
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1389,6 +1385,8 @@ MonoBehaviour:
   chickenIcon: {fileID: 21300000, guid: 98b935a3d2aca874584abe4d8decbb25, type: 3}
   cucumberIcon: {fileID: 21300000, guid: 90441338102d3af45af56c99685d3774, type: 3}
   riceIcon: {fileID: 21300000, guid: 744b765931d7d604dbf68d0500318432, type: 3}
+  fridgeIcon: {fileID: 21300000, guid: a4b904df5fc97ae4ca19e13e81e93928, type: 3}
+  drinkIcon: {fileID: 21300000, guid: 995c1fa4c3fe71e4c8a05046c3b0bf89, type: 3}
   trashIcon: {fileID: 21300000, guid: e26f342a2e2a42f4590f25ce253bc6ed, type: 3}
   rottenIcon: {fileID: 21300000, guid: efc023dd29feeb54185c5b838f6ba1a8, type: 3}
   dirtyPlateIcon: {fileID: 21300000, guid: e554c25fdeb290045be78c655ff8b715, type: 3}

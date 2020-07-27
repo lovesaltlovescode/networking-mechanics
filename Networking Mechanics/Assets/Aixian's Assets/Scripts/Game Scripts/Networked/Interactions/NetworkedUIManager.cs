@@ -25,9 +25,14 @@ public class NetworkedUIManager : MonoBehaviour
     public Sprite cucumberIcon;
     public Sprite riceIcon;
 
+    [Header("Drinks")]
+    public Sprite fridgeIcon;
+    public Sprite drinkIcon;
+
     [Header("Trash")]
     public Sprite trashIcon;
     public Sprite rottenIcon;
+
 
 
     //Table items
@@ -55,7 +60,7 @@ public class NetworkedUIManager : MonoBehaviour
     void Update()
     {
         DisplayGrayIcon();
-        DisplaydetectedObjectIcon();
+        DisplayDetectedObjectIcon();
 
         //wash dirty plates
         CheckWashTimer(); 
@@ -99,7 +104,6 @@ public class NetworkedUIManager : MonoBehaviour
                     break;
 
                 //ingredients
-
                 case "Rice":
                     buttonIcon.sprite = riceIcon;
                     break;
@@ -118,6 +122,25 @@ public class NetworkedUIManager : MonoBehaviour
 
                 case "RottenIngredient":
                     buttonIcon.sprite = rottenIcon;
+                    break;
+
+                //drinks
+                case "DrinkFridge":
+                    if (networkedPlayerInteraction.playerState == PlayerState.CanSpawnDrink)
+                    {
+                        buttonIcon.color = Color.white;
+                        buttonIcon.sprite = fridgeIcon;
+                    }
+
+                    else if (GameManager.Instance.isCooldown)
+                    {
+                        buttonIcon.color = Color.grey;
+                        buttonIcon.sprite = fridgeIcon;
+                    }
+                    break;
+
+                case "Drink":
+                    buttonIcon.sprite = drinkIcon;
                     break;
 
                 case "DirtyPlate":
@@ -140,7 +163,7 @@ public class NetworkedUIManager : MonoBehaviour
         
     }
 
-    public void DisplaydetectedObjectIcon()
+    public void DisplayDetectedObjectIcon()
     {
         
         //if player is holding something
@@ -251,6 +274,19 @@ public class NetworkedUIManager : MonoBehaviour
                     }
                     break;
 
+                //drinks
+                case "Drink":
+                    buttonIcon.sprite = drinkIcon;
+                    if(networkedPlayerInteraction.playerState != PlayerState.CanUseDrink)
+                    {
+                        buttonIcon.color = Color.grey;
+                    }
+                    else
+                    {
+                        buttonIcon.color = Color.white;
+                    }
+                    break;
+
                 case "DirtyPlate":
                     buttonIcon.sprite = dirtyPlateIcon;
 
@@ -295,6 +331,7 @@ public class NetworkedUIManager : MonoBehaviour
                 break;
         }
     }
+
 
     //check if the timer has been started to wash plates
     public void CheckWashTimer()

@@ -49,6 +49,7 @@ public enum PlayerState
     CanSpawnDrink,
     CanPickUpDrink,
     HoldingDrink,
+    CanUseDrink, //temp
 
     //Table items
     CanPickUpDirtyPlate,
@@ -82,6 +83,7 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
     public GameObject dirtyPlatePrefab;
     public GameObject cleanPlatePrefab;
 
+    public GameObject tempObject;
 
     //RAYCAST VARIABLES
     [Header("Raycast Variables")]
@@ -116,36 +118,7 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
     public HeldItem heldItem;
 
 
-    #region DetectMethods
-
-    public void DetectObject(GameObject detectedObject, int layer, Action callback)
-    {
-        //Check for detected object and if it is a certain layer
-        if (detectedObject && detectedObject.layer == layer)
-        {
-            //detected = true;
-            
-
-            callback?.Invoke();
-        }
-    }
-
-    public void PickUpObject(GameObject detectedObject, int layer, bool inventoryFull, PlayerState _playerState)
-    {
-        //pickuppable layer
-        if (detectedObject && detectedObject.layer == layer)
-        {
-            //Debug.Log("ObjectContainer - Pickuppable ingredient detected!");
-
-            if (!inventoryFull)
-            {
-                //if not holding anything, change state
-                playerState = _playerState;
-            }
-        }
-    }
-
-    #endregion
+   
 
 
     #region SyncVar
@@ -403,7 +376,39 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
         }
     }
 
-    #region Commands
+    #region Master Methods
+
+
+     #region DetectMethods
+
+    public void DetectObject(GameObject detectedObject, int layer, Action callback)
+    {
+        //Check for detected object and if it is a certain layer
+        if (detectedObject && detectedObject.layer == layer)
+        {
+            //detected = true;
+            
+
+            callback?.Invoke();
+        }
+    }
+
+    public void PickUpObject(GameObject detectedObject, int layer, bool inventoryFull, PlayerState _playerState)
+    {
+        //pickuppable layer
+        if (detectedObject && detectedObject.layer == layer)
+        {
+            //Debug.Log("ObjectContainer - Pickuppable ingredient detected!");
+
+            if (!inventoryFull)
+            {
+                //if not holding anything, change state
+                playerState = _playerState;
+            }
+        }
+    }
+
+    #endregion
 
     //called from client to server to pick up item
     //Pass in a detectedobject parameter so that the server knows which object to look for
@@ -419,6 +424,33 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
         Debug.Log("Destroying detected object: " + detectedObject);
         NetworkServer.Destroy(detectedObject);
         //Debug.Log("//Debugging ingredient - Part 5");
+
+    }
+
+    [Command]
+    public void CmdSpawnObject(Vector3 pos, Quaternion rot, HeldItem itemToSpawn, string layerName)
+    {
+        //instantiate scene object
+        
+        GameObject spawnObject = Instantiate(objectContainerPrefab, pos, rot);
+        tempObject = spawnObject;
+
+        //set rigidbody as non-kinematic
+        spawnObject.GetComponent<Rigidbody>().isKinematic = false;
+
+        ObjectContainer objectContainer = spawnObject.GetComponent<ObjectContainer>();
+
+        //Instantiate the right held item as child of the object
+        objectContainer.SetObjToSpawn(itemToSpawn);
+
+        //sync var helditem in object container
+        objectContainer.objToSpawn = itemToSpawn;
+
+        //change layer
+        spawnObject.layer = LayerMask.NameToLayer(layerName);
+
+        //spawn on network
+        NetworkServer.Spawn(spawnObject);
 
     }
 

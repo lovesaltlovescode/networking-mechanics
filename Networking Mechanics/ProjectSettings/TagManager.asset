@@ -48,8 +48,9 @@ TagManager:
   - TrashZone
   - RottenIngredient
   - Drink
-  - DrinkZone
   - IngredientTrayZone
+  - DrinkFridge
+  - NoDropZone
   layers:
   - Default
   - TransparentFX

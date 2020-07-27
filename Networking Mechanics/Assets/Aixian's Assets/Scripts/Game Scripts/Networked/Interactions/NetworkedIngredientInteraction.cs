@@ -25,6 +25,7 @@ public class NetworkedIngredientInteraction : NetworkBehaviour
 
     public bool nearIngredientTray; //check if player is in the ingredient tray zone
     public bool nearTrashBin; //check if player is in the trash zone
+    [SerializeField] bool canDropIngredient = true; //check if player can drop ingredient
 
     private void Awake()
     {
@@ -176,7 +177,16 @@ public class NetworkedIngredientInteraction : NetworkBehaviour
                 Debug.Log("Ingredient tray full");
                 return;
             }
-            networkedPlayerInteraction.playerState = PlayerState.CanDropIngredient;
+
+            if (canDropIngredient)
+            { 
+                networkedPlayerInteraction.playerState = PlayerState.CanDropIngredient;
+            }
+            else
+            {
+                networkedPlayerInteraction.playerState = PlayerState.Default;
+            }
+            
         }
 
         //Temp spawn plate
@@ -223,13 +233,6 @@ public class NetworkedIngredientInteraction : NetworkBehaviour
     {
         networkedPlayerInteraction.CmdChangeHeldItem(selectedIngredient);
         
-        networkedPlayerInteraction.playerState = PlayerState.CanDropIngredient;
-
-        //error due to attachment point not being updated but was called
-        //Could call in an RPC instead, since CMD always gets called first
-        //Debug.Log("NetworkedIngredientInteraction - Ingredient tag: " + networkedPlayerInteraction.attachmentPoint.transform.GetChild(0).gameObject.tag);
-        //Debug.Log("NetworkedIngredientInteraction - Ingredient tag: " + networkedPlayerInteraction.attachmentPoint.transform.GetChild(0).gameObject);
-        //Debug.Log("NetworkedIngredientInteraction - Ingredient tag: " + networkedPlayerInteraction.playerInventory);
     }
 
     public void DropIngredient() 
@@ -258,14 +261,13 @@ public class NetworkedIngredientInteraction : NetworkBehaviour
         //Debug.Log("//Debugging ingredient - Part 1");
 
         networkedPlayerInteraction.CmdChangeHeldItem(networkedPlayerInteraction.detectedObject.GetComponent<ObjectContainer>().objToSpawn);
-        
+
         //Debug.Log("//Debugging ingredient - Part 2");
         //Debug.Log("NetworkedIngredientInteraction - Ingredient tag: " + networkedPlayerInteraction.playerInventory.tag);
         //networkedPlayerInteraction.playerInventory.layer = LayerMask.NameToLayer("Ingredient");
-
-        networkedPlayerInteraction.playerState = PlayerState.CanDropIngredient;
-        //Debug.Log("//Debugging ingredient - Part should not be shown");
         
+        //Debug.Log("//Debugging ingredient - Part should not be shown");
+
 
     }
 
@@ -475,6 +477,19 @@ public class NetworkedIngredientInteraction : NetworkBehaviour
             
             networkedPlayerInteraction.playerState = PlayerState.CanThrowIngredient;
         }
+
+        if(other.tag == "NoDropZone")
+        {
+            canDropIngredient = false;
+        }
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.tag == "NoDropZone")
+        {
+            canDropIngredient = false;
+        }
     }
 
 
@@ -491,6 +506,11 @@ public class NetworkedIngredientInteraction : NetworkBehaviour
         {
             //Debug.Log("NetworkedIngredientInteraction - Exited trash bin!");
             nearTrashBin = false;
+        }
+
+        if (other.tag == "NoDropZone")
+        {
+            canDropIngredient = true;
         }
     }
 
