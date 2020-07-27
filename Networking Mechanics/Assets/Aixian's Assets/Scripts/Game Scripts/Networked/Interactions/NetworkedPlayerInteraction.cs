@@ -83,8 +83,6 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
     public GameObject dirtyPlatePrefab;
     public GameObject cleanPlatePrefab;
 
-    public GameObject tempObject;
-
     //RAYCAST VARIABLES
     [Header("Raycast Variables")]
     public float raycastLength = 1.5f; //how far the raycast extends
@@ -433,7 +431,6 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
         //instantiate scene object
         
         GameObject spawnObject = Instantiate(objectContainerPrefab, pos, rot);
-        tempObject = spawnObject;
 
         //set rigidbody as non-kinematic
         spawnObject.GetComponent<Rigidbody>().isKinematic = false;
@@ -501,9 +498,9 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
         //checks for player state
         //Debug.Log("NetworkedPlayerInteraction - Player state is currently: " + playerState);
 
-        if (playerState == PlayerState.FinishedWashingPlate)
-        {
-            networkedWashInteraction.FinishWashingPlate();
-        }
+        //if (playerState == PlayerState.FinishedWashingPlate)
+        //{
+        //    networkedWashInteraction.FinishWashingPlate();
+        //}
     }
 }

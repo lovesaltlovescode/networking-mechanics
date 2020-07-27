@@ -91,7 +91,7 @@ public class NetworkedWashInteraction : NetworkBehaviour
 
     public void FinishWashingPlate()
     {
-        CmdFinishWashingPlate(startTimer);
+        CmdFinishWashingPlate(startTimer, networkedPlayerInteraction.playerState);
         //Debug.Log("NetworkedWashInteraction - Finished washing plate!");
     }
 
@@ -139,8 +139,6 @@ public class NetworkedWashInteraction : NetworkBehaviour
                 //set player's sync var to nothing so clients won't see the ingredient anymore
                 networkedPlayerInteraction.heldItem = HeldItem.nothing;
 
-                //set layer to uninteractable
-                dirtyPlateInSink.layer = LayerMask.NameToLayer("UnInteractable");
 
                 NetworkServer.Spawn(dirtyPlateInSink);
 
@@ -162,6 +160,7 @@ public class NetworkedWashInteraction : NetworkBehaviour
         holdingDirtyPlate = false;
         GameManager.Instance.platesInSink[i] = dirtyPlateInSink;
 
+        //set layer to uninteractable
         dirtyPlateInSink.layer = LayerMask.NameToLayer("UnInteractable");
 
         //increase plate in sink count
@@ -171,7 +170,7 @@ public class NetworkedWashInteraction : NetworkBehaviour
 
     //when done washing plate, reset timer and spawn clean plate
     [Command]
-    public void CmdFinishWashingPlate(bool timer)
+    public void CmdFinishWashingPlate(bool timer, PlayerState playerState)
     {
         //if starttimer is true
         if (timer)
@@ -215,28 +214,10 @@ public class NetworkedWashInteraction : NetworkBehaviour
                             //spawn the scene object on network for everyone to see
                             NetworkServer.Spawn(cleanPlateOnTray);
 
-                            //set layer to uninteractable
-                            cleanPlateOnTray.layer = LayerMask.NameToLayer("UnInteractable");
-
                             //set starttimer to false
                             timer = false;
-                            RpcFinishWashingPlate(cleanPlateOnTray, timer, i, x);
-                            //if there are still plates in the sink
-                            if (GameManager.Instance.platesInSinkCount != 0)
-                            {
-                                showWashIcon = true;
-                                placedPlateInSink = true;
+                            RpcFinishWashingPlate(cleanPlateOnTray, timer, i, x, playerState);
 
-                                //allow player to wash plate
-                                networkedPlayerInteraction.playerState = PlayerState.CanWashPlate;
-                                return;
-                            }
-                            else
-                            {
-                                //unable to wash anymore
-                                showWashIcon = false;
-                                placedPlateInSink = false;
-                            }
                             return;
                         }
                     }
@@ -246,7 +227,7 @@ public class NetworkedWashInteraction : NetworkBehaviour
     }
 
     [ClientRpc]
-    public void RpcFinishWashingPlate(GameObject cleanPlateOnTray, bool timer, int i, int x)
+    public void RpcFinishWashingPlate(GameObject cleanPlateOnTray, bool timer, int i, int x, PlayerState playerState)
     {
         Debug.Log("RPC Start");
 
@@ -254,11 +235,16 @@ public class NetworkedWashInteraction : NetworkBehaviour
         //get script from the prefab
         ObjectContainer objectContainer = cleanPlateOnTray.GetComponent<ObjectContainer>();
 
+        //set layer to uninteractable
+        cleanPlateOnTray.layer = LayerMask.NameToLayer("UnInteractable");
+
         //Instantiate the right ingredient as a child of the object
         objectContainer.SetObjToSpawn(HeldItem.cleanplate);
 
         //assign starttimer as timer so that it will be false
         startTimer = timer;
+
+        playerState = PlayerState.FinishedWashingPlate;
 
         //reduce number of plates in sink
         GameManager.Instance.platesInSinkCount -= 1;
@@ -267,6 +253,24 @@ public class NetworkedWashInteraction : NetworkBehaviour
 
         GameManager.Instance.platesInSink[i] = null;
         GameManager.Instance.cleanPlatesOnTable[x] = cleanPlateOnTray;
+
+        //if there are still plates in the sink
+        if (GameManager.Instance.platesInSinkCount != 0)
+        {
+            showWashIcon = true;
+            placedPlateInSink = true;
+
+            //allow player to wash plate
+            networkedPlayerInteraction.playerState = PlayerState.CanWashPlate;
+            return;
+        }
+        else
+        {
+            //unable to wash anymore
+            showWashIcon = false;
+            placedPlateInSink = false;
+        }
+
         Debug.Log("RPC End");
         return;
         

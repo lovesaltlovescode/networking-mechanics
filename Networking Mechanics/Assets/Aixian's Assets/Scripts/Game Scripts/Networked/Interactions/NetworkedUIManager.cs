@@ -354,7 +354,7 @@ public class NetworkedUIManager : MonoBehaviour
         //if image is completely filled, reset fill to 0
         if (washTimerImage.fillAmount == 1)
         {
-            networkedPlayerInteraction.playerState = PlayerState.FinishedWashingPlate;
+            networkedWashInteraction.FinishWashingPlate();
             washTimerImage.fillAmount = 0;
 
         }
