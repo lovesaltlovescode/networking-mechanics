@@ -5,8 +5,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Mirror;
 
-public class CustomerBehaviour : MonoBehaviour
+public class CustomerBehaviour : NetworkBehaviour
 {
     [Header("Customer Feedback Scripts Variables")]
     [SerializeField] public CustomerAnimationManager CustomerAnimScript;

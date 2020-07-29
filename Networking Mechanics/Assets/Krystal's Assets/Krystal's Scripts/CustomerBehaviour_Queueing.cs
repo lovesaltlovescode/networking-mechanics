@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using Mirror;
 
 public class CustomerBehaviour_Queueing : CustomerBehaviour
 {
@@ -13,6 +14,7 @@ public class CustomerBehaviour_Queueing : CustomerBehaviour
     [SerializeField] private GameObject groupSizeIcon;
 
     //group size variables
+    [SyncVar]
     private int groupSizeNum = 0;
     public int GroupSizeNum
     {
@@ -32,6 +34,41 @@ public class CustomerBehaviour_Queueing : CustomerBehaviour
 
 
     //------------------------------------------METHODS TO GENERATE AND SHOW GROUP SIZE------------------------------------------
+
+    #region Networked 
+
+    [ServerCallback]
+    public void ServerGenerateSizeOfGroup(numGuestsSpawnRates[] spawnRates = null)
+    {
+        RpcGenerateSizeOfGroup(spawnRates);   
+    }
+
+    [ClientRpc]
+    public void RpcGenerateSizeOfGroup(numGuestsSpawnRates[] spawnRates)
+    {
+        int i = Random.Range(0, 100);
+
+        if (spawnRates != null)
+        {
+            foreach (numGuestsSpawnRates spawnableSize in spawnRates)
+            {
+                if (i >= spawnableSize.minProbability && i <= spawnableSize.maxProbability)
+                {
+                    Debug.Log("Generate size of group: " + spawnableSize.numGuests);
+                    groupSizeNum = spawnableSize.numGuests;
+
+                    return;
+                }
+            }
+        }
+
+        Debug.Log("Didn't get array, returning zero");
+    }
+
+    #endregion
+
+
+
     //generate the size of the customer group
     public void GenerateSizeOfGroup(numGuestsSpawnRates[] spawnRates = null)
     {

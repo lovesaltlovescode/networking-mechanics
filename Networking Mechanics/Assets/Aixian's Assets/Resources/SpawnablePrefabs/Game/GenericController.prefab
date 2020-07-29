@@ -172,6 +172,7 @@ GameObject:
   - component: {fileID: 3095350765768733121}
   - component: {fileID: 8668585866358223757}
   - component: {fileID: 3583419821404010333}
+  - component: {fileID: 8485208781291324559}
   m_Layer: 8
   m_Name: GenericController
   m_TagString: Untagged
@@ -292,6 +293,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
+  customerTag: Customer
+  dishTag: Dish
+  queueingCustomerLayer: Queue
+  takeOrderLayer: Ordering
   objectContainerPrefab: {fileID: 3119484819004831971, guid: 0c65bd13f95769341b01e0e069a7ad50,
     type: 3}
   cucumberPrefab: {fileID: 2376572526644023733, guid: db0ec2627ac3534438fb6e546e962040,
@@ -310,6 +315,8 @@ MonoBehaviour:
     type: 3}
   cleanPlatePrefab: {fileID: 440951575337714852, guid: 299cd296e0e6c924ba6e9ab118b79b05,
     type: 3}
+  queueingCustomerPrefab: {fileID: 4217755499028838569, guid: 570277c39e6c63242aaceef413f30529,
+    type: 3}
   raycastLength: 1.5
   distFromObject: 0
   detectedObject: {fileID: 0}
@@ -319,6 +326,7 @@ MonoBehaviour:
   networkedIngredientInteraction: {fileID: 0}
   networkedWashInteraction: {fileID: 0}
   networkedDrinkInteraction: {fileID: 0}
+  networkedCustomerInteraction: {fileID: 0}
   playerState: 0
   heldItem: 0
 --- !u!114 &3095350765768733121
@@ -338,6 +346,7 @@ MonoBehaviour:
   networkedPlayerInteraction: {fileID: 4615440117277981385}
   nearIngredientTray: 0
   nearTrashBin: 0
+  canDropIngredient: 1
 --- !u!114 &8668585866358223757
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -373,6 +382,21 @@ MonoBehaviour:
   showWashIcon: 0
   atSink: 0
   canWash: 0
+  networkedPlayerInteraction: {fileID: 0}
+--- !u!114 &8485208781291324559
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1817381823316905504}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e5622e546c2f364aadde7a06a348f0c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
   networkedPlayerInteraction: {fileID: 0}
 --- !u!1 &2166442203535815449
 GameObject:

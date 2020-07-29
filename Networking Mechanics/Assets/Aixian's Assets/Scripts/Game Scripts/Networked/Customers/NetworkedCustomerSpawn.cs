@@ -169,7 +169,7 @@ public class NetworkedCustomerSpawn : NetworkBehaviour
     private void RpcSpawnCustomer(GameObject newGroupOfCustomers)
     {
         Debug.Log("NetworkedCustomerSpawn - RPC called");
-        newGroupOfCustomers.GetComponent<CustomerBehaviour_Queueing>().GenerateSizeOfGroup(spawnRates);
+        newGroupOfCustomers.GetComponent<CustomerBehaviour_Queueing>().ServerGenerateSizeOfGroup(spawnRates);
 
         //create a new group of customers, and assign a group size to the customer
         //newGroupOfCustomers = Instantiate(customerQueueingPrefab, spawnPos, Quaternion.identity);

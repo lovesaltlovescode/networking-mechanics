@@ -24,6 +24,9 @@ public class ObjectContainer : NetworkBehaviour
     public GameObject rottenPrefab;
     public GameObject drinkPrefab;
 
+    [Header("Customer")]
+    public GameObject queueingCustomerPrefab;
+
     void OnChangeIngredient(HeldItem oldItem, HeldItem newItem)
     {
         //Debug.Log("NetworkedIngredientInteraction - Starting coroutine!");
@@ -76,6 +79,9 @@ public class ObjectContainer : NetworkBehaviour
                 break;
             case HeldItem.drink:
                 Instantiate(drinkPrefab, transform);
+                break;
+            case HeldItem.customer:
+                Instantiate(queueingCustomerPrefab, transform);
                 break;
         }
 

@@ -23,7 +23,10 @@ public enum HeldItem
 
     //Plates
     dirtyplate,
-    cleanplate
+    cleanplate,
+
+    //customer
+    customer
 }
 
 //State of player
@@ -61,11 +64,20 @@ public enum PlayerState
     CanWashPlate,
     WashingPlate,
     StoppedWashingPlate,
-    FinishedWashingPlate
+    FinishedWashingPlate,
+
+    //Customer Interaction
+    CanPickUpCustomer,
+    HoldingCustomer,
+    CanTakeOrder,
+    CanPickUpDish,
+    HoldingOrder
 }
 
 public class NetworkedPlayerInteraction : NetworkBehaviour
 {
+    [SerializeField] private string customerTag = "Customer", dishTag = "Dish";
+    [SerializeField] private string queueingCustomerLayer = "Queue", takeOrderLayer = "Ordering";
 
     [Header("Spawnable Objects")]
     public GameObject objectContainerPrefab;
@@ -82,6 +94,10 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
     [Header("Plates")]
     public GameObject dirtyPlatePrefab;
     public GameObject cleanPlatePrefab;
+
+
+    [Header("Customer")]
+    public GameObject queueingCustomerPrefab;
 
     //RAYCAST VARIABLES
     [Header("Raycast Variables")]
@@ -108,6 +124,7 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
     [SerializeField] private NetworkedIngredientInteraction networkedIngredientInteraction;
     [SerializeField] private NetworkedWashInteraction networkedWashInteraction;
     [SerializeField] private NetworkedDrinkInteraction networkedDrinkInteraction;
+    [SerializeField] private NetworkedCustomerInteraction networkedCustomerInteraction;
 
     public PlayerState playerState;
 
@@ -115,32 +132,6 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
     [SyncVar(hook = nameof(OnChangeHeldItem))]
     public HeldItem heldItem;
 
-
-    void Update()
-    {
-        if (!hasAuthority)
-        {
-            return;
-        }
-
-
-        if (!playerInventory && attachmentPoint.transform.childCount > 0)
-        {
-            playerInventory = attachmentPoint.transform.GetChild(0).gameObject;
-        }
-        else if (!playerInventory)
-        {
-            playerInventory = null;
-        }
-
-        DetectObjects();
-
-        //if (!detectedObject && !IsInventoryFull())
-        //{
-        //    playerState = PlayerState.Default;
-        //}
-
-    }
 
 
     #region SyncVar
@@ -213,6 +204,11 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
                 drink.tag = "Drink";
                 break;
 
+            case HeldItem.customer:
+                var customer = Instantiate(queueingCustomerPrefab, attachmentPoint.transform);
+                playerInventory = customer;
+                break;
+
         }
     }
 
@@ -238,10 +234,35 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
         networkedIngredientInteraction = GetComponent<NetworkedIngredientInteraction>();
         networkedWashInteraction = GetComponent<NetworkedWashInteraction>();
         networkedDrinkInteraction = GetComponent<NetworkedDrinkInteraction>();
+        networkedCustomerInteraction = GetComponent<NetworkedCustomerInteraction>();
 
     }
 
+    void Update()
+    {
+        if (!hasAuthority)
+        {
+            return;
+        }
 
+
+        if (!playerInventory && attachmentPoint.transform.childCount > 0)
+        {
+            playerInventory = attachmentPoint.transform.GetChild(0).gameObject;
+        }
+        else if (!playerInventory)
+        {
+            playerInventory = null;
+        }
+
+        DetectObjects();
+
+        //if (!detectedObject && !IsInventoryFull())
+        //{
+        //    playerState = PlayerState.Default;
+        //}
+
+    }
 
     //bool to check if inventory is full
     public bool IsInventoryFull()
@@ -299,6 +320,12 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
             {
                 //set hit object as detectedobject
                 detectedObject = hit.collider.gameObject;
+
+                //If the detected obj is a customer that is queueing, change the player state to canpickupcustomer
+                if (hit.collider.gameObject.CompareTag(customerTag) && hit.collider.gameObject.layer == LayerMask.NameToLayer(queueingCustomerLayer))
+                {
+                    playerState = PlayerState.CanPickUpCustomer;
+                }
             }
             else
             {
@@ -393,6 +420,12 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
                 //Debug.Log("NetworkedPlayerInteraction - Wash plate in sink!");
                 networkedWashInteraction.WashPlate();
                 break;
+
+            //CUSTOMER
+            case PlayerState.CanPickUpCustomer:
+                networkedCustomerInteraction.PickUpCustomer();
+                break;
+
                 
 
         }

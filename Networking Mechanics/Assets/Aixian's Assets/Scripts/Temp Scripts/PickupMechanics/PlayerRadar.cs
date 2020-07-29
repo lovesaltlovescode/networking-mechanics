@@ -17,7 +17,7 @@ public class PlayerRadar : MonoBehaviour
     private int ignoreLayers = 1 << 8 | 1 << 9 | 1 << 10 | 1 << 11;
 
     //player inventory slot
-    public PlayerInventory playerInventory;
+    //public PlayerInventory playerInventory;
 
     //when a object is detected, we will reference its  pickuppable script
     //change this back to non-static if needed

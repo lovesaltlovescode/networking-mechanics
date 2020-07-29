@@ -168,3 +168,5 @@ MonoBehaviour:
     type: 3}
   drinkPrefab: {fileID: 984478579084921841, guid: 764a10c51db38de42822d1e76ad68260,
     type: 3}
+  queueingCustomerPrefab: {fileID: 4217755499028838569, guid: 570277c39e6c63242aaceef413f30529,
+    type: 3}
