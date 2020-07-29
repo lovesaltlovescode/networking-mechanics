@@ -3,8 +3,9 @@ using System.Collections.Generic;
 //using System.Runtime.Remoting.Messaging;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
+using Mirror;
 
-public class CustomerSpawn : MonoBehaviour
+public class NetworkedCustomerSpawn : NetworkBehaviour
 {
     [Header("Debugging Settings")]
     [SerializeField] private bool debuggingMode = false;
@@ -19,7 +20,6 @@ public class CustomerSpawn : MonoBehaviour
     [SerializeField] private GameObject customerQueueingPrefab, customerParent;
     [SerializeField] private float checkRad = 0.625f, spawnFrequency = 15f, customerMoveSpd = 0.05f, maxGroupsOfCustomersInWaitingArea = 6;
 
-    private float timeSinceLastSpawn = 0f, currentNumWaitingCustomers = 0f;
     private bool isCoroutineRunning = false;
     private Coroutine moveLerpCoroutine;
 
@@ -49,34 +49,38 @@ public class CustomerSpawn : MonoBehaviour
     private void Update()
     {
         //if the number of customers in the waiting area is below the max num of customers, 
-        if(currentNumWaitingCustomers < maxGroupsOfCustomersInWaitingArea)
+        if (GameManager.Instance.currentNumWaitingCustomers < maxGroupsOfCustomersInWaitingArea)
         {
             //if we're not in debugging mode, spawn customers every few seconds. 
             //If not, spawn customers only when the user presses 'P'
             if (!debuggingMode)
             {
                 //update the amount of time since the last customer group was spawned
-                timeSinceLastSpawn += Time.deltaTime;
+                GameManager.Instance.timeSinceLastSpawn += Time.deltaTime;
 
                 //check that the last customer spawned at least spawnFrequency seconds ago
-                if (timeSinceLastSpawn > spawnFrequency)
+                if (GameManager.Instance.timeSinceLastSpawn > spawnFrequency)
                 {
                     //call the spawn coroutine
                     StartCoroutine(SpawnAndCheck());
 
                     //reset the time since the last customer group was spawned
-                    timeSinceLastSpawn = 0;
+                    GameManager.Instance.timeSinceLastSpawn = 0;
                 }
-            } 
+            }
             else
             {
                 if (Input.GetKeyDown(KeyCode.P))
                 {
+                    if (!isServer)
+                    {
+                        return;
+                    }
                     //call the spawn coroutine
                     StartCoroutine(SpawnAndCheck());
                 }
             }
-            
+
         }
 
 
@@ -146,45 +150,95 @@ public class CustomerSpawn : MonoBehaviour
         return newPos;
     }
 
+    #region Networked
 
-    //spawn a customer prefab, assign a group size to it, then make it a child of an object in the scene
+    //spawn a customer prefab, assign a group size to it
+    [ServerCallback]
     private GameObject SpawnCustomer(Vector3 spawnPos)
     {
-        //create a new group of customers, and assign a group size to the customer
+        Debug.Log("NetworkedCustomerSpawn - SpawnCustomer called");
+
         GameObject newGroupOfCustomers = Instantiate(customerQueueingPrefab, spawnPos, Quaternion.identity).gameObject;
+
+        NetworkServer.Spawn(newGroupOfCustomers);
+        RpcSpawnCustomer(newGroupOfCustomers);
+        return newGroupOfCustomers;
+    }
+
+    [ClientRpc]
+    private void RpcSpawnCustomer(GameObject newGroupOfCustomers)
+    {
+        Debug.Log("NetworkedCustomerSpawn - RPC called");
         newGroupOfCustomers.GetComponent<CustomerBehaviour_Queueing>().GenerateSizeOfGroup(spawnRates);
 
-        //make the new customer group spawned a child of the customerParent gameobj 
-        newGroupOfCustomers.transform.parent = customerParent.transform;
+        //create a new group of customers, and assign a group size to the customer
+        //newGroupOfCustomers = Instantiate(customerQueueingPrefab, spawnPos, Quaternion.identity);
 
-        //update the number of customers in the waiting area
-        currentNumWaitingCustomers = customerParent.transform.childCount;
-        
         // announce that a customer has spawned using the spawn event
         Debug.Log("CallSpawnEvent()");
         EventManager.CallSpawnEvent();
 
-        return newGroupOfCustomers;
+        //update the number of customers in the waiting area
+        GameManager.Instance.currentNumWaitingCustomers += 1;
     }
+
+    [ServerCallback]
+    public void ActivateCustomerWait(GameObject customer)
+    {
+        Debug.Log("NetworkedCustomerSpawn - ActivateCustomerWait called");
+        RpcActivateCustomerWait(customer);
+    }
+
+    [ClientRpc]
+    public void RpcActivateCustomerWait(GameObject customer)
+    {
+        Debug.Log("NetworkedCustomerSpawn - RpcActivateCustomerWait called");
+        //customer starts waiting upon reaching waiting position
+        customer.gameObject.GetComponent<CustomerBehaviour_Queueing>().CustomerStartsWaiting();
+    }
+
+
+    #endregion
+
+    ////spawn a customer prefab, assign a group size to it, then make it a child of an object in the scene
+    //private GameObject SpawnCustomer(Vector3 spawnPos)
+    //{
+    //    //create a new group of customers, and assign a group size to the customer
+    //    GameObject newGroupOfCustomers = Instantiate(customerQueueingPrefab, spawnPos, Quaternion.identity).gameObject;
+    //    newGroupOfCustomers.GetComponent<CustomerBehaviour_Queueing>().GenerateSizeOfGroup(spawnRates);
+
+    //    //make the new customer group spawned a child of the customerParent gameobj 
+    //    newGroupOfCustomers.transform.parent = customerParent.transform;
+
+    //    //update the number of customers in the waiting area
+    //    currentNumWaitingCustomers = customerParent.transform.childCount;
+
+    //    // announce that a customer has spawned using the spawn event
+    //    Debug.Log("CallSpawnEvent()");
+    //    EventManager.CallSpawnEvent();
+
+    //    return newGroupOfCustomers;
+    //}
 
 
 
     //move the gameobject egg to the position newpos and set it active in the hierarchy //-------------------------------------change egg.........
+
     IEnumerator MoveAndActivate(GameObject customer, Vector3 newPos)
     {
         Vector3 startPos = customer.transform.position;
         float journeyProgress = 0;
-        
-        while(customer.transform.position != newPos)
+
+        while (customer.transform.position != newPos)
         {
             yield return new WaitForSeconds(0.1f);
 
             journeyProgress += customerMoveSpd;
             customer.transform.position = Vector3.Lerp(startPos, newPos, journeyProgress);
         }
-        
+
         //customer starts waiting upon reaching waiting position
-        customer.gameObject.GetComponent<CustomerBehaviour_Queueing>().CustomerStartsWaiting();
+        ActivateCustomerWait(customer);
 
         yield return null;
     }
@@ -197,7 +251,7 @@ public class CustomerSpawn : MonoBehaviour
         Collider[] hitColliders = Physics.OverlapSphere(pos, radius);
 
         //for debugging. if the sphereVisualisation object has been assigned, move it to the position that is being check currently
-        if(sphereVisualisation != null)
+        if (sphereVisualisation != null)
         {
             sphereVisualisation.transform.position = pos;
             sphereVisualisation.transform.localScale = new Vector3(radius * 2, radius * 2, radius * 2);
@@ -220,12 +274,12 @@ public class CustomerSpawn : MonoBehaviour
 
 
 
-////object that holds a possible size for the group of customers + the probability that size of group will be spawned
-//[System.Serializable]
-//public class numGuestsSpawnRates
-//{
-//    public int numGuests = 0;
-//    public int minProbability = 0;
-//    public int maxProbability = 100;
+//object that holds a possible size for the group of customers + the probability that size of group will be spawned
+[System.Serializable]
+public class numGuestsSpawnRates
+{
+    public int numGuests = 0;
+    public int minProbability = 0;
+    public int maxProbability = 100;
 
-//}
+}

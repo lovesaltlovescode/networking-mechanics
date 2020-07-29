@@ -52,7 +52,7 @@ public class CustomerPatience : MonoBehaviour
         {
             //bool used to ensure that coroutine does not get called while coroutine is running
             return;
-        } 
+        }
 
         isCoroutineRunning = true;
 
@@ -103,11 +103,11 @@ public class CustomerPatience : MonoBehaviour
         }
 
         Debug.Log("Calling the impatient method");
-        if(callback != null)
+        if (callback != null)
         {
             callback?.Invoke();
         }
-        
+
         //disable the image
         patienceMeterImg.enabled = false;
 

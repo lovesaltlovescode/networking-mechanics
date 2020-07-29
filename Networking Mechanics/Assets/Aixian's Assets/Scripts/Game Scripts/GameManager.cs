@@ -26,6 +26,10 @@ public class GameManager : MonoBehaviour
 
     #region Variables
 
+    [Header("Customers")]
+    public float timeSinceLastSpawn = 0f, currentNumWaitingCustomers = 0f;
+
+
     [Header("Ingredient Tray")]
     public Transform[] trayPositions; //where ingredients should be placed
     public GameObject[] ingredientsOnTray = new GameObject[4];

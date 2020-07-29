@@ -116,7 +116,31 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
     public HeldItem heldItem;
 
 
-   
+    void Update()
+    {
+        if (!hasAuthority)
+        {
+            return;
+        }
+
+
+        if (!playerInventory && attachmentPoint.transform.childCount > 0)
+        {
+            playerInventory = attachmentPoint.transform.GetChild(0).gameObject;
+        }
+        else if (!playerInventory)
+        {
+            playerInventory = null;
+        }
+
+        DetectObjects();
+
+        //if (!detectedObject && !IsInventoryFull())
+        //{
+        //    playerState = PlayerState.Default;
+        //}
+
+    }
 
 
     #region SyncVar
@@ -460,30 +484,7 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
         
     }
 
-    void Update()
-    {
-        if (!hasAuthority)
-        {
-            return;
-        }
-
-        if (!playerInventory && attachmentPoint.transform.childCount > 0)
-        {
-            playerInventory = attachmentPoint.transform.GetChild(0).gameObject;
-        }
-        else if (!playerInventory)
-        {
-            playerInventory = null;
-        }
-
-        DetectObjects();
-
-        //if (!detectedObject && !IsInventoryFull())
-        //{
-        //    playerState = PlayerState.Default;
-        //}
-
-    }
+    
 
 
     //checks whether the playerstate is something that should not be changed
