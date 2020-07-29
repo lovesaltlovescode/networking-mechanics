@@ -1,21 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Mirror;
 
 //Hides the meshes of certain walls and objects if player enters the storeroom
-public class ToggleStoreroom : NetworkBehaviour
+public class ToggleStoreroom : MonoBehaviour
 {
-    public GameObject hiddenObjects;
-
-    [SerializeField] private MeshRenderer[] meshesToHide;
-    
+    public GameObject[] hiddenObjects;
 
     // Start is called before the first frame update
     void Start()
     {
-        //hide meshes
-        meshesToHide = hiddenObjects.GetComponentsInChildren<MeshRenderer>();
 
     }
 
@@ -27,21 +21,12 @@ public class ToggleStoreroom : NetworkBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        //if hit object is a player
-        if (other.gameObject.layer == 8)
+        if (other.tag == "StoreroomZone")
         {
             Debug.Log("CameraHandler: Player in storeroom");
-
-            if (!other.GetComponent<NetworkIdentity>().hasAuthority)
+            for(int i = 0; i < hiddenObjects.Length; i++)
             {
-                Debug.Log("ToggleStoreroom: Not my local player, ignore!");
-                return;
-            }
-
-            //hide meshes
-            for (int i = 0; i < meshesToHide.Length; i++)
-            {
-                meshesToHide[i].enabled = false;
+                hiddenObjects[i].GetComponent<MeshRenderer>().enabled = false;
             }
         }
 
@@ -49,20 +34,12 @@ public class ToggleStoreroom : NetworkBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.gameObject.layer == 8)
+        if (other.tag == "StoreroomZone")
         {
             Debug.Log("CameraHandler: Player in shop");
-
-            if (!other.GetComponent<NetworkIdentity>().hasAuthority)
+            for (int i = 0; i < hiddenObjects.Length; i++)
             {
-                Debug.Log("ToggleStoreroom: Not my local player, ignore!");
-                return;
-            }
-
-            //show meshes
-            for (int i = 0; i < meshesToHide.Length; i++)
-            {
-                meshesToHide[i].enabled = true;
+                hiddenObjects[i].GetComponent<MeshRenderer>().enabled = true;
             }
         }
     }

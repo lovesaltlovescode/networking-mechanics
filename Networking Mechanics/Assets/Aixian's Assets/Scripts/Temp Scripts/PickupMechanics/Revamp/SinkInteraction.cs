@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// Check for tag of detectedObject
-/// If detectedObject is dirty plate and has entered sink zone, change player state
+/// Check for tag of heldobject
+/// If heldobject is dirty plate and has entered sink zone, change player state
 /// Handle changing of player state according to if player is in sink zone or not
 /// </summary>
 
@@ -82,9 +82,6 @@ public class SinkInteraction : MonoBehaviour
 
         //Set rotation back to 0
         heldPlate.transform.rotation = Quaternion.identity;
-
-        //set held object to null, player is not holding anything
-        PlayerInteractionManager.detectedObject = null;
 
         placedPlateInSink = true; //player has placed plate in sink
         holdingDirtyPlate = false;
@@ -203,7 +200,7 @@ public class SinkInteraction : MonoBehaviour
     public void OnTriggerEnter(Collider other)
     {
         //if it is the sink zone
-        if (other.tag == "SinkZone")
+        if (other.tag == "SinkZone" && PlayerInteractionManager.CanChangePlayerState())
         {
             Debug.Log("SinkInteraction - Player in sink zone!");
 
@@ -216,7 +213,7 @@ public class SinkInteraction : MonoBehaviour
             }
             //if player was washing plate, then if they enter the sink zone again they can resume
             //TODO: CHANGE TO ELSE
-            else if (stoppedWashingPlate || platesInSink != 0)
+            else if (stoppedWashingPlate || platesInSink != 0 && PlayerInteractionManager.CanChangePlayerState())
             {
                 Debug.Log("SinkInteraction - Player can resume washing plate!");
 
@@ -235,7 +232,7 @@ public class SinkInteraction : MonoBehaviour
     public void OnTriggerExit(Collider other)
     {
         //if exit sink zone
-        if (other.tag == "SinkZone")
+        if (other.tag == "SinkZone" && PlayerInteractionManager.CanChangePlayerState())
         {
             Debug.Log("SinkInteraction - Exited sink zone");
             showWashIcon = false;

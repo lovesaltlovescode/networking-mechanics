@@ -401,7 +401,7 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
             if (!inventoryFull)
             {
                 //if not holding anything, change state
-                playerState = _playerState;
+                ChangePlayerState(_playerState);
             }
         }
     }
@@ -478,8 +478,6 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
 
         DetectObjects();
 
-        CheckPlayerStateAndInventory();
-
         //if (!detectedObject && !IsInventoryFull())
         //{
         //    playerState = PlayerState.Default;
@@ -487,20 +485,31 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
 
     }
 
-    public void CheckPlayerStateAndInventory()
+
+    //checks whether the playerstate is something that should not be changed
+    public bool CanChangePlayerState()
     {
-        //checks for inventory contents
-        //Debug.Log("NetworkedPlayerInteraction - Inventory currently contains: " + playerInventory);
-
-        //////check inventory count
-        ////Debug.Log("NetworkedPlayerInteraction - Inventory count: " + objectsInInventory.Count);
-
-        //checks for player state
-        //Debug.Log("NetworkedPlayerInteraction - Player state is currently: " + playerState);
-
-        //if (playerState == PlayerState.FinishedWashingPlate)
+        //if (playerState == PlayerState.HoldingCustomer || playerState == PlayerState.HoldingOrder)
         //{
-        //    networkedWashInteraction.FinishWashingPlate();
+            //return false;
         //}
+        //else
+        //{
+            return true;
+        //}
+    }
+
+
+    //changes the player state
+    public void ChangePlayerState(PlayerState newPlayerState, bool canBypassCheck = false)
+    {
+        if (CanChangePlayerState() || canBypassCheck)
+        {
+            playerState = newPlayerState;
+        }
+        else
+        {
+            Debug.Log("cannot change playerstate to " + newPlayerState);
+        }
     }
 }

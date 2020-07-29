@@ -24,11 +24,9 @@ public class IngredientInteraction : MonoBehaviour
     //2 arrays, 1 array to store the gos on the tray, if there is nothing (by default) it is a null element
     //second array will store the transform for the traypositions, public array
 
-    public static GameObject trayParentZone; //Tray object that contains all ingredient tray positions
+    public Transform[] trayPositions; //array to contain all tray positions
 
-    private static Transform[] trayPositions; //array to contain all tray positions
-
-    public static GameObject[] ingredientsOnTray = new GameObject[4]; //array to contain all ingredients on the tray
+    public GameObject[] ingredientsOnTray = new GameObject[4]; //array to contain all ingredients on the tray
 
     // Start is called before the first frame update
     void Start()
@@ -59,7 +57,7 @@ public class IngredientInteraction : MonoBehaviour
          //Change layer to Player/pickeup so cannot be detected by other players
         // detectedObject.layer = LayerMask.NameToLayer("PickedUp");
 
-        //change held object to be the detected object
+        Debug.Log("Ingredient Interaction - Player is holding " + PlayerInteractionManager.detectedObject);
     }
 
     //Drop ingredient function
@@ -96,7 +94,6 @@ public class IngredientInteraction : MonoBehaviour
                     //Set rotation back to 0
                     heldIngredient.transform.rotation = Quaternion.identity;
 
-                    //set held object to null, player is not holding anything
                     return;
                 }
             }
@@ -118,7 +115,6 @@ public class IngredientInteraction : MonoBehaviour
             //Set rotation back to 0
             heldIngredient.transform.rotation = Quaternion.identity;
 
-            //set held object to null, player is not holding anything
         }
 
         
@@ -130,7 +126,7 @@ public class IngredientInteraction : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-       if(PlayerInteractionManager.detectedObject && PlayerInteractionManager.detectedObject.layer == 13)
+       if(PlayerInteractionManager.detectedObject && PlayerInteractionManager.detectedObject.layer == 15)
         {
             ingredientDetected = true;
         }
@@ -154,7 +150,7 @@ public class IngredientInteraction : MonoBehaviour
             {
                 print("IngredientInteraction - Can pick up ingredient!");
                 //Switch the state
-                PlayerInteractionManager.playerState = PlayerInteractionManager.PlayerState.CanPickUpIngredient;
+                PlayerInteractionManager.ChangePlayerState(PlayerInteractionManager.PlayerState.CanPickUpIngredient);
             }
 
             //DROP CRITERIA
@@ -174,28 +170,26 @@ public class IngredientInteraction : MonoBehaviour
 
                 //switch the state
                 if(!nearIngredientShelves)
-                PlayerInteractionManager.playerState = PlayerInteractionManager.PlayerState.CanDropIngredient;
+                PlayerInteractionManager.ChangePlayerState(PlayerInteractionManager.PlayerState.CanDropIngredient);
             }
         }
-        //if there is no detected object, player state returns to default
+        //if there is no detected object + the player isn't holding a customer, player state returns to default
         if (!PlayerInteractionManager.detectedObject && !WashInteraction.placedPlateInSink)
         {
-            PlayerInteractionManager.playerState = PlayerInteractionManager.PlayerState.Default;
+            PlayerInteractionManager.ChangePlayerState(PlayerInteractionManager.PlayerState.Default);
         }
     }
 
     public void OnTriggerEnter(Collider other)
     {
         //if enter the ingredient tray zone
-        if(other.tag == "IngredientTableZone")
+        if (other.tag == "IngredientTableZone")
         {
             Debug.Log("IngredientInteraction - Near the ingredient tray!");
             nearIngredientTray = true;
-            trayParentZone = other.gameObject; //hit zone is the tray parent zone
-            trayPositions = trayParentZone.GetComponent<IngredientTrayZones>().trayPositions;
         }
 
-        if(other.tag == "ShelfZone")
+        if (other.tag == "ShelfZone")
         {
             //if player is in shelf zone, they cannot drop ingredients
             nearIngredientShelves = true;
@@ -204,7 +198,7 @@ public class IngredientInteraction : MonoBehaviour
 
     public void OnTriggerExit(Collider other)
     {
-        if(other.tag == "IngredientTableZone")
+        if (other.tag == "IngredientTableZone")
         {
             Debug.Log("IngredientInteraction - Exited ingredient tray!");
             nearIngredientTray = false;

@@ -50,28 +50,28 @@ public class NetworkedIngredientInteraction : NetworkBehaviour
                 switch (networkedPlayerInteraction.detectedObject.tag)
                 {
                     case "ChickenShelf":
-                        //change player state
-                        //Debug.Log("NetworkedIngredientInteraction - Able to spawn chicken!");
-                        networkedPlayerInteraction.playerState = PlayerState.CanSpawnChicken;
+                    //change player state
+                    //Debug.Log("NetworkedIngredientInteraction - Able to spawn chicken!");
+                    networkedPlayerInteraction.ChangePlayerState(PlayerState.CanSpawnChicken);
                         break;
 
                     case "EggShelf":
-                        //change player state
-                        //Debug.Log("NetworkedIngredientInteraction - Able to spawn egg!");
-                        networkedPlayerInteraction.playerState = PlayerState.CanSpawnEgg;
-                        break;
+                    //change player state
+                    //Debug.Log("NetworkedIngredientInteraction - Able to spawn egg!");
+                    networkedPlayerInteraction.ChangePlayerState(PlayerState.CanSpawnEgg);
+                    break;
 
                     case "CucumberShelf":
-                        //change player state
-                        //Debug.Log("NetworkedIngredientInteraction - Able to spawn cucumber!");
-                        networkedPlayerInteraction.playerState = PlayerState.CanSpawnCucumber;
-                        break;
+                    //change player state
+                    //Debug.Log("NetworkedIngredientInteraction - Able to spawn cucumber!");
+                    networkedPlayerInteraction.ChangePlayerState(PlayerState.CanSpawnCucumber);
+                    break;
 
                     case "RiceTub":
-                        //change player state
-                        //Debug.Log("NetworkedIngredientInteraction - Able to spawn rice!");
-                        networkedPlayerInteraction.playerState = PlayerState.CanSpawnRice;
-                        break;
+                    //change player state
+                    //Debug.Log("NetworkedIngredientInteraction - Able to spawn rice!");
+                    networkedPlayerInteraction.ChangePlayerState(PlayerState.CanSpawnRice);
+                    break;
                 }
         }
     }
@@ -100,7 +100,7 @@ public class NetworkedIngredientInteraction : NetworkBehaviour
                             Debug.Log("NetworkedWashInteraction - Too many plates in sink!");
                             return;
                         }
-                        networkedPlayerInteraction.playerState = PlayerState.CanPickUpDirtyPlate;
+                        networkedPlayerInteraction.ChangePlayerState(PlayerState.CanPickUpDirtyPlate);
                         break;
                 }
         }
@@ -173,18 +173,18 @@ public class NetworkedIngredientInteraction : NetworkBehaviour
             //Debug.Log("NetworkedIngredientInteraction - Able to drop ingredient!");
             if(GameManager.Instance.ingredientsOnTrayCount >= 4 && nearIngredientTray)
             {
-                networkedPlayerInteraction.playerState = PlayerState.Default;
+                networkedPlayerInteraction.ChangePlayerState(PlayerState.Default);
                 Debug.Log("Ingredient tray full");
                 return;
             }
 
             if (canDropIngredient)
-            { 
-                networkedPlayerInteraction.playerState = PlayerState.CanDropIngredient;
+            {
+                networkedPlayerInteraction.ChangePlayerState(PlayerState.CanDropIngredient);
             }
             else
             {
-                networkedPlayerInteraction.playerState = PlayerState.Default;
+                networkedPlayerInteraction.ChangePlayerState(PlayerState.Default);
             }
             
         }
@@ -222,7 +222,7 @@ public class NetworkedIngredientInteraction : NetworkBehaviour
         Debug.Log("Detected object is plate " + networkedPlayerInteraction.detectedObject);
 
         //heldItem = HeldItem.dirtyplate;
-        networkedPlayerInteraction.playerState = PlayerState.HoldingDirtyPlate;
+        networkedPlayerInteraction.ChangePlayerState(PlayerState.HoldingDirtyPlate);
 
     }
 
@@ -248,7 +248,7 @@ public class NetworkedIngredientInteraction : NetworkBehaviour
         //change player state to can pick up if inventory is not full
         if (!networkedPlayerInteraction.IsInventoryFull())
         {
-            networkedPlayerInteraction.playerState = PlayerState.CanPickUpIngredient;
+            networkedPlayerInteraction.ChangePlayerState(PlayerState.CanPickUpIngredient);
             //Debug.Log("NetworkedIngredientInteraction - Inventory empty, can pick up ingredient");
             //Debug.Log("//Debugging dropping - Part 3");
         }
@@ -291,7 +291,7 @@ public class NetworkedIngredientInteraction : NetworkBehaviour
         //Debug.Log("NetworkedingredientInteraction - Picked up a rotten ingredient!");
         if (networkedPlayerInteraction.IsInventoryFull())
         {
-            networkedPlayerInteraction.playerState = PlayerState.HoldingRottenIngredient;
+            networkedPlayerInteraction.ChangePlayerState(PlayerState.HoldingRottenIngredient);
         }
     }
 
@@ -392,6 +392,7 @@ public class NetworkedIngredientInteraction : NetworkBehaviour
 
         GameManager.Instance.ingredientsOnTrayCount += 1;
         Debug.Log("GameManager - Ingredient on tray: " + GameManager.Instance.ingredientsOnTrayCount);
+        trayIngredient.layer = LayerMask.NameToLayer("UnInteractable");
 
         //Set the ingredient on tray to be the spawned object
         GameManager.Instance.ingredientsOnTray[i] = trayIngredient;
@@ -474,8 +475,8 @@ public class NetworkedIngredientInteraction : NetworkBehaviour
             //if there is an ingredient being held
             if(networkedPlayerInteraction.playerInventory &&
                 networkedPlayerInteraction.playerInventory.layer == 15)
-            
-            networkedPlayerInteraction.playerState = PlayerState.CanThrowIngredient;
+
+                networkedPlayerInteraction.ChangePlayerState(PlayerState.CanThrowIngredient);
         }
 
         if(other.tag == "NoDropZone")

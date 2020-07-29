@@ -36,7 +36,7 @@ public class NetworkRoom : NetworkBehaviour
 
     //Sync player names, loading on default, and when the players join, replace with their name
     //when value is changed on server, update the UI accordingly
-    [SyncVar(hook =nameof(HandleDisplayNameChanged))] 
+    [SyncVar(hook = nameof(HandleDisplayNameChanged))]
     public string displayName = "Loading...";
 
     //Sync ready state among all players
@@ -53,8 +53,8 @@ public class NetworkRoom : NetworkBehaviour
     public bool IsLeader
     {
         set
-       {
-          isLeader = value; //True if isleader is true
+        {
+            isLeader = value; //True if isleader is true
 
             //toggle buttons on/off based on if player is leader
             startGameButton.gameObject.SetActive(value);
@@ -135,7 +135,7 @@ public class NetworkRoom : NetworkBehaviour
         }
     }
 
-    
+
 
     //Update UI according to changed name and ready status
 
@@ -178,7 +178,7 @@ public class NetworkRoom : NetworkBehaviour
             //Change image colours to white now that players have joined
             playerImages[i].GetComponent<Image>().enabled = true;
 
-            
+
 
             //if player set as ready, change text to green, else change to red
             if (NetworkRoomManager.RoomPlayers[i].isReady)
@@ -222,7 +222,7 @@ public class NetworkRoom : NetworkBehaviour
         {
             Debug.Log("Not leader, do not do anything");
             return;
-            
+
         }
 
         //clients all have to leave
@@ -248,11 +248,11 @@ public class NetworkRoom : NetworkBehaviour
             return; //do nothing
         }
 
-        
+
         NetworkRoomManager.RoomPlayers.Remove(this); //remove this player from list of players
         NetworkRoomManager.StopClient(); //stop client, runs onstopclient
         Debug.Log("Not room leader, exiting room");
-        NetworkRoomManager.RoomPlayers.Clear(); 
+        NetworkRoomManager.RoomPlayers.Clear();
     }
 
 

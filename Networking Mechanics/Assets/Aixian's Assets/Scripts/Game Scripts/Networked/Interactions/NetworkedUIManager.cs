@@ -156,7 +156,7 @@ public class NetworkedUIManager : MonoBehaviour
             buttonIcon.color = Color.white;
             if(!networkedPlayerInteraction.playerInventory && GameManager.Instance.platesInSinkCount == 0)
             {
-                networkedPlayerInteraction.playerState = PlayerState.Default;
+                networkedPlayerInteraction.ChangePlayerState(PlayerState.Default);
             }
         }
 

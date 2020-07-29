@@ -194,6 +194,9 @@ public class CustomNetworkManager : NetworkManager
     public override void OnServerAddPlayer(NetworkConnection conn)
     {
         //if in menu scene, spawn in room player prefab and add as client
+        //TODO: Only spawn in lobby scene, maybe use a sprite as a temporary placeholder for the characters
+        //TODO: Sprites of different assigned colours depending on order of joining, different designated spawn points
+        //TODO: What happens when disconnect? Do they retain the same order
         if (SceneManager.GetActiveScene().path == menuScene)
         {
             //If there were no room players prior, then this client is the leader
@@ -229,7 +232,7 @@ public class CustomNetworkManager : NetworkManager
 
             //Change Scene
             ServerChangeScene("Scene_Map_Shop");
-            Debug.Log("Server changing scene...");
+            Debug.Log("Server chanigng scene...");
         }
     }
 
@@ -279,7 +282,7 @@ public class CustomNetworkManager : NetworkManager
         base.OnServerReady(conn);
 
         //raise our event
-        OnServerReadied?.Invoke(conn); //If on server readied, invoke the event and pass a connection param
+        OnServerReadied?.Invoke(conn); //If on server readied, invoke and pass a connection
         //know when a client is ready, called on server
     }
 

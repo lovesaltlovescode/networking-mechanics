@@ -3,16 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// check for tag of detectedObject
-/// if detectedObject is a dirty plate and player has entered sink zone, change player state
+/// check for tag of heldobject
+/// if heldobject is a dirty plate and player has entered sink zone, change player state
 /// handle changing of player state according to if player is in sink zone or not
 /// </summary>
 public class WashInteraction : MonoBehaviour
 {
     [Header("Sink Positions")]
-    private static Transform[] sinkPositions; //array of sink positions
-    private static Transform[] cleanPlateSpawnPositions; //array of possible spawn positions for the clean plates
-    public static GameObject sinkParentZone; //parent sink zone, where the positions array will be retrieved from
+    [HideInInspector] public static GameObject sinkParentObj;
+
+    public Transform[] cleanPlateSpawnPositions; //array of possible spawn positions for the clean plates
 
     [Header("Plate game objects")]
     public GameObject cleanPlatePrefab; //clean plate to spawn
@@ -43,10 +43,20 @@ public class WashInteraction : MonoBehaviour
     //only if PLACE PLATE IN SINK state
     public void PlacePlateInSink(GameObject heldPlate, List<GameObject> Inventory)
     {
+        Transform[] sinkPositions = new Transform[2];
+
+        if (sinkParentObj.GetComponent<SinkScript_Temp>() != null)
+        {
+            sinkPositions = sinkParentObj.GetComponent<SinkScript_Temp>().sinkPositions;
+        } else
+        {
+            Debug.Log("SinkScript not present");
+        }
+        
 
         //loop through plate in sink array
         //if the gameobject is null, assign heldplate to it
-        for(int i = 0; i < platesInSink.Length; i++)
+        for (int i = 0; i < platesInSink.Length; i++)
         {
             if(platesInSink[i] == null)
             {
@@ -75,14 +85,12 @@ public class WashInteraction : MonoBehaviour
                 //Set rotation back to 0
                 heldPlate.transform.rotation = Quaternion.identity;
 
-                //set held object to null, player is not holding anything
-                PlayerInteractionManager.detectedObject = null;
 
                 placedPlateInSink = true; //player has placed plate in sink
                 holdingDirtyPlate = false;
 
                 //change state to can wash
-                PlayerInteractionManager.playerState = PlayerInteractionManager.PlayerState.CanWashPlate;
+                PlayerInteractionManager.ChangePlayerState(PlayerInteractionManager.PlayerState.CanWashPlate);
                 showWashIcon = true;
 
                 return;
@@ -95,8 +103,7 @@ public class WashInteraction : MonoBehaviour
     //only if CAN WASH PLATE state
     public void WashDirtyPlate()
     {
-
-        if (cleanPlatesCount == cleanPlateSpawnPositions.Length)
+        if(cleanPlatesCount == 2)
         {
             Debug.Log("WashInteraction - Too many clean plates");
             return;
@@ -109,17 +116,15 @@ public class WashInteraction : MonoBehaviour
         stoppedWashingPlate = false;
 
         //set state to washing plate
-        PlayerInteractionManager.playerState = PlayerInteractionManager.PlayerState.WashingPlate;
+        PlayerInteractionManager.ChangePlayerState(PlayerInteractionManager.PlayerState.WashingPlate);
     }
 
     //when done washing plate, reset timer and spawn clean plate
     public void FinishWashingPlate()
     {
-
         //if starttimer is true, destroy the dirty plate in the sink (washed)
         if (startTimer)
         {
-            //loop through the plates in sink
             for (int i = platesInSink.Length - 1; i >= 0; i--)
             {
                 if (platesInSink[i] != null)
@@ -129,7 +134,6 @@ public class WashInteraction : MonoBehaviour
                     //reduce number of plates in sink
                     platesInSinkCount -= 1;
 
-                    //loop through the clean plates on table
                     for(int x = 0; x < cleanPlatesOnTable.Length; x++)
                     {
                         //if there is no clean plate in that position, instantiate one
@@ -149,7 +153,7 @@ public class WashInteraction : MonoBehaviour
                                 placedPlateInSink = true;
 
                                 //continue washing plate
-                                PlayerInteractionManager.playerState = PlayerInteractionManager.PlayerState.CanWashPlate;
+                                PlayerInteractionManager.ChangePlayerState(PlayerInteractionManager.PlayerState.CanWashPlate);
                                 return;
                             }
                             else
@@ -171,13 +175,13 @@ public class WashInteraction : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (PlayerInteractionManager.detectedObject)
+        if (PlayerInteractionManager.detectedObject) 
         {
             CheckForWashingCriteria();
         }
     }
 
-    //checks if player is able to wash by checking tag of detectedObject
+    //checks if player is able to wash by checking tag of heldobject
     public void CheckForWashingCriteria()
     {
         if(PlayerInteractionManager.detectedObject.tag == "DirtyPlate")
@@ -196,25 +200,21 @@ public class WashInteraction : MonoBehaviour
         //if player is in sink zone
         if(other.tag == "SinkZone")
         {
-            Debug.Log("WashInteraction - Entered sink zone!");
-            sinkParentZone = other.gameObject; //assign the sink zone as the hit object
-
-            //Get the cleanplate and sink positions from the SinkZones script
-            cleanPlateSpawnPositions = sinkParentZone.GetComponent<SinkZones>().cleanPlateSpawnPositions;
-            sinkPositions = sinkParentZone.GetComponent<SinkZones>().sinkPositions;
-
             //if player is holding a plate
             if (holdingDirtyPlate)
-            {   
+            {
+                sinkParentObj = other.gameObject;
+
                 //player can place plate in the sink
-                PlayerInteractionManager.playerState = PlayerInteractionManager.PlayerState.CanPlacePlateInSink;
+                PlayerInteractionManager.ChangePlayerState(PlayerInteractionManager.PlayerState.CanPlacePlateInSink);
+
             }
 
             //if player was washing plate, if they enter the sink zone again they can immediately wash
             //or if there are still plates in the sink
             else if(stoppedWashingPlate || platesInSinkCount != 0)
             {
-                PlayerInteractionManager.playerState = PlayerInteractionManager.PlayerState.CanWashPlate;
+                PlayerInteractionManager.ChangePlayerState(PlayerInteractionManager.PlayerState.CanWashPlate);
 
                 showWashIcon = true;
             }
@@ -238,7 +238,7 @@ public class WashInteraction : MonoBehaviour
             if(holdingDirtyPlate || platesInSinkCount != 0)
             {
                 //player exited sink
-                PlayerInteractionManager.playerState = PlayerInteractionManager.PlayerState.ExitedSink;
+                PlayerInteractionManager.ChangePlayerState(PlayerInteractionManager.PlayerState.ExitedSink);
                 startTimer = false;
             }
 
@@ -246,7 +246,7 @@ public class WashInteraction : MonoBehaviour
             if(PlayerInteractionManager.playerState == PlayerInteractionManager.PlayerState.WashingPlate)
             {
                 //change state
-                PlayerInteractionManager.playerState = PlayerInteractionManager.PlayerState.StoppedWashingPlate;
+                PlayerInteractionManager.ChangePlayerState(PlayerInteractionManager.PlayerState.StoppedWashingPlate);
 
                 //set bool true
                 stoppedWashingPlate = true;

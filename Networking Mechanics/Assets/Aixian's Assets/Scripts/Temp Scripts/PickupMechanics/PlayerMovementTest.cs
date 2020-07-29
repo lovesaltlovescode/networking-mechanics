@@ -13,16 +13,22 @@ using UnityEngine.UI;
 public class PlayerMovementTest : MonoBehaviour
 {
     private Rigidbody myBody;
-    public float moveForce = 10f;
+    public float moveForce = 25f;
+
+    public static Vector3 playerPos; //position of player
 
     [SerializeField] private FixedJoystick joystick = null;
 
+    //interact button
+    [SerializeField] private Button interactButton = null;
 
 
     void Start()
     {
         myBody = GetComponent<Rigidbody>();
 
+        //Get button component and call function to interact
+        //interactButton.GetComponent<Button>().onClick.AddListener(InteractButton);
     }
 
     // Update is called once per frame
@@ -33,6 +39,7 @@ public class PlayerMovementTest : MonoBehaviour
 
     void MovePlayer()
     {
+        //playerPos = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y - 2, gameObject.transform.position.z);
 
         //MOVE CHARACTER
 

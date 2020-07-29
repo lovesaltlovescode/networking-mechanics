@@ -51,6 +51,10 @@ TagManager:
   - IngredientTrayZone
   - DrinkFridge
   - NoDropZone
+  - Dish
+  - Customer
+  - Table
+  - IngredientTableZone
   layers:
   - Default
   - TransparentFX
@@ -71,12 +75,12 @@ TagManager:
   - TableItem
   - Pickuppable
   - Floor
-  - P1 Cam
-  - P2 Cam
+  - Queue
+  - Ordering
   - DrinkMachine
   - Drink
   - RottenIngredient
-  - 
+  - Table
   - 
   - 
   - 

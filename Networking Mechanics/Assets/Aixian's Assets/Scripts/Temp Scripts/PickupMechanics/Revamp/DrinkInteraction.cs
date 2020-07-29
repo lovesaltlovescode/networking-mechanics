@@ -77,7 +77,7 @@ public class DrinkInteraction : MonoBehaviour
         //Add to inventory
         Inventory.Add(heldDrink);
 
-        PlayerInteractionManager.playerState = PlayerInteractionManager.PlayerState.HoldingDrink;
+        //PlayerInteractionManager.playerState = PlayerInteractionManager.PlayerState.HoldingDrink;
 
         //Change layer to Player/pickeup so cannot be detected by other players
         // detectedObject.layer = LayerMask.NameToLayer("PickedUp");
@@ -92,7 +92,7 @@ public class DrinkInteraction : MonoBehaviour
         if (PlayerInteractionManager.detectedObject && PlayerInteractionManager.detectedObject.layer == 21)
         {
             drinkMachineDetected = true;
-            PlayerInteractionManager.playerState = PlayerInteractionManager.PlayerState.CanSpawnDrink;
+            //PlayerInteractionManager.playerState = PlayerInteractionManager.PlayerState.CanSpawnDrink;
         }
         else
         {
@@ -106,7 +106,7 @@ public class DrinkInteraction : MonoBehaviour
 
             if (!PlayerInteractionManager.IsInventoryFull())
             {
-                PlayerInteractionManager.playerState = PlayerInteractionManager.PlayerState.CanPickUpDrink;
+               // PlayerInteractionManager.playerState = PlayerInteractionManager.PlayerState.CanPickUpDrink;
             }
         }
         else

@@ -39,7 +39,7 @@ public class TableInteraction : MonoBehaviour
         {
             return;
         }
-        Debug.Log("TableInteraction - Picked up table item");
+        Debug.Log("TableInteraction - Pick up table item");
 
         //Parent to attachment point and transform
         detectedItem.transform.parent = attachPoint.transform;
@@ -82,7 +82,7 @@ public class TableInteraction : MonoBehaviour
             {
                 //change player state
                 Debug.Log("TableInteraction - Can pick up table item!");
-                PlayerInteractionManager.playerState = PlayerInteractionManager.PlayerState.CanPickUpDirtyPlate;
+                PlayerInteractionManager.ChangePlayerState(PlayerInteractionManager.PlayerState.CanPickUpDirtyPlate);
             }
             else
             {

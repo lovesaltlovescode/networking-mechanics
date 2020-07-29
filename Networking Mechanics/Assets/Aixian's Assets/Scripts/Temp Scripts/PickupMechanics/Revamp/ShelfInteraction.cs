@@ -125,7 +125,6 @@ public class ShelfInteraction : MonoBehaviour
         {
             Debug.Log("ShelfInteraction: Spawned egg is true");
             PlayerInteractionManager.detectedObject = spawnedEggPrefab;
-            PlayerInteractionManager.detectedObject = spawnedEggPrefab;
             spawnedChicken = false;
             spawnedCucumber = false;
             spawnedRice = false;
@@ -134,7 +133,6 @@ public class ShelfInteraction : MonoBehaviour
         if (spawnedChicken)
         {
             Debug.Log("ShelfInteraction: Spawned chicken is true");
-            PlayerInteractionManager.detectedObject = spawnedChickenPrefab;
             PlayerInteractionManager.detectedObject = spawnedChickenPrefab;
             spawnedCucumber = false;
             spawnedRice = false;
@@ -145,7 +143,6 @@ public class ShelfInteraction : MonoBehaviour
         {
             Debug.Log("ShelfInteraction: Spawned cucumber is true");
             PlayerInteractionManager.detectedObject = spawnedCucumberPrefab;
-            PlayerInteractionManager.detectedObject = spawnedCucumberPrefab;
             spawnedChicken = false;
             spawnedRice = false;
             spawnedEgg = false;
@@ -154,7 +151,6 @@ public class ShelfInteraction : MonoBehaviour
         if (spawnedRice)
         {
             Debug.Log("ShelfInteraction: Spawned rice is true");
-            PlayerInteractionManager.detectedObject = spawnedRicePrefab;
             PlayerInteractionManager.detectedObject = spawnedRicePrefab;
             spawnedChicken = false;
             spawnedCucumber = false;
@@ -174,7 +170,7 @@ public class ShelfInteraction : MonoBehaviour
             if (PlayerInteractionManager.IsInventoryFull())
             {
                 //if inventory full, then set state to default
-                PlayerInteractionManager.playerState = PlayerInteractionManager.PlayerState.Default;
+                PlayerInteractionManager.ChangePlayerState(PlayerInteractionManager.PlayerState.Default);
             }
 
         }
@@ -194,7 +190,7 @@ public class ShelfInteraction : MonoBehaviour
                 {
                     if(detectedObject == "EggShelf")
                     {
-                        PlayerInteractionManager.playerState = PlayerInteractionManager.PlayerState.CanSpawnEgg;
+                        PlayerInteractionManager.ChangePlayerState(PlayerInteractionManager.PlayerState.CanSpawnEgg);
                         Debug.Log("ShelfInteraction - Player can spawn an egg!");
                     }
                     
@@ -202,19 +198,19 @@ public class ShelfInteraction : MonoBehaviour
 
                 else if (other.tag == "ChickenShelfZone" && detectedObject == "ChickenShelf")
                 {
-                    PlayerInteractionManager.playerState = PlayerInteractionManager.PlayerState.CanSpawnChicken;
+                    PlayerInteractionManager.ChangePlayerState(PlayerInteractionManager.PlayerState.CanSpawnChicken);
                     Debug.Log("ShelfInteraction - Player can spawn a chicken!");
                 }
 
                 else if (other.tag == "CucumberShelfZone" && detectedObject == "CucumberShelf")
                 {
-                    PlayerInteractionManager.playerState = PlayerInteractionManager.PlayerState.CanSpawnCucumber;
+                    PlayerInteractionManager.ChangePlayerState(PlayerInteractionManager.PlayerState.CanSpawnCucumber);
                     Debug.Log("ShelfInteraction - Player can spawn a cucumber!");
                 }
 
                 else if (other.tag == "RiceTubZone" && detectedObject == "RiceTub")
                 {
-                    PlayerInteractionManager.playerState = PlayerInteractionManager.PlayerState.CanSpawnRice;
+                    PlayerInteractionManager.ChangePlayerState(PlayerInteractionManager.PlayerState.CanSpawnRice);
                     Debug.Log("ShelfInteraction - Player can spawn some rice!");
                 }
             }
@@ -232,7 +228,7 @@ public class ShelfInteraction : MonoBehaviour
             {
                 //if inventory is full, player can now drop items
                 Debug.Log("ShelfInteraction - Player can now drop items!");
-                PlayerInteractionManager.playerState = PlayerInteractionManager.PlayerState.CanDropIngredient;
+                PlayerInteractionManager.ChangePlayerState(PlayerInteractionManager.PlayerState.CanDropIngredient);
             }
         }
 

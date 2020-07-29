@@ -21,12 +21,12 @@ public class PlayerSpawnSystem : NetworkBehaviour
     [SerializeField] private GameObject xiaoFanPrefab = null;
     [SerializeField] private GameObject xiaoLiPrefab = null;
     [SerializeField] private GameObject daLiPrefab = null;
-    
+
 
 
     //list of transforms in the scene
     //the different transforms will be the spawn points of players
-    private static List<Transform> spawnPoints = new List<Transform>(); 
+    private static List<Transform> spawnPoints = new List<Transform>();
 
     //players spawn at different positions depending on the order they came (their index)
     //network manager will increment this number everytime a new player is spawned, so that players are always spawning at the next available point
@@ -44,7 +44,7 @@ public class PlayerSpawnSystem : NetworkBehaviour
         spawnPoints.Add(transform); //add the transform to the list
 
         //Order the spawn points by how they are arranged in the hierarchy, and adds them to the list in that order
-        spawnPoints = spawnPoints.OrderBy(x => x.GetSiblingIndex()).ToList(); 
+        spawnPoints = spawnPoints.OrderBy(x => x.GetSiblingIndex()).ToList();
     }
 
     //function to remove spawn point, remove from list

@@ -91,7 +91,7 @@ public class MenuButtons : MonoBehaviour
 
     void CheckRoomStatus()
     {
-        if(customNetworkDiscovery.roomFound == false)
+        if (customNetworkDiscovery.roomFound == false)
         {
             //enable try again text, button
             //connectText.text = "No rooms found. Try again?";
@@ -99,9 +99,9 @@ public class MenuButtons : MonoBehaviour
             tryAgainButton.gameObject.SetActive(true);
             joinRoomButton.gameObject.SetActive(false);
             connectPanel.sprite = roomNotFound;
-            
+
         }
-        else if(customNetworkDiscovery.roomFound == true)
+        else if (customNetworkDiscovery.roomFound == true)
         {
             //enable connect text, button
             //connectText.text = "Found a room! Join this room?";

@@ -66,7 +66,7 @@ public class NetworkedWashInteraction : NetworkBehaviour
         //change state to can wash
         if (canWash)
         {
-            networkedPlayerInteraction.playerState = PlayerState.CanWashPlate;
+            networkedPlayerInteraction.ChangePlayerState(PlayerState.CanWashPlate);
         }
     }
 
@@ -86,7 +86,7 @@ public class NetworkedWashInteraction : NetworkBehaviour
         stoppedWashingPlate = false;
 
         //set state to washing plate
-        networkedPlayerInteraction.playerState = PlayerState.WashingPlate;
+        networkedPlayerInteraction.ChangePlayerState(PlayerState.WashingPlate);
     }
 
     public void FinishWashingPlate()
@@ -261,7 +261,7 @@ public class NetworkedWashInteraction : NetworkBehaviour
             placedPlateInSink = true;
 
             //allow player to wash plate
-            networkedPlayerInteraction.playerState = PlayerState.CanWashPlate;
+            networkedPlayerInteraction.ChangePlayerState(PlayerState.CanWashPlate);
             return;
         }
         else
@@ -307,7 +307,7 @@ public class NetworkedWashInteraction : NetworkBehaviour
                 }
                 canWash = true;
                 showWashIcon = true;
-                networkedPlayerInteraction.playerState = PlayerState.CanWashPlate;
+                networkedPlayerInteraction.ChangePlayerState(PlayerState.CanWashPlate);
             }
 
             //if player is holding a plate
@@ -315,14 +315,14 @@ public class NetworkedWashInteraction : NetworkBehaviour
             {
                 //player can place plate in the sink
                 //Debug.Log("NetworkedWashInteraction - Player can place a plate in the sink!");
-                networkedPlayerInteraction.playerState = PlayerState.CanPlacePlateInSink;
+                networkedPlayerInteraction.ChangePlayerState(PlayerState.CanPlacePlateInSink);
             }
 
             //if player was washing plate, if they enter the sink zone again they can immediately wash
             //or if there are still plates in the sink
             else if (stoppedWashingPlate || GameManager.Instance.platesInSinkCount != 0)
             {
-                networkedPlayerInteraction.playerState = PlayerState.CanWashPlate;
+                networkedPlayerInteraction.ChangePlayerState(PlayerState.CanWashPlate);
 
                 showWashIcon = true;
             }
@@ -353,7 +353,7 @@ public class NetworkedWashInteraction : NetworkBehaviour
                 }
                 canWash = true;
                 showWashIcon = true;
-                networkedPlayerInteraction.playerState = PlayerState.CanWashPlate;
+                networkedPlayerInteraction.ChangePlayerState(PlayerState.CanWashPlate);
             }
         }
     }
@@ -373,7 +373,7 @@ public class NetworkedWashInteraction : NetworkBehaviour
             if (holdingDirtyPlate || GameManager.Instance.platesInSinkCount != 0)
             {
                 //player exited sink
-                networkedPlayerInteraction.playerState = PlayerState.ExitedSink;
+                networkedPlayerInteraction.ChangePlayerState(PlayerState.ExitedSink);
                 startTimer = false;
             }
 
@@ -381,7 +381,7 @@ public class NetworkedWashInteraction : NetworkBehaviour
             if (networkedPlayerInteraction.playerState == PlayerState.WashingPlate)
             {
                 //change state
-                networkedPlayerInteraction.playerState = PlayerState.StoppedWashingPlate;
+                networkedPlayerInteraction.ChangePlayerState(PlayerState.StoppedWashingPlate);
 
                 //set bool true
                 stoppedWashingPlate = true;
