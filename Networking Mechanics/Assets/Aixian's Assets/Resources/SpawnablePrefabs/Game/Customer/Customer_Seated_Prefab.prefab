@@ -332,6 +332,8 @@ GameObject:
   - component: {fileID: 8061215714513260893}
   - component: {fileID: 8061215714513260892}
   - component: {fileID: 8061215714513260888}
+  - component: {fileID: 188312658767743909}
+  - component: {fileID: 8716923436753335783}
   m_Layer: 24
   m_Name: Customer_Seated_Prefab
   m_TagString: Customer
@@ -397,6 +399,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b3d396ba0b9886409a54e8860f290aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
   CustomerAnimScript: {fileID: 8061215714513260890}
   CustomerFeedbackScript: {fileID: 8061215714513260888}
   CustomerPatienceScript: {fileID: 8061215714513260893}
@@ -420,6 +424,37 @@ MonoBehaviour:
   eating_PFX: {fileID: 5306855006915482150}
   angry_PFX: {fileID: 0}
   happy_PFX: {fileID: 0}
+--- !u!114 &188312658767743909
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8061215714513260895}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneId: 0
+  serverOnly: 0
+  m_AssetId: 
+--- !u!114 &8716923436753335783
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8061215714513260895}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f6f3bf89aa97405989c802ba270f815, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+  clientAuthority: 0
+  animator: {fileID: 8061215712799328177}
 --- !u!1001 &1340202632824512737
 PrefabInstance:
   m_ObjectHideFlags: 0

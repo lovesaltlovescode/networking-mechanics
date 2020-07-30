@@ -3,11 +3,14 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq.Expressions;
 using UnityEngine;
+using Mirror;
 
-public class TableScript : MonoBehaviour
+public class TableScript : NetworkBehaviour
 {
     [HideInInspector, Range(0, 6)] public int numSeats = 0; //number of seats the table has
-    private int numSeated = 0; //number of customers seated at table
+
+    [SyncVar]
+    public int numSeated = 0; //number of customers seated at table
 
     [SerializeField] private TableFeedback tableFeedbackScript;
     public TableFeedback TableFeedbackScript
@@ -27,7 +30,8 @@ public class TableScript : MonoBehaviour
     [SerializeField] private Transform seatedCustomerParent;
 
     //list of customers that are seated at table
-    private List<GameObject> customersSeated = new List<GameObject>();
+    public List<GameObject> customersSeated = new List<GameObject>();
+
     public List<GameObject> CustomersSeated
     {
         get { return customersSeated; }
@@ -37,7 +41,7 @@ public class TableScript : MonoBehaviour
 
     //list of orders of customers that are seated at table
     [SerializeField] private string takeOrderLayer = "Ordering";
-    private List<ChickenRice> tableOrders = new List<ChickenRice>();
+    public List<ChickenRice> tableOrders = new List<ChickenRice>();
     public List<ChickenRice> TableOrders
     {
         get { return tableOrders; }
@@ -88,7 +92,7 @@ public class TableScript : MonoBehaviour
             }
 
             //seat the guests
-            SeatGuests(numGuests);
+            ServerSeatGuests(numGuests);
 
             return true;
         }
@@ -104,7 +108,7 @@ public class TableScript : MonoBehaviour
         
     }
 
-
+    //[ServerCallback]
     //instantiate 1 customer at every seat, add them to a list, then call the method on the customer to manage their sitting animation + order
     public void SeatGuests(int numGuests)
     {
@@ -139,6 +143,60 @@ public class TableScript : MonoBehaviour
         //after a random amount of time, call a server to take their order
         Invoke("ReadyToOrder", Random.Range(minAndMaxOrderGenTime.x, minAndMaxOrderGenTime.y));
 
+    }
+
+    [ServerCallback]
+    public void ServerSeatGuests(int numGuests)
+    {
+        Debug.Log("TableScript - Server: Guests are being seated");
+
+        for(int i = 0; i < numGuests; i++)
+        {
+            //Instantiate customer
+            GameObject newSittingCustomer = Instantiate(customerSeatedPrefab, seatPositions[i].position, seatPositions[i].rotation).gameObject;
+
+            CustomerBehaviour_Seated newCustomerScript = newSittingCustomer.GetComponent<CustomerBehaviour_Seated>();
+
+            //Spawn
+            NetworkServer.Spawn(newSittingCustomer);
+
+            //RPC List
+            RpcUpdateList(newSittingCustomer);
+        }
+
+        RpcSeatGuests(numGuests);
+    }
+
+    [ClientRpc]
+    public void RpcUpdateList(GameObject newSittingCustomer)
+    {
+        Debug.Log("TableScript - RpcUpdateList called");
+
+        //animate customer sitting, assign this table to the customer, and get it to generate an order
+        newSittingCustomer.GetComponent<CustomerBehaviour_Seated>().CustomerJustSeated(this);
+
+        //add customer and their to list of customers seated at table
+        if (newSittingCustomer.GetComponent<CustomerBehaviour_Seated>().CustomersOrder != null)
+        {
+            customersSeated.Add(newSittingCustomer);
+            tableOrders.Add(newSittingCustomer.GetComponent<CustomerBehaviour_Seated>().CustomersOrder);
+            Debug.Log("TableScript - Table orders: " + tableOrders.Count);
+        }
+        else
+        {
+            Debug.Log("tried to add customer to list, but customer's order was null");
+        }
+    }
+    
+    [ClientRpc]
+    public void RpcSeatGuests(int numGuests)
+    {
+        Debug.Log("TableScript - RpcSeatGuests called");
+        numSeated = numGuests;
+        Debug.Log("numGuests: " + numSeated + ", customersSeated: " + customersSeated.Count);
+
+        //after a random amount of time, call a server to take their order
+        Invoke("ReadyToOrder", Random.Range(minAndMaxOrderGenTime.x, minAndMaxOrderGenTime.y));
     }
 
 

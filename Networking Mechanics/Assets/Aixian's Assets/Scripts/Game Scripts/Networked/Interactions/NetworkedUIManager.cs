@@ -78,6 +78,13 @@ public class NetworkedUIManager : MonoBehaviour
         //if there is a detected object
         if (networkedPlayerInteraction.detectedObject)
         {
+
+            //cannot change player state
+            if(!networkedPlayerInteraction.CanChangePlayerState())
+            {
+                return;
+            }
+
             //Debug.Log("UIManager: Detected object is " + networkedPlayerInteraction.detectedObject.tag);
             //Debug.Log("UIManager - Detected object is " + networkedPlayerInteraction.detectedObject.tag);
             //gray out the icon

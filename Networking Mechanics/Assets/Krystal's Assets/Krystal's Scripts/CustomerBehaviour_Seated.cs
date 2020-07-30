@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Mirror;
 
 public class CustomerBehaviour_Seated : CustomerBehaviour
 {
@@ -137,6 +138,7 @@ public class CustomerBehaviour_Seated : CustomerBehaviour
 
 
     //customer leaving the restaurant. if angry, play angry anim
+    [ServerCallback]
     public void LeaveRestaurant(bool isCustomerAngry)
     {
         //animate customer standing up
@@ -152,8 +154,15 @@ public class CustomerBehaviour_Seated : CustomerBehaviour
 
         //customer fades out of existence
         Debug.Log("Customer fading out of existence");
-        Destroy(this.gameObject, 5f);
+        RpcLeaveRestaurant();
 
+    }
+
+    [ClientRpc]
+    public void RpcLeaveRestaurant()
+    {
+        Destroy(this.gameObject, 5f);
+        GameManager.Instance.currentNumWaitingCustomers -= 1;
     }
 
 

@@ -163,6 +163,13 @@ public class NetworkedIngredientInteraction : NetworkBehaviour
 
             }
 
+            //if player holding a customer
+            if(networkedPlayerInteraction.playerInventory.tag == "Customer")
+            {
+                networkedPlayerInteraction.ChangePlayerState(PlayerState.HoldingCustomer);
+                return;
+            }
+
             if (nearTrashBin)
             {
                 networkedPlayerInteraction.playerState = PlayerState.CanThrowIngredient;

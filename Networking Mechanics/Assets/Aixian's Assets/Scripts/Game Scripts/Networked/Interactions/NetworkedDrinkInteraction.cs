@@ -36,11 +36,11 @@ public class NetworkedDrinkInteraction : NetworkBehaviour
         //check if there are too many drinks on the counter
         if (!GameManager.Instance.isCooldown  && GameManager.Instance.drinksCount < 2)
         {
-            networkedPlayerInteraction.playerState = PlayerState.CanSpawnDrink;
+            networkedPlayerInteraction.ChangePlayerState(PlayerState.CanSpawnDrink);
         }
         else
         {
-            networkedPlayerInteraction.playerState = PlayerState.Default;
+            networkedPlayerInteraction.ChangePlayerState(PlayerState.Default);
         }
     }
 

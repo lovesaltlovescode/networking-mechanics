@@ -120,6 +120,8 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
     //player's inventory
     public GameObject playerInventory;
 
+    public GameObject customer;
+
     //different scripts to reference
     [SerializeField] private NetworkedIngredientInteraction networkedIngredientInteraction;
     [SerializeField] private NetworkedWashInteraction networkedWashInteraction;
@@ -205,7 +207,11 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
                 break;
 
             case HeldItem.customer:
-                var customer = Instantiate(queueingCustomerPrefab, attachmentPoint.transform);
+                customer = Instantiate(queueingCustomerPrefab, attachmentPoint.transform);
+                if (isServer)
+                {
+                    NetworkServer.Spawn(customer);
+                }
                 playerInventory = customer;
                 break;
 
@@ -225,6 +231,53 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
         //Debug.Log("RPC Spawning - Update held item");
         //Change ingredient the player is holding
         heldItem = selectedIngredient;
+    }
+
+    //called from client to server to pick up item
+    //Pass in a detectedobject parameter so that the server knows which object to look for
+    //It should be looking for client's local detectedobject, not the servers''s
+    [Command]
+    public void CmdPickUpObject(GameObject detectedObject)
+    {
+        
+
+        //set player's syncvar so clients can show the right ingredient
+        //according to which item the sceneobject currently contains
+        //Debug.Log("Debugging ingredient - Part 3" + detectedObject);
+
+        //destroy the scene object when it has been picked up, on the SERVER
+        Debug.Log("Destroying detected object: " + detectedObject);
+        NetworkServer.Destroy(detectedObject);
+        //Debug.Log("//Debugging ingredient - Part 5");
+
+        
+
+    }
+
+    [Command]
+    public void CmdSpawnObject(Vector3 pos, Quaternion rot, HeldItem itemToSpawn, string layerName)
+    {
+        //instantiate scene object
+
+        GameObject spawnObject = Instantiate(objectContainerPrefab, pos, rot);
+
+        //set rigidbody as non-kinematic
+        spawnObject.GetComponent<Rigidbody>().isKinematic = false;
+
+        ObjectContainer objectContainer = spawnObject.GetComponent<ObjectContainer>();
+
+        //Instantiate the right held item as child of the object
+        objectContainer.SetObjToSpawn(itemToSpawn);
+
+        //sync var helditem in object container
+        objectContainer.objToSpawn = itemToSpawn;
+
+        //change layer
+        spawnObject.layer = LayerMask.NameToLayer(layerName);
+
+        //spawn on network
+        NetworkServer.Spawn(spawnObject);
+
     }
 
     #endregion
@@ -329,8 +382,18 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
             }
             else
             {
-                //Throw a warning
-                //Debug.LogWarning("NetworkedPlayer - Detected object already has a reference!");
+                if (playerInventory.tag == "Customer")
+                {
+                    //set hit object as detectedobject
+                    detectedObject = hit.collider.gameObject;
+                    Debug.Log("detected object: " + detectedObject.tag);
+                }
+                else
+                {
+
+                    //Throw a warning
+                    //Debug.LogWarning("NetworkedPlayer - Detected object already has a reference!");
+                }
             }
 
 
@@ -426,6 +489,11 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
                 networkedCustomerInteraction.PickUpCustomer();
                 break;
 
+            case PlayerState.HoldingCustomer:
+                networkedCustomerInteraction.SeatCustomer();
+                break;
+            
+
                 
 
         }
@@ -465,48 +533,7 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
 
     #endregion
 
-    //called from client to server to pick up item
-    //Pass in a detectedobject parameter so that the server knows which object to look for
-    //It should be looking for client's local detectedobject, not the servers''s
-    [Command]
-    public void CmdPickUpObject(GameObject detectedObject)
-    {
-        //set player's syncvar so clients can show the right ingredient
-        //according to which item the sceneobject currently contains
-        //Debug.Log("Debugging ingredient - Part 3" + detectedObject);
-
-        //destroy the scene object when it has been picked up, on the SERVER
-        Debug.Log("Destroying detected object: " + detectedObject);
-        NetworkServer.Destroy(detectedObject);
-        //Debug.Log("//Debugging ingredient - Part 5");
-
-    }
-
-    [Command]
-    public void CmdSpawnObject(Vector3 pos, Quaternion rot, HeldItem itemToSpawn, string layerName)
-    {
-        //instantiate scene object
-        
-        GameObject spawnObject = Instantiate(objectContainerPrefab, pos, rot);
-
-        //set rigidbody as non-kinematic
-        spawnObject.GetComponent<Rigidbody>().isKinematic = false;
-
-        ObjectContainer objectContainer = spawnObject.GetComponent<ObjectContainer>();
-
-        //Instantiate the right held item as child of the object
-        objectContainer.SetObjToSpawn(itemToSpawn);
-
-        //sync var helditem in object container
-        objectContainer.objToSpawn = itemToSpawn;
-
-        //change layer
-        spawnObject.layer = LayerMask.NameToLayer(layerName);
-
-        //spawn on network
-        NetworkServer.Spawn(spawnObject);
-
-    }
+    
 
 
     #endregion
@@ -523,14 +550,14 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
     //checks whether the playerstate is something that should not be changed
     public bool CanChangePlayerState()
     {
-        //if (playerState == PlayerState.HoldingCustomer || playerState == PlayerState.HoldingOrder)
-        //{
-            //return false;
-        //}
-        //else
-        //{
+        if (playerState == PlayerState.HoldingCustomer || playerState == PlayerState.HoldingOrder)
+        {
+            return false;
+        }
+        else
+        {
             return true;
-        //}
+        }
     }
 
 

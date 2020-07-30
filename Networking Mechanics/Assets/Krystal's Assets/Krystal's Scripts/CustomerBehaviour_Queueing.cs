@@ -15,7 +15,7 @@ public class CustomerBehaviour_Queueing : CustomerBehaviour
 
     //group size variables
     [SyncVar]
-    private int groupSizeNum = 0;
+    public int groupSizeNum = 0;
     public int GroupSizeNum
     {
         get { return groupSizeNum; }
@@ -117,8 +117,16 @@ public class CustomerBehaviour_Queueing : CustomerBehaviour
 
 
     //-----------------------------------------METHODS TO CONTROL CUSTOMER BEHAVIOUR WHEN WAITING IN LINE-----------------------------------------
+    [ServerCallback]
     public void CustomerStartsWaiting()
     {
+        RpcCustomerStartsWaiting();
+    }
+
+    [ClientRpc]
+    public void RpcCustomerStartsWaiting()
+    {
+        Debug.Log("CustomerBehaviour_Queuing - RpcCustomerStartsWaiting called");
         //enable the customer's group size indicator
         ShowGroupSizeIcon(GroupSizeNum);
 
@@ -127,9 +135,8 @@ public class CustomerBehaviour_Queueing : CustomerBehaviour
 
         //enable the patience meter
         TriggerPatienceMeter(true, CustomerPatienceStats.customerPatience_Queue, CustomerWaitsTooLong);
-
-
     }
+
 
     public void CustomerPickedUp(Transform carryPos)
     {
@@ -139,9 +146,22 @@ public class CustomerBehaviour_Queueing : CustomerBehaviour
         Debug.Log("Animating the customer curling up: " + carryPos);
     }
 
+    [ServerCallback]
     public void CustomerWaitsTooLong()
     {
         Debug.Log("Customer impatient method successfully invoked. Customer waited too long");
+        //customer fades out of existence
+        RpcCustomerWaitsForTooLong();
+        Debug.Log("Customer fading out of existence");
+    }
+
+    [ClientRpc]
+    public void RpcCustomerWaitsForTooLong()
+    {
+        //not animating
+        CustomerAnimScript.LeaveAnim();
+        Destroy(this.gameObject, 2f);
+        GameManager.Instance.currentNumWaitingCustomers -= 1;
     }
 
 

@@ -61,6 +61,11 @@ public class NetworkedCustomerSpawn : NetworkBehaviour
                 //check that the last customer spawned at least spawnFrequency seconds ago
                 if (GameManager.Instance.timeSinceLastSpawn > spawnFrequency)
                 {
+                    if (!isServer)
+                    {
+                        return;
+                    }
+
                     //call the spawn coroutine
                     StartCoroutine(SpawnAndCheck());
 
@@ -122,6 +127,8 @@ public class NetworkedCustomerSpawn : NetworkBehaviour
             {
                 Debug.Log("new spawn position: " + newSpawnPos + ", newWaitingPos: " + newWaitingPos);
                 GameObject newGrpOfCustomers = SpawnCustomer(newSpawnPos);
+
+                //RPCs
                 moveLerpCoroutine = StartCoroutine(MoveAndActivate(newGrpOfCustomers, newWaitingPos));
                 break;
             }
