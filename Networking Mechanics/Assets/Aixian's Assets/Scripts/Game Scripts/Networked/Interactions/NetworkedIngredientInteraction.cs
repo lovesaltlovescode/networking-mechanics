@@ -166,7 +166,14 @@ public class NetworkedIngredientInteraction : NetworkBehaviour
             //if player holding a customer
             if(networkedPlayerInteraction.playerInventory.tag == "Customer")
             {
-                networkedPlayerInteraction.ChangePlayerState(PlayerState.HoldingCustomer);
+                //networkedPlayerInteraction.ChangePlayerState(PlayerState.HoldingCustomer);
+                return;
+            }
+
+            //if player holding a dish
+            if(networkedPlayerInteraction.playerInventory.tag == "Dish")
+            {
+                //networkedPlayerInteraction.ChangePlayerState(PlayerState.HoldingOrder);
                 return;
             }
 
@@ -185,7 +192,7 @@ public class NetworkedIngredientInteraction : NetworkBehaviour
                 return;
             }
 
-            if (canDropIngredient)
+            else if (canDropIngredient)
             {
                 networkedPlayerInteraction.ChangePlayerState(PlayerState.CanDropIngredient);
             }
@@ -217,7 +224,7 @@ public class NetworkedIngredientInteraction : NetworkBehaviour
     {
         //spawn a plate on the server
         //for now, on key press
-        SpawnDirtyPlate();
+        networkedPlayerInteraction.ServerSpawnObject(networkedPlayerInteraction.dropPoint.transform.position, networkedPlayerInteraction.dropPoint.transform.rotation, HeldItem.dirtyplate, "TableItem");
 
     }
 
@@ -420,45 +427,6 @@ public class NetworkedIngredientInteraction : NetworkBehaviour
         playerInventory = null;
 
         return;
-    }
-
-    //server will spawn a dirty plate
-    [ServerCallback]
-    void SpawnDirtyPlate()
-    {
-        //Instantiate scene object on the server at a fixed position
-        //Temporarily at drop pos
-        Vector3 pos = networkedPlayerInteraction.dropPoint.transform.position;
-        Quaternion rot = networkedPlayerInteraction.dropPoint.transform.rotation;
-        GameObject dirtyPlate = Instantiate(networkedPlayerInteraction.objectContainerPrefab, pos, rot);
-
-        ////set Rigidbody as non-kinematic on the instantiated object only (isKinematic = true in prefab)
-        dirtyPlate.GetComponent<Rigidbody>().isKinematic = false;
-
-        //get sceneobject script from the sceneobject prefab
-        ObjectContainer objectContainer = dirtyPlate.GetComponent<ObjectContainer>();
-
-        //instantiate the right item as a child of the object
-        objectContainer.SetObjToSpawn(HeldItem.dirtyplate);
-
-        //sync var the helditem in object container to the helditem in the player
-        objectContainer.objToSpawn = HeldItem.dirtyplate;
-        Debug.Log("Object spawned is " + objectContainer.objToSpawn);
-
-        //change layer of the container
-        dirtyPlate.layer = LayerMask.NameToLayer("TableItem");
-        //Debug.Log("Spawn plates - Spawned plate");
-
-        ////spawn the scene object on network for everyone to see
-        NetworkServer.Spawn(dirtyPlate);
-
-        RpcSpawnDirtyPlate(dirtyPlate);
-    }
-
-    [ClientRpc]
-    public void RpcSpawnDirtyPlate(GameObject dirtyPlate)
-    {
-        dirtyPlate.layer = LayerMask.NameToLayer("TableItem");
     }
     #endregion
 

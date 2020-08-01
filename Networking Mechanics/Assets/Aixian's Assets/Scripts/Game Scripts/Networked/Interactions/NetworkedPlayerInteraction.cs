@@ -26,7 +26,17 @@ public enum HeldItem
     cleanplate,
 
     //customer
-    customer
+    customer,
+
+    //dishes
+    roastedChicWRiceBall,
+    roastedChicWPlainRice,
+    roastedChicWRiceBallEgg,
+    roastedChicWPlainRiceEgg,
+    steamedChicWRiceBall,
+    steamedChicWPlainRice,
+    steamedChicWRiceBallEgg,
+    steamedChicWPlainRiceEgg
 }
 
 //State of player
@@ -98,6 +108,16 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
 
     [Header("Customer")]
     public GameObject queueingCustomerPrefab;
+
+    [Header("Dishes")]
+    public GameObject roastedChicWRiceBall;
+    public GameObject roastedChicWPlainRice;
+    public GameObject roastedChicWRiceBallEgg;
+    public GameObject roastedChicWPlainRiceEgg;
+    public GameObject steamedChicWRiceBall;
+    public GameObject steamedChicWPlainRice;
+    public GameObject steamedChicWRiceBallEgg;
+    public GameObject steamedChicWPlainRiceEgg;
 
     //RAYCAST VARIABLES
     [Header("Raycast Variables")]
@@ -208,11 +228,52 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
 
             case HeldItem.customer:
                 customer = Instantiate(queueingCustomerPrefab, attachmentPoint.transform);
-                if (isServer)
-                {
-                    NetworkServer.Spawn(customer);
-                }
+                //if (isServer)
+                //{
+                //    NetworkServer.Spawn(customer);
+                //}
                 playerInventory = customer;
+                break;
+
+            //DISHES
+            case HeldItem.roastedChicWRiceBall:
+                var dish1 = Instantiate(roastedChicWRiceBall, attachmentPoint.transform);
+                playerInventory = dish1; 
+                break;
+
+            case HeldItem.roastedChicWPlainRice:
+                var dish2 = Instantiate(roastedChicWPlainRice, attachmentPoint.transform);
+                playerInventory = dish2;
+                break;
+
+            case HeldItem.roastedChicWRiceBallEgg:
+                var dish3 = Instantiate(roastedChicWRiceBallEgg, attachmentPoint.transform);
+                playerInventory = dish3;
+                break;
+
+            case HeldItem.roastedChicWPlainRiceEgg:
+                var dish4 = Instantiate(roastedChicWPlainRiceEgg, attachmentPoint.transform);
+                playerInventory = dish4;
+                break;
+
+            case HeldItem.steamedChicWRiceBall:
+                var dish5 = Instantiate(steamedChicWRiceBall, attachmentPoint.transform);
+                playerInventory = dish5;
+                break;
+
+            case HeldItem.steamedChicWPlainRice:
+                var dish6 = Instantiate(steamedChicWPlainRice, attachmentPoint.transform);
+                playerInventory = dish6;
+                break;
+
+            case HeldItem.steamedChicWRiceBallEgg:
+                var dish7 = Instantiate(steamedChicWRiceBallEgg, attachmentPoint.transform);
+                playerInventory = dish7;
+                break;
+
+            case HeldItem.steamedChicWPlainRiceEgg:
+                var dish8 = Instantiate(steamedChicWPlainRiceEgg, attachmentPoint.transform);
+                playerInventory = dish8;
                 break;
 
         }
@@ -239,8 +300,6 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
     [Command]
     public void CmdPickUpObject(GameObject detectedObject)
     {
-        
-
         //set player's syncvar so clients can show the right ingredient
         //according to which item the sceneobject currently contains
         //Debug.Log("Debugging ingredient - Part 3" + detectedObject);
@@ -250,12 +309,10 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
         NetworkServer.Destroy(detectedObject);
         //Debug.Log("//Debugging ingredient - Part 5");
 
-        
-
     }
 
-    [Command]
-    public void CmdSpawnObject(Vector3 pos, Quaternion rot, HeldItem itemToSpawn, string layerName)
+    [ServerCallback]
+    public GameObject ServerSpawnObject(Vector3 pos, Quaternion rot, HeldItem itemToSpawn, string layerName)
     {
         //instantiate scene object
 
@@ -272,12 +329,19 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
         //sync var helditem in object container
         objectContainer.objToSpawn = itemToSpawn;
 
-        //change layer
-        spawnObject.layer = LayerMask.NameToLayer(layerName);
-
         //spawn on network
         NetworkServer.Spawn(spawnObject);
 
+        RpcSpawnObject(spawnObject, layerName);
+
+        return spawnObject;
+
+    }
+
+    [ClientRpc]
+    public void RpcSpawnObject(GameObject spawnObject, string layerName)
+    {
+        spawnObject.layer = LayerMask.NameToLayer(layerName);
     }
 
     #endregion
@@ -375,31 +439,48 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
                 detectedObject = hit.collider.gameObject;
 
                 //If the detected obj is a customer that is queueing, change the player state to canpickupcustomer
-                if (hit.collider.gameObject.CompareTag(customerTag) && hit.collider.gameObject.layer == LayerMask.NameToLayer(queueingCustomerLayer))
+                if (hit.collider.gameObject.tag == customerTag && hit.collider.gameObject.layer == LayerMask.NameToLayer(queueingCustomerLayer))
                 {
                     playerState = PlayerState.CanPickUpCustomer;
+                }
+                else if (hit.collider.tag == dishTag)
+                {
+                    //change player state
+                    playerState = PlayerState.CanPickUpDish;
+
                 }
             }
             else
             {
-                if (playerInventory.tag == "Customer")
+                if (!CanChangePlayerState())
                 {
                     //set hit object as detectedobject
                     detectedObject = hit.collider.gameObject;
                     Debug.Log("detected object: " + detectedObject.tag);
                 }
+
                 else
                 {
-
                     //Throw a warning
                     //Debug.LogWarning("NetworkedPlayer - Detected object already has a reference!");
                 }
             }
 
+            //if player is looking at a table ready to order, set their state to cantakeorder
+            //if inventory not full
+            if(hit.collider.gameObject.layer == LayerMask.NameToLayer(takeOrderLayer) && !IsInventoryFull())
+            {
+                playerState = PlayerState.CanTakeOrder;
 
-            //returns the detectedobject's layer (number) as a name
-            //Debug.Log("NetworkedPlayer - Detected object layer: " + LayerMask.LayerToName(detectedObject.layer) + " of layer " + detectedObject.layer);
-            //Debug.Log("Detected object: " + detectedObject.name);
+                //set hit object as detectedobject
+                detectedObject = hit.collider.gameObject;
+                Debug.Log("detected object: " + detectedObject.tag);
+            }
+            else
+            {
+               // Debug.Log("NetworkedPlayerInteraction - Inventory full, cannot take order");
+            }
+
         }
         else
         {
@@ -492,14 +573,27 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
             case PlayerState.HoldingCustomer:
                 networkedCustomerInteraction.SeatCustomer();
                 break;
-            
 
-                
+            case PlayerState.CanTakeOrder:
+                networkedCustomerInteraction.CheckHandsEmpty();
+                break;
+
+            case PlayerState.CanPickUpDish:
+                networkedCustomerInteraction.PickUpDish();
+                break;
+
+            case PlayerState.HoldingOrder:
+                networkedCustomerInteraction.CheckCanPutDownOrder();
+                break;
+
+            default:
+                Debug.Log("default case");
+                break;
+
+
 
         }
     }
-
-    #region Master Methods
 
 
      #region DetectMethods
@@ -532,18 +626,6 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
     }
 
     #endregion
-
-    
-
-
-    #endregion
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
     
 
 

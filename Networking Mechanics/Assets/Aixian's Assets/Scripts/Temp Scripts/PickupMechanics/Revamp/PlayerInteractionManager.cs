@@ -162,7 +162,6 @@ public class PlayerInteractionManager : MonoBehaviour
                 else if (hit.collider.gameObject.CompareTag(dishTag)) //if the detected obj is a dish, change the player state to canpickupobj
                 {
                     playerState = PlayerState.CanPickUpDish;
-
                 }
             }
             else

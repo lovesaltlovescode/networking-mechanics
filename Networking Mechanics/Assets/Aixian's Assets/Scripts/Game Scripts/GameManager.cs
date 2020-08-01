@@ -51,10 +51,15 @@ public class GameManager : MonoBehaviour
     public GameObject[] drinksOnCounter = new GameObject[2]; //number of drinks on the counter
     public int drinksCount; //number of drinks on the counter
 
-    [Header("Cooldown")]
+    [Header("DrinksCooldown")]
     public Image cooldownImg;
     public float cooldown = 5f;
     public bool isCooldown = false;
+
+    [Header("Dishes")]
+    public Transform[] dishPositions;
+    public GameObject[] dishesOnCounter = new GameObject[3];
+    //public int dishCount; //number of dishes on the counter
 
     #endregion
 

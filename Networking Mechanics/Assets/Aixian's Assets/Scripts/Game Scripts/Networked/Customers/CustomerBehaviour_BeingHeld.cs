@@ -23,7 +23,8 @@ public class CustomerBehaviour_BeingHeld : NetworkBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        FindPlayerPickingUpCustomer();
+        groupSizeNum = GetComponentInParent<NetworkedCustomerInteraction>().customerGroupSize;
+        HeldCustomer_ShowGroupSizeIcon(groupSizeNum);
     }
 
 
@@ -59,7 +60,6 @@ public class CustomerBehaviour_BeingHeld : NetworkBehaviour
     void Update()
     {
         Debug.Log("CustomerBehaviour_BeingHeld - Group size: " + groupSizeNum);
-        HeldCustomer_ShowGroupSizeIcon(groupSizeNum);
     }
 
     //display the number of people in the group of customer queueing 

@@ -16,6 +16,8 @@ public class CustomerBehaviour_Seated : CustomerBehaviour
     [SerializeField] private Transform dishSpawnPoint, orderIconPos;
     private OrderGeneration orderGenerationScript;
 
+    public GameObject objectContainerPrefab;
+
     #region Getters and Setters
     public ChickenRice CustomersOrder
     {
@@ -63,23 +65,24 @@ public class CustomerBehaviour_Seated : CustomerBehaviour
         //generate the customer's order
         GenerateOrder();
 
-        //assing the table the customer is seated at as their table
+        //assign the table the customer is seated at as their table
         tableSeatedAt = tableScript;
     }
-
 
     //generates and assigns an order to the customer
     public void GenerateOrder()
     {
         customersOrder = orderGenerationScript.CreateNewOrder();
 
-        if(customersOrder.OrderIcon != null)
+        if (customersOrder.OrderIcon != null)
         {
             //instantiate the order icon as the child of the orderIconPos obj
-            Instantiate(customersOrder.OrderIcon, orderIconPos);
+            GameObject orderIcon = Instantiate(customersOrder.OrderIcon, orderIconPos);
+            //NetworkServer.Spawn(orderIcon);
         }
-        
+
     }
+    
 
     //after the customer's order has been taken, they will wait for their food
     public void DisplayOrderAndWait()
@@ -166,7 +169,7 @@ public class CustomerBehaviour_Seated : CustomerBehaviour
     }
 
 
-    //customer has bee served the right food and is eating it
+    //customer has been served the right food and is eating it
     public void EatingFood()
     {
         //disable the order icon
@@ -186,7 +189,7 @@ public class CustomerBehaviour_Seated : CustomerBehaviour
     }
 
 
-    //customer has not been served the wrong food
+    //customer has been served the wrong food
     public void WrongCustomer()
     {
         Debug.Log("wrong order!!!!!!!!");
@@ -194,6 +197,7 @@ public class CustomerBehaviour_Seated : CustomerBehaviour
 
 
     //function to call once customer finishes eating food
+    [ServerCallback]
     public void CustomerFinishedFood()
     {
         //remove the food in front of the customer
@@ -203,8 +207,8 @@ public class CustomerBehaviour_Seated : CustomerBehaviour
         }
 
         //Instantiate dirty dish in front of customer
-        Instantiate(dirtyDishPrefab, dishSpawnPoint.position, dishSpawnPoint.localRotation);
         Debug.Log("Spawning dirty dishes");
+        ServerSpawnDirtyDish();
 
         finishedEating = true;
 
@@ -219,5 +223,35 @@ public class CustomerBehaviour_Seated : CustomerBehaviour
         {
             tableSeatedAt.EmptyTable();
         }
+    }
+
+    //spawn a dirty dish in front of the customer
+    [ServerCallback]
+    public void ServerSpawnDirtyDish()
+    {
+        GameObject dirtyDish = Instantiate(objectContainerPrefab, dishSpawnPoint.position, dishSpawnPoint.localRotation);
+
+        dirtyDish.GetComponent<Rigidbody>().isKinematic = false;
+
+        ObjectContainer plateContainer = dirtyDish.GetComponent<ObjectContainer>();
+
+        //Instantiate the right held item
+        plateContainer.SetObjToSpawn(HeldItem.dirtyplate);
+
+        //Sync var
+        plateContainer.objToSpawn = HeldItem.dirtyplate;
+
+        //Spawn on network
+        NetworkServer.Spawn(dirtyDish);
+
+        RpcSpawnDirtyDish(dirtyDish);
+
+        
+    }
+
+    [ClientRpc]
+    public void RpcSpawnDirtyDish(GameObject dirtyDish)
+    {
+        dirtyDish.layer = LayerMask.NameToLayer("TableItem");
     }
 }

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class OrderScript : MonoBehaviour
 {
-    [SerializeField] private ChickenRice.PossibleChickenRiceLabel dishLabel;
+    public ChickenRice.PossibleChickenRiceLabel dishLabel;
     [SerializeField] private GameObject orderIcon;
     private bool isDishCold = false;
 

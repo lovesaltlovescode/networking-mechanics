@@ -15,17 +15,31 @@ public class ObjectContainer : NetworkBehaviour
     public HeldItem objToSpawn;
 
     //PREFABS to be dropped
+    [Header("Ingredients")]
     public GameObject cucumberPrefab;
     public GameObject eggPrefab;
     public GameObject chickenPrefab;
     public GameObject ricePrefab;
-    public GameObject dirtyPlatePrefab;
-    public GameObject cleanPlatePrefab;
     public GameObject rottenPrefab;
     public GameObject drinkPrefab;
 
+    [Header("Plates")]
+    public GameObject dirtyPlatePrefab;
+    public GameObject cleanPlatePrefab;
+
     [Header("Customer")]
     public GameObject queueingCustomerPrefab;
+
+    [Header("Dishes")]
+    public GameObject roastedChicWRiceBall;
+    public GameObject roastedChicWPlainRice;
+    public GameObject roastedChicWRiceBallEgg;
+    public GameObject roastedChicWPlainRiceEgg;
+    public GameObject steamedChicWRiceBall;
+    public GameObject steamedChicWPlainRice;
+    public GameObject steamedChicWRiceBallEgg;
+    public GameObject steamedChicWPlainRiceEgg;
+
 
     void OnChangeIngredient(HeldItem oldItem, HeldItem newItem)
     {
@@ -55,7 +69,7 @@ public class ObjectContainer : NetworkBehaviour
         //instantiates the right prefab as a child of this object
         switch (objToSpawn)
         {
-           
+           //INGREDIENTS
             case HeldItem.chicken:
                 Instantiate(chickenPrefab, transform);
                 break;
@@ -80,8 +94,43 @@ public class ObjectContainer : NetworkBehaviour
             case HeldItem.drink:
                 Instantiate(drinkPrefab, transform);
                 break;
+
+
             case HeldItem.customer:
                 Instantiate(queueingCustomerPrefab, transform);
+                break;
+
+            //DISHES
+            case HeldItem.roastedChicWRiceBall:
+                Instantiate(roastedChicWRiceBall, transform);
+                break;
+
+            case HeldItem.roastedChicWPlainRice:
+                Instantiate(roastedChicWPlainRice, transform);
+                break;
+
+            case HeldItem.roastedChicWRiceBallEgg:
+                Instantiate(roastedChicWRiceBallEgg, transform);
+                break;
+
+            case HeldItem.roastedChicWPlainRiceEgg:
+                Instantiate(roastedChicWPlainRiceEgg, transform);
+                break;
+
+            case HeldItem.steamedChicWRiceBall:
+                Instantiate(steamedChicWRiceBall, transform);
+                break;
+
+            case HeldItem.steamedChicWPlainRice:
+                Instantiate(steamedChicWPlainRice, transform);
+                break;
+
+            case HeldItem.steamedChicWRiceBallEgg:
+                Instantiate(steamedChicWRiceBallEgg, transform);
+                break;
+
+            case HeldItem.steamedChicWPlainRiceEgg:
+                Instantiate(steamedChicWPlainRiceEgg, transform);
                 break;
         }
 

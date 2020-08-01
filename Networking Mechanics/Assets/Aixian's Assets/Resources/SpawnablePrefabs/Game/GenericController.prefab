@@ -317,12 +317,29 @@ MonoBehaviour:
     type: 3}
   queueingCustomerPrefab: {fileID: 513527572257438064, guid: 4f11450d0c7ecdb44bda5a0d00041a5a,
     type: 3}
+  roastedChicWRiceBall: {fileID: 2446385398316088450, guid: 19867357872cea642ad15ac98286e846,
+    type: 3}
+  roastedChicWPlainRice: {fileID: 7465789707393320825, guid: cb8bb636a367c004a94b884546d2fad7,
+    type: 3}
+  roastedChicWRiceBallEgg: {fileID: 3320080598877052590, guid: ab2139fefb9039d4cba6c467dac888d9,
+    type: 3}
+  roastedChicWPlainRiceEgg: {fileID: 4495931837161170294, guid: 3537ec66803bbb14b805cf6dd4450a8b,
+    type: 3}
+  steamedChicWRiceBall: {fileID: 8343611870947230081, guid: 6585d14ebf81dec4a9ae26fab8db6dd7,
+    type: 3}
+  steamedChicWPlainRice: {fileID: 5686907464267933664, guid: ff2a6629f0b0e174b97a62819f162070,
+    type: 3}
+  steamedChicWRiceBallEgg: {fileID: 8505748687810585456, guid: 9e93dfc3c76c72f4cae20bba9505bfdd,
+    type: 3}
+  steamedChicWPlainRiceEgg: {fileID: 4975069300599466141, guid: 86292e4f535ebc9408e9da9e04ff6a51,
+    type: 3}
   raycastLength: 1.5
   distFromObject: 0
   detectedObject: {fileID: 0}
   attachmentPoint: {fileID: 3182775207599277575}
   dropPoint: {fileID: 3182775208208598022}
   playerInventory: {fileID: 0}
+  customer: {fileID: 0}
   networkedIngredientInteraction: {fileID: 0}
   networkedWashInteraction: {fileID: 0}
   networkedDrinkInteraction: {fileID: 0}
@@ -398,6 +415,7 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   networkedPlayerInteraction: {fileID: 0}
+  customerGroupSize: 0
 --- !u!1 &2166442203535815449
 GameObject:
   m_ObjectHideFlags: 0
