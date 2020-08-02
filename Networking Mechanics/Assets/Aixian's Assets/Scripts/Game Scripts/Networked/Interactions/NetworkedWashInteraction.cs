@@ -73,11 +73,11 @@ public class NetworkedWashInteraction : NetworkBehaviour
 
     public void WashPlate()
     {
-        if (GameManager.Instance.cleanPlatesCount == GameManager.Instance.cleanPlateSpawnPositions.Length)
-        {
-            //Debug.Log("NetworkedWashInteraction - Too many clean plates");
-            return;
-        }
+        //if (GameManager.Instance.cleanPlatesCount == GameManager.Instance.cleanPlateSpawnPositions.Length)
+        //{
+        //    //Debug.Log("NetworkedWashInteraction - Too many clean plates");
+        //    return;
+        //}
 
         //set bool to start the timer on UI manager
         startTimer = true;
@@ -168,8 +168,7 @@ public class NetworkedWashInteraction : NetworkBehaviour
     }
 
 
-    //when done washing plate, reset timer and spawn clean plate
-    [Command]
+    //when done washing plate, reset timer
     public void CmdFinishWashingPlate(bool timer, PlayerState playerState)
     {
         //if starttimer is true
@@ -186,60 +185,30 @@ public class NetworkedWashInteraction : NetworkBehaviour
                     NetworkServer.Destroy(GameManager.Instance.platesInSink[i].gameObject);
                     //platesInSinkCount -= 1;
                     GameManager.Instance.platesInSink[i] = null;
+                    timer = false;
 
-                    //LOOP THROUGH CLEAN PLATES ON TABLE
-                    for (int x = 0; x < GameManager.Instance.cleanPlatesOnTable.Length; x++)
-                    {
-                        //IF NO CLEAN PLATE
-                        if (GameManager.Instance.cleanPlatesOnTable[x] == null)
-                        {
-                            var platePos = GameManager.Instance.cleanPlateSpawnPositions[x].position;
-
-                            //Instantiate container at the spawn pos
-                            GameObject cleanPlateOnTray = Instantiate(networkedPlayerInteraction.objectContainerPrefab, platePos, Quaternion.identity);
-                            //cleanPlatesCount += 1;
-
-                            //set the cleanplate gameobject to be the plate on the tray
-                            GameManager.Instance.cleanPlatesOnTable[x] = cleanPlateOnTray;
-
-                            //Set rigidbody as non-kinematic
-                            cleanPlateOnTray.GetComponent<Rigidbody>().isKinematic = false;
-
-                            //get script from the prefab
-                            ObjectContainer objectContainer = cleanPlateOnTray.GetComponent<ObjectContainer>();
-
-                            //Instantiate the right ingredient as a child of the object
-                            objectContainer.SetObjToSpawn(HeldItem.cleanplate);
-
-                            //spawn the scene object on network for everyone to see
-                            NetworkServer.Spawn(cleanPlateOnTray);
-
-                            //set starttimer to false
-                            timer = false;
-                            RpcFinishWashingPlate(cleanPlateOnTray, timer, i, x, playerState);
-
-                            return;
-                        }
-                    }
+                    RpcFinishWashingPlate(timer, i, playerState);
+                    
+                    return;
                 }
             }
         }
     }
 
     [ClientRpc]
-    public void RpcFinishWashingPlate(GameObject cleanPlateOnTray, bool timer, int i, int x, PlayerState playerState)
+    public void RpcFinishWashingPlate(bool timer, int i, PlayerState playerState)
     {
         Debug.Log("RPC Start");
 
         //show clean plate on client
         //get script from the prefab
-        ObjectContainer objectContainer = cleanPlateOnTray.GetComponent<ObjectContainer>();
+        //ObjectContainer objectContainer = cleanPlateOnTray.GetComponent<ObjectContainer>();
 
         //set layer to uninteractable
-        cleanPlateOnTray.layer = LayerMask.NameToLayer("UnInteractable");
+        //cleanPlateOnTray.layer = LayerMask.NameToLayer("UnInteractable");
 
         //Instantiate the right ingredient as a child of the object
-        objectContainer.SetObjToSpawn(HeldItem.cleanplate);
+        //objectContainer.SetObjToSpawn(HeldItem.cleanplate);
 
         //assign starttimer as timer so that it will be false
         startTimer = timer;
@@ -249,10 +218,10 @@ public class NetworkedWashInteraction : NetworkBehaviour
         //reduce number of plates in sink
         GameManager.Instance.platesInSinkCount -= 1;
         //increase clean plates count
-        GameManager.Instance.cleanPlatesCount += 1;
+        //GameManager.Instance.cleanPlatesCount += 1;
 
         GameManager.Instance.platesInSink[i] = null;
-        GameManager.Instance.cleanPlatesOnTable[x] = cleanPlateOnTray;
+        //GameManager.Instance.cleanPlatesOnTable[x] = cleanPlateOnTray;
 
         //if there are still plates in the sink
         if (GameManager.Instance.platesInSinkCount != 0)

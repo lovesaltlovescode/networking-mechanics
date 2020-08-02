@@ -12,8 +12,8 @@ public class TableFeedback : MonoBehaviour
     [SerializeField] private GameObject readyToOrderIcon;
 
     [Header("text to display")]
-    [SerializeField] private TextMeshProUGUI word_tmpObj; 
-    [SerializeField] private string insufficientSeats = "Not enough seats", tableOccupied = "Table occupied", handsFull = "Your hands are full!";
+    [SerializeField] private TextMeshProUGUI word_tmpObj;
+    [SerializeField] private string insufficientSeats = "Not enough seats", tableOccupied = "Table occupied", handsFull = "Your hands are full!", tableDirty = "Table dirty";
 
 
     #region Debugging
@@ -57,6 +57,14 @@ public class TableFeedback : MonoBehaviour
         Debug.Log("Table feedback: Not enough seats");
 
         StartCoroutine(FadeInFadeOutText(tableOccupied));
+    }
+
+    //feedback that shows that the table is dirty and no customers can be seated there
+    public void TableDirty()
+    {
+        Debug.Log("Table feedback: Has dirty dishes");
+
+        StartCoroutine(FadeInFadeOutText(tableDirty));
     }
 
     //feedback that shows that the server's hands are too full to take the customers' order

@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 7135500494049819918}
   - component: {fileID: 4829705672936208232}
   - component: {fileID: 6030544458369349617}
+  - component: {fileID: 219795482571937444}
   m_Layer: 17
   m_Name: ObjectContainer
   m_TagString: Untagged
@@ -186,3 +187,16 @@ MonoBehaviour:
     type: 3}
   steamedChicWPlainRiceEgg: {fileID: 4975069300599466141, guid: 86292e4f535ebc9408e9da9e04ff6a51,
     type: 3}
+--- !u!114 &219795482571937444
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3119484819004831971}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 194e64908062e5043977b350dafd8413, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tableSeatedAt: {fileID: 0}

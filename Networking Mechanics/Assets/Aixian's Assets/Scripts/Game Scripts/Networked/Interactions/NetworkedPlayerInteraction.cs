@@ -81,6 +81,7 @@ public enum PlayerState
     HoldingCustomer,
     CanTakeOrder,
     CanPickUpDish,
+    CanThrowDish,
     HoldingOrder
 }
 
@@ -315,7 +316,6 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
     public GameObject ServerSpawnObject(Vector3 pos, Quaternion rot, HeldItem itemToSpawn, string layerName)
     {
         //instantiate scene object
-
         GameObject spawnObject = Instantiate(objectContainerPrefab, pos, rot);
 
         //set rigidbody as non-kinematic
@@ -438,17 +438,17 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
                 //set hit object as detectedobject
                 detectedObject = hit.collider.gameObject;
 
-                //If the detected obj is a customer that is queueing, change the player state to canpickupcustomer
-                if (hit.collider.gameObject.tag == customerTag && hit.collider.gameObject.layer == LayerMask.NameToLayer(queueingCustomerLayer))
-                {
-                    playerState = PlayerState.CanPickUpCustomer;
-                }
-                else if (hit.collider.tag == dishTag)
-                {
-                    //change player state
-                    playerState = PlayerState.CanPickUpDish;
+                ////If the detected obj is a customer that is queueing, change the player state to canpickupcustomer
+                //if (hit.collider.gameObject.tag == customerTag && hit.collider.gameObject.layer == LayerMask.NameToLayer(queueingCustomerLayer))
+                //{
+                //    playerState = PlayerState.CanPickUpCustomer;
+                //}
+                //else if (hit.collider.tag == dishTag)
+                //{
+                //    //change player state
+                //    playerState = PlayerState.CanPickUpDish;
 
-                }
+                //}
             }
             else
             {
@@ -580,6 +580,10 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
 
             case PlayerState.CanPickUpDish:
                 networkedCustomerInteraction.PickUpDish();
+                break;
+
+            case PlayerState.CanThrowDish:
+                networkedIngredientInteraction.TrashIngredient();
                 break;
 
             case PlayerState.HoldingOrder:

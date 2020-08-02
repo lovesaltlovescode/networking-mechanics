@@ -25,7 +25,7 @@ public class TableScript : NetworkBehaviour
     [SerializeField] private Vector2 minAndMaxOrderGenTime = new Vector2(3f, 5f);
 
     //prefabs required
-    public GameObject dirtyDishPrefab;
+    //public GameObject dirtyDishPrefab;
     public GameObject customerSeatedPrefab;
     [SerializeField] private Transform seatedCustomerParent;
 
@@ -49,7 +49,8 @@ public class TableScript : NetworkBehaviour
     }
 
 
-    [HideInInspector] public bool isTableDirty = false;
+    //[HideInInspector] public bool isTableDirty = false;
+    public List<GameObject> dirtyDishes = new List<GameObject>();
 
 
     void Start()
@@ -60,6 +61,7 @@ public class TableScript : NetworkBehaviour
         //clear the customer and orders lists
         customersSeated.Clear();
         tableOrders.Clear();
+        dirtyDishes.Clear(); //-------------------------------------change here
 
         //update the number of seats the table has
         numSeats = seatPositions.Count;
@@ -75,6 +77,12 @@ public class TableScript : NetworkBehaviour
         {
             Debug.Log("CustomersSeated.Count: " + customersSeated.Count);
             tableFeedbackScript.TableOccupied();
+            return false;
+        }
+        else if (dirtyDishes.Count > 0)
+        {
+            Debug.Log("dirtyDishes.Count: " + dirtyDishes.Count);
+            tableFeedbackScript.TableDirty();
             return false;
         }
 
@@ -238,7 +246,6 @@ public class TableScript : NetworkBehaviour
         Debug.Log("TableScript - RpcOrderNotTaken");
         //disable the order icon
         tableFeedbackScript.ToggleOrderIcon(false);
-        isTableDirty = false;
 
         //clear the table of customers and have them leave angrily
         EmptyTable(true);
@@ -333,7 +340,6 @@ public class TableScript : NetworkBehaviour
     {
         //disable the order icon
         tableFeedbackScript.ToggleOrderIcon(false);
-        isTableDirty = false; 
 
         //clear the table of customers and have them leave angrily
         EmptyTable(true);

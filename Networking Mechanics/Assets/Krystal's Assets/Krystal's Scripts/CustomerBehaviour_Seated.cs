@@ -9,10 +9,9 @@ using Mirror;
 public class CustomerBehaviour_Seated : CustomerBehaviour
 {
     private ChickenRice customersOrder = null;
-    private TableScript tableSeatedAt = null;
+    [SerializeField] private TableScript tableSeatedAt = null;
     private bool finishedEating = false;
 
-    [SerializeField] private GameObject dirtyDishPrefab;
     [SerializeField] private Transform dishSpawnPoint, orderIconPos;
     private OrderGeneration orderGenerationScript;
 
@@ -170,22 +169,25 @@ public class CustomerBehaviour_Seated : CustomerBehaviour
 
 
     //customer has been served the right food and is eating it
+    [ServerCallback]
     public void EatingFood()
     {
         //disable the order icon
         orderIconPos.gameObject.SetActive(false);
-
-        //declare that the table has been dirtied
-        tableSeatedAt.isTableDirty = true;
 
         //enable eating animation
         CustomerFeedbackScript.PlayEatingPFX();
         CustomerAnimScript.StartEatingAnim();
         Debug.Log("Animating customer eating food");
 
+        RpcEatingFood();
+    }
+
+    [ClientRpc]
+    public void RpcEatingFood()
+    {
         //eat for customerEatingDuration amount of time
         Invoke("CustomerFinishedFood", CustomerPatienceStats.customerEatingDuration);
-
     }
 
 
@@ -203,12 +205,19 @@ public class CustomerBehaviour_Seated : CustomerBehaviour
         //remove the food in front of the customer
         foreach (Transform child in dishSpawnPoint)
         {
-            GameObject.Destroy(child.gameObject);
+            NetworkServer.Destroy(child.gameObject);
         }
 
         //Instantiate dirty dish in front of customer
         Debug.Log("Spawning dirty dishes");
         ServerSpawnDirtyDish();
+
+        RpcCustomerFinishedFood();
+    }
+
+    [ClientRpc]
+    public void RpcCustomerFinishedFood()
+    {
 
         finishedEating = true;
 
@@ -217,7 +226,7 @@ public class CustomerBehaviour_Seated : CustomerBehaviour
         CustomerAnimScript.StopEatingAnim();
         Debug.Log("Customer is done eating food");
 
-        
+
         //all customers leave if they have all finished eating
         if (tableSeatedAt.CheckIfAllFinishedEating())
         {
@@ -240,6 +249,8 @@ public class CustomerBehaviour_Seated : CustomerBehaviour
 
         //Sync var
         plateContainer.objToSpawn = HeldItem.dirtyplate;
+
+        dirtyDish.GetComponent<DirtyDishScript>().SetTableScript(tableSeatedAt);
 
         //Spawn on network
         NetworkServer.Spawn(dirtyDish);

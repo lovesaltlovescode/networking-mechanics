@@ -166,6 +166,7 @@ public class NetworkedIngredientInteraction : NetworkBehaviour
             //if player holding a customer
             if(networkedPlayerInteraction.playerInventory.tag == "Customer")
             {
+                Debug.Log("Player is holding a customer");
                 //networkedPlayerInteraction.ChangePlayerState(PlayerState.HoldingCustomer);
                 return;
             }
@@ -174,6 +175,10 @@ public class NetworkedIngredientInteraction : NetworkBehaviour
             if(networkedPlayerInteraction.playerInventory.tag == "Dish")
             {
                 //networkedPlayerInteraction.ChangePlayerState(PlayerState.HoldingOrder);
+                if (nearTrashBin)
+                {
+                    networkedPlayerInteraction.ChangePlayerState(PlayerState.CanThrowDish, true);
+                }
                 return;
             }
 
@@ -234,6 +239,8 @@ public class NetworkedIngredientInteraction : NetworkBehaviour
         networkedPlayerInteraction.CmdChangeHeldItem(HeldItem.dirtyplate);
         networkedPlayerInteraction.CmdPickUpObject(networkedPlayerInteraction.detectedObject);
         Debug.Log("Detected object is plate " + networkedPlayerInteraction.detectedObject);
+
+        networkedPlayerInteraction.detectedObject.GetComponentInChildren<DirtyDishScript>().RemoveFromTable();
 
         //heldItem = HeldItem.dirtyplate;
         networkedPlayerInteraction.ChangePlayerState(PlayerState.HoldingDirtyPlate);

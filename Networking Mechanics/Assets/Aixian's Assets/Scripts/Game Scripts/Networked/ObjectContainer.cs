@@ -40,7 +40,14 @@ public class ObjectContainer : NetworkBehaviour
     public GameObject steamedChicWRiceBallEgg;
     public GameObject steamedChicWPlainRiceEgg;
 
+    private DirtyDishScript dirtyDishScript;
 
+    private void Awake()
+    {
+        dirtyDishScript = GetComponent<DirtyDishScript>();
+        dirtyDishScript.enabled = false;
+
+    }
     void OnChangeIngredient(HeldItem oldItem, HeldItem newItem)
     {
         //Debug.Log("NetworkedIngredientInteraction - Starting coroutine!");
@@ -136,6 +143,11 @@ public class ObjectContainer : NetworkBehaviour
 
         //change game object tag to fit the child tag, so players know what they are picking up
         gameObject.tag = gameObject.transform.GetChild(0).tag;
+
+        if(gameObject.tag == "DirtyPlate")
+        {
+            dirtyDishScript.enabled = true;
+        }
     }
 
 

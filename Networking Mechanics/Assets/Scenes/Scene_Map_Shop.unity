@@ -237,6 +237,11 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 16
       objectReference: {fileID: 0}
+    - target: {fileID: 7752808417109432923, guid: 8750cf14d568ea441a6c6a4b60675d2f,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8750cf14d568ea441a6c6a4b60675d2f, type: 3}
 --- !u!1 &13229666
@@ -1545,6 +1550,7 @@ MonoBehaviour:
   insufficientSeats: Not enough seats
   tableOccupied: Table occupied
   handsFull: Your hands are full!
+  tableDirty: Table dirty
 --- !u!114 &169466950
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1567,14 +1573,12 @@ MonoBehaviour:
   - {fileID: 1821531614}
   - {fileID: 238602255}
   minAndMaxOrderGenTime: {x: 3, y: 5}
-  dirtyDishPrefab: {fileID: 7573709594487455818, guid: 07a5145ab429c9043bcbce10c10cbf50,
-    type: 3}
   customerSeatedPrefab: {fileID: 8061215714513260895, guid: 49f1fbc890f8484429745132dbc7646a,
     type: 3}
   seatedCustomerParent: {fileID: 3237604}
   customersSeated: []
   takeOrderLayer: Ordering
-  isTableDirty: 0
+  dirtyDishes: []
 --- !u!4 &169466951
 Transform:
   m_ObjectHideFlags: 0
@@ -1812,6 +1816,7 @@ MonoBehaviour:
   insufficientSeats: Not enough seats
   tableOccupied: Table occupied
   handsFull: Your hands are full!
+  tableDirty: Table dirty
 --- !u!114 &188162166
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1834,14 +1839,12 @@ MonoBehaviour:
   - {fileID: 1783482955}
   - {fileID: 699273654}
   minAndMaxOrderGenTime: {x: 3, y: 5}
-  dirtyDishPrefab: {fileID: 7573709594487455818, guid: 07a5145ab429c9043bcbce10c10cbf50,
-    type: 3}
   customerSeatedPrefab: {fileID: 8061215714513260895, guid: 49f1fbc890f8484429745132dbc7646a,
     type: 3}
   seatedCustomerParent: {fileID: 3237604}
   customersSeated: []
   takeOrderLayer: Ordering
-  isTableDirty: 0
+  dirtyDishes: []
 --- !u!4 &188162167
 Transform:
   m_ObjectHideFlags: 0
@@ -2781,45 +2784,12 @@ MonoBehaviour:
   - {fileID: 343550413}
   - {fileID: 1441978491}
   - {fileID: 1914650812}
-  cleanPlateSpawnPositions:
-  - {fileID: 52136099}
-  - {fileID: 254555229}
-  - {fileID: 83218635}
-  - {fileID: 1219242147}
-  - {fileID: 522228968}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
   platesInSink:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  cleanPlatesOnTable:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
   platesInSinkCount: 0
-  cleanPlatesCount: 0
   drinkPositions:
   - {fileID: 1454448757}
   - {fileID: 1160823125}
@@ -6960,6 +6930,11 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 16
       objectReference: {fileID: 0}
+    - target: {fileID: 7752808417109432923, guid: 8750cf14d568ea441a6c6a4b60675d2f,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8750cf14d568ea441a6c6a4b60675d2f, type: 3}
 --- !u!1 &941879014
@@ -9916,6 +9891,7 @@ MonoBehaviour:
   insufficientSeats: Not enough seats
   tableOccupied: Table occupied
   handsFull: Your hands are full!
+  tableDirty: Table dirty
 --- !u!114 &1324333906
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9937,14 +9913,12 @@ MonoBehaviour:
   seatPositions:
   - {fileID: 2047217673}
   minAndMaxOrderGenTime: {x: 3, y: 5}
-  dirtyDishPrefab: {fileID: 7573709594487455818, guid: 07a5145ab429c9043bcbce10c10cbf50,
-    type: 3}
   customerSeatedPrefab: {fileID: 8061215714513260895, guid: 49f1fbc890f8484429745132dbc7646a,
     type: 3}
   seatedCustomerParent: {fileID: 3237604}
   customersSeated: []
   takeOrderLayer: Ordering
-  isTableDirty: 0
+  dirtyDishes: []
 --- !u!4 &1324333907
 Transform:
   m_ObjectHideFlags: 0
@@ -10489,7 +10463,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1441876597}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -4.839, y: 0.259, z: 10.556}
+  m_LocalPosition: {x: -4.839, y: 0.986, z: 10.556}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1774113127}
@@ -10577,7 +10551,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1448104065}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -5.615, y: 0.259, z: 10.556}
+  m_LocalPosition: {x: -5.615, y: 0.986, z: 10.556}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1774113127}
@@ -11439,6 +11413,7 @@ MonoBehaviour:
   insufficientSeats: Not enough seats
   tableOccupied: Table occupied
   handsFull: Your hands are full!
+  tableDirty: Table dirty
 --- !u!114 &1531288307
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11461,14 +11436,12 @@ MonoBehaviour:
   - {fileID: 365745054}
   - {fileID: 578242737}
   minAndMaxOrderGenTime: {x: 3, y: 5}
-  dirtyDishPrefab: {fileID: 7573709594487455818, guid: 07a5145ab429c9043bcbce10c10cbf50,
-    type: 3}
   customerSeatedPrefab: {fileID: 8061215714513260895, guid: 49f1fbc890f8484429745132dbc7646a,
     type: 3}
   seatedCustomerParent: {fileID: 3237604}
   customersSeated: []
   takeOrderLayer: Ordering
-  isTableDirty: 0
+  dirtyDishes: []
 --- !u!4 &1531288308
 Transform:
   m_ObjectHideFlags: 0
@@ -14080,7 +14053,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1958038696}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -6.359, y: 0.25899997, z: 10.556}
+  m_LocalPosition: {x: -6.359, y: 0.986, z: 10.556}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1774113127}
@@ -14703,6 +14676,7 @@ MonoBehaviour:
   insufficientSeats: Not enough seats
   tableOccupied: Table occupied
   handsFull: Your hands are full!
+  tableDirty: Table dirty
 --- !u!114 &2047958783
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14725,14 +14699,12 @@ MonoBehaviour:
   - {fileID: 1894588335}
   - {fileID: 949618745}
   minAndMaxOrderGenTime: {x: 3, y: 5}
-  dirtyDishPrefab: {fileID: 7573709594487455818, guid: 07a5145ab429c9043bcbce10c10cbf50,
-    type: 3}
   customerSeatedPrefab: {fileID: 8061215714513260895, guid: 49f1fbc890f8484429745132dbc7646a,
     type: 3}
   seatedCustomerParent: {fileID: 3237604}
   customersSeated: []
   takeOrderLayer: Ordering
-  isTableDirty: 0
+  dirtyDishes: []
 --- !u!4 &2047958784
 Transform:
   m_ObjectHideFlags: 0
@@ -14914,6 +14886,7 @@ MonoBehaviour:
   insufficientSeats: Not enough seats
   tableOccupied: Table occupied
   handsFull: Your hands are full!
+  tableDirty: Table dirty
 --- !u!114 &2103324179
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14938,14 +14911,12 @@ MonoBehaviour:
   - {fileID: 1238864003}
   - {fileID: 1317448760}
   minAndMaxOrderGenTime: {x: 3, y: 5}
-  dirtyDishPrefab: {fileID: 7573709594487455818, guid: 07a5145ab429c9043bcbce10c10cbf50,
-    type: 3}
   customerSeatedPrefab: {fileID: 8061215714513260895, guid: 49f1fbc890f8484429745132dbc7646a,
     type: 3}
   seatedCustomerParent: {fileID: 3237604}
   customersSeated: []
   takeOrderLayer: Ordering
-  isTableDirty: 0
+  dirtyDishes: []
 --- !u!136 &2103324180
 CapsuleCollider:
   m_ObjectHideFlags: 0
