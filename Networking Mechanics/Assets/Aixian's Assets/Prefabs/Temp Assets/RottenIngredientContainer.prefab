@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6811657128323775526}
   - component: {fileID: 6811657128323775488}
   - component: {fileID: 6811657128323775987}
-  m_Layer: 2
+  m_Layer: 13
   m_Name: RottenIngredientContainer
   m_TagString: RottenIngredient
   m_Icon: {fileID: 0}
@@ -50,7 +50,7 @@ BoxCollider:
   m_GameObject: {fileID: 6811657128323775590}
   m_Material: {fileID: 0}
   m_IsTrigger: 1
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1.329216, y: 2.1888359, z: 1.1409582}
   m_Center: {x: -0.046958685, y: 0.67147887, z: 0.0022470355}
@@ -65,7 +65,7 @@ GameObject:
   - component: {fileID: 6811657128323775544}
   - component: {fileID: 6811657128323775497}
   - component: {fileID: 6811657128323775507}
-  m_Layer: 2
+  m_Layer: 13
   m_Name: IngredientModel
   m_TagString: RottenIngredient
   m_Icon: {fileID: 0}

@@ -8,7 +8,9 @@ using Mirror;
 
 public class CustomerBehaviour_Seated : CustomerBehaviour
 {
-    private ChickenRice customersOrder = null;
+    #region Variables and Properties
+
+    public ChickenRice customersOrder = null;
     [SerializeField] private TableScript tableSeatedAt = null;
     private bool finishedEating = false;
 
@@ -16,6 +18,9 @@ public class CustomerBehaviour_Seated : CustomerBehaviour
     private OrderGeneration orderGenerationScript;
 
     public GameObject objectContainerPrefab;
+
+    //[SerializeField] private GameObject roastedPlain, roastedPlain_egg, roastedBall, roastedBall_egg;
+    //[SerializeField] private GameObject steamedPlain, steamedPlain_egg, steamedBall, steamedBall_egg;
 
     #region Getters and Setters
     public ChickenRice CustomersOrder
@@ -37,6 +42,10 @@ public class CustomerBehaviour_Seated : CustomerBehaviour
     }
     #endregion
 
+    #endregion
+
+    #region Initialisation
+
     //before the customer is visible, make sure to...
     private void Awake()
     {
@@ -45,13 +54,16 @@ public class CustomerBehaviour_Seated : CustomerBehaviour
 
         //ensure that the order icon is not visible
         orderIconPos.gameObject.SetActive(false);
-        
+
         //get the order generation script
         orderGenerationScript = OrderGeneration.Instance;
     }
 
+    #endregion
 
     //---------------------BEHAVIOUR WHEN SEATED---------------------
+
+    #region Just Seated
 
     //when customer has been brought to a table with enough seats, this method is called
     public void CustomerJustSeated(TableScript tableScript)
@@ -69,19 +81,67 @@ public class CustomerBehaviour_Seated : CustomerBehaviour
     }
 
     //generates and assigns an order to the customer
+    //Local method, send command, 
+
+    [ServerCallback]
     public void GenerateOrder()
     {
-        customersOrder = orderGenerationScript.CreateNewOrder();
+        RpcGenerateOrder(Random.value > 0.5f, Random.value > 0.5f, Random.value > 0.5f);
+    }
+
+    [ClientRpc]
+    public void RpcGenerateOrder(bool roastedChic, bool ricePlain, bool haveEgg)
+    {
+
+        customersOrder = orderGenerationScript.CreateCustomOrder(roastedChic, ricePlain, haveEgg);
 
         if (customersOrder.OrderIcon != null)
         {
             //instantiate the order icon as the child of the orderIconPos obj
+
             GameObject orderIcon = Instantiate(customersOrder.OrderIcon, orderIconPos);
             //NetworkServer.Spawn(orderIcon);
         }
-
     }
-    
+
+
+    //Identifies which food order icon should be displayed
+    //public GameObject IdentifyIcon(ChickenRice.PossibleChickenRiceLabel chickenRiceLabel)
+    //{
+    //    switch (chickenRiceLabel)
+    //    {
+    //        case ChickenRice.PossibleChickenRiceLabel.RoastedChicWPlainRice:
+    //            return roastedPlain;
+
+    //        case ChickenRice.PossibleChickenRiceLabel.RoastedChicWPlainRiceEgg:
+    //            return roastedPlain_egg;
+
+    //        case ChickenRice.PossibleChickenRiceLabel.RoastedChicWRiceBall:
+    //            return roastedBall;
+
+    //        case ChickenRice.PossibleChickenRiceLabel.RoastedChicWRiceBallEgg:
+    //            return roastedBall_egg;
+
+    //        case ChickenRice.PossibleChickenRiceLabel.SteamedChicWPlainRice:
+    //            return steamedPlain;
+
+    //        case ChickenRice.PossibleChickenRiceLabel.SteamedChicWPlainRiceEgg:
+    //            return steamedPlain_egg;
+
+    //        case ChickenRice.PossibleChickenRiceLabel.SteamedChicWRiceBall:
+    //            return steamedBall;
+
+    //        case ChickenRice.PossibleChickenRiceLabel.SteamedChicWRiceBallEgg:
+    //            return steamedBall_egg;
+
+    //        default:
+    //            return null;
+    //    }
+    //}
+
+    #endregion
+
+    #region Waiting and Ordering
 
     //after the customer's order has been taken, they will wait for their food
     public void DisplayOrderAndWait()
@@ -115,7 +175,7 @@ public class CustomerBehaviour_Seated : CustomerBehaviour
 
         Debug.Log("Checking if food served to customer is correct");
 
-        if(servedFoodScript.DishLabel == customersOrder.ChickenRiceLabel)
+        if (servedFoodScript.DishLabel == customersOrder.ChickenRiceLabel)
         {
             //stop customer's patience meter
             TriggerPatienceMeter(false);
@@ -131,7 +191,7 @@ public class CustomerBehaviour_Seated : CustomerBehaviour
             return true;
         }
         else
-        { 
+        {
             WrongCustomer();
 
             return false;
@@ -139,34 +199,16 @@ public class CustomerBehaviour_Seated : CustomerBehaviour
     }
 
 
-    //customer leaving the restaurant. if angry, play angry anim
-    [ServerCallback]
-    public void LeaveRestaurant(bool isCustomerAngry)
+    //customer has been served the wrong food
+    public void WrongCustomer()
     {
-        //animate customer standing up
-        CustomerAnimScript.LeaveAnim();
-        Debug.Log("Standing from table");
-
-        //if the customer is angry, play angry anim
-        if (isCustomerAngry)
-        {
-            //animate the customer being angry
-            Debug.Log("customer is angry!");
-        }
-
-        //customer fades out of existence
-        Debug.Log("Customer fading out of existence");
-        RpcLeaveRestaurant();
-
+        Debug.Log("wrong order!!!!!!!!");
     }
 
-    [ClientRpc]
-    public void RpcLeaveRestaurant()
-    {
-        Destroy(this.gameObject, 5f);
-        GameManager.Instance.currentNumWaitingCustomers -= 1;
-    }
 
+    #endregion
+
+    #region Eating
 
     //customer has been served the right food and is eating it
     [ServerCallback]
@@ -180,6 +222,7 @@ public class CustomerBehaviour_Seated : CustomerBehaviour
         CustomerAnimScript.StartEatingAnim();
         Debug.Log("Animating customer eating food");
 
+
         RpcEatingFood();
     }
 
@@ -187,16 +230,13 @@ public class CustomerBehaviour_Seated : CustomerBehaviour
     public void RpcEatingFood()
     {
         //eat for customerEatingDuration amount of time
+        TriggerCustomerCollider(false, false);
         Invoke("CustomerFinishedFood", CustomerPatienceStats.customerEatingDuration);
     }
 
+    #endregion
 
-    //customer has been served the wrong food
-    public void WrongCustomer()
-    {
-        Debug.Log("wrong order!!!!!!!!");
-    }
-
+    #region Finished Eating 
 
     //function to call once customer finishes eating food
     [ServerCallback]
@@ -250,19 +290,56 @@ public class CustomerBehaviour_Seated : CustomerBehaviour
         //Sync var
         plateContainer.objToSpawn = HeldItem.dirtyplate;
 
-        dirtyDish.GetComponent<DirtyDishScript>().SetTableScript(tableSeatedAt);
 
         //Spawn on network
         NetworkServer.Spawn(dirtyDish);
 
         RpcSpawnDirtyDish(dirtyDish);
 
-        
+
     }
 
     [ClientRpc]
     public void RpcSpawnDirtyDish(GameObject dirtyDish)
     {
+
+        dirtyDish.GetComponent<DirtyDishScript>().SetTableScript(tableSeatedAt);
+
         dirtyDish.layer = LayerMask.NameToLayer("TableItem");
     }
+
+    #endregion
+
+    #region Leaving
+
+    //customer leaving the restaurant. if angry, play angry anim
+    [ServerCallback]
+    public void LeaveRestaurant(bool isCustomerAngry)
+    {
+        //animate customer standing up
+        CustomerAnimScript.LeaveAnim();
+        Debug.Log("Standing from table");
+
+        //if the customer is angry, play angry anim
+        if (isCustomerAngry)
+        {
+            //animate the customer being angry
+            Debug.Log("customer is angry!");
+        }
+
+        //customer fades out of existence
+        Debug.Log("Customer fading out of existence");
+        RpcLeaveRestaurant();
+
+    }
+
+    [ClientRpc]
+    public void RpcLeaveRestaurant()
+    {
+        Destroy(this.gameObject, 5f);
+        GameManager.Instance.currentNumWaitingCustomers -= 1;
+    }
+    #endregion
+
+
 }

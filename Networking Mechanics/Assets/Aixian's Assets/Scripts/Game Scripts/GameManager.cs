@@ -42,6 +42,9 @@ public class GameManager : MonoBehaviour
 
     [Header("Plate counts")]
     public int platesInSinkCount; //number of plates in the sink
+    public int cleanPlatesCount;
+    public Transform[] cleanPlateSpawnPositions;
+    public GameObject[] cleanPlatesOnTable;
 
     [Header("Drinks")]
     public Transform[] drinkPositions; //where the drink should be spawned

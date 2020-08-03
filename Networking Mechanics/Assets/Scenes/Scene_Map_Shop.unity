@@ -2790,6 +2790,19 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   platesInSinkCount: 0
+  cleanPlatesCount: 0
+  cleanPlateSpawnPositions:
+  - {fileID: 52136099}
+  - {fileID: 254555229}
+  - {fileID: 83218635}
+  - {fileID: 1219242147}
+  - {fileID: 522228968}
+  cleanPlatesOnTable:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   drinkPositions:
   - {fileID: 1454448757}
   - {fileID: 1160823125}

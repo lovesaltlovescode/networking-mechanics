@@ -41,6 +41,7 @@ public class TableScript : NetworkBehaviour
 
     //list of orders of customers that are seated at table
     [SerializeField] private string takeOrderLayer = "Ordering";
+
     public List<ChickenRice> tableOrders = new List<ChickenRice>();
     public List<ChickenRice> TableOrders
     {
@@ -117,8 +118,6 @@ public class TableScript : NetworkBehaviour
     }
 
 
-    #region Networked
-
     #region Seat Guests
 
     [ServerCallback]
@@ -151,17 +150,10 @@ public class TableScript : NetworkBehaviour
         //animate customer sitting, assign this table to the customer, and get it to generate an order
         newSittingCustomer.GetComponent<CustomerBehaviour_Seated>().CustomerJustSeated(this);
 
-        //add customer and their to list of customers seated at table
-        if (newSittingCustomer.GetComponent<CustomerBehaviour_Seated>().CustomersOrder != null)
-        {
-            customersSeated.Add(newSittingCustomer);
-            tableOrders.Add(newSittingCustomer.GetComponent<CustomerBehaviour_Seated>().CustomersOrder);
-            Debug.Log("TableScript - Table orders: " + tableOrders.Count);
-        }
-        else
-        {
-            Debug.Log("tried to add customer to list, but customer's order was null");
-        }
+
+        customersSeated.Add(newSittingCustomer);
+        tableOrders.Add(newSittingCustomer.GetComponent<CustomerBehaviour_Seated>().CustomersOrder);
+        Debug.Log("TableScript - Table orders: " + tableOrders.Count);
     }
 
     [ClientRpc]
@@ -203,10 +195,9 @@ public class TableScript : NetworkBehaviour
         }
 
         //start the patience script
-        patienceScript.StartPatienceMeter(CustomerPatienceStats.customerPatience_TakeOrder, RpcOrderNotTaken);
+        patienceScript.StartPatienceMeter(CustomerPatienceStats.customerPatience_TakeOrder, OrderNotTaken);
+        
     }
-
-    #endregion
 
     #region Take orders
 
@@ -240,10 +231,9 @@ public class TableScript : NetworkBehaviour
         }
     }
 
-    [ClientRpc]
-    public void RpcOrderNotTaken()
+    //call this method when customer waits too long for their order
+    public void OrderNotTaken()
     {
-        Debug.Log("TableScript - RpcOrderNotTaken");
         //disable the order icon
         tableFeedbackScript.ToggleOrderIcon(false);
 
@@ -253,13 +243,59 @@ public class TableScript : NetworkBehaviour
 
     #endregion
 
+
     #endregion
+
+    #region Guests Leaving
+
+    //call this method when the table has no guests seated at it
+    [ServerCallback]
+    public void EmptyTable(bool isCustomerAngry = false)
+    {
+        RpcEmptyTable(isCustomerAngry);
+    }
+
+    [ClientRpc]
+    public void RpcEmptyTable(bool isCustomerAngry)
+    {
+        //animate customers leaving
+        foreach (GameObject customer in customersSeated)
+        {
+            CustomerBehaviour_Seated customerScript = customer.GetComponent<CustomerBehaviour_Seated>();
+            customerScript.LeaveRestaurant(isCustomerAngry);
+        }
+
+        //clear the lists
+        customersSeated.Clear();
+        tableOrders.Clear();
+    }
+
+
+    //check whether all customers at the table are done eating
+    public bool CheckIfAllFinishedEating()
+    {
+        foreach (GameObject customer in customersSeated)
+        {
+            CustomerBehaviour_Seated customerScript = customer.GetComponent<CustomerBehaviour_Seated>();
+
+            if (!customerScript.FinishedEating)
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    #endregion
+
+    #region Unused Methods
 
     //instantiate 1 customer at every seat, add them to a list, then call the method on the customer to manage their sitting animation + order
     public void SeatGuests(int numGuests)
     {
         Debug.Log("Guests are being seated");
-        
+
         //call the seated event
         for (int i = 0; i < numGuests; i++)
         {
@@ -334,51 +370,6 @@ public class TableScript : NetworkBehaviour
         }
     }
 
-
-    //call this method when customer waits too long for their order
-    public void OrderNotTaken()
-    {
-        //disable the order icon
-        tableFeedbackScript.ToggleOrderIcon(false);
-
-        //clear the table of customers and have them leave angrily
-        EmptyTable(true);
-    }
-
-
-
-    //call this method when the table has no guests seated at it
-    public void EmptyTable(bool isCustomerAngry = false)
-    {
-        //animate customers leaving
-        foreach (GameObject customer in customersSeated)
-        {
-            CustomerBehaviour_Seated customerScript = customer.GetComponent<CustomerBehaviour_Seated>();
-            customerScript.LeaveRestaurant(isCustomerAngry);
-        }
-
-        //clear the lists
-        customersSeated.Clear();
-        tableOrders.Clear();
-    }
-
-
-    //check whether all customers at the table are done eating
-    public bool CheckIfAllFinishedEating()
-    {
-        foreach (GameObject customer in customersSeated)
-        {
-            CustomerBehaviour_Seated customerScript = customer.GetComponent<CustomerBehaviour_Seated>();
-
-            if (!customerScript.FinishedEating)
-            {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-
+    #endregion
 
 }//end of tablescript class

@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Mirror;
 
-public class DirtyDishScript : MonoBehaviour
+public class DirtyDishScript : NetworkBehaviour
 {
     [SerializeField] private TableScript tableSeatedAt;
 
@@ -25,7 +26,14 @@ public class DirtyDishScript : MonoBehaviour
     }
 
     //method to add this dirty dish to the list of dirty dishes on the table
+    [ServerCallback]
     public void AddToTable()
+    {
+        RpcAddToTable();
+    }
+
+    [ClientRpc]
+    public void RpcAddToTable()
     {
         if (tableSeatedAt != null)
         {
@@ -42,16 +50,16 @@ public class DirtyDishScript : MonoBehaviour
         {
             Debug.Log("Table script wasn't assigned to dirty dish");
         }
-
     }
 
+    [ServerCallback]
     //method to remove this dirty dish from the list of dirty dishes on the table
     public void RemoveFromTable() //--------- call this method when the player picks the dirty dish up
     {
         if (tableSeatedAt != null)
         {
             tableSeatedAt.dirtyDishes.Remove(this.gameObject);
-            
+
             //----------------- You can call the function to move the plate to the player's head here.
         }
         else
@@ -60,5 +68,11 @@ public class DirtyDishScript : MonoBehaviour
 
             Debug.Log("Checking DirtyDishScript - is table script null? " + tableSeatedAt == null);
         }
+    }
+
+    [ClientRpc]
+    public void RpcRemoveFromTable()
+    {
+        
     }
 }

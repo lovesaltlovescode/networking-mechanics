@@ -57,7 +57,7 @@ public class NetworkedDrinkInteraction : NetworkBehaviour
 
 
         //detect fridge
-        networkedPlayerInteraction.DetectObject(networkedPlayerInteraction.detectedObject, 21, DetectFridge);
+        //networkedPlayerInteraction.DetectObjectLookingAt(networkedPlayerInteraction.detectedObject, 21, DetectFridge);
 
         //detected drink
         networkedPlayerInteraction.PickUpObject(networkedPlayerInteraction.detectedObject, 22, networkedPlayerInteraction.IsInventoryFull(), PlayerState.CanPickUpDrink);

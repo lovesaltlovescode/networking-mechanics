@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3074646877368359988}
   - component: {fileID: 5235130327081333048}
+  - component: {fileID: 3823875419917746382}
   m_Layer: 0
   m_Name: inGameUI_customer_orderedFood_roasted_ball_egg
   m_TagString: Untagged
@@ -81,3 +82,18 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &3823875419917746382
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2928165185166600702}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneId: 0
+  serverOnly: 1
+  m_AssetId: 

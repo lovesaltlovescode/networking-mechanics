@@ -84,25 +84,30 @@ public class NetworkedIngredientInteraction : NetworkBehaviour
             return;
         }
 
-            //if player is not holding anything
-            if (!networkedPlayerInteraction.playerInventory)
+
+        if (networkedPlayerInteraction.detectedObject.tag == "Customer")
+        {
+            Debug.LogError("DO not pick up customer as plate???????????");
+            networkedPlayerInteraction.ChangePlayerState(PlayerState.Default);
+            return;
+        }
+
+        //if player is not holding anything
+        if (!networkedPlayerInteraction.playerInventory)
             {
-                //Debug.Log("NetworkedIngredientInteraction - Able to pick up plate!");
+            //Debug.Log("NetworkedIngredientInteraction - Able to pick up plate!");
 
-                switch (networkedPlayerInteraction.detectedObject.tag)
+
+            if (networkedPlayerInteraction.detectedObject.tag == "DirtyPlate" && networkedPlayerInteraction.detectedObject.layer == LayerMask.NameToLayer("TableItem"))
+            {
+                if (GameManager.Instance.platesInSinkCount >= 4)
                 {
-                    case "DirtyPlate":
-                        //change player state
-                        //Debug.Log("NetworkedIngredientInteraction - Able to pick up dirty plate!");
-
-                        if (GameManager.Instance.platesInSinkCount >= 4)
-                        {
-                            Debug.Log("NetworkedWashInteraction - Too many plates in sink!");
-                            return;
-                        }
-                        networkedPlayerInteraction.ChangePlayerState(PlayerState.CanPickUpDirtyPlate);
-                        break;
+                    Debug.Log("NetworkedWashInteraction - Too many plates in sink!");
+                    return;
                 }
+                networkedPlayerInteraction.ChangePlayerState(PlayerState.CanPickUpDirtyPlate);
+                return;
+            }
         }
     }
 
@@ -122,12 +127,8 @@ public class NetworkedIngredientInteraction : NetworkBehaviour
 
        // Debug.Log("Ingredient count: " + GameManager.Instance.ingredientsOnTrayCount);
 
-        networkedPlayerInteraction.DetectObject(networkedPlayerInteraction.detectedObject, 14, DetectShelf);
-
-        networkedPlayerInteraction.DetectObject(networkedPlayerInteraction.detectedObject, 16, DetectPlate);
-
         //pickuppable layer
-        networkedPlayerInteraction.PickUpObject(networkedPlayerInteraction.detectedObject, 17, networkedPlayerInteraction.IsInventoryFull(), PlayerState.CanPickUpIngredient);
+        //networkedPlayerInteraction.PickUpObject(networkedPlayerInteraction.detectedObject, 17, networkedPlayerInteraction.IsInventoryFull(), PlayerState.CanPickUpIngredient);
 
         //if player is holding something
         if (networkedPlayerInteraction.IsInventoryFull())
@@ -240,7 +241,7 @@ public class NetworkedIngredientInteraction : NetworkBehaviour
         networkedPlayerInteraction.CmdPickUpObject(networkedPlayerInteraction.detectedObject);
         Debug.Log("Detected object is plate " + networkedPlayerInteraction.detectedObject);
 
-        networkedPlayerInteraction.detectedObject.GetComponentInChildren<DirtyDishScript>().RemoveFromTable();
+        networkedPlayerInteraction.detectedObject.GetComponent<DirtyDishScript>().RemoveFromTable();
 
         //heldItem = HeldItem.dirtyplate;
         networkedPlayerInteraction.ChangePlayerState(PlayerState.HoldingDirtyPlate);

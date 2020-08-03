@@ -87,8 +87,12 @@ public enum PlayerState
 
 public class NetworkedPlayerInteraction : NetworkBehaviour
 {
+    #region Variables
+
     [SerializeField] private string customerTag = "Customer", dishTag = "Dish";
     [SerializeField] private string queueingCustomerLayer = "Queue", takeOrderLayer = "Ordering";
+
+    #region Prefabs
 
     [Header("Spawnable Objects")]
     public GameObject objectContainerPrefab;
@@ -120,6 +124,10 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
     public GameObject steamedChicWRiceBallEgg;
     public GameObject steamedChicWPlainRiceEgg;
 
+    #endregion
+
+    #region Raycast Variables
+
     //RAYCAST VARIABLES
     [Header("Raycast Variables")]
     public float raycastLength = 1.5f; //how far the raycast extends
@@ -133,6 +141,10 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
     //Detected object, object player is looking at
     public GameObject detectedObject;
 
+    #endregion
+
+    #region Player
+
     //player attachment point
     public GameObject attachmentPoint;
     //player drop point, where items should be dropped
@@ -143,18 +155,40 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
 
     public GameObject customer;
 
-    //different scripts to reference
-    [SerializeField] private NetworkedIngredientInteraction networkedIngredientInteraction;
-    [SerializeField] private NetworkedWashInteraction networkedWashInteraction;
-    [SerializeField] private NetworkedDrinkInteraction networkedDrinkInteraction;
-    [SerializeField] private NetworkedCustomerInteraction networkedCustomerInteraction;
-
     public PlayerState playerState;
 
     //when the helditem changes, call onchangeingredient method
     [SyncVar(hook = nameof(OnChangeHeldItem))]
     public HeldItem heldItem;
 
+
+    #endregion
+
+    #region Scripts
+
+    //different scripts to reference
+    [SerializeField] private NetworkedIngredientInteraction networkedIngredientInteraction;
+    [SerializeField] private NetworkedWashInteraction networkedWashInteraction;
+    [SerializeField] private NetworkedDrinkInteraction networkedDrinkInteraction;
+    [SerializeField] private NetworkedCustomerInteraction networkedCustomerInteraction;
+
+    #endregion
+
+    #endregion
+
+
+    #region Initialization
+
+    private void Awake()
+    {
+        networkedIngredientInteraction = GetComponent<NetworkedIngredientInteraction>();
+        networkedWashInteraction = GetComponent<NetworkedWashInteraction>();
+        networkedDrinkInteraction = GetComponent<NetworkedDrinkInteraction>();
+        networkedCustomerInteraction = GetComponent<NetworkedCustomerInteraction>();
+
+    }
+
+    #endregion
 
 
     #region SyncVar
@@ -183,8 +217,13 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
 
         //depending on which held item is being held by player (in update)
         //instantiate the corresponding prefab
+
+        #region Instantiate prefabs
+
         switch (newItem)
         {
+            #region Ingredients
+
             case HeldItem.chicken:
                 var chicken = Instantiate(chickenPrefab, attachmentPoint.transform);
                 playerInventory = chicken;
@@ -209,16 +248,20 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
                 rice.tag = "Rice";
                 break;
 
-            case HeldItem.dirtyplate:
-                var dirtyPlate = Instantiate(dirtyPlatePrefab, attachmentPoint.transform);
-                playerInventory = dirtyPlate;
-                dirtyPlate.tag = "DirtyPlate";
-                break;
-
             case HeldItem.rotten:
                 var rotten = Instantiate(rottenPrefab, attachmentPoint.transform);
                 playerInventory = rotten;
                 rotten.tag = "RottenIngredient";
+                break;
+
+            #endregion
+
+            #region Drinks and plates
+
+            case HeldItem.dirtyplate:
+                var dirtyPlate = Instantiate(dirtyPlatePrefab, attachmentPoint.transform);
+                playerInventory = dirtyPlate;
+                dirtyPlate.tag = "DirtyPlate";
                 break;
 
             case HeldItem.drink:
@@ -227,19 +270,17 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
                 drink.tag = "Drink";
                 break;
 
+            #endregion
+
             case HeldItem.customer:
                 customer = Instantiate(queueingCustomerPrefab, attachmentPoint.transform);
-                //if (isServer)
-                //{
-                //    NetworkServer.Spawn(customer);
-                //}
                 playerInventory = customer;
                 break;
 
             //DISHES
             case HeldItem.roastedChicWRiceBall:
                 var dish1 = Instantiate(roastedChicWRiceBall, attachmentPoint.transform);
-                playerInventory = dish1; 
+                playerInventory = dish1;
                 break;
 
             case HeldItem.roastedChicWPlainRice:
@@ -278,11 +319,16 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
                 break;
 
         }
+
+        #endregion
+
+
     }
 
     #endregion
 
-    #region Commands
+
+    #region Server/Commands
 
     //called on server, main function to change the held ingredient
     //change held ingredient to the new ingredient
@@ -346,15 +392,6 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
 
     #endregion
 
-    private void Awake()
-    {
-        networkedIngredientInteraction = GetComponent<NetworkedIngredientInteraction>();
-        networkedWashInteraction = GetComponent<NetworkedWashInteraction>();
-        networkedDrinkInteraction = GetComponent<NetworkedDrinkInteraction>();
-        networkedCustomerInteraction = GetComponent<NetworkedCustomerInteraction>();
-
-    }
-
     void Update()
     {
         if (!hasAuthority)
@@ -374,12 +411,41 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
 
         DetectObjects();
 
-        //if (!detectedObject && !IsInventoryFull())
-        //{
-        //    playerState = PlayerState.Default;
-        //}
+        //DETECT WHAT OBJECTS PLAYER IS LOOKING AT
+
+        #region Detect Object Looking At
+
+        #region Ingredients
+
+        DetectObjectLookingAt(detectedObject, 14, networkedIngredientInteraction.DetectShelf);
+
+        PickUpObject(detectedObject, 17, IsInventoryFull(), PlayerState.CanPickUpIngredient);
+
+        #endregion
+
+        #region Plates and drinks
+
+        DetectObjectLookingAt(detectedObject, 16, networkedIngredientInteraction.DetectPlate);
+
+        DetectObjectLookingAt(detectedObject, 21, networkedDrinkInteraction.DetectFridge);
+
+        #endregion
+
+        #region Customers
+
+        DetectObjectLookingAt(detectedObject, 19, networkedCustomerInteraction.DetectCustomer);
+
+        DetectObjectLookingAt(detectedObject, 25, networkedCustomerInteraction.DetectDish);
+
+        #endregion
+
+        #endregion
+
+
 
     }
+
+    #region Raycast
 
     //bool to check if inventory is full
     public bool IsInventoryFull()
@@ -400,6 +466,9 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
     //Raycast function
     public void DetectObjects()
     {
+
+        #region Check for detected object
+
         if (!hasAuthority)
         {
             ////Debug.Log("NOT LOCAL PLAYER");
@@ -416,6 +485,8 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
                 detectedObject = null;
             }
         }
+
+        #endregion
 
 
         RaycastHit hit;
@@ -458,27 +529,17 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
                     detectedObject = hit.collider.gameObject;
                     Debug.Log("detected object: " + detectedObject.tag);
                 }
-
-                else
-                {
-                    //Throw a warning
-                    //Debug.LogWarning("NetworkedPlayer - Detected object already has a reference!");
-                }
             }
 
             //if player is looking at a table ready to order, set their state to cantakeorder
             //if inventory not full
-            if(hit.collider.gameObject.layer == LayerMask.NameToLayer(takeOrderLayer) && !IsInventoryFull())
+            if (hit.collider.gameObject.layer == LayerMask.NameToLayer(takeOrderLayer) && !IsInventoryFull())
             {
                 playerState = PlayerState.CanTakeOrder;
 
                 //set hit object as detectedobject
                 detectedObject = hit.collider.gameObject;
                 Debug.Log("detected object: " + detectedObject.tag);
-            }
-            else
-            {
-               // Debug.Log("NetworkedPlayerInteraction - Inventory full, cannot take order");
             }
 
         }
@@ -491,6 +552,10 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
         }
     }
 
+    #endregion
+
+    #region InteractButton
+
 
     //Interact button method
     //Changes based on which state the player is
@@ -498,6 +563,9 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
     {
         switch (playerState)
         {
+
+            #region Ingredients
+
             case PlayerState.CanSpawnChicken:
                 //Debug.Log("NetworkedPlayerInteraction - Spawn a chicken!");
                 networkedIngredientInteraction.SpawnIngredient(HeldItem.chicken);
@@ -539,6 +607,11 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
                 networkedIngredientInteraction.PickUpRottenIngredient();
                 break;
 
+            #endregion
+
+
+            #region Drinks and plates
+
             //DRINKS
             case PlayerState.CanSpawnDrink:
                 networkedDrinkInteraction.SpawnDrink();
@@ -565,6 +638,11 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
                 networkedWashInteraction.WashPlate();
                 break;
 
+            #endregion
+
+
+            #region Customer
+
             //CUSTOMER
             case PlayerState.CanPickUpCustomer:
                 networkedCustomerInteraction.PickUpCustomer();
@@ -590,19 +668,22 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
                 networkedCustomerInteraction.CheckCanPutDownOrder();
                 break;
 
+            #endregion
+                
+
             default:
                 Debug.Log("default case");
                 break;
-
-
-
         }
     }
 
+    #endregion
 
-     #region DetectMethods
 
-    public void DetectObject(GameObject detectedObject, int layer, Action callback)
+
+    #region DetectMethods
+
+    public void DetectObjectLookingAt(GameObject detectedObject, int layer, Action callback)
     {
         //Check for detected object and if it is a certain layer
         if (detectedObject && detectedObject.layer == layer)
@@ -630,8 +711,8 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
     }
 
     #endregion
-    
 
+    #region ChangePlayerState
 
     //checks whether the playerstate is something that should not be changed
     public bool CanChangePlayerState()
@@ -659,4 +740,8 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
             Debug.Log("cannot change playerstate to " + newPlayerState);
         }
     }
+
+    #endregion
+
+
 }

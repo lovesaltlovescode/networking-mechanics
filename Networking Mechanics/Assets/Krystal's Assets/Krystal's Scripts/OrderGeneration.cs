@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Mirror;
 
-public class OrderGeneration : MonoBehaviour
+public class OrderGeneration : NetworkBehaviour
 {
     #region Singleton
 
@@ -50,6 +51,17 @@ public class OrderGeneration : MonoBehaviour
         return newOrder;
     }
 
+    public ChickenRice CreateCustomOrder(bool roastedChic, bool ricePlain, bool haveEgg)
+    {
+        ChickenRice newOrder = new ChickenRice(roastedChic, ricePlain, haveEgg);
+        newOrder.ChickenRiceLabel = newOrder.IdentifyChickenRice();
+        newOrder.OrderIcon = this.IdentifyIcon(newOrder.ChickenRiceLabel);
+        Debug.Log("Order generated. Does customer want chicken roasted? " + newOrder.RoastedChic + ". Rice plain? " + newOrder.RicePlain + ". Include egg? " + newOrder.HaveEgg + ". Include cucumber? " + newOrder.Cucumber + ". Have label? " + newOrder.ChickenRiceLabel + ". Have icon? " + (newOrder.OrderIcon != null));
+
+        return newOrder;
+    }
+
+
     //Identifies which food order icon should be displayed
     public GameObject IdentifyIcon(ChickenRice.PossibleChickenRiceLabel chickenRiceLabel)
     {
@@ -88,6 +100,7 @@ public class OrderGeneration : MonoBehaviour
 //Object with order properties
 public class ChickenRice
 {
+    
     public enum PossibleChickenRiceLabel
     {
         Unassigned,
