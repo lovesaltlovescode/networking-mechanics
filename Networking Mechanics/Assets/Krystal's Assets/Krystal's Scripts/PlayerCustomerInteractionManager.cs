@@ -188,7 +188,7 @@ public class PlayerCustomerInteractionManager : MonoBehaviour
         {
             //if the order being served is what the customer wanted,
             Debug.Log("PlayerCustomerInteraction - Serve order");
-            return customer.GetComponent<CustomerBehaviour_Seated>().CheckOrder(dishObj);
+            ///return customer.GetComponent<CustomerBehaviour_Seated>().CheckOrder(dishObj);
             
         }
 

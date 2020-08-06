@@ -121,6 +121,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8100879364930874577}
   - component: {fileID: 4931345259316295922}
+  - component: {fileID: 8588164079812226937}
   m_Layer: 24
   m_Name: OverheadFeedback
   m_TagString: Untagged
@@ -156,6 +157,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 655e42a8c41ef054596e69229d52caaf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!95 &8588164079812226937
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6254050311046919750}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 05ede03466b31cc4499fb63906bdaccc, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &8061215712659416071
 GameObject:
   m_ObjectHideFlags: 0
@@ -357,6 +377,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   customerAnim: {fileID: 8061215712799328177}
+  overheadFeedbackAnim: {fileID: 8588164079812226937}
 --- !u!114 &8061215714513260893
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -395,6 +416,7 @@ MonoBehaviour:
   orderIconPos: {fileID: 2696737361459990464}
   objectContainerPrefab: {fileID: 3119484819004831971, guid: 0c65bd13f95769341b01e0e069a7ad50,
     type: 3}
+  serveFood: 0
 --- !u!114 &8061215714513260888
 MonoBehaviour:
   m_ObjectHideFlags: 0

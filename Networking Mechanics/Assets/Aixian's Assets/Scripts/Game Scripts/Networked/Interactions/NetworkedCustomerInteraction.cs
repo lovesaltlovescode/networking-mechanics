@@ -442,19 +442,36 @@ public class NetworkedCustomerInteraction : NetworkBehaviour
             return;
         }
 
+        CmdCheckCanPutDownOrder(networkedPlayerInteraction.detectedObject, networkedPlayerInteraction.playerInventory);
+
+        
+    }
+
+    [Command]
+    public void CmdCheckCanPutDownOrder(GameObject detectedObject, GameObject playerInventory)
+    {
+        RpcCheckCanPutDownOrder(detectedObject, playerInventory);
+
+       
+    }
+
+    [ClientRpc]
+    public void RpcCheckCanPutDownOrder(GameObject detectedObject, GameObject playerInventory)
+    {
+
         GameObject heldDish = networkedPlayerInteraction.playerInventory;
-        Debug.Log("NetworkedCustomerInteraction - Held dish is " + heldDish.GetComponentInChildren<OrderScript>().dishLabel);
+        Debug.Log("NetworkedCustomerInteraction - Held dish is " + heldDish.GetComponent<OrderScript>().dishLabel);
 
         //if there is a detectedobject
-        if (networkedPlayerInteraction.detectedObject)
+        if (detectedObject)
         {
             //if looking at customer
-            if (networkedPlayerInteraction.detectedObject.GetComponent<CustomerBehaviour_Seated>())
+            if (detectedObject.GetComponent<CustomerBehaviour_Seated>())
             {
                 Debug.Log("NetworkedCustomerInteraction - Looking at customer");
-                if (ServingCustomer(heldDish, networkedPlayerInteraction.detectedObject))
+                if (ServingCustomer(heldDish, detectedObject)) //if order is right
                 {
-                    networkedPlayerInteraction.playerInventory = null;
+                    playerInventory = null;
                     networkedPlayerInteraction.CmdChangeHeldItem(HeldItem.nothing);
                     Debug.Log("Is inventory full:" + networkedPlayerInteraction.IsInventoryFull());
                     networkedPlayerInteraction.ChangePlayerState(PlayerState.Default, true);

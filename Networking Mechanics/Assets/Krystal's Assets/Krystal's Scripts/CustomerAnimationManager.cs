@@ -5,6 +5,7 @@ using UnityEngine;
 public class CustomerAnimationManager : MonoBehaviour
 {
     [SerializeField] private Animator customerAnim;
+    [SerializeField] private Animator overheadFeedbackAnim;
 
     #region seated customer animations
     //customer sitting down on seat
@@ -63,6 +64,12 @@ public class CustomerAnimationManager : MonoBehaviour
     {
         customerAnim.SetTrigger("leave");
         Debug.Log("LeaveAnim called");
+    }
+
+    public void DespawnAnim()
+    {
+        overheadFeedbackAnim.SetTrigger("despawn");
+        Debug.Log("DespawnAnim called");
     }
     #endregion
 

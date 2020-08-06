@@ -151,9 +151,7 @@ public class CustomerBehaviour_Queueing : CustomerBehaviour
     {
         Debug.Log("Customer impatient method successfully invoked. Customer waited too long");
         //customer fades out of existence
-
-        //not animating
-        CustomerAnimScript.LeaveAnim();
+        
         RpcCustomerWaitsForTooLong();
         Debug.Log("Customer fading out of existence");
     }
@@ -161,7 +159,9 @@ public class CustomerBehaviour_Queueing : CustomerBehaviour
     [ClientRpc]
     public void RpcCustomerWaitsForTooLong()
     {
-        Destroy(this.gameObject, 5f);
+        CustomerAnimScript.LeaveAnim();
+        CustomerAnimScript.DespawnAnim();
+        Destroy(this.gameObject, 1f);
         GameManager.Instance.currentNumWaitingCustomers -= 1;
     }
 

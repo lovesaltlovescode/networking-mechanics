@@ -19,6 +19,8 @@ public class CustomerBehaviour_Seated : CustomerBehaviour
 
     public GameObject objectContainerPrefab;
 
+    public bool serveFood = false;
+
     //[SerializeField] private GameObject roastedPlain, roastedPlain_egg, roastedBall, roastedBall_egg;
     //[SerializeField] private GameObject steamedPlain, steamedPlain_egg, steamedBall, steamedBall_egg;
 
@@ -66,18 +68,24 @@ public class CustomerBehaviour_Seated : CustomerBehaviour
     #region Just Seated
 
     //when customer has been brought to a table with enough seats, this method is called
+    [ServerCallback]
     public void CustomerJustSeated(TableScript tableScript)
     {
-        //animate the customer sitting down and browsing menu
-        CustomerAnimScript.SitDownAnim();
-        CustomerAnimScript.BrowseMenuAnim();
-        Debug.Log("Animating customer sitting and browsing menu");
-
+        RpcCustomerJustSeated();
         //generate the customer's order
         GenerateOrder();
 
         //assign the table the customer is seated at as their table
         tableSeatedAt = tableScript;
+    }
+
+    [ClientRpc]
+    public void RpcCustomerJustSeated()
+    {
+        //animate the customer sitting down and browsing menu
+        CustomerAnimScript.SitDownAnim();
+        CustomerAnimScript.BrowseMenuAnim();
+        Debug.Log("Animating customer sitting and browsing menu");
     }
 
     //generates and assigns an order to the customer
@@ -144,10 +152,19 @@ public class CustomerBehaviour_Seated : CustomerBehaviour
     #region Waiting and Ordering
 
     //after the customer's order has been taken, they will wait for their food
+    [ServerCallback]
     public void DisplayOrderAndWait()
     {
         //animate the customer sitting idly and waiting for their food
         Debug.Log("Displaying customer order");
+
+        RpcDisplayOrderAndWait();
+    }
+
+    [ClientRpc]
+    public void RpcDisplayOrderAndWait()
+    {
+
         CustomerAnimScript.WaitForFoodAnim();
 
         //display the customer's order
@@ -166,7 +183,6 @@ public class CustomerBehaviour_Seated : CustomerBehaviour
     {
         Debug.Log("Sit angrily");
     }
-
 
     //check that the order being served to them is correct
     public bool CheckOrder(GameObject servedFood)
@@ -198,6 +214,66 @@ public class CustomerBehaviour_Seated : CustomerBehaviour
         }
     }
 
+    #region Networked
+
+    ////check that the order being served to them is correct
+    //[ServerCallback]
+    //public bool CheckOrder(GameObject servedFood)
+    //{
+    //    OrderScript servedFoodScript = servedFood.GetComponent<OrderScript>();
+    //    Debug.Log("Served food is " + servedFood);
+    //    Debug.Log("Served food is " + servedFood);
+    //    Debug.Log("Held dish script is" + servedFoodScript);
+
+    //    RpcCheckOrder(servedFood);
+
+    //    if (serveFood)
+    //    {
+    //        return true;
+    //    }
+    //    else
+    //    {
+    //        return false;
+    //    }
+
+    //}
+
+    //[ClientRpc]
+    //public void RpcCheckOrder(GameObject servedFood)
+    //{
+    //    Debug.Log("Served food is " + servedFood);
+    //    //Debug.Log("Served food script is " + servedFood.GetComponent<OrderScript>());
+    //    Debug.Log("Checking if food served to customer is correct");
+
+    //    if (servedFood.GetComponent<OrderScript>().DishLabel == customersOrder.ChickenRiceLabel)
+    //    {
+    //        ServeRightFood(servedFood, servedFood.GetComponent<OrderScript>());
+    //        serveFood = true;
+    //    }
+    //    else
+    //    {
+    //        WrongCustomer();
+    //        serveFood = false;
+    //    }
+    //}
+
+    #endregion
+
+
+    public void ServeRightFood(GameObject servedFood, OrderScript servedFoodScript)
+    {
+
+        //stop customer's patience meter
+        TriggerPatienceMeter(false);
+
+        //move the dish frSom the player to the dishspawnpoint of the customer
+        servedFoodScript.ToggleIcon(false);
+        servedFood.transform.position = dishSpawnPoint.position;
+
+        //animate the customer eating
+        EatingFood();
+    }
+
 
     //customer has been served the wrong food
     public void WrongCustomer()
@@ -218,8 +294,6 @@ public class CustomerBehaviour_Seated : CustomerBehaviour
         orderIconPos.gameObject.SetActive(false);
 
         //enable eating animation
-        CustomerFeedbackScript.PlayEatingPFX();
-        CustomerAnimScript.StartEatingAnim();
         Debug.Log("Animating customer eating food");
 
 
@@ -229,6 +303,8 @@ public class CustomerBehaviour_Seated : CustomerBehaviour
     [ClientRpc]
     public void RpcEatingFood()
     {
+        CustomerFeedbackScript.PlayEatingPFX();
+        CustomerAnimScript.StartEatingAnim();
         //eat for customerEatingDuration amount of time
         TriggerCustomerCollider(false, false);
         Invoke("CustomerFinishedFood", CustomerPatienceStats.customerEatingDuration);
@@ -317,7 +393,6 @@ public class CustomerBehaviour_Seated : CustomerBehaviour
     public void LeaveRestaurant(bool isCustomerAngry)
     {
         //animate customer standing up
-        CustomerAnimScript.LeaveAnim();
         Debug.Log("Standing from table");
 
         //if the customer is angry, play angry anim
@@ -336,8 +411,9 @@ public class CustomerBehaviour_Seated : CustomerBehaviour
     [ClientRpc]
     public void RpcLeaveRestaurant()
     {
-        Destroy(this.gameObject, 5f);
-        GameManager.Instance.currentNumWaitingCustomers -= 1;
+        CustomerAnimScript.LeaveAnim();
+        CustomerAnimScript.DespawnAnim();
+        Destroy(this.gameObject, 1f);
     }
     #endregion
 

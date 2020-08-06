@@ -518,6 +518,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   customerAnim: {fileID: 419268806644753128}
+  overheadFeedbackAnim: {fileID: 5140335751676405544}
 --- !u!114 &4217755499028838572
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -642,6 +643,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2417036022663916919}
   - component: {fileID: 4490748341326355356}
+  - component: {fileID: 5140335751676405544}
   m_Layer: 19
   m_Name: Overhead Feedback
   m_TagString: Untagged
@@ -677,6 +679,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b2840ca3956b814fa0d52ee20a9d7be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!95 &5140335751676405544
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5588200968462592725}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 05ede03466b31cc4499fb63906bdaccc, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1001 &1414294640290755201
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -827,12 +848,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0f7df1b2006fb8b4b9a9d537c3fb4a00, type: 3}
---- !u!224 &6932394708602452174 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 8328357724099119695, guid: 0f7df1b2006fb8b4b9a9d537c3fb4a00,
-    type: 3}
-  m_PrefabInstance: {fileID: 1414294640290755201}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &8498367869248578408 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7372623446299333097, guid: 0f7df1b2006fb8b4b9a9d537c3fb4a00,
@@ -845,3 +860,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!224 &6932394708602452174 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 8328357724099119695, guid: 0f7df1b2006fb8b4b9a9d537c3fb4a00,
+    type: 3}
+  m_PrefabInstance: {fileID: 1414294640290755201}
+  m_PrefabAsset: {fileID: 0}
