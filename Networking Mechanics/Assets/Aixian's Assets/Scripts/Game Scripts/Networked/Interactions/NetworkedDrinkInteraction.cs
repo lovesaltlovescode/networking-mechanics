@@ -72,6 +72,8 @@ public class NetworkedDrinkInteraction : NetworkBehaviour
                 GameManager.Instance.isCooldown = false;
             }
         }
+
+
     }
 
     #region Remote Methods
@@ -97,6 +99,17 @@ public class NetworkedDrinkInteraction : NetworkBehaviour
         //TODO: Serve customers
         networkedPlayerInteraction.playerState = PlayerState.HoldingDrink;
 
+    }
+
+    public void ServeDrink()
+    {
+        Debug.Log("Serve drinks");
+        CmdServeDrink(networkedPlayerInteraction.detectedObject);
+
+        networkedPlayerInteraction.CmdChangeHeldItem(HeldItem.nothing);
+
+        networkedPlayerInteraction.ChangePlayerState(PlayerState.Default, true);
+        
     }
 
     #endregion
@@ -176,6 +189,32 @@ public class NetworkedDrinkInteraction : NetworkBehaviour
 
         //Debug.Log("Rpc called, reduce drinks count");
         //Debug.Log("Drinks count is: " + GameManager.Instance.drinksCount);
+    }
+
+    [Command]
+    public void CmdServeDrink(GameObject detectedObject)
+    {
+        if(detectedObject.tag != "Customer")
+        {
+            Debug.Log("NetworkedDrinkInteraction - Not looking at customer");
+            return;
+        }
+
+        RpcServeDrink(detectedObject);
+
+    }
+
+    [ClientRpc]
+    public void RpcServeDrink(GameObject detectedObject)
+    {
+        var drink = networkedPlayerInteraction.playerInventory;
+
+        //call method to increase patience here
+        detectedObject.GetComponent<CustomerPatience>().IncreasePatience(CustomerPatienceStats.drinkPatienceIncrease);
+
+        Destroy(drink);
+
+        networkedPlayerInteraction.playerInventory = null;
     }
 
     #endregion

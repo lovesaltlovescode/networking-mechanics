@@ -72,6 +72,7 @@ public class DirtyDishScript : NetworkBehaviour
     }
 
     [ClientRpc]
+    //Not working, throws 'unspawned object' error
     public void RpcRemoveFromTable()
     {
         if (tableSeatedAt != null)

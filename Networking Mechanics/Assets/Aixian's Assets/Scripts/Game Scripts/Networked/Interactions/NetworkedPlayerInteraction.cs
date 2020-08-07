@@ -621,6 +621,10 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
                 networkedDrinkInteraction.PickUpDrink();
                 break;
 
+            case PlayerState.HoldingDrink:
+                networkedDrinkInteraction.ServeDrink();
+                break;
+
 
             //PLATES
             case PlayerState.CanPickUpDirtyPlate:
@@ -717,7 +721,7 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
     //checks whether the playerstate is something that should not be changed
     public bool CanChangePlayerState()
     {
-        if (playerState == PlayerState.HoldingCustomer || playerState == PlayerState.HoldingOrder)
+        if (playerState == PlayerState.HoldingCustomer || playerState == PlayerState.HoldingOrder || playerState == PlayerState.HoldingDrink)
         {
             return false;
         }

@@ -284,14 +284,7 @@ public class NetworkedUIManager : MonoBehaviour
                 //drinks
                 case "Drink":
                     buttonIcon.sprite = drinkIcon;
-                    if(networkedPlayerInteraction.playerState != PlayerState.CanUseDrink)
-                    {
-                        buttonIcon.color = Color.grey;
-                    }
-                    else
-                    {
-                        buttonIcon.color = Color.white;
-                    }
+                    buttonIcon.color = Color.white;
                     break;
 
                 case "DirtyPlate":

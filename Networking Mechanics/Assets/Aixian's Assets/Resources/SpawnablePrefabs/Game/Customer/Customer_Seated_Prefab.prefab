@@ -393,6 +393,11 @@ MonoBehaviour:
   updateFrequency: 0.2
   patienceMeterImg: {fileID: 5452746213922505791}
   finalColor: {r: 1, g: 0, b: 0, a: 1}
+  currentPatience: 0
+  reductionRate: 1
+  increaseFeedbackPFX: {fileID: 7009565534654490269, guid: a7ae3c29342ee5f40b4819db4579e20b,
+    type: 3}
+  overheadFeedbackGameObj: {fileID: 8100879364930874577}
 --- !u!114 &8061215714513260892
 MonoBehaviour:
   m_ObjectHideFlags: 0
