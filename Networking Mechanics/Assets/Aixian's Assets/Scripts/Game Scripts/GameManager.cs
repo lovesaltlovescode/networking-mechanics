@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Mirror;
 
 /// <summary>
 /// Singleton game manager to contain all server-controlled variables
 /// positions and counts of ingredients and plates
 /// </summary>
-public class GameManager : MonoBehaviour
+public class GameManager : NetworkBehaviour
 {
 
     #region Singleton
@@ -27,7 +28,12 @@ public class GameManager : MonoBehaviour
     #region Variables
 
     [Header("Customers")]
-    public float timeSinceLastSpawn = 0f, currentNumWaitingCustomers = 0f;
+
+    [SyncVar]
+    public float timeSinceLastSpawn = 0f;
+
+    [SyncVar]
+    public float currentNumWaitingCustomers = 0f;
 
 
     [Header("Ingredient Tray")]

@@ -218,9 +218,6 @@ public class TableScript : NetworkBehaviour
         //disable the order icon UI
         tableFeedbackScript.ToggleOrderIcon(false);
 
-        //move the table collider back to the environment layer
-        TableColliderManager.ToggleTableDetection(false, this.gameObject);
-
         //pass all the orders to the kitchen
         Debug.Log("All orders: " + tableOrders);
 
@@ -229,6 +226,9 @@ public class TableScript : NetworkBehaviour
         {
             customer.GetComponent<CustomerBehaviour_Seated>().DisplayOrderAndWait();
         }
+
+        //move the table collider back to the environment layer
+        TableColliderManager.ToggleTableDetection(false, this.gameObject);
     }
 
     //call this method when customer waits too long for their order

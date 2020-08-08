@@ -238,20 +238,28 @@ public class NetworkedIngredientInteraction : NetworkBehaviour
     public void PickUpPlate()
     {
         CmdPickUpPlate(networkedPlayerInteraction.detectedObject);
-    
+
+        networkedPlayerInteraction.CmdChangeHeldItem(HeldItem.dirtyplate);
+        networkedPlayerInteraction.CmdPickUpObject(networkedPlayerInteraction.detectedObject);
+        Debug.Log("Detected object is plate " + networkedPlayerInteraction.detectedObject);
+
+        //heldItem = HeldItem.dirtyplate;
+        networkedPlayerInteraction.ChangePlayerState(PlayerState.HoldingDirtyPlate);
+
+        //if not host, then remove on the client side
+        if (!isServer)
+        {
+            networkedPlayerInteraction.detectedObject.GetComponent<DirtyDishScript>().RemoveFromTable();
+        }
+
+
+
     }
 
     [Command]
     public void CmdPickUpPlate(GameObject detectedObject)
     {
-        networkedPlayerInteraction.CmdChangeHeldItem(HeldItem.dirtyplate);
-        networkedPlayerInteraction.CmdPickUpObject(networkedPlayerInteraction.detectedObject);
-        Debug.Log("Detected object is plate " + networkedPlayerInteraction.detectedObject);
-
         detectedObject.GetComponent<DirtyDishScript>().RemoveFromTable();
-
-        //heldItem = HeldItem.dirtyplate;
-        networkedPlayerInteraction.ChangePlayerState(PlayerState.HoldingDirtyPlate);
     }
 
     //Method to be called from player interaction script

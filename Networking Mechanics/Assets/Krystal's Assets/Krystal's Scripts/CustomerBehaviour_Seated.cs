@@ -19,7 +19,6 @@ public class CustomerBehaviour_Seated : CustomerBehaviour
 
     public GameObject objectContainerPrefab;
 
-    public bool serveFood = false;
 
     //[SerializeField] private GameObject roastedPlain, roastedPlain_egg, roastedBall, roastedBall_egg;
     //[SerializeField] private GameObject steamedPlain, steamedPlain_egg, steamedBall, steamedBall_egg;
@@ -68,25 +67,28 @@ public class CustomerBehaviour_Seated : CustomerBehaviour
     #region Just Seated
 
     //when customer has been brought to a table with enough seats, this method is called
-    [ServerCallback]
     public void CustomerJustSeated(TableScript tableScript)
     {
-        RpcCustomerJustSeated();
-        //generate the customer's order
-        GenerateOrder();
 
         //assign the table the customer is seated at as their table
         tableSeatedAt = tableScript;
-    }
 
-    [ClientRpc]
-    public void RpcCustomerJustSeated()
-    {
+
         //animate the customer sitting down and browsing menu
         CustomerAnimScript.SitDownAnim();
         CustomerAnimScript.BrowseMenuAnim();
         Debug.Log("Animating customer sitting and browsing menu");
+
+        if (isServer)
+        {
+
+            //RpcCustomerJustSeated();
+            //generate the customer's order
+            GenerateOrder();
+        }
+
     }
+
 
     //generates and assigns an order to the customer
     //Local method, send command, 
@@ -112,40 +114,6 @@ public class CustomerBehaviour_Seated : CustomerBehaviour
         }
     }
 
-
-    //Identifies which food order icon should be displayed
-    //public GameObject IdentifyIcon(ChickenRice.PossibleChickenRiceLabel chickenRiceLabel)
-    //{
-    //    switch (chickenRiceLabel)
-    //    {
-    //        case ChickenRice.PossibleChickenRiceLabel.RoastedChicWPlainRice:
-    //            return roastedPlain;
-
-    //        case ChickenRice.PossibleChickenRiceLabel.RoastedChicWPlainRiceEgg:
-    //            return roastedPlain_egg;
-
-    //        case ChickenRice.PossibleChickenRiceLabel.RoastedChicWRiceBall:
-    //            return roastedBall;
-
-    //        case ChickenRice.PossibleChickenRiceLabel.RoastedChicWRiceBallEgg:
-    //            return roastedBall_egg;
-
-    //        case ChickenRice.PossibleChickenRiceLabel.SteamedChicWPlainRice:
-    //            return steamedPlain;
-
-    //        case ChickenRice.PossibleChickenRiceLabel.SteamedChicWPlainRiceEgg:
-    //            return steamedPlain_egg;
-
-    //        case ChickenRice.PossibleChickenRiceLabel.SteamedChicWRiceBall:
-    //            return steamedBall;
-
-    //        case ChickenRice.PossibleChickenRiceLabel.SteamedChicWRiceBallEgg:
-    //            return steamedBall_egg;
-
-    //        default:
-    //            return null;
-    //    }
-    //}
 
     #endregion
 
@@ -196,13 +164,9 @@ public class CustomerBehaviour_Seated : CustomerBehaviour
             //stop customer's patience meter
             TriggerPatienceMeter(false);
 
-            //move the dish from the player to the dishspawnpoint of the customer
-            servedFoodScript.ToggleIcon(false);
-            servedFood.transform.parent = dishSpawnPoint;
-            servedFood.transform.position = dishSpawnPoint.position;
 
             //animate the customer eating
-            EatingFood();
+            EatingFood(servedFood, servedFoodScript);
 
             return true;
         }
@@ -260,21 +224,6 @@ public class CustomerBehaviour_Seated : CustomerBehaviour
     #endregion
 
 
-    public void ServeRightFood(GameObject servedFood, OrderScript servedFoodScript)
-    {
-
-        //stop customer's patience meter
-        TriggerPatienceMeter(false);
-
-        //move the dish frSom the player to the dishspawnpoint of the customer
-        servedFoodScript.ToggleIcon(false);
-        servedFood.transform.position = dishSpawnPoint.position;
-
-        //animate the customer eating
-        EatingFood();
-    }
-
-
     //customer has been served the wrong food
     public void WrongCustomer()
     {
@@ -287,22 +236,32 @@ public class CustomerBehaviour_Seated : CustomerBehaviour
     #region Eating
 
     //customer has been served the right food and is eating it
-    [ServerCallback]
-    public void EatingFood()
+    public void EatingFood(GameObject servedFood, OrderScript servedFoodScript)
     {
         //disable the order icon
-        orderIconPos.gameObject.SetActive(false);
+        //orderIconPos.gameObject.SetActive(false);
+
+
+        //move the dish from the player to the dishspawnpoint of the customer
+        servedFoodScript.ToggleIcon(false);
+        servedFood.transform.parent = dishSpawnPoint;
+        servedFood.transform.position = dishSpawnPoint.position;
 
         //enable eating animation
         Debug.Log("Animating customer eating food");
 
-
-        RpcEatingFood();
+        if (isServer)
+        {
+            RpcEatingFood();
+        }
     }
 
     [ClientRpc]
     public void RpcEatingFood()
     {
+        //disable the order icon
+        orderIconPos.gameObject.SetActive(false); //may delete later, depending on if clients get this
+
         CustomerFeedbackScript.PlayEatingPFX();
         CustomerAnimScript.StartEatingAnim();
         //eat for customerEatingDuration amount of time
@@ -315,7 +274,6 @@ public class CustomerBehaviour_Seated : CustomerBehaviour
     #region Finished Eating 
 
     //function to call once customer finishes eating food
-    [ServerCallback]
     public void CustomerFinishedFood()
     {
         //remove the food in front of the customer
@@ -326,15 +284,6 @@ public class CustomerBehaviour_Seated : CustomerBehaviour
 
         //Instantiate dirty dish in front of customer
         Debug.Log("Spawning dirty dishes");
-        ServerSpawnDirtyDish();
-
-        RpcCustomerFinishedFood();
-    }
-
-    [ClientRpc]
-    public void RpcCustomerFinishedFood()
-    {
-
         finishedEating = true;
 
         //disable eating animation
@@ -342,12 +291,22 @@ public class CustomerBehaviour_Seated : CustomerBehaviour
         CustomerAnimScript.StopEatingAnim();
         Debug.Log("Customer is done eating food");
 
+        if (isServer)
+        {
+            ServerSpawnDirtyDish();
+        }
 
         //all customers leave if they have all finished eating
         if (tableSeatedAt.CheckIfAllFinishedEating())
         {
             tableSeatedAt.EmptyTable();
         }
+    }
+
+    [ClientRpc]
+    public void RpcCustomerFinishedFood()
+    {
+
     }
 
     //spawn a dirty dish in front of the customer

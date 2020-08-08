@@ -409,6 +409,8 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
             playerInventory = null;
         }
 
+        Debug.Log("playerstate is " + playerState);
+
         DetectObjects();
 
         //DETECT WHAT OBJECTS PLAYER IS LOOKING AT

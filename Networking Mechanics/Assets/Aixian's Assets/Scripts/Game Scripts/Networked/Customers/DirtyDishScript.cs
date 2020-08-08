@@ -52,7 +52,7 @@ public class DirtyDishScript : NetworkBehaviour
         }
     }
 
-    [ServerCallback]
+    
     //method to remove this dirty dish from the list of dirty dishes on the table
     public void RemoveFromTable() //--------- call this method when the player picks the dirty dish up
     {

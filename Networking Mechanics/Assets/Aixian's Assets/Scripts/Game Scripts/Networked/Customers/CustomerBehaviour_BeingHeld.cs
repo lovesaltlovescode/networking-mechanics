@@ -28,28 +28,6 @@ public class CustomerBehaviour_BeingHeld : NetworkBehaviour
     }
 
 
-    //TODO: How to prevent if more than one player is holding customer
-    //How to sync group size number
-    [ServerCallback]
-    public void FindPlayerPickingUpCustomer()
-    {
-        for(int i = 0; i <  PlayerMovement.ActivePlayers.Count; i++)
-        {
-            if(PlayerMovement.ActivePlayers[i].GetComponent<NetworkedPlayerInteraction>().detectedObject &&
-                PlayerMovement.ActivePlayers[i].GetComponent<NetworkedPlayerInteraction>().detectedObject.tag == "Customer")
-            {
-                groupSizeNum = PlayerMovement.ActivePlayers[i].GetComponent<NetworkedPlayerInteraction>().detectedObject.GetComponent<CustomerBehaviour_Queueing>().groupSizeNum;
-
-                RpcUpdateGroupSizeNum(groupSizeNum);
-                return;
-            }
-            else
-            {
-                return;
-            }
-        }
-    }
-
     [ClientRpc]
     public void RpcUpdateGroupSizeNum(int updatedSize)
     {
