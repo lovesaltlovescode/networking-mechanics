@@ -205,7 +205,7 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
         while (playerInventory)
         {
             //if player is holding nothing, destroy the existing child
-            if (newItem == HeldItem.nothing)
+            if (newItem == HeldItem.nothing && playerState != PlayerState.HoldingOrder)
             {
                 Debug.Log("NetworkedIngredientInteraction - Destroying held object");
                 Destroy(playerInventory);

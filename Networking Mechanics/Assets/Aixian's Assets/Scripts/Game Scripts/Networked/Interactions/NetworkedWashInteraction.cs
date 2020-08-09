@@ -219,7 +219,7 @@ public class NetworkedWashInteraction : NetworkBehaviour
             placedPlateInSink = true;
 
             //allow player to wash plate
-            networkedPlayerInteraction.playerState = PlayerState.CanWashPlate;
+            networkedPlayerInteraction.ChangePlayerState(PlayerState.CanWashPlate);
             return;
         }
         else
@@ -240,6 +240,7 @@ public class NetworkedWashInteraction : NetworkBehaviour
     //if enter sink zone and is holding dirty plate
     private void OnTriggerEnter(Collider other)
     {
+
         //if player is in sink zone
         if (other.tag == "SinkZone")
         {
@@ -265,7 +266,7 @@ public class NetworkedWashInteraction : NetworkBehaviour
                 }
                 canWash = true;
                 showWashIcon = true;
-                networkedPlayerInteraction.playerState = PlayerState.CanWashPlate;
+                networkedPlayerInteraction.ChangePlayerState(PlayerState.CanWashPlate);
             }
 
             //if player is holding a plate
@@ -280,7 +281,7 @@ public class NetworkedWashInteraction : NetworkBehaviour
             //or if there are still plates in the sink
             else if (stoppedWashingPlate || GameManager.Instance.platesInSinkCount != 0)
             {
-                networkedPlayerInteraction.playerState = PlayerState.CanWashPlate;
+                networkedPlayerInteraction.ChangePlayerState(PlayerState.CanWashPlate);
 
                 showWashIcon = true;
             }
@@ -311,7 +312,7 @@ public class NetworkedWashInteraction : NetworkBehaviour
                 }
                 canWash = true;
                 showWashIcon = true;
-                networkedPlayerInteraction.playerState = PlayerState.CanWashPlate;
+                networkedPlayerInteraction.ChangePlayerState(PlayerState.CanWashPlate);
             }
         }
     }
@@ -331,7 +332,7 @@ public class NetworkedWashInteraction : NetworkBehaviour
             if (holdingDirtyPlate || GameManager.Instance.platesInSinkCount != 0)
             {
                 //player exited sink
-                networkedPlayerInteraction.playerState = PlayerState.ExitedSink;
+                networkedPlayerInteraction.ChangePlayerState(PlayerState.ExitedSink);
                 startTimer = false;
             }
 

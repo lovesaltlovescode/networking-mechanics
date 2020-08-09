@@ -154,15 +154,15 @@ public class CustomerBehaviour_Queueing : CustomerBehaviour
         
         RpcCustomerWaitsForTooLong();
         Debug.Log("Customer fading out of existence");
+        GameManager.Instance.currentNumWaitingCustomers -= 1;
     }
 
     [ClientRpc]
     public void RpcCustomerWaitsForTooLong()
     {
         CustomerAnimScript.LeaveAnim();
-        CustomerAnimScript.DespawnAnim();
         Destroy(this.gameObject, 1f);
-        GameManager.Instance.currentNumWaitingCustomers -= 1;
+        
     }
 
 

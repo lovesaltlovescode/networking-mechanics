@@ -63,14 +63,10 @@ public class CustomerAnimationManager : MonoBehaviour
     public void LeaveAnim()
     {
         customerAnim.SetTrigger("leave");
+        overheadFeedbackAnim.SetTrigger("despawn");
         Debug.Log("LeaveAnim called");
     }
 
-    public void DespawnAnim()
-    {
-        overheadFeedbackAnim.SetTrigger("despawn");
-        Debug.Log("DespawnAnim called");
-    }
     #endregion
 
     //----------------------------------------------------------------------------------------

@@ -371,7 +371,6 @@ public class CustomerBehaviour_Seated : CustomerBehaviour
     public void RpcLeaveRestaurant()
     {
         CustomerAnimScript.LeaveAnim();
-        CustomerAnimScript.DespawnAnim();
         Destroy(this.gameObject, 1f);
     }
     #endregion

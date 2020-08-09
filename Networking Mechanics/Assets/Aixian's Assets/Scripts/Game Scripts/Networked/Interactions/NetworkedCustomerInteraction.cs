@@ -365,11 +365,16 @@ public class NetworkedCustomerInteraction : NetworkBehaviour
     //Picking up dishes
     public void PickUpDish()
     {
-        networkedPlayerInteraction.ChangePlayerState(PlayerState.HoldingOrder, true);
+        
         CheckDish(networkedPlayerInteraction.detectedObject.GetComponentInChildren<OrderScript>().dishLabel, PlayerState.HoldingOrder);
         networkedPlayerInteraction.CmdPickUpObject(networkedPlayerInteraction.detectedObject);
 
         Debug.Log("Dish picked up: " + networkedPlayerInteraction.detectedObject.GetComponentInChildren<OrderScript>().dishLabel);
+
+        if(networkedPlayerInteraction.playerInventory != null)
+        {
+            networkedPlayerInteraction.ChangePlayerState(PlayerState.HoldingOrder, true);
+        }
 
     }
 
@@ -458,6 +463,7 @@ public class NetworkedCustomerInteraction : NetworkBehaviour
     public void RpcCheckCanPutDownOrder(GameObject detectedObject, GameObject playerInventory)
     {
 
+
         GameObject heldDish = networkedPlayerInteraction.playerInventory;
         Debug.Log("NetworkedCustomerInteraction - Held dish is " + heldDish.GetComponent<OrderScript>().dishLabel);
 
@@ -471,8 +477,8 @@ public class NetworkedCustomerInteraction : NetworkBehaviour
                 if (ServingCustomer(heldDish, detectedObject)) //if order is right
                 {
                     
-                    playerInventory = null;
-                    //networkedPlayerInteraction.CmdChangeHeldItem(HeldItem.nothing);
+                    networkedPlayerInteraction.playerInventory = null;
+                    networkedPlayerInteraction.CmdChangeHeldItem(HeldItem.nothing);
                     Debug.Log("Is inventory full:" + networkedPlayerInteraction.IsInventoryFull());
                     networkedPlayerInteraction.ChangePlayerState(PlayerState.Default, true);
                 }
