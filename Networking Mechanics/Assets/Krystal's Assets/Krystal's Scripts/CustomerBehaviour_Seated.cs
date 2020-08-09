@@ -81,7 +81,6 @@ public class CustomerBehaviour_Seated : CustomerBehaviour
 
         if (isServer)
         {
-
             //RpcCustomerJustSeated();
             //generate the customer's order
             GenerateOrder();
@@ -120,19 +119,20 @@ public class CustomerBehaviour_Seated : CustomerBehaviour
     #region Waiting and Ordering
 
     //after the customer's order has been taken, they will wait for their food
-    [ServerCallback]
     public void DisplayOrderAndWait()
     {
         //animate the customer sitting idly and waiting for their food
         Debug.Log("Displaying customer order");
 
-        RpcDisplayOrderAndWait();
+        if (isServer)
+        {
+            RpcDisplayOrderAndWait();
+        }
     }
 
     [ClientRpc]
     public void RpcDisplayOrderAndWait()
     {
-
         CustomerAnimScript.WaitForFoodAnim();
 
         //display the customer's order
@@ -164,7 +164,6 @@ public class CustomerBehaviour_Seated : CustomerBehaviour
             //stop customer's patience meter
             TriggerPatienceMeter(false);
 
-
             //animate the customer eating
             EatingFood(servedFood, servedFoodScript);
 
@@ -177,51 +176,6 @@ public class CustomerBehaviour_Seated : CustomerBehaviour
             return false;
         }
     }
-
-    #region Networked
-
-    ////check that the order being served to them is correct
-    //[ServerCallback]
-    //public bool CheckOrder(GameObject servedFood)
-    //{
-    //    OrderScript servedFoodScript = servedFood.GetComponent<OrderScript>();
-    //    Debug.Log("Served food is " + servedFood);
-    //    Debug.Log("Served food is " + servedFood);
-    //    Debug.Log("Held dish script is" + servedFoodScript);
-
-    //    RpcCheckOrder(servedFood);
-
-    //    if (serveFood)
-    //    {
-    //        return true;
-    //    }
-    //    else
-    //    {
-    //        return false;
-    //    }
-
-    //}
-
-    //[ClientRpc]
-    //public void RpcCheckOrder(GameObject servedFood)
-    //{
-    //    Debug.Log("Served food is " + servedFood);
-    //    //Debug.Log("Served food script is " + servedFood.GetComponent<OrderScript>());
-    //    Debug.Log("Checking if food served to customer is correct");
-
-    //    if (servedFood.GetComponent<OrderScript>().DishLabel == customersOrder.ChickenRiceLabel)
-    //    {
-    //        ServeRightFood(servedFood, servedFood.GetComponent<OrderScript>());
-    //        serveFood = true;
-    //    }
-    //    else
-    //    {
-    //        WrongCustomer();
-    //        serveFood = false;
-    //    }
-    //}
-
-    #endregion
 
 
     //customer has been served the wrong food
@@ -246,6 +200,7 @@ public class CustomerBehaviour_Seated : CustomerBehaviour
         servedFoodScript.ToggleIcon(false);
         servedFood.transform.parent = dishSpawnPoint;
         servedFood.transform.position = dishSpawnPoint.position;
+        servedFood.layer = LayerMask.NameToLayer("UnInteractable"); //do not allow player to interact with the dish
 
         //enable eating animation
         Debug.Log("Animating customer eating food");
@@ -282,17 +237,15 @@ public class CustomerBehaviour_Seated : CustomerBehaviour
             NetworkServer.Destroy(child.gameObject);
         }
 
-        //Instantiate dirty dish in front of customer
-        Debug.Log("Spawning dirty dishes");
         finishedEating = true;
 
         //disable eating animation
-        CustomerFeedbackScript.PlayEatingPFX(false);
-        CustomerAnimScript.StopEatingAnim();
         Debug.Log("Customer is done eating food");
 
         if (isServer)
         {
+            //Instantiate dirty dish in front of customer
+            Debug.Log("Spawning dirty dishes");
             ServerSpawnDirtyDish();
         }
 
@@ -303,16 +256,11 @@ public class CustomerBehaviour_Seated : CustomerBehaviour
         }
     }
 
-    [ClientRpc]
-    public void RpcCustomerFinishedFood()
-    {
-
-    }
-
     //spawn a dirty dish in front of the customer
     [ServerCallback]
     public void ServerSpawnDirtyDish()
     {
+
         GameObject dirtyDish = Instantiate(objectContainerPrefab, dishSpawnPoint.position, dishSpawnPoint.localRotation);
 
         dirtyDish.GetComponent<Rigidbody>().isKinematic = false;
@@ -341,6 +289,10 @@ public class CustomerBehaviour_Seated : CustomerBehaviour
         dirtyDish.GetComponent<DirtyDishScript>().SetTableScript(tableSeatedAt);
 
         dirtyDish.layer = LayerMask.NameToLayer("TableItem");
+
+
+        CustomerFeedbackScript.PlayEatingPFX(false);
+        CustomerAnimScript.StopEatingAnim();
     }
 
     #endregion

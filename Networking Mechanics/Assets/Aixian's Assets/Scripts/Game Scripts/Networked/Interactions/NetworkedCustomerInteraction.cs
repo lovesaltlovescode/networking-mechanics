@@ -365,13 +365,13 @@ public class NetworkedCustomerInteraction : NetworkBehaviour
     //Picking up dishes
     public void PickUpDish()
     {
-        
+
         CheckDish(networkedPlayerInteraction.detectedObject.GetComponentInChildren<OrderScript>().dishLabel, PlayerState.HoldingOrder);
         networkedPlayerInteraction.CmdPickUpObject(networkedPlayerInteraction.detectedObject);
 
         Debug.Log("Dish picked up: " + networkedPlayerInteraction.detectedObject.GetComponentInChildren<OrderScript>().dishLabel);
 
-        if(networkedPlayerInteraction.playerInventory != null)
+        if (networkedPlayerInteraction.playerInventory != null)
         {
             networkedPlayerInteraction.ChangePlayerState(PlayerState.HoldingOrder, true);
         }
@@ -445,10 +445,10 @@ public class NetworkedCustomerInteraction : NetworkBehaviour
             Debug.Log("NetworkedCustomerInteraction - Player not holding a dish");
             return;
         }
-        
+
         CmdCheckCanPutDownOrder(networkedPlayerInteraction.detectedObject, networkedPlayerInteraction.playerInventory);
 
-        
+
     }
 
     [Command]
@@ -456,13 +456,12 @@ public class NetworkedCustomerInteraction : NetworkBehaviour
     {
         RpcCheckCanPutDownOrder(detectedObject, playerInventory);
 
-       
+
     }
 
     [ClientRpc]
     public void RpcCheckCanPutDownOrder(GameObject detectedObject, GameObject playerInventory)
     {
-
 
         GameObject heldDish = networkedPlayerInteraction.playerInventory;
         Debug.Log("NetworkedCustomerInteraction - Held dish is " + heldDish.GetComponent<OrderScript>().dishLabel);
@@ -476,7 +475,6 @@ public class NetworkedCustomerInteraction : NetworkBehaviour
                 Debug.Log("NetworkedCustomerInteraction - Looking at customer");
                 if (ServingCustomer(heldDish, detectedObject)) //if order is right
                 {
-                    
                     networkedPlayerInteraction.playerInventory = null;
                     networkedPlayerInteraction.CmdChangeHeldItem(HeldItem.nothing);
                     Debug.Log("Is inventory full:" + networkedPlayerInteraction.IsInventoryFull());

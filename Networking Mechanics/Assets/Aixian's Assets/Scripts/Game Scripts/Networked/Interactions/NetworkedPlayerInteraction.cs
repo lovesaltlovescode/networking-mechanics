@@ -63,6 +63,7 @@ public enum PlayerState
     CanPickUpDrink,
     HoldingDrink,
     CanUseDrink, //temp
+    CanThrowDrink,
 
     //Table items
     CanPickUpDirtyPlate,
@@ -600,7 +601,7 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
 
             case PlayerState.CanThrowIngredient:
                 //Debug.Log("NetworkedPlayerInteraction - Throw the ingredient!");
-                networkedIngredientInteraction.TrashIngredient();
+                networkedIngredientInteraction.TrashHeldItem();
                 break;
 
             //ROTTEN INGREDIENT
@@ -667,7 +668,7 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
                 break;
 
             case PlayerState.CanThrowDish:
-                networkedIngredientInteraction.TrashIngredient();
+                networkedIngredientInteraction.TrashHeldItem();
                 break;
 
             case PlayerState.HoldingOrder:

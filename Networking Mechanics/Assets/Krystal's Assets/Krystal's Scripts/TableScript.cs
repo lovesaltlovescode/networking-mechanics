@@ -76,14 +76,12 @@ public class TableScript : NetworkBehaviour
     {
         if (customersSeated.Count > 0)
         {
-            Debug.Log("CustomersSeated.Count: " + customersSeated.Count);
-            tableFeedbackScript.TableOccupied();
+            RpcTableOccupied();
             return false;
         }
         else if (dirtyDishes.Count > 0)
         {
-            Debug.Log("dirtyDishes.Count: " + dirtyDishes.Count);
-            tableFeedbackScript.TableDirty();
+            RpcTableDirty();
             return false;
         }
 
@@ -107,15 +105,38 @@ public class TableScript : NetworkBehaviour
         }
         else
         {
-            Debug.Log("more guests than seats");
-
-            //feedback to player that there are insufficient seats
-            tableFeedbackScript.NotEnoughSeats();
-
+            RpcNotEnoughSeats();
             return false;
         }
         
     }
+
+    #region Networked Feedback
+
+    [ClientRpc]
+    public void RpcTableOccupied()
+    {
+        Debug.Log("CustomersSeated.Count: " + customersSeated.Count);
+        tableFeedbackScript.TableOccupied();
+    }
+
+    [ClientRpc]
+    public void RpcTableDirty()
+    {
+        Debug.Log("dirtyDishes.Count: " + dirtyDishes.Count);
+        tableFeedbackScript.TableDirty();
+    }
+
+    [ClientRpc]
+    public void RpcNotEnoughSeats()
+    {
+        Debug.Log("more guests than seats");
+
+        //feedback to player that there are insufficient seats
+        tableFeedbackScript.NotEnoughSeats();
+    }
+
+    #endregion
 
 
     #region Seat Guests
@@ -341,7 +362,7 @@ public class TableScript : NetworkBehaviour
         //animate the customers ordering food
         foreach (GameObject customer in customersSeated)
         {
-            customer.GetComponent<CustomerBehaviour_Seated>().CustomerAnimScript.OrderAnim();
+            //customer.GetComponent<CustomerBehaviour_Seated>().CustomerAnimScript.OrderAnim();
         }
 
         //start the patience script

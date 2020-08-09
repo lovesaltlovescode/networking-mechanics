@@ -133,54 +133,51 @@ public class NetworkedIngredientInteraction : NetworkBehaviour
         //if player is holding something
         if (networkedPlayerInteraction.IsInventoryFull())
         {
-            //if player is holding a dirty plate 
-            if (networkedPlayerInteraction.playerInventory.tag == "DirtyPlate")
+
+            switch (networkedPlayerInteraction.playerInventory.tag)
             {
-                //Debug.Log("NetworkedIngredientInteraction - Unable to drop plate");
-                return;
-            }
+                case "DirtyPlate":
+                    break;
 
-            //if player is holding a drink
-            if(networkedPlayerInteraction.playerInventory.tag == "Drink")
-            {
-                return;
-            }
+                case "Drink":
+                    if (nearTrashBin)
+                    {
+                        networkedPlayerInteraction.ChangePlayerState(PlayerState.CanThrowDrink, true);
+                    }
+                    else
+                    {
+                        networkedPlayerInteraction.ChangePlayerState(PlayerState.HoldingDrink, true);
+                    }
+                    break;
 
-            //if player is holding a rotten ingredient
-            if (networkedPlayerInteraction.playerInventory.tag == "RottenIngredient")
-            {
-                //Debug.Log("NetworkedIngredientInteraction - Unable to drop rotten ingredient");
+                case "RottenIngredient":
+                    //Debug.Log("NetworkedIngredientInteraction - Unable to drop rotten ingredient");
 
-                if (nearTrashBin)
-                {
-                    networkedPlayerInteraction.playerState = PlayerState.CanThrowIngredient;
-                }
-                else
-                {
-                    networkedPlayerInteraction.playerState = PlayerState.HoldingRottenIngredient;
-                }
+                    if (nearTrashBin)
+                    {
+                        networkedPlayerInteraction.playerState = PlayerState.CanThrowIngredient;
+                    }
+                    else
+                    {
+                        networkedPlayerInteraction.playerState = PlayerState.HoldingRottenIngredient;
+                    }
+                    break;
 
-                return;
+                case "Customer":
+                    break;
 
-            }
+                case "Dish":
+                    //networkedPlayerInteraction.ChangePlayerState(PlayerState.HoldingOrder);
+                    if (nearTrashBin)
+                    {
+                        networkedPlayerInteraction.ChangePlayerState(PlayerState.CanThrowDish, true);
+                    }
+                    else
+                    {
+                        networkedPlayerInteraction.ChangePlayerState(PlayerState.HoldingOrder, true);
+                    }
+                    break;
 
-            //if player holding a customer
-            if(networkedPlayerInteraction.playerInventory.tag == "Customer")
-            {
-                Debug.Log("Player is holding a customer");
-                //networkedPlayerInteraction.ChangePlayerState(PlayerState.HoldingCustomer);
-                return;
-            }
-
-            //if player holding a dish
-            if(networkedPlayerInteraction.playerInventory.tag == "Dish")
-            {
-                //networkedPlayerInteraction.ChangePlayerState(PlayerState.HoldingOrder);
-                if (nearTrashBin)
-                {
-                    networkedPlayerInteraction.ChangePlayerState(PlayerState.CanThrowDish, true);
-                }
-                return;
             }
 
             if (nearTrashBin)
@@ -191,7 +188,7 @@ public class NetworkedIngredientInteraction : NetworkBehaviour
             }
 
             //Debug.Log("NetworkedIngredientInteraction - Able to drop ingredient!");
-            if(GameManager.Instance.ingredientsOnTrayCount >= 4 && nearIngredientTray)
+            else if(GameManager.Instance.ingredientsOnTrayCount >= 4 && nearIngredientTray)
             {
                 networkedPlayerInteraction.ChangePlayerState(PlayerState.Default);
                 Debug.Log("Ingredient tray full");
@@ -308,9 +305,9 @@ public class NetworkedIngredientInteraction : NetworkBehaviour
     }
 
     //throw ingredient
-    public void TrashIngredient()
+    public void TrashHeldItem()
     {
-        CmdTrashIngredient(networkedPlayerInteraction.playerInventory);
+        CmdTrashHeldItem(networkedPlayerInteraction.playerInventory);
 
         networkedPlayerInteraction.CmdChangeHeldItem(HeldItem.nothing);
         //Debug.Log("NetworkedIngredientInteraction - Player has thrown an ingredient");
@@ -435,7 +432,7 @@ public class NetworkedIngredientInteraction : NetworkBehaviour
     }
 
     [Command]
-    void CmdTrashIngredient(GameObject playerInventory)
+    void CmdTrashHeldItem(GameObject playerInventory)
     {
         var thrownIngredient = networkedPlayerInteraction.playerInventory;
         //Debug.Log("NetworkedIngredientInteraction - Thrown ingredient is " + thrownIngredient);

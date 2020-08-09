@@ -18,6 +18,8 @@ public class NetworkedUIManager : MonoBehaviour
     //default sprite
     public Sprite defaultIcon;
 
+    #region Different Sprites
+
     //DIFFERENT SPRITES
     [Header("Ingredient Icons")]
     public Sprite eggIcon;
@@ -25,19 +27,27 @@ public class NetworkedUIManager : MonoBehaviour
     public Sprite cucumberIcon;
     public Sprite riceIcon;
 
-    [Header("Drinks")]
-    public Sprite fridgeIcon;
-    public Sprite drinkIcon;
-
     [Header("Trash")]
     public Sprite trashIcon;
     public Sprite rottenIcon;
 
-
-
     //Table items
-    [Header("Table Item Icons")]
+    [Header("Plate Icons")]
     public Sprite dirtyPlateIcon;
+
+    [Header("Drinks")]
+    public Sprite fridgeIcon;
+    public Sprite drinkIcon;
+
+    [Header("Dishes")]
+    public Sprite roastedChicWRiceBall;
+    public Sprite roastedChicWPlainRice;
+    public Sprite roastedChicWRiceBallEgg;
+    public Sprite roastedChicWPlainRiceEgg;
+    public Sprite steamedChicWRiceBall;
+    public Sprite steamedChicWPlainRice;
+    public Sprite steamedChicWRiceBallEgg;
+    public Sprite steamedChicWPlainRiceEgg;
 
     [Header("Wash icons")]
     //Washing plates
@@ -45,6 +55,9 @@ public class NetworkedUIManager : MonoBehaviour
     public Image washTimerImage; //wash icon that will fill up slowly according to timer, above the washicon
     private float waitTime = 4f; //time to wait until image is filled
     public bool finishedWashing = false; //if true, spawn clean plate
+
+    #endregion
+
 
     public NetworkedPlayerInteraction networkedPlayerInteraction;
 
@@ -65,9 +78,6 @@ public class NetworkedUIManager : MonoBehaviour
         //wash dirty plates
         CheckWashTimer(); 
         
-
-
-
     }
 
 
@@ -156,7 +166,16 @@ public class NetworkedUIManager : MonoBehaviour
 
             }
 
-        }else if(!networkedPlayerInteraction.detectedObject)
+            //Looking at a dish
+            if(networkedPlayerInteraction.playerState == PlayerState.CanPickUpDish)
+            {
+                UICheckDish(networkedPlayerInteraction.detectedObject.transform.GetChild(0).GetComponent<OrderScript>().dishLabel);
+                Debug.Log("Looking at " + networkedPlayerInteraction.detectedObject.transform.GetChild(0).GetComponent<OrderScript>().dishLabel);
+            }
+
+
+        }
+        else if(!networkedPlayerInteraction.detectedObject)
         {
             //no detected object
             buttonIcon.sprite = defaultIcon;
@@ -170,6 +189,58 @@ public class NetworkedUIManager : MonoBehaviour
         
     }
 
+    #region CheckDish
+
+
+    //Check which dish player is looking at
+    public void UICheckDish(ChickenRice.PossibleChickenRiceLabel chickenRiceLabel)
+    {
+        switch (chickenRiceLabel)
+        {
+            case ChickenRice.PossibleChickenRiceLabel.RoastedChicWRiceBall:
+                buttonIcon.sprite = roastedChicWRiceBall;
+                Debug.Log("Looking at RoastedChicWRiceBall");
+                break;
+
+            case ChickenRice.PossibleChickenRiceLabel.RoastedChicWPlainRice:
+                buttonIcon.sprite = roastedChicWPlainRice;
+                Debug.Log("Looking at RoastedChicWPlainRice");
+                break;
+
+            case ChickenRice.PossibleChickenRiceLabel.RoastedChicWRiceBallEgg:
+                buttonIcon.sprite = roastedChicWRiceBallEgg;
+                Debug.Log("Looking at RoastedChicWRiceBallEgg");
+                break;
+
+            case ChickenRice.PossibleChickenRiceLabel.RoastedChicWPlainRiceEgg:
+                buttonIcon.sprite = roastedChicWPlainRiceEgg;
+                Debug.Log("Looking at RoastedChicWPlainRiceEgg");
+                break;
+
+            case ChickenRice.PossibleChickenRiceLabel.SteamedChicWRiceBall:
+                buttonIcon.sprite = steamedChicWRiceBall;
+                Debug.Log("Looking at SteamedChicWRiceBall");
+                break;
+
+            case ChickenRice.PossibleChickenRiceLabel.SteamedChicWPlainRice:
+                buttonIcon.sprite = steamedChicWPlainRice;
+                Debug.Log("Looking at SteamedChicWPlainRice");
+                break;
+
+            case ChickenRice.PossibleChickenRiceLabel.SteamedChicWRiceBallEgg:
+                buttonIcon.sprite = steamedChicWRiceBallEgg;
+                Debug.Log("Looking at SteamedChicWRiceBallEgg");
+                break;
+
+            case ChickenRice.PossibleChickenRiceLabel.SteamedChicWPlainRiceEgg:
+                buttonIcon.sprite = steamedChicWPlainRiceEgg;
+                Debug.Log("Looking at SteamedChicWPlainRiceEgg");
+                break;
+        }
+    }
+
+    #endregion
+
     public void DisplayDetectedObjectIcon()
     {
         
@@ -178,6 +249,16 @@ public class NetworkedUIManager : MonoBehaviour
         {
             // ////Debug.Log("UIManager: Detected object is " + networkedPlayerInteraction.detectedObject.tag);
             //show the actual icon
+
+            //if can throw the held item
+            if (networkedPlayerInteraction.playerState == PlayerState.CanThrowIngredient 
+                || networkedPlayerInteraction.playerState == PlayerState.CanThrowDish
+                || networkedPlayerInteraction.playerState == PlayerState.CanThrowDrink)
+            {
+                buttonIcon.sprite = trashIcon;
+                buttonIcon.color = Color.white;
+            }
+
 
             switch (networkedPlayerInteraction.playerInventory.tag)
             {
@@ -188,11 +269,6 @@ public class NetworkedUIManager : MonoBehaviour
                     {
                         buttonIcon.color = Color.grey;
 
-                        if (networkedPlayerInteraction.playerState == PlayerState.CanThrowIngredient)
-                        {
-                            buttonIcon.sprite = trashIcon;
-                            buttonIcon.color = Color.white;
-                        }
                     }
                     else
                     {
@@ -207,12 +283,6 @@ public class NetworkedUIManager : MonoBehaviour
                     if (networkedPlayerInteraction.playerState != PlayerState.CanDropIngredient)
                     {
                         buttonIcon.color = Color.grey;
-
-                        if (networkedPlayerInteraction.playerState == PlayerState.CanThrowIngredient)
-                        {
-                            buttonIcon.sprite = trashIcon;
-                            buttonIcon.color = Color.white;
-                        }
                     }
                     else
                     {
@@ -227,12 +297,6 @@ public class NetworkedUIManager : MonoBehaviour
                     if (networkedPlayerInteraction.playerState != PlayerState.CanDropIngredient)
                     {
                         buttonIcon.color = Color.grey;
-
-                        if (networkedPlayerInteraction.playerState == PlayerState.CanThrowIngredient)
-                        {
-                            buttonIcon.sprite = trashIcon;
-                            buttonIcon.color = Color.white;
-                        }
                     }
                     else
                     {
@@ -247,12 +311,6 @@ public class NetworkedUIManager : MonoBehaviour
                     if (networkedPlayerInteraction.playerState != PlayerState.CanDropIngredient)
                     {
                         buttonIcon.color = Color.grey;
-
-                        if(networkedPlayerInteraction.playerState == PlayerState.CanThrowIngredient)
-                        {
-                            buttonIcon.sprite = trashIcon;
-                            buttonIcon.color = Color.white;
-                        }
                     }
                     else
                     {
@@ -272,11 +330,6 @@ public class NetworkedUIManager : MonoBehaviour
                     else if(networkedPlayerInteraction.playerState == PlayerState.HoldingRottenIngredient)
                     {
                         buttonIcon.sprite = rottenIcon;
-                        buttonIcon.color = Color.white;
-                    }
-                    else if(networkedPlayerInteraction.playerState == PlayerState.CanThrowIngredient)
-                    {
-                        buttonIcon.sprite = trashIcon;
                         buttonIcon.color = Color.white;
                     }
                     break;
@@ -299,6 +352,23 @@ public class NetworkedUIManager : MonoBehaviour
                         buttonIcon.color = Color.white;
                     }
                     break;
+            }
+
+            //Holding a dish
+            if (networkedPlayerInteraction.playerState == PlayerState.HoldingOrder)
+            {
+
+                UICheckDish(networkedPlayerInteraction.playerInventory.GetComponent<OrderScript>().dishLabel);
+                Debug.Log("Holding " + networkedPlayerInteraction.playerInventory.GetComponent<OrderScript>().dishLabel);
+                //if looking at a customer
+                if (networkedPlayerInteraction.detectedObject && networkedPlayerInteraction.detectedObject.GetComponent<CustomerBehaviour_Seated>())
+                {
+                    buttonIcon.color = Color.white;
+                }
+                else
+                {
+                    buttonIcon.color = Color.grey;
+                }
             }
 
         }
