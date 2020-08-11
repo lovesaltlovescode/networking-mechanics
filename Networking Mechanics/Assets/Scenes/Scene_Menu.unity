@@ -2417,6 +2417,7 @@ GameObject:
   - component: {fileID: 1946205039}
   - component: {fileID: 1946205038}
   - component: {fileID: 1946205037}
+  - component: {fileID: 1946205040}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -2489,6 +2490,43 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1946205040
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1946205036}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d34f3be723b7d574b88248c5ed72fdaf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  list:
+  - cam: {fileID: 1946205036}
+    deleteQuestion: 0
+    hotkey: 32
+  settings:
+    signatureColor: {r: 1, g: 0, b: 0.5, a: 1}
+    customFileName: 
+    includeProject: 1
+    includeCamera: 1
+    includeDate: 1
+    includeResolution: 0
+    includeCounter: 0
+    counter: 0
+    fileType: 0
+    applicationPath: 0
+    customDirectoryName: 
+    captureMethod: 0
+    singleCamera: 0
+    renderSizeMultiplier: 1
+    captureSizeMultiplier: 1
+    cutoutPosition: {x: 0, y: 0}
+    cutoutSize: {x: 0, y: 0}
+  foldoutSettings: 0
+  lastCamID: 0
+  lastCam: {fileID: 0}
 --- !u!1 &2060185032
 GameObject:
   m_ObjectHideFlags: 0

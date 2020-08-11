@@ -137,7 +137,7 @@ public class NetworkedIngredientInteraction : NetworkBehaviour
             switch (networkedPlayerInteraction.playerInventory.tag)
             {
                 case "DirtyPlate":
-                    break;
+                    return;
 
                 case "Drink":
                     if (nearTrashBin)
