@@ -139,7 +139,7 @@ public class NetworkedWashInteraction : NetworkBehaviour
 
                 //clear the inventory after placing in sink
                 networkedPlayerInteraction.playerInventory = null;
-                Debug.Log("CmdPlacePlateInSink called");
+                //Debug.Log("CmdPlacePlateInSink called");
 
                 RpcPlacePlateInSink(dirtyPlateInSink, i);
                 return;
@@ -150,7 +150,7 @@ public class NetworkedWashInteraction : NetworkBehaviour
     [ClientRpc]
     public void RpcPlacePlateInSink(GameObject dirtyPlateInSink, int i)
     {
-        Debug.Log("RpcPlacePlateInSink called");
+        //Debug.Log("RpcPlacePlateInSink called");
         placedPlateInSink = true; //player has placed plate in sink
         holdingDirtyPlate = false;
         GameManager.Instance.platesInSink[i] = dirtyPlateInSink;
@@ -195,7 +195,7 @@ public class NetworkedWashInteraction : NetworkBehaviour
     [ClientRpc]
     public void RpcFinishWashingPlate(bool timer, int i, PlayerState playerState)
     {
-        Debug.Log("RPC Start");
+        //Debug.Log("RPC Start");
 
         //show clean plate on client
         //get script from the prefab
@@ -229,7 +229,7 @@ public class NetworkedWashInteraction : NetworkBehaviour
             placedPlateInSink = false;
         }
 
-        Debug.Log("RPC End");
+        //Debug.Log("RPC End");
         return;
 
     }
@@ -304,7 +304,7 @@ public class NetworkedWashInteraction : NetworkBehaviour
                     if (PlayerMovement.ActivePlayers[i].GetComponent<NetworkedWashInteraction>().atSink
                         && PlayerMovement.ActivePlayers[i].GetComponent<NetworkIdentity>().netId != gameObject.GetComponent<NetworkIdentity>().netId)
                     {
-                        Debug.LogError("Some player is at the sink!");
+                       // Debug.LogError("Some player is at the sink!");
                         canWash = false;
                         showWashIcon = false;
                         return;

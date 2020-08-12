@@ -46,7 +46,7 @@ public class TableFeedback : MonoBehaviour
     //feedback that shows the table has insufficient seats
     public void NotEnoughSeats()
     {
-        Debug.Log("Table feedback: Not enough seats");
+        //Debug.Log("Table feedback: Not enough seats");
 
         StartCoroutine(FadeInFadeOutText(insufficientSeats));
     }
@@ -54,7 +54,7 @@ public class TableFeedback : MonoBehaviour
     //feedback that shows that the table is occupied and no customers can be seated there
     public void TableOccupied()
     {
-        Debug.Log("Table feedback: Not enough seats");
+        //Debug.Log("Table feedback: Not enough seats");
 
         StartCoroutine(FadeInFadeOutText(tableOccupied));
     }
@@ -62,7 +62,7 @@ public class TableFeedback : MonoBehaviour
     //feedback that shows that the table is dirty and no customers can be seated there
     public void TableDirty()
     {
-        Debug.Log("Table feedback: Has dirty dishes");
+        //Debug.Log("Table feedback: Has dirty dishes");
 
         StartCoroutine(FadeInFadeOutText(tableDirty));
     }
@@ -70,7 +70,7 @@ public class TableFeedback : MonoBehaviour
     //feedback that shows that the server's hands are too full to take the customers' order
     public void HandsFullFeedback()
     {
-        Debug.Log("Table feedback: Hands full");
+        //Debug.Log("Table feedback: Hands full");
 
         StartCoroutine(FadeInFadeOutText(handsFull));
     }
@@ -81,11 +81,11 @@ public class TableFeedback : MonoBehaviour
     {
         if (enable)
         {
-            Debug.Log("Table feedback: customers ready to order");
+            //Debug.Log("Table feedback: customers ready to order");
         }
         else
         {
-            Debug.Log("Table feedback: done ordering");
+            //Debug.Log("Table feedback: done ordering");
         }
 
         //toggle the order icon and make it bob
@@ -106,10 +106,10 @@ public class TableFeedback : MonoBehaviour
         if (_fadeIn)
         {
             wordAnim.SetBool("fadeIn", true);
-            Debug.Log("fade in bool set to true");
+            //Debug.Log("fade in bool set to true");
             yield return null;
 
-            Debug.Log("fade in clip length: " + wordAnim.GetCurrentAnimatorStateInfo(0).length);
+            //Debug.Log("fade in clip length: " + wordAnim.GetCurrentAnimatorStateInfo(0).length);
 
             yield return new WaitForSeconds(wordAnim.GetCurrentAnimatorStateInfo(0).length);
 
@@ -118,17 +118,17 @@ public class TableFeedback : MonoBehaviour
         if (_fadeOut)
         {
             wordAnim.SetBool("fadeIn", false);
-            Debug.Log("fade in bool set to false");
+            //Debug.Log("fade in bool set to false");
             yield return null;
 
-            Debug.Log("fade out clip length: " + wordAnim.GetCurrentAnimatorStateInfo(0).length);
+            //Debug.Log("fade out clip length: " + wordAnim.GetCurrentAnimatorStateInfo(0).length);
 
             yield return new WaitForSeconds(wordAnim.GetCurrentAnimatorStateInfo(0).length);
 
         }
 
         word_tmpObj.gameObject.SetActive(false);
-        Debug.Log("set words to false");
+       // Debug.Log("set words to false");
 
         yield return null;
     }

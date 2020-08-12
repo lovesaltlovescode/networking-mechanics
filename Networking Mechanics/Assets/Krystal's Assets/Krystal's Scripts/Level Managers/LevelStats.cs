@@ -13,7 +13,7 @@ public class LevelStats : MonoBehaviour
 
     private void Awake()
     {
-        Debug.Log(this.gameObject.name);
+        //Debug.Log(this.gameObject.name);
 
         if (_instance != null && _instance != this)
         {

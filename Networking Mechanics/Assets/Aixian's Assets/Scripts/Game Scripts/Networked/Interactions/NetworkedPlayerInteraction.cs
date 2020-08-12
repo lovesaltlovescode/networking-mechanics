@@ -208,7 +208,7 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
             //if player is holding nothing, destroy the existing child
             if (newItem == HeldItem.nothing && playerState != PlayerState.HoldingOrder)
             {
-                Debug.Log("NetworkedIngredientInteraction - Destroying held object");
+               // Debug.Log("NetworkedIngredientInteraction - Destroying held object");
                 Destroy(playerInventory);
             }
             //if player is holding something, do nothing
@@ -353,7 +353,7 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
         //Debug.Log("Debugging ingredient - Part 3" + detectedObject);
 
         //destroy the scene object when it has been picked up, on the SERVER
-        Debug.Log("Destroying detected object: " + detectedObject);
+        //Debug.Log("Destroying detected object: " + detectedObject);
         NetworkServer.Destroy(detectedObject);
         //Debug.Log("//Debugging ingredient - Part 5");
 
@@ -482,6 +482,7 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
         if (detectedObject)
         {
             distFromObject = Vector3.Distance(detectedObject.transform.position, transform.position);
+            
 
             if (distFromObject >= raycastLength && !IsInventoryFull())
             {
@@ -530,7 +531,7 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
                 {
                     //set hit object as detectedobject
                     detectedObject = hit.collider.gameObject;
-                    Debug.Log("detected object: " + detectedObject.tag);
+                    //Debug.Log("detected object: " + detectedObject.tag);
                 }
             }
 
@@ -542,7 +543,7 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
 
                 //set hit object as detectedobject
                 detectedObject = hit.collider.gameObject;
-                Debug.Log("detected object: " + detectedObject.tag);
+                //Debug.Log("detected object: " + detectedObject.tag);
             }
 
         }
@@ -744,7 +745,7 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
         }
         else
         {
-            Debug.Log("cannot change playerstate to " + newPlayerState);
+            //Debug.Log("cannot change playerstate to " + newPlayerState);
         }
     }
 

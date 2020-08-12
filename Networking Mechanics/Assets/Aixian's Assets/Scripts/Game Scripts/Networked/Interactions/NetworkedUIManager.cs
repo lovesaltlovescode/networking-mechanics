@@ -39,6 +39,9 @@ public class NetworkedUIManager : MonoBehaviour
     public Sprite fridgeIcon;
     public Sprite drinkIcon;
 
+    [Header("Customers")]
+    public Sprite customerIcon;
+
     [Header("Dishes")]
     public Sprite roastedChicWRiceBall;
     public Sprite roastedChicWPlainRice;
@@ -89,15 +92,8 @@ public class NetworkedUIManager : MonoBehaviour
         if (networkedPlayerInteraction.detectedObject)
         {
 
-            //cannot change player state
-            if(!networkedPlayerInteraction.CanChangePlayerState())
-            {
-                return;
-            }
 
-            //Debug.Log("UIManager: Detected object is " + networkedPlayerInteraction.detectedObject.tag);
-            //Debug.Log("UIManager - Detected object is " + networkedPlayerInteraction.detectedObject.tag);
-            //gray out the icon
+            //if looking at detected object, gray out the icon
             buttonIcon.color = Color.gray;
 
             switch (networkedPlayerInteraction.detectedObject.tag)
@@ -141,6 +137,13 @@ public class NetworkedUIManager : MonoBehaviour
                     buttonIcon.sprite = rottenIcon;
                     break;
 
+                case "Customer":
+                    if (networkedPlayerInteraction.detectedObject.layer == LayerMask.NameToLayer("Queue"))
+                    {
+                        buttonIcon.sprite = customerIcon;
+                    }
+                    break;
+
                 //drinks
                 case "DrinkFridge":
                     if (networkedPlayerInteraction.playerState == PlayerState.CanSpawnDrink)
@@ -167,15 +170,17 @@ public class NetworkedUIManager : MonoBehaviour
             }
 
             //Looking at a dish
-            if(networkedPlayerInteraction.playerState == PlayerState.CanPickUpDish)
+            if (networkedPlayerInteraction.playerState == PlayerState.CanPickUpDish)
             {
                 UICheckDish(networkedPlayerInteraction.detectedObject.transform.GetChild(0).GetComponent<OrderScript>().dishLabel);
-                Debug.Log("Looking at " + networkedPlayerInteraction.detectedObject.transform.GetChild(0).GetComponent<OrderScript>().dishLabel);
+                // Debug.Log("Looking at " + networkedPlayerInteraction.detectedObject.transform.GetChild(0).GetComponent<OrderScript>().dishLabel);
             }
 
 
         }
-        else if(!networkedPlayerInteraction.detectedObject)
+
+        //If no detected object or default state, show default icon
+        else if (!networkedPlayerInteraction.detectedObject || networkedPlayerInteraction.playerState == PlayerState.Default)
         {
             //no detected object
             buttonIcon.sprite = defaultIcon;
@@ -195,46 +200,48 @@ public class NetworkedUIManager : MonoBehaviour
     //Check which dish player is looking at
     public void UICheckDish(ChickenRice.PossibleChickenRiceLabel chickenRiceLabel)
     {
+
+
         switch (chickenRiceLabel)
         {
             case ChickenRice.PossibleChickenRiceLabel.RoastedChicWRiceBall:
                 buttonIcon.sprite = roastedChicWRiceBall;
-                Debug.Log("Looking at RoastedChicWRiceBall");
+                //Debug.Log("Looking at RoastedChicWRiceBall");
                 break;
 
             case ChickenRice.PossibleChickenRiceLabel.RoastedChicWPlainRice:
                 buttonIcon.sprite = roastedChicWPlainRice;
-                Debug.Log("Looking at RoastedChicWPlainRice");
+                //Debug.Log("Looking at RoastedChicWPlainRice");
                 break;
 
             case ChickenRice.PossibleChickenRiceLabel.RoastedChicWRiceBallEgg:
                 buttonIcon.sprite = roastedChicWRiceBallEgg;
-                Debug.Log("Looking at RoastedChicWRiceBallEgg");
+                //Debug.Log("Looking at RoastedChicWRiceBallEgg");
                 break;
 
             case ChickenRice.PossibleChickenRiceLabel.RoastedChicWPlainRiceEgg:
                 buttonIcon.sprite = roastedChicWPlainRiceEgg;
-                Debug.Log("Looking at RoastedChicWPlainRiceEgg");
+                //Debug.Log("Looking at RoastedChicWPlainRiceEgg");
                 break;
 
             case ChickenRice.PossibleChickenRiceLabel.SteamedChicWRiceBall:
                 buttonIcon.sprite = steamedChicWRiceBall;
-                Debug.Log("Looking at SteamedChicWRiceBall");
+                //Debug.Log("Looking at SteamedChicWRiceBall");
                 break;
 
             case ChickenRice.PossibleChickenRiceLabel.SteamedChicWPlainRice:
                 buttonIcon.sprite = steamedChicWPlainRice;
-                Debug.Log("Looking at SteamedChicWPlainRice");
+                //Debug.Log("Looking at SteamedChicWPlainRice");
                 break;
 
             case ChickenRice.PossibleChickenRiceLabel.SteamedChicWRiceBallEgg:
                 buttonIcon.sprite = steamedChicWRiceBallEgg;
-                Debug.Log("Looking at SteamedChicWRiceBallEgg");
+               // Debug.Log("Looking at SteamedChicWRiceBallEgg");
                 break;
 
             case ChickenRice.PossibleChickenRiceLabel.SteamedChicWPlainRiceEgg:
                 buttonIcon.sprite = steamedChicWPlainRiceEgg;
-                Debug.Log("Looking at SteamedChicWPlainRiceEgg");
+                //Debug.Log("Looking at SteamedChicWPlainRiceEgg");
                 break;
         }
     }
@@ -334,10 +341,19 @@ public class NetworkedUIManager : MonoBehaviour
                     }
                     break;
 
+                //customers
+                case "Customer":
+                    buttonIcon.sprite = customerIcon;
+                    buttonIcon.color = Color.white;
+                    break;
+
                 //drinks
                 case "Drink":
-                    buttonIcon.sprite = drinkIcon;
-                    buttonIcon.color = Color.white;
+                    if(networkedPlayerInteraction.playerState != PlayerState.CanThrowIngredient)
+                    {
+                        buttonIcon.sprite = drinkIcon;
+                        buttonIcon.color = Color.white;
+                    }
                     break;
 
                 case "DirtyPlate":
@@ -359,7 +375,7 @@ public class NetworkedUIManager : MonoBehaviour
             {
 
                 UICheckDish(networkedPlayerInteraction.playerInventory.GetComponent<OrderScript>().dishLabel);
-                Debug.Log("Holding " + networkedPlayerInteraction.playerInventory.GetComponent<OrderScript>().dishLabel);
+                //Debug.Log("Holding " + networkedPlayerInteraction.playerInventory.GetComponent<OrderScript>().dishLabel);
                 //if looking at a customer
                 if (networkedPlayerInteraction.detectedObject && networkedPlayerInteraction.detectedObject.GetComponent<CustomerBehaviour_Seated>())
                 {

@@ -1432,6 +1432,7 @@ MonoBehaviour:
   dirtyPlateIcon: {fileID: 21300000, guid: e554c25fdeb290045be78c655ff8b715, type: 3}
   fridgeIcon: {fileID: 21300000, guid: a4b904df5fc97ae4ca19e13e81e93928, type: 3}
   drinkIcon: {fileID: 21300000, guid: 995c1fa4c3fe71e4c8a05046c3b0bf89, type: 3}
+  customerIcon: {fileID: 21300000, guid: 7398e244432055c43a38ab4754462805, type: 3}
   roastedChicWRiceBall: {fileID: 21300000, guid: 69f3979cf5193ff4aa191c4f2a9fb80d,
     type: 3}
   roastedChicWPlainRice: {fileID: 21300000, guid: 7d667f00aca16f34f95e33c7233c5c85,

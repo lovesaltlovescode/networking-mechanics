@@ -12,7 +12,7 @@ public class OrderGeneration : NetworkBehaviour
 
     private void Awake()
     {
-        Debug.Log(this.gameObject.name);
+        //Debug.Log(this.gameObject.name);
 
         if (_instance != null && _instance != this)
         {
@@ -46,7 +46,7 @@ public class OrderGeneration : NetworkBehaviour
         ChickenRice newOrder = new ChickenRice(Random.value > 0.5f, Random.value > 0.5f, Random.value > 0.5f);
         newOrder.ChickenRiceLabel = newOrder.IdentifyChickenRice();
         newOrder.OrderIcon = this.IdentifyIcon(newOrder.ChickenRiceLabel);
-        Debug.Log("Order generated. Does customer want chicken roasted? " + newOrder.RoastedChic + ". Rice plain? " + newOrder.RicePlain + ". Include egg? " + newOrder.HaveEgg + ". Include cucumber? " + newOrder.Cucumber + ". Have label? " + newOrder.ChickenRiceLabel + ". Have icon? " + (newOrder.OrderIcon != null));
+        //Debug.Log("Order generated. Does customer want chicken roasted? " + newOrder.RoastedChic + ". Rice plain? " + newOrder.RicePlain + ". Include egg? " + newOrder.HaveEgg + ". Include cucumber? " + newOrder.Cucumber + ". Have label? " + newOrder.ChickenRiceLabel + ". Have icon? " + (newOrder.OrderIcon != null));
 
         return newOrder;
     }
@@ -56,7 +56,7 @@ public class OrderGeneration : NetworkBehaviour
         ChickenRice newOrder = new ChickenRice(roastedChic, ricePlain, haveEgg);
         newOrder.ChickenRiceLabel = newOrder.IdentifyChickenRice();
         newOrder.OrderIcon = this.IdentifyIcon(newOrder.ChickenRiceLabel);
-        Debug.Log("Order generated. Does customer want chicken roasted? " + newOrder.RoastedChic + ". Rice plain? " + newOrder.RicePlain + ". Include egg? " + newOrder.HaveEgg + ". Include cucumber? " + newOrder.Cucumber + ". Have label? " + newOrder.ChickenRiceLabel + ". Have icon? " + (newOrder.OrderIcon != null));
+        //Debug.Log("Order generated. Does customer want chicken roasted? " + newOrder.RoastedChic + ". Rice plain? " + newOrder.RicePlain + ". Include egg? " + newOrder.HaveEgg + ". Include cucumber? " + newOrder.Cucumber + ". Have label? " + newOrder.ChickenRiceLabel + ". Have icon? " + (newOrder.OrderIcon != null));
 
         return newOrder;
     }

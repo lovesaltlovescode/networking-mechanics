@@ -87,7 +87,8 @@ public class NetworkedDrinkInteraction : NetworkBehaviour
 
     public void PickUpDrink()
     {
-        Debug.Log("Picked up drink called");
+        
+        //Debug.Log("Picked up drink called");
 
         networkedPlayerInteraction.CmdPickUpObject(networkedPlayerInteraction.detectedObject);
 
@@ -103,13 +104,23 @@ public class NetworkedDrinkInteraction : NetworkBehaviour
 
     public void ServeDrink()
     {
-        Debug.Log("Serve drinks");
-        CmdServeDrink(networkedPlayerInteraction.detectedObject);
+        if(networkedPlayerInteraction.detectedObject && networkedPlayerInteraction.detectedObject.tag == "Customer" && 
+            networkedPlayerInteraction.detectedObject.layer == LayerMask.NameToLayer("Queue") ||
+            networkedPlayerInteraction.detectedObject.layer == LayerMask.NameToLayer("Table"))
+        {
+            //Debug.Log("Serve drinks");
+            CmdServeDrink(networkedPlayerInteraction.detectedObject);
 
-        networkedPlayerInteraction.CmdChangeHeldItem(HeldItem.nothing);
+            networkedPlayerInteraction.CmdChangeHeldItem(HeldItem.nothing);
+            networkedPlayerInteraction.ChangePlayerState(PlayerState.Default, true);
+        }
+        else
+        {
+            Debug.Log("NetworkeddrinkInteraction - Unable to serve drinks");
+        }
 
-        networkedPlayerInteraction.ChangePlayerState(PlayerState.Default, true);
         
+
     }
 
     #endregion
@@ -145,7 +156,7 @@ public class NetworkedDrinkInteraction : NetworkBehaviour
 
                 //sync var the helditem in object container to the helditem in the player
                 objectContainer.objToSpawn = HeldItem.drink;
-                Debug.Log("Object spawned is " + objectContainer.objToSpawn);
+                //Debug.Log("Object spawned is " + objectContainer.objToSpawn);
 
                 //change layer of the container
                 spawnedDrinkObject.layer = LayerMask.NameToLayer("Drink");
@@ -194,13 +205,8 @@ public class NetworkedDrinkInteraction : NetworkBehaviour
     [Command]
     public void CmdServeDrink(GameObject detectedObject)
     {
-        if(detectedObject.tag != "Customer")
-        {
-            Debug.Log("NetworkedDrinkInteraction - Not looking at customer");
-            return;
-        }
+            RpcServeDrink(detectedObject);
 
-        RpcServeDrink(detectedObject);
 
     }
 

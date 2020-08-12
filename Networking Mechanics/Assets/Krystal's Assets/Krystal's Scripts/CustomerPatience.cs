@@ -130,7 +130,7 @@ public class CustomerPatience : MonoBehaviour
         }
 
 
-        Debug.Log("Calling the impatient method");
+        //Debug.Log("Calling the impatient method");
         if (callback != null)
         {
             callback?.Invoke();
@@ -150,7 +150,7 @@ public class CustomerPatience : MonoBehaviour
     {
         if (isCoroutineRunning)
         {
-            Debug.Log("IncreasePatience(): Coroutine is running");
+            //Debug.Log("IncreasePatience(): Coroutine is running");
 
             //increase the customer's current patience
             currentPatience += amtIncrease;
@@ -164,7 +164,7 @@ public class CustomerPatience : MonoBehaviour
         }
         else
         {
-            Debug.Log("IncreasePatience(): Coroutine is not running. Cannot increase patience.");
+           // Debug.Log("IncreasePatience(): Coroutine is not running. Cannot increase patience.");
         }
 
     }

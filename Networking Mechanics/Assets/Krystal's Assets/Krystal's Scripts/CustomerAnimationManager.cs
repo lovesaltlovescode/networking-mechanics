@@ -12,7 +12,7 @@ public class CustomerAnimationManager : MonoBehaviour
     public void SitDownAnim()
     {
         customerAnim.SetBool("isSitting", true); 
-        Debug.Log("SitDownAnim called");
+        //Debug.Log("SitDownAnim called");
     }
 
     #region browsing menu and ordering animations
@@ -20,7 +20,7 @@ public class CustomerAnimationManager : MonoBehaviour
     public void BrowseMenuAnim()
     {
         customerAnim.SetTrigger("readMenu");
-        Debug.Log("BrowseMenuAnim called");
+        //Debug.Log("BrowseMenuAnim called");
     }
 
 
@@ -28,7 +28,7 @@ public class CustomerAnimationManager : MonoBehaviour
     public void OrderAnim()
     {
         customerAnim.SetBool("isOrdering", true);
-        Debug.Log("OrderAnim called");
+        //Debug.Log("OrderAnim called");
     }
 
 
@@ -36,7 +36,7 @@ public class CustomerAnimationManager : MonoBehaviour
     public void WaitForFoodAnim()
     {
         customerAnim.SetBool("isOrdering", false);
-        Debug.Log("WaitForFoodAnim called");
+        //Debug.Log("WaitForFoodAnim called");
     }
     #endregion
 
@@ -46,7 +46,7 @@ public class CustomerAnimationManager : MonoBehaviour
     public void StartEatingAnim()
     {
         customerAnim.SetBool("isEating", true);
-        Debug.Log("StartEatingAnim called");
+        //Debug.Log("StartEatingAnim called");
     }
 
 
@@ -54,7 +54,7 @@ public class CustomerAnimationManager : MonoBehaviour
     public void StopEatingAnim()
     {
         customerAnim.SetBool("isEating", false);
-        Debug.Log("StopEatingAnim called");
+        //Debug.Log("StopEatingAnim called");
     }
     #endregion
 
@@ -64,7 +64,7 @@ public class CustomerAnimationManager : MonoBehaviour
     {
         customerAnim.SetTrigger("leave");
         overheadFeedbackAnim.SetTrigger("despawn");
-        Debug.Log("LeaveAnim called");
+        //Debug.Log("LeaveAnim called");
     }
 
     #endregion
@@ -73,7 +73,7 @@ public class CustomerAnimationManager : MonoBehaviour
     //customer curling up into a ball while being carried
     public void CurlUpAnim()
     {
-        Debug.Log("CurlUpAnim called, nothing is here though");
+        //Debug.Log("CurlUpAnim called, nothing is here though");
     }
 
 }

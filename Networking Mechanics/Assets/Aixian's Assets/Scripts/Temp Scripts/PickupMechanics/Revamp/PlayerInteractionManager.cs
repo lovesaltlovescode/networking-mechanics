@@ -131,7 +131,8 @@ public class PlayerInteractionManager : MonoBehaviour
             }
         }
 
-        Debug.Log("PlayerInteractionManager - Player state is currently: " + playerState);
+        
+        //Debug.Log("PlayerInteractionManager - Player state is currently: " + playerState);
 
         RaycastHit hit;
 
@@ -170,12 +171,12 @@ public class PlayerInteractionManager : MonoBehaviour
                 {
                     //set hit object as detectedobject
                     detectedObject = hit.collider.gameObject;
-                    Debug.Log("detected object: " + detectedObject.tag);
+                    //Debug.Log("detected object: " + detectedObject.tag);
                 }
                 else
                 {
                     //Throw a warning
-                    Debug.LogWarning("PlayerInteractionManager - Detected object already has a reference!");
+                    //Debug.LogWarning("PlayerInteractionManager - Detected object already has a reference!");
                 }
 
             }
@@ -183,12 +184,12 @@ public class PlayerInteractionManager : MonoBehaviour
             //if the player is looking at a table ready to order, set their state to cantakeorder
             if(hit.collider.gameObject.layer == LayerMask.NameToLayer(takeOrderLayer) && !IsInventoryFull())
             {
-                Debug.Log("Inventory full, cannot take order");
+                //Debug.Log("Inventory full, cannot take order");
                 playerState = PlayerState.CanTakeOrder;
 
                 //set hit object as detectedobject
                 detectedObject = hit.collider.gameObject;
-                Debug.Log("detected object: " + detectedObject.tag);
+                //Debug.Log("detected object: " + detectedObject.tag);
             }
             
         }

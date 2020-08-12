@@ -77,7 +77,7 @@ public class CustomerBehaviour_Seated : CustomerBehaviour
         //animate the customer sitting down and browsing menu
         CustomerAnimScript.SitDownAnim();
         CustomerAnimScript.BrowseMenuAnim();
-        Debug.Log("Animating customer sitting and browsing menu");
+        //Debug.Log("Animating customer sitting and browsing menu");
 
         if (isServer)
         {
@@ -122,7 +122,7 @@ public class CustomerBehaviour_Seated : CustomerBehaviour
     public void DisplayOrderAndWait()
     {
         //animate the customer sitting idly and waiting for their food
-        Debug.Log("Displaying customer order");
+        //Debug.Log("Displaying customer order");
 
         if (isServer)
         {
@@ -149,7 +149,7 @@ public class CustomerBehaviour_Seated : CustomerBehaviour
     //when customer waits too long for their order, they will sit angrily
     public void SitAngrily()
     {
-        Debug.Log("Sit angrily");
+       // Debug.Log("Sit angrily");
     }
 
     //check that the order being served to them is correct
@@ -157,7 +157,7 @@ public class CustomerBehaviour_Seated : CustomerBehaviour
     {
         OrderScript servedFoodScript = servedFood.GetComponent<OrderScript>();
 
-        Debug.Log("Checking if food served to customer is correct");
+        //Debug.Log("Checking if food served to customer is correct");
 
         if (servedFoodScript.DishLabel == customersOrder.ChickenRiceLabel)
         {
@@ -166,6 +166,8 @@ public class CustomerBehaviour_Seated : CustomerBehaviour
 
             //animate the customer eating
             EatingFood(servedFood, servedFoodScript);
+
+            TriggerCustomerCollider(false, false);
 
             return true;
         }
@@ -181,7 +183,7 @@ public class CustomerBehaviour_Seated : CustomerBehaviour
     //customer has been served the wrong food
     public void WrongCustomer()
     {
-        Debug.Log("wrong order!!!!!!!!");
+        //Debug.Log("wrong order!!!!!!!!");
     }
 
 
@@ -195,7 +197,6 @@ public class CustomerBehaviour_Seated : CustomerBehaviour
         //disable the order icon
         //orderIconPos.gameObject.SetActive(false);
 
-
         //move the dish from the player to the dishspawnpoint of the customer
         servedFoodScript.ToggleIcon(false);
         servedFood.transform.parent = dishSpawnPoint;
@@ -203,7 +204,7 @@ public class CustomerBehaviour_Seated : CustomerBehaviour
         servedFood.layer = LayerMask.NameToLayer("UnInteractable"); //do not allow player to interact with the dish
 
         //enable eating animation
-        Debug.Log("Animating customer eating food");
+        //Debug.Log("Animating customer eating food");
 
         if (isServer)
         {
@@ -240,12 +241,12 @@ public class CustomerBehaviour_Seated : CustomerBehaviour
         finishedEating = true;
 
         //disable eating animation
-        Debug.Log("Customer is done eating food");
+        //Debug.Log("Customer is done eating food");
 
         if (isServer)
         {
             //Instantiate dirty dish in front of customer
-            Debug.Log("Spawning dirty dishes");
+            //Debug.Log("Spawning dirty dishes");
             ServerSpawnDirtyDish();
         }
 
@@ -304,17 +305,17 @@ public class CustomerBehaviour_Seated : CustomerBehaviour
     public void LeaveRestaurant(bool isCustomerAngry)
     {
         //animate customer standing up
-        Debug.Log("Standing from table");
+        //Debug.Log("Standing from table");
 
         //if the customer is angry, play angry anim
         if (isCustomerAngry)
         {
             //animate the customer being angry
-            Debug.Log("customer is angry!");
+            //Debug.Log("customer is angry!");
         }
 
         //customer fades out of existence
-        Debug.Log("Customer fading out of existence");
+       // Debug.Log("Customer fading out of existence");
         RpcLeaveRestaurant();
 
     }

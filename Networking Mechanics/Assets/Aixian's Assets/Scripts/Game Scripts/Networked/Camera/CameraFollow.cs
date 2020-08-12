@@ -49,7 +49,7 @@ public class CameraFollow : MonoBehaviour
                 if (PlayerMovement.ActivePlayers[i].GetComponent<NetworkIdentity>().hasAuthority)
                 {
                     followPlayerTrans = PlayerMovement.ActivePlayers[i].GetComponent<Transform>();
-                    Debug.Log("CameraFollow - Looking for player" + PlayerMovement.ActivePlayers[i]);
+                    //Debug.Log("CameraFollow - Looking for player" + PlayerMovement.ActivePlayers[i]);
                     vCam.Follow = followPlayerTrans;
                     vCam.LookAt = followPlayerTrans;
                     return;

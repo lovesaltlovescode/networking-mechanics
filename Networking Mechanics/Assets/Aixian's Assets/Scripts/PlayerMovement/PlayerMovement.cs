@@ -57,9 +57,9 @@ public class PlayerMovement : NetworkBehaviour
 
         for (int i = 0; i < ActivePlayers.Count; i++)
         {
-            Debug.Log($"There are {ActivePlayers.Count} active players");
-            Debug.Log($"Player Movement - Player {i} is {ActivePlayers[i]}");
-            Debug.Log($"Player Movement - Player {i}'s Net ID is {PlayerIDs[i]}");
+           // Debug.Log($"There are {ActivePlayers.Count} active players");
+           // Debug.Log($"Player Movement - Player {i} is {ActivePlayers[i]}");
+           // Debug.Log($"Player Movement - Player {i}'s Net ID is {PlayerIDs[i]}");
         }
     }
 

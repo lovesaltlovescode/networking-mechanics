@@ -103,7 +103,7 @@ public class CustomNetworkManager : NetworkManager
         {
             conn.Disconnect(); //disconnect that client automatically
 
-            Debug.LogError("NetworkManagerCustom: No more players allowed to join");
+            //Debug.LogError("NetworkManagerCustom: No more players allowed to join");
             return;
 
         }
@@ -111,7 +111,7 @@ public class CustomNetworkManager : NetworkManager
         //If already in the game scene (game has started), do not allow for new connections
         if (SceneManager.GetActiveScene().path != menuScene)
         {
-            Debug.Log("NetworkManagerCustom: In game. No more players allowed to join");
+            //Debug.Log("NetworkManagerCustom: In game. No more players allowed to join");
             conn.Disconnect(); //disconnect that client automatically
             return;
         }
@@ -132,7 +132,7 @@ public class CustomNetworkManager : NetworkManager
         }
 
         base.OnServerDisconnect(conn); //Destroys player for connection, disconnects client properly
-        Debug.Log("Removed player");
+        //Debug.Log("Removed player");
     }
 
     //When server/host is stopped
@@ -145,13 +145,13 @@ public class CustomNetworkManager : NetworkManager
     public override void OnStopHost()
     {
         RoomPlayers.Clear();
-        Debug.Log("Custom Network Manager: Stopped host");
+        //Debug.Log("Custom Network Manager: Stopped host");
         StopClient();
     }
 
     public override void OnStopClient()
     {
-        Debug.Log("Custom Network Manager: Stopped client");
+        //Debug.Log("Custom Network Manager: Stopped client");
         SceneManager.LoadScene(0); //reload scene for client
         RoomPlayers.Clear();
     }
@@ -228,11 +228,11 @@ public class CustomNetworkManager : NetworkManager
             }
 
             //If ready to start
-            Debug.Log("Network Manager Custom: Starting game...");
+           // Debug.Log("Network Manager Custom: Starting game...");
 
             //Change Scene
             ServerChangeScene("Scene_Map_Shop");
-            Debug.Log("Server chanigng scene...");
+           // Debug.Log("Server chanigng scene...");
         }
     }
 
@@ -245,7 +245,7 @@ public class CustomNetworkManager : NetworkManager
         //if scene we're in right now is menu, and the new scene starts with scene map, it means we are going from the menu into a new game
         if (SceneManager.GetActiveScene().path == menuScene && newSceneName.StartsWith("Scene_Map"))
         {
-            Debug.Log("Server changed scene successful");
+           // Debug.Log("Server changed scene successful");
 
             //loop through all room players
             for (int i = RoomPlayers.Count - 1; i >= 0; i--)

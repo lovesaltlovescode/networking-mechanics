@@ -220,7 +220,7 @@ GameObject:
   - component: {fileID: 8061215712799328175}
   - component: {fileID: 8061215712799328174}
   - component: {fileID: 8061215712799328177}
-  m_Layer: 24
+  m_Layer: 13
   m_Name: Customer_CapsuleBody
   m_TagString: Customer
   m_Icon: {fileID: 0}
@@ -421,7 +421,6 @@ MonoBehaviour:
   orderIconPos: {fileID: 2696737361459990464}
   objectContainerPrefab: {fileID: 3119484819004831971, guid: 0c65bd13f95769341b01e0e069a7ad50,
     type: 3}
-  serveFood: 0
 --- !u!114 &8061215714513260888
 MonoBehaviour:
   m_ObjectHideFlags: 0

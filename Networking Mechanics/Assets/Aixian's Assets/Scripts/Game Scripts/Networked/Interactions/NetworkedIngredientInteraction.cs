@@ -87,7 +87,7 @@ public class NetworkedIngredientInteraction : NetworkBehaviour
 
         if (networkedPlayerInteraction.detectedObject.tag == "Customer")
         {
-            Debug.LogError("DO not pick up customer as plate???????????");
+           //Debug.LogError("DO not pick up customer as plate???????????");
             networkedPlayerInteraction.ChangePlayerState(PlayerState.Default);
             return;
         }
@@ -131,7 +131,7 @@ public class NetworkedIngredientInteraction : NetworkBehaviour
         //networkedPlayerInteraction.PickUpObject(networkedPlayerInteraction.detectedObject, 17, networkedPlayerInteraction.IsInventoryFull(), PlayerState.CanPickUpIngredient);
 
         //if player is holding something
-        if (networkedPlayerInteraction.IsInventoryFull())
+        if (networkedPlayerInteraction.playerInventory != null)
         {
 
             switch (networkedPlayerInteraction.playerInventory.tag)
@@ -146,7 +146,7 @@ public class NetworkedIngredientInteraction : NetworkBehaviour
                     }
                     else
                     {
-                        networkedPlayerInteraction.ChangePlayerState(PlayerState.HoldingDrink, true);
+                        Debug.Log("PLayer inventory tag " + networkedPlayerInteraction.playerInventory.tag);
                     }
                     break;
 
@@ -191,7 +191,7 @@ public class NetworkedIngredientInteraction : NetworkBehaviour
             else if(GameManager.Instance.ingredientsOnTrayCount >= 4 && nearIngredientTray)
             {
                 networkedPlayerInteraction.ChangePlayerState(PlayerState.Default);
-                Debug.Log("Ingredient tray full");
+                //Debug.Log("Ingredient tray full");
                 return;
             }
 
@@ -238,7 +238,7 @@ public class NetworkedIngredientInteraction : NetworkBehaviour
 
         networkedPlayerInteraction.CmdChangeHeldItem(HeldItem.dirtyplate);
         networkedPlayerInteraction.CmdPickUpObject(networkedPlayerInteraction.detectedObject);
-        Debug.Log("Detected object is plate " + networkedPlayerInteraction.detectedObject);
+        //Debug.Log("Detected object is plate " + networkedPlayerInteraction.detectedObject);
 
         //heldItem = HeldItem.dirtyplate;
         networkedPlayerInteraction.ChangePlayerState(PlayerState.HoldingDirtyPlate);
@@ -424,7 +424,7 @@ public class NetworkedIngredientInteraction : NetworkBehaviour
     {
 
         GameManager.Instance.ingredientsOnTrayCount += 1;
-        Debug.Log("GameManager - Ingredient on tray: " + GameManager.Instance.ingredientsOnTrayCount);
+        //Debug.Log("GameManager - Ingredient on tray: " + GameManager.Instance.ingredientsOnTrayCount);
         trayIngredient.layer = LayerMask.NameToLayer("UnInteractable");
 
         //Set the ingredient on tray to be the spawned object
@@ -469,8 +469,11 @@ public class NetworkedIngredientInteraction : NetworkBehaviour
             //if there is an ingredient being held
             if(networkedPlayerInteraction.playerInventory &&
                 networkedPlayerInteraction.playerInventory.layer == 15)
+            {
 
                 networkedPlayerInteraction.ChangePlayerState(PlayerState.CanThrowIngredient);
+            }
+
         }
 
         if(other.tag == "NoDropZone")
@@ -501,6 +504,11 @@ public class NetworkedIngredientInteraction : NetworkBehaviour
         {
             //Debug.Log("NetworkedIngredientInteraction - Exited trash bin!");
             nearTrashBin = false;
+
+            if(networkedPlayerInteraction.playerInventory && networkedPlayerInteraction.playerInventory.tag == "Drink")
+            {
+                networkedPlayerInteraction.ChangePlayerState(PlayerState.HoldingDrink, true);
+            }
         }
 
         if (other.tag == "NoDropZone")

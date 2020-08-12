@@ -17,11 +17,11 @@ public class DirtyDishScript : NetworkBehaviour
 
     public void Update()
     {
-        Debug.Log("Checking DirtyDishScript - is table script null? " + tableSeatedAt == null);
+        //Debug.Log("Checking DirtyDishScript - is table script null? " + tableSeatedAt == null);
 
         if(tableSeatedAt != null)
         {
-            Debug.Log("Checking DirtyDishScript - dish prefab is on table: " + tableSeatedAt.gameObject.name);
+            //Debug.Log("Checking DirtyDishScript - dish prefab is on table: " + tableSeatedAt.gameObject.name);
         }
     }
 
@@ -39,16 +39,16 @@ public class DirtyDishScript : NetworkBehaviour
         {
             tableSeatedAt.dirtyDishes.Add(this.gameObject);
 
-            Debug.Log("Checking DirtyDishScript - is table script null? " + tableSeatedAt == null);
+            //Debug.Log("Checking DirtyDishScript - is table script null? " + tableSeatedAt == null);
 
             if (tableSeatedAt != null)
             {
-                Debug.Log("Checking DirtyDishScript - dish prefab is on table: " + tableSeatedAt.gameObject.name);
+                //Debug.Log("Checking DirtyDishScript - dish prefab is on table: " + tableSeatedAt.gameObject.name);
             }
         }
         else
         {
-            Debug.Log("Table script wasn't assigned to dirty dish");
+            //Debug.Log("Table script wasn't assigned to dirty dish");
         }
     }
 
@@ -65,9 +65,9 @@ public class DirtyDishScript : NetworkBehaviour
         }
         else
         {
-            Debug.Log("Table script wasn't assigned to dirty dish");
+            //Debug.Log("Table script wasn't assigned to dirty dish");
 
-            Debug.Log("Checking DirtyDishScript - is table script null? " + tableSeatedAt == null);
+            //Debug.Log("Checking DirtyDishScript - is table script null? " + tableSeatedAt == null);
         }
     }
 
@@ -83,9 +83,9 @@ public class DirtyDishScript : NetworkBehaviour
         }
         else
         {
-            Debug.Log("Table script wasn't assigned to dirty dish");
+            //Debug.Log("Table script wasn't assigned to dirty dish");
 
-            Debug.Log("Checking DirtyDishScript - is table script null? " + tableSeatedAt == null);
+            //Debug.Log("Checking DirtyDishScript - is table script null? " + tableSeatedAt == null);
         }
     }
 }

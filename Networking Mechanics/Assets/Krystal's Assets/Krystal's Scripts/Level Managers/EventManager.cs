@@ -11,7 +11,7 @@ public class EventManager : MonoBehaviour
     {
         if (OnCustomerSpawn != null)
         {
-            Debug.Log("Customer has spawned, OnSpawn event called");
+            //Debug.Log("Customer has spawned, OnSpawn event called");
             OnCustomerSpawn();
         }
       
@@ -25,7 +25,7 @@ public class EventManager : MonoBehaviour
     {
         if (CustomersSeated != null)
         {
-            Debug.Log("Table is occupied, GuestsSeated event called");
+            //Debug.Log("Table is occupied, GuestsSeated event called");
             CustomersSeated();
         }
 
@@ -39,7 +39,7 @@ public class EventManager : MonoBehaviour
     {
         if (CustomersPickedUp != null)
         {
-            Debug.Log("Table is occupied, GuestsSeated event called");
+            //Debug.Log("Table is occupied, GuestsSeated event called");
             CustomersPickedUp();
         }
 

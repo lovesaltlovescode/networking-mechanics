@@ -85,17 +85,17 @@ public class TableScript : NetworkBehaviour
             return false;
         }
 
-        Debug.Log("checking if there are sufficient seats");
+       // Debug.Log("checking if there are sufficient seats");
 
         if (numGuests <= numSeats)
         {
             if (numGuests < numSeats)
             {
-                Debug.Log("less guests than seats");
+                //Debug.Log("less guests than seats");
             }
             else if (numGuests > numSeats)
             {
-                Debug.Log("enough seats for guests");
+                //Debug.Log("enough seats for guests");
             }
 
             //seat the guests
@@ -116,21 +116,21 @@ public class TableScript : NetworkBehaviour
     [ClientRpc]
     public void RpcTableOccupied()
     {
-        Debug.Log("CustomersSeated.Count: " + customersSeated.Count);
+       // Debug.Log("CustomersSeated.Count: " + customersSeated.Count);
         tableFeedbackScript.TableOccupied();
     }
 
     [ClientRpc]
     public void RpcTableDirty()
     {
-        Debug.Log("dirtyDishes.Count: " + dirtyDishes.Count);
+        //Debug.Log("dirtyDishes.Count: " + dirtyDishes.Count);
         tableFeedbackScript.TableDirty();
     }
 
     [ClientRpc]
     public void RpcNotEnoughSeats()
     {
-        Debug.Log("more guests than seats");
+       // Debug.Log("more guests than seats");
 
         //feedback to player that there are insufficient seats
         tableFeedbackScript.NotEnoughSeats();
@@ -144,7 +144,7 @@ public class TableScript : NetworkBehaviour
     [ServerCallback]
     public void ServerSeatGuests(int numGuests)
     {
-        Debug.Log("TableScript - Server: Guests are being seated");
+        //Debug.Log("TableScript - Server: Guests are being seated");
 
         for (int i = 0; i < numGuests; i++)
         {
@@ -166,7 +166,7 @@ public class TableScript : NetworkBehaviour
     [ClientRpc]
     public void RpcUpdateList(GameObject newSittingCustomer)
     {
-        Debug.Log("TableScript - RpcUpdateList called");
+        //Debug.Log("TableScript - RpcUpdateList called");
 
         //animate customer sitting, assign this table to the customer, and get it to generate an order
         newSittingCustomer.GetComponent<CustomerBehaviour_Seated>().CustomerJustSeated(this);
@@ -174,15 +174,15 @@ public class TableScript : NetworkBehaviour
 
         customersSeated.Add(newSittingCustomer);
         tableOrders.Add(newSittingCustomer.GetComponent<CustomerBehaviour_Seated>().CustomersOrder);
-        Debug.Log("TableScript - Table orders: " + tableOrders.Count);
+        //Debug.Log("TableScript - Table orders: " + tableOrders.Count);
     }
 
     [ClientRpc]
     public void RpcSeatGuests(int numGuests)
     {
-        Debug.Log("TableScript - RpcSeatGuests called");
+        //Debug.Log("TableScript - RpcSeatGuests called");
         numSeated = numGuests;
-        Debug.Log("numGuests: " + numSeated + ", customersSeated: " + customersSeated.Count);
+        //Debug.Log("numGuests: " + numSeated + ", customersSeated: " + customersSeated.Count);
 
         //after a random amount of time, call a server to take their order
         Invoke("ReadyToOrder", Random.Range(minAndMaxOrderGenTime.x, minAndMaxOrderGenTime.y));
@@ -196,7 +196,7 @@ public class TableScript : NetworkBehaviour
     [ServerCallback]
     public void ReadyToOrder()
     {
-        Debug.Log("Table Script - ServerReadyToOrder");
+       // Debug.Log("Table Script - ServerReadyToOrder");
         RpcReadyToOrder();
     }
 
@@ -225,14 +225,14 @@ public class TableScript : NetworkBehaviour
     [ServerCallback]
     public void ServerTakeOrder()
     {
-        Debug.Log("Table Script - ServerTakeOrder");
+       // Debug.Log("Table Script - ServerTakeOrder");
         RpcServerTakeOrder();
     }
 
     [ClientRpc]
     public void RpcServerTakeOrder()
     {
-        Debug.Log("Table Script - RpcServerTakeOrder");
+       // Debug.Log("Table Script - RpcServerTakeOrder");
         //stop the patience script
         patienceScript.StopPatienceMeter();
 
@@ -240,7 +240,7 @@ public class TableScript : NetworkBehaviour
         tableFeedbackScript.ToggleOrderIcon(false);
 
         //pass all the orders to the kitchen
-        Debug.Log("All orders: " + tableOrders);
+       // Debug.Log("All orders: " + tableOrders);
 
         //display the customer's order and make them wait
         foreach (GameObject customer in customersSeated)
@@ -315,7 +315,7 @@ public class TableScript : NetworkBehaviour
     //instantiate 1 customer at every seat, add them to a list, then call the method on the customer to manage their sitting animation + order
     public void SeatGuests(int numGuests)
     {
-        Debug.Log("Guests are being seated");
+      //  Debug.Log("Guests are being seated");
 
         //call the seated event
         for (int i = 0; i < numGuests; i++)
@@ -336,12 +336,12 @@ public class TableScript : NetworkBehaviour
             }
             else
             {
-                Debug.Log("tried to add customer to list, but customer's order was null");
+               // Debug.Log("tried to add customer to list, but customer's order was null");
             }
         }
 
         numSeated = numGuests;
-        Debug.Log("numGuests: " + numSeated + ", customersSeated: " + customersSeated.Count);
+       // Debug.Log("numGuests: " + numSeated + ", customersSeated: " + customersSeated.Count);
 
         //after a random amount of time, call a server to take their order
         Invoke("ServerReadyToOrder", Random.Range(minAndMaxOrderGenTime.x, minAndMaxOrderGenTime.y));
@@ -352,7 +352,7 @@ public class TableScript : NetworkBehaviour
     //enable the ui and start the patience meter.
     public void TestReadyToOrder()
     {
-        Debug.Log("TableScript - ReadyToOrder");
+       // Debug.Log("TableScript - ReadyToOrder");
         //move the table collider to a separate layer
         TableColliderManager.ToggleTableDetection(true, this.gameObject, takeOrderLayer);
 
@@ -382,7 +382,7 @@ public class TableScript : NetworkBehaviour
         TableColliderManager.ToggleTableDetection(false, this.gameObject);
 
         //pass all the orders to the kitchen
-        Debug.Log("All orders: " + tableOrders);
+        //Debug.Log("All orders: " + tableOrders);
 
         //display the customer's order and make them wait
         foreach (GameObject customer in customersSeated)

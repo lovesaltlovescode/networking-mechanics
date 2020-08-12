@@ -21,7 +21,7 @@ public class CustomerFeedback : MonoBehaviour
             
         }
 
-        Debug.Log("Eating pfx called");
+        //Debug.Log("Eating pfx called");
     }
 
     public void PlayAngryPFX()
@@ -31,7 +31,7 @@ public class CustomerFeedback : MonoBehaviour
             angry_PFX.Play();
         }
 
-        Debug.Log("Eating pfx called");
+        //Debug.Log("Eating pfx called");
     }
 
     public void PlayHappyPFX()
@@ -41,6 +41,6 @@ public class CustomerFeedback : MonoBehaviour
             happy_PFX.Play();
         }
 
-        Debug.Log("Eating pfx called");
+        //Debug.Log("Eating pfx called");
     }
 }

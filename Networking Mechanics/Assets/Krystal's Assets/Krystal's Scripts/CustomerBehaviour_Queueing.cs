@@ -54,7 +54,7 @@ public class CustomerBehaviour_Queueing : CustomerBehaviour
             {
                 if (i >= spawnableSize.minProbability && i <= spawnableSize.maxProbability)
                 {
-                    Debug.Log("Generate size of group: " + spawnableSize.numGuests);
+                   // Debug.Log("Generate size of group: " + spawnableSize.numGuests);
                     groupSizeNum = spawnableSize.numGuests;
 
                     return;
@@ -62,7 +62,7 @@ public class CustomerBehaviour_Queueing : CustomerBehaviour
             }
         }
 
-        Debug.Log("Didn't get array, returning zero");
+        //Debug.Log("Didn't get array, returning zero");
     }
 
     #endregion
@@ -80,7 +80,7 @@ public class CustomerBehaviour_Queueing : CustomerBehaviour
             {
                 if (i >= spawnableSize.minProbability && i <= spawnableSize.maxProbability)
                 {
-                    Debug.Log("Generate size of group: " + spawnableSize.numGuests);
+                   // Debug.Log("Generate size of group: " + spawnableSize.numGuests);
                     groupSizeNum = spawnableSize.numGuests;
 
                     return;
@@ -88,7 +88,7 @@ public class CustomerBehaviour_Queueing : CustomerBehaviour
             }
         }
 
-        Debug.Log("Didn't get array, returning zero");
+       // Debug.Log("Didn't get array, returning zero");
     }
 
 
@@ -126,7 +126,7 @@ public class CustomerBehaviour_Queueing : CustomerBehaviour
     [ClientRpc]
     public void RpcCustomerStartsWaiting()
     {
-        Debug.Log("CustomerBehaviour_Queuing - RpcCustomerStartsWaiting called");
+       // Debug.Log("CustomerBehaviour_Queuing - RpcCustomerStartsWaiting called");
         //enable the customer's group size indicator
         ShowGroupSizeIcon(GroupSizeNum);
 
@@ -143,17 +143,17 @@ public class CustomerBehaviour_Queueing : CustomerBehaviour
         //stop the patience meter
         TriggerPatienceMeter(false);
 
-        Debug.Log("Animating the customer curling up: " + carryPos);
+       // Debug.Log("Animating the customer curling up: " + carryPos);
     }
 
     [ServerCallback]
     public void CustomerWaitsTooLong()
     {
-        Debug.Log("Customer impatient method successfully invoked. Customer waited too long");
+       // Debug.Log("Customer impatient method successfully invoked. Customer waited too long");
         //customer fades out of existence
         
         RpcCustomerWaitsForTooLong();
-        Debug.Log("Customer fading out of existence");
+        //Debug.Log("Customer fading out of existence");
         GameManager.Instance.currentNumWaitingCustomers -= 1;
     }
 

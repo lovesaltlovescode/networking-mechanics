@@ -82,42 +82,42 @@ public class NetworkedCustomerInteraction : NetworkBehaviour
             switch (input)
             {
                 case "1":
-                    Debug.Log("Spawn RoastedChicWRiceBall");
+                   // Debug.Log("Spawn RoastedChicWRiceBall");
                     SpawnDish(1);
                     break;
 
                 case "2":
-                    Debug.Log("Spawn RoastedChicWPlainRice");
+                   // Debug.Log("Spawn RoastedChicWPlainRice");
                     SpawnDish(2);
                     break;
 
                 case "3":
-                    Debug.Log("Spawn RoastedChicWRiceBallEgg");
+                   // Debug.Log("Spawn RoastedChicWRiceBallEgg");
                     SpawnDish(3);
                     break;
 
                 case "4":
-                    Debug.Log("Spawn RoastedChicWPlainRiceEgg");
+                  //  Debug.Log("Spawn RoastedChicWPlainRiceEgg");
                     SpawnDish(4);
                     break;
 
                 case "5":
-                    Debug.Log("Spawn SteamedChicWRiceBall");
+                   // Debug.Log("Spawn SteamedChicWRiceBall");
                     SpawnDish(5);
                     break;
 
                 case "6":
-                    Debug.Log("Spawn SteamedChicWPlainRice");
+                   // Debug.Log("Spawn SteamedChicWPlainRice");
                     SpawnDish(6);
                     break;
 
                 case "7":
-                    Debug.Log("Spawn SteamedChicWRiceBallEgg");
+                   // Debug.Log("Spawn SteamedChicWRiceBallEgg");
                     SpawnDish(7);
                     break;
 
                 case "8":
-                    Debug.Log("Spawn SteamedChicWPlainRiceEgg");
+                   // Debug.Log("Spawn SteamedChicWPlainRiceEgg");
                     SpawnDish(8);
                     break;
 
@@ -178,11 +178,11 @@ public class NetworkedCustomerInteraction : NetworkBehaviour
         //check if detected object is table
         if (!networkedPlayerInteraction.detectedObject.GetComponent<TableScript>())
         {
-            Debug.Log("NetworkedCustomerInteraction- Player is not looking at a table");
+          //  Debug.Log("NetworkedCustomerInteraction- Player is not looking at a table");
             return;
         }
 
-        Debug.Log("NetworkedCustomerInteraction - Seat customer");
+       // Debug.Log("NetworkedCustomerInteraction - Seat customer");
 
         CmdSeatCustomer(networkedPlayerInteraction.detectedObject, networkedPlayerInteraction.playerInventory);
 
@@ -194,24 +194,24 @@ public class NetworkedCustomerInteraction : NetworkBehaviour
     [Command]
     public void CmdSeatCustomer(GameObject detectedObject, GameObject playerInventory)
     {
-        Debug.Log("NetworkedCustomerInteraction - CmdSeatCustomer");
-        Debug.Log("NetworkedCustomerInteraction - Detected object: " + detectedObject.tag);
+       // Debug.Log("NetworkedCustomerInteraction - CmdSeatCustomer");
+      //  Debug.Log("NetworkedCustomerInteraction - Detected object: " + detectedObject.tag);
 
         //get table's table script
         TableScript tableScript = detectedObject.GetComponent<TableScript>();
-        Debug.Log(tableScript);
+      //  Debug.Log(tableScript);
 
         var heldCustomer = networkedPlayerInteraction.attachmentPoint.transform.GetChild(0);
 
         //if table has enough seats
         if (tableScript.CheckSufficientSeats(heldCustomer.GetComponent<CustomerBehaviour_BeingHeld>().groupSizeNum))
         {
-            Debug.Log("NetworkedCustomerInteraction - Enough seats for customers");
+           // Debug.Log("NetworkedCustomerInteraction - Enough seats for customers");
             RpcSeatCustomer(playerInventory);
         }
         else
         {
-            Debug.Log("Not enough seats");
+           // Debug.Log("Not enough seats");
 
         }
     }
@@ -243,12 +243,12 @@ public class NetworkedCustomerInteraction : NetworkBehaviour
     //Taking customers orders
     public void CheckHandsEmpty()
     {
-        Debug.Log("NetworkedCustomerInteraction - CheckHandsEmpty");
+        //Debug.Log("NetworkedCustomerInteraction - CheckHandsEmpty");
 
         //check if player is looking at table
         if (!networkedPlayerInteraction.detectedObject.GetComponent<TableScript>())
         {
-            Debug.Log("NetworkedCustomerInteraction- Player is not looking at a table");
+            //Debug.Log("NetworkedCustomerInteraction- Player is not looking at a table");
             return;
         }
 
@@ -258,7 +258,7 @@ public class NetworkedCustomerInteraction : NetworkBehaviour
         //if player's hands are full, do not take order
         if (networkedPlayerInteraction.IsInventoryFull())
         {
-            Debug.Log("NetworkedCustomerInteraction- Player's hands are full, do not take order");
+            //Debug.Log("NetworkedCustomerInteraction- Player's hands are full, do not take order");
             tableScript.TableFeedbackScript.HandsFullFeedback();
             return;
         }
@@ -369,7 +369,7 @@ public class NetworkedCustomerInteraction : NetworkBehaviour
         CheckDish(networkedPlayerInteraction.detectedObject.GetComponentInChildren<OrderScript>().dishLabel, PlayerState.HoldingOrder);
         networkedPlayerInteraction.CmdPickUpObject(networkedPlayerInteraction.detectedObject);
 
-        Debug.Log("Dish picked up: " + networkedPlayerInteraction.detectedObject.GetComponentInChildren<OrderScript>().dishLabel);
+        ////Debug("Dish picked up: " + networkedPlayerInteraction.detectedObject.GetComponentInChildren<OrderScript>().dishLabel);
 
         if (networkedPlayerInteraction.playerInventory != null)
         {
@@ -442,7 +442,7 @@ public class NetworkedCustomerInteraction : NetworkBehaviour
 
         if (networkedPlayerInteraction.playerState != PlayerState.HoldingOrder)
         {
-            Debug.Log("NetworkedCustomerInteraction - Player not holding a dish");
+            //Debug("NetworkedCustomerInteraction - Player not holding a dish");
             return;
         }
 
@@ -464,7 +464,7 @@ public class NetworkedCustomerInteraction : NetworkBehaviour
     {
 
         GameObject heldDish = networkedPlayerInteraction.playerInventory;
-        Debug.Log("NetworkedCustomerInteraction - Held dish is " + heldDish.GetComponent<OrderScript>().dishLabel);
+       // Debug.Log("NetworkedCustomerInteraction - Held dish is " + heldDish.GetComponent<OrderScript>().dishLabel);
 
         //if there is a detectedobject
         if (detectedObject)
@@ -472,19 +472,20 @@ public class NetworkedCustomerInteraction : NetworkBehaviour
             //if looking at customer
             if (detectedObject.GetComponent<CustomerBehaviour_Seated>())
             {
-                Debug.Log("NetworkedCustomerInteraction - Looking at customer");
+               // Debug.Log("NetworkedCustomerInteraction - Looking at customer");
                 if (ServingCustomer(heldDish, detectedObject)) //if order is right
                 {
                     networkedPlayerInteraction.playerInventory = null;
+                    detectedObject = null;
                     networkedPlayerInteraction.CmdChangeHeldItem(HeldItem.nothing);
-                    Debug.Log("Is inventory full:" + networkedPlayerInteraction.IsInventoryFull());
+                   // Debug.Log("Is inventory full:" + networkedPlayerInteraction.IsInventoryFull());
                     networkedPlayerInteraction.ChangePlayerState(PlayerState.Default, true);
                 }
 
             }
             else
             {
-                Debug.Log("NetworkedCustomerInteraction - Not looking at customer that can be served");
+               // Debug.Log("NetworkedCustomerInteraction - Not looking at customer that can be served");
             }
         }
     }
@@ -496,7 +497,7 @@ public class NetworkedCustomerInteraction : NetworkBehaviour
         if (customer.GetComponent<CustomerBehaviour_Seated>())
         {
             //if the order being served is what the customer wanted,
-            Debug.Log("NetworkedCustomerInteraction - Serve order");
+            //Debug.Log("NetworkedCustomerInteraction - Serve order");
             return customer.GetComponent<CustomerBehaviour_Seated>().CheckOrder(dishObj);
 
         }

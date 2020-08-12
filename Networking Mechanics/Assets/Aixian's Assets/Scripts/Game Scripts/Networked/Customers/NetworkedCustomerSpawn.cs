@@ -39,7 +39,7 @@ public class NetworkedCustomerSpawn : NetworkBehaviour
 
     void AnnounceSpawn()
     {
-        Debug.Log("Customer has spawned, announcing spawn");
+        //Debug.Log("Customer has spawned, announcing spawn");
     }
 
     #endregion
@@ -125,7 +125,7 @@ public class NetworkedCustomerSpawn : NetworkBehaviour
 
             if (CheckPositionIsEmpty(newWaitingPos, checkRad))
             {
-                Debug.Log("new spawn position: " + newSpawnPos + ", newWaitingPos: " + newWaitingPos);
+                //Debug.Log("new spawn position: " + newSpawnPos + ", newWaitingPos: " + newWaitingPos);
                 GameObject newGrpOfCustomers = SpawnCustomer(newSpawnPos);
 
                 //RPCs
@@ -163,7 +163,7 @@ public class NetworkedCustomerSpawn : NetworkBehaviour
     [ServerCallback]
     private GameObject SpawnCustomer(Vector3 spawnPos)
     {
-        Debug.Log("NetworkedCustomerSpawn - SpawnCustomer called");
+        //Debug.Log("NetworkedCustomerSpawn - SpawnCustomer called");
 
         GameObject newGroupOfCustomers = Instantiate(customerQueueingPrefab, spawnPos, Quaternion.identity).gameObject;
 
@@ -175,14 +175,14 @@ public class NetworkedCustomerSpawn : NetworkBehaviour
     [ClientRpc]
     private void RpcSpawnCustomer(GameObject newGroupOfCustomers)
     {
-        Debug.Log("NetworkedCustomerSpawn - RPC called");
+        //Debug.Log("NetworkedCustomerSpawn - RPC called");
         newGroupOfCustomers.GetComponent<CustomerBehaviour_Queueing>().ServerGenerateSizeOfGroup(spawnRates);
 
         //create a new group of customers, and assign a group size to the customer
         //newGroupOfCustomers = Instantiate(customerQueueingPrefab, spawnPos, Quaternion.identity);
 
         // announce that a customer has spawned using the spawn event
-        Debug.Log("CallSpawnEvent()");
+        //Debug.Log("CallSpawnEvent()");
         EventManager.CallSpawnEvent();
 
         //update the number of customers in the waiting area
@@ -192,42 +192,20 @@ public class NetworkedCustomerSpawn : NetworkBehaviour
     [ServerCallback]
     public void ActivateCustomerWait(GameObject customer)
     {
-        Debug.Log("NetworkedCustomerSpawn - ActivateCustomerWait called");
+        //Debug.Log("NetworkedCustomerSpawn - ActivateCustomerWait called");
         RpcActivateCustomerWait(customer);
     }
 
     [ClientRpc]
     public void RpcActivateCustomerWait(GameObject customer)
     {
-        Debug.Log("NetworkedCustomerSpawn - RpcActivateCustomerWait called");
+        //Debug.Log("NetworkedCustomerSpawn - RpcActivateCustomerWait called");
         //customer starts waiting upon reaching waiting position
         customer.gameObject.GetComponent<CustomerBehaviour_Queueing>().CustomerStartsWaiting();
     }
 
 
     #endregion
-
-    ////spawn a customer prefab, assign a group size to it, then make it a child of an object in the scene
-    //private GameObject SpawnCustomer(Vector3 spawnPos)
-    //{
-    //    //create a new group of customers, and assign a group size to the customer
-    //    GameObject newGroupOfCustomers = Instantiate(customerQueueingPrefab, spawnPos, Quaternion.identity).gameObject;
-    //    newGroupOfCustomers.GetComponent<CustomerBehaviour_Queueing>().GenerateSizeOfGroup(spawnRates);
-
-    //    //make the new customer group spawned a child of the customerParent gameobj 
-    //    newGroupOfCustomers.transform.parent = customerParent.transform;
-
-    //    //update the number of customers in the waiting area
-    //    currentNumWaitingCustomers = customerParent.transform.childCount;
-
-    //    // announce that a customer has spawned using the spawn event
-    //    Debug.Log("CallSpawnEvent()");
-    //    EventManager.CallSpawnEvent();
-
-    //    return newGroupOfCustomers;
-    //}
-
-
 
     //move the gameobject egg to the position newpos and set it active in the hierarchy //-------------------------------------change egg.........
 

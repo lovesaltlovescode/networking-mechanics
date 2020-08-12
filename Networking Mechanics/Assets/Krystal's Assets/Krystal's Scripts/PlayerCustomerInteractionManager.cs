@@ -19,7 +19,7 @@ public class PlayerCustomerInteractionManager : MonoBehaviour
         //refer to the parent holding the customer collider
         customerGameobj = customerGameobj.transform.parent.gameObject;
         customerBeingHeld = customerGameobj;
-        Debug.Log("Customer being held");
+        //Debug.Log("Customer being held");
 
         //animate the customer curling up + stop the patience meter
         customerGameobj.GetComponent<CustomerBehaviour_Queueing>().CustomerPickedUp(pointAboveHead);
@@ -42,17 +42,17 @@ public class PlayerCustomerInteractionManager : MonoBehaviour
     //When the player is looking at a table and is carrying a customer,
     public void SeatCustomer(List<GameObject> playerInventory, GameObject tableGameobj)
     {
-        Debug.Log("Seat customer method called");
+       // Debug.Log("Seat customer method called");
 
         if (!tableGameobj.GetComponent<TableScript>())
         {
-            Debug.Log("player is not looking at table");
+            //Debug.Log("player is not looking at table");
             return;
         }
 
         if (!playerInventory.Contains(customerBeingHeld))
         {
-            Debug.Log("player is not holding customer??");
+            //Debug.Log("player is not holding customer??");
             return;
         }
 
@@ -61,7 +61,7 @@ public class PlayerCustomerInteractionManager : MonoBehaviour
         //If the table has enough seats for the group of customers,
         if (tableScript.CheckSufficientSeats(customerBeingHeld.GetComponent<CustomerBehaviour_Queueing>().GroupSizeNum))
         {
-            Debug.Log("Enough seats for customers");
+            //Debug.Log("Enough seats for customers");
 
             //disallow tables from being detected
             TableColliderManager.ToggleTableDetection(false);
@@ -105,7 +105,7 @@ public class PlayerCustomerInteractionManager : MonoBehaviour
         //check if the player is looking at a table
         if (tableGameobj.GetComponent<TableScript>() == null)
         {
-            Debug.Log("player is not looking at table");
+            //Debug.Log("player is not looking at table");
             return;
         }
 
@@ -115,7 +115,7 @@ public class PlayerCustomerInteractionManager : MonoBehaviour
         //if the player's hands are full, don't take their order
         if (playerInventory.Count > 0)
         {
-            Debug.Log("player's hands are full");
+            //Debug.Log("player's hands are full");
             tableScript.TableFeedbackScript.HandsFullFeedback();
             return;
         }
@@ -138,7 +138,7 @@ public class PlayerCustomerInteractionManager : MonoBehaviour
             //if the player is looking at a customer
             if (_detectedObj.GetComponent<CustomerBehaviour_Seated>() != null || _detectedObj.transform.parent.gameObject.GetComponent<CustomerBehaviour_Seated>() != null)
             {
-                Debug.Log("PlayerCustomerInteraction - Looking at customer");
+                //Debug.Log("PlayerCustomerInteraction - Looking at customer");
                 if (ServingCustomer(heldDish, _detectedObj))
                 {
                     _playerInventory.Remove(heldDish);
@@ -146,7 +146,10 @@ public class PlayerCustomerInteractionManager : MonoBehaviour
                 }
             } else
             {
-                Debug.Log("not looking at a customer that can be served");
+                
+                
+                
+                //Debug.Log("not looking at a customer that can be served");
             }
         }
     }
@@ -177,7 +180,7 @@ public class PlayerCustomerInteractionManager : MonoBehaviour
         //if the customer gameobj does not contain the required script, get it from the parent
         if (customer.GetComponent<CustomerBehaviour_Seated>() == null)
         {
-            Debug.Log("PlayerCustomerInteraction - Looking at customer2");
+            //Debug.Log("PlayerCustomerInteraction - Looking at customer2");
             //get the parent object of the identified collider (should contain the customer behaviour script)
             customer = customer.transform.parent.gameObject;
 
@@ -187,7 +190,7 @@ public class PlayerCustomerInteractionManager : MonoBehaviour
         if (customer.GetComponent<CustomerBehaviour_Seated>() != null)
         {
             //if the order being served is what the customer wanted,
-            Debug.Log("PlayerCustomerInteraction - Serve order");
+            ///Debug.Log("PlayerCustomerInteraction - Serve order");
             ///return customer.GetComponent<CustomerBehaviour_Seated>().CheckOrder(dishObj);
             
         }
