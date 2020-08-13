@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿#define DEBUG
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,6 +8,15 @@ using UnityEngine;
 //May include other toggling in the future
 public class ToggleCameras : MonoBehaviour
 {
+
+#if (DEBUG)
+
+    public void OnEnable()
+    {
+        Debug.Log("In editor");
+    }
+
+#endif  
 
     public Camera vrCamera;
     public Camera mobileCam;

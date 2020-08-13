@@ -19,6 +19,7 @@ public class CustomerBehaviour_Seated : CustomerBehaviour
 
     public GameObject objectContainerPrefab;
 
+    
 
     //[SerializeField] private GameObject roastedPlain, roastedPlain_egg, roastedBall, roastedBall_egg;
     //[SerializeField] private GameObject steamedPlain, steamedPlain_egg, steamedBall, steamedBall_egg;
@@ -109,6 +110,7 @@ public class CustomerBehaviour_Seated : CustomerBehaviour
             //instantiate the order icon as the child of the orderIconPos obj
 
             GameObject orderIcon = Instantiate(customersOrder.OrderIcon, orderIconPos);
+            GameManager.Instance.chickenRiceOrders.Add(customersOrder);
             //NetworkServer.Spawn(orderIcon);
         }
     }

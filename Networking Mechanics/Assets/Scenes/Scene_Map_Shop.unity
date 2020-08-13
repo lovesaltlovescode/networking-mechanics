@@ -2861,7 +2861,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sceneId: 3162057532
-  serverOnly: 1
+  serverOnly: 0
   m_AssetId: 
 --- !u!1001 &338889989
 PrefabInstance:

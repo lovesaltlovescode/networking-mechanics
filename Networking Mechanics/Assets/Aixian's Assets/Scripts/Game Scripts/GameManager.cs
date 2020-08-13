@@ -67,6 +67,8 @@ public class GameManager : NetworkBehaviour
     public GameObject[] dishesOnCounter = new GameObject[3];
     //public int dishCount; //number of dishes on the counter
 
+    public List<ChickenRice> chickenRiceOrders = new List<ChickenRice>();
+
     #endregion
 
     private void Awake()

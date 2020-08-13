@@ -97,6 +97,7 @@ public class OrderGeneration : NetworkBehaviour
     }
 }
 
+[System.Serializable]
 //Object with order properties
 public class ChickenRice
 {
