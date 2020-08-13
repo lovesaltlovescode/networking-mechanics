@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3362112263386394288}
   - component: {fileID: 1430357988469620618}
-  m_Layer: 13
+  m_Layer: 2
   m_Name: DrinkContainer
   m_TagString: Drink
   m_Icon: {fileID: 0}
@@ -56,7 +56,7 @@ GameObject:
   - component: {fileID: 8202689103089077272}
   - component: {fileID: 6896124352203982922}
   - component: {fileID: 8895257401862256960}
-  m_Layer: 22
+  m_Layer: 2
   m_Name: DrinkPrefab
   m_TagString: Drink
   m_Icon: {fileID: 0}

@@ -34,12 +34,16 @@ public class NetworkedDrinkInteraction : NetworkBehaviour
             return;
         }
         //check if there are too many drinks on the counter
-        if (!GameManager.Instance.isCooldown  && GameManager.Instance.drinksCount < 2)
+        if (!GameManager.Instance.isCooldown  && GameManager.Instance.drinksCount < 2 && !networkedPlayerInteraction.playerInventory)
         {
             networkedPlayerInteraction.ChangePlayerState(PlayerState.CanSpawnDrink, true);
         }
         else
         {
+            if (networkedPlayerInteraction.playerInventory)
+            {
+                return;
+            }
             networkedPlayerInteraction.ChangePlayerState(PlayerState.Default);
         }
     }

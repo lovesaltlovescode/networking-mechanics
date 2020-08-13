@@ -146,7 +146,7 @@ public class NetworkedIngredientInteraction : NetworkBehaviour
                     }
                     else
                     {
-                        Debug.Log("PLayer inventory tag " + networkedPlayerInteraction.playerInventory.tag);
+                        Debug.Log("Player inventory tag " + networkedPlayerInteraction.playerInventory.tag);
                     }
                     break;
 
@@ -513,7 +513,7 @@ public class NetworkedIngredientInteraction : NetworkBehaviour
 
         if (other.tag == "NoDropZone")
         {
-            canDropIngredient = true;
+            //canDropIngredient = true;
         }
     }
 

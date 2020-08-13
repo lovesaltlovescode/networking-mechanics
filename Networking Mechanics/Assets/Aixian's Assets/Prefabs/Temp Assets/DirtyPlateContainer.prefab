@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1039523431171140441}
   - component: {fileID: 2455753151612756040}
   - component: {fileID: 449268556829557391}
-  m_Layer: 13
+  m_Layer: 2
   m_Name: DirtyPlateModel
   m_TagString: DirtyPlate
   m_Icon: {fileID: 0}
@@ -105,7 +105,7 @@ GameObject:
   - component: {fileID: 7360094905825950275}
   - component: {fileID: -1986890382405078714}
   - component: {fileID: 4722721002854878656}
-  m_Layer: 13
+  m_Layer: 2
   m_Name: DirtyPlateContainer
   m_TagString: DirtyPlate
   m_Icon: {fileID: 0}
@@ -152,4 +152,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 194e64908062e5043977b350dafd8413, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
   tableSeatedAt: {fileID: 0}

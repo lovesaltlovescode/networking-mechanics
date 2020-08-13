@@ -12,12 +12,15 @@ EditorBuildSettings:
     path: Assets/Scenes/Scene_Map_Shop.unity
     guid: b2e8d259ec5d7f941b5b36ebdd5b92c5
   - enabled: 0
-    path: Assets/Scenes/Scene_Map_Test.unity
-    guid: f096ac4ce98cd5f42be9caa00c8ebb73
+    path: 
+    guid: 00000000000000000000000000000000
   - enabled: 0
     path: Assets/Scenes/Test/PlayerMovementJoystick.unity
     guid: b1ebfb7b9c75ce146af25f8e48332c0c
   - enabled: 0
     path: Assets/Scenes/Test/JoystickTutorial.unity
     guid: 37eaf9025b5518e4f9baf574ef736ee7
+  - enabled: 0
+    path: Assets/Scenes/Krystal's Scenes/Crosplatform Send Order Test.unity
+    guid: 1b73a1d652c757c44a623f1e4f19bb8e
   m_configObjects: {}
