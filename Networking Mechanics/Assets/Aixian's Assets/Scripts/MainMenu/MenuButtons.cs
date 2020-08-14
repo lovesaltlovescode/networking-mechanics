@@ -36,31 +36,31 @@ public class MenuButtons : MonoBehaviour
     #region PlatformDependencies
 
 
-#if UNITY_ANDROID
+//#if UNITY_ANDROID
 
-    public void Awake()
-    {
-        Debug.Log("On android!");
-        hostRoomButton.gameObject.SetActive(false);
-    }
+//    public void Awake()
+//    {
+//        Debug.Log("On android!");
+//        hostRoomButton.gameObject.SetActive(false);
+//    }
 
-#elif UNITY_EDITOR
+//#elif UNITY_EDITOR
 
-    public void Awake()
-    {
-        Debug.Log("In editor!");
-        hostRoomButton.gameObject.SetActive(true);
-    }
+//    //public void Awake()
+//    //{
+//    //    Debug.Log("In editor!");
+//    //    hostRoomButton.gameObject.SetActive(true);
+//    //}
 
-#elif UNITY_STANDALONE_WIN
+//#elif UNITY_STANDALONE_WIN
 
-    public void Awake()
-    {
-        Debug.Log("Standalone windows!");
-        //hostRoomButton.gameObject.SetActive(false);
-    }
+//    public void Awake()
+//    {
+//        Debug.Log("Standalone windows!");
+//        //hostRoomButton.gameObject.SetActive(false);
+//    }
 
-#endif
+//#endif
 
     #endregion
     //Disable host button for android users (clients)

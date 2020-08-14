@@ -6,6 +6,7 @@ using UnityEngine.UI;
 using TMPro;
 using UnityEngine.SceneManagement;
 using System;
+using Mirror.Discovery;
 
 #region Summary
 
@@ -16,8 +17,11 @@ using System;
 //Clients can leave the room
 //Host can destroy the room
 #endregion
+
 public class NetworkRoom : NetworkBehaviour
 {
+
+    readonly Dictionary<long, ServerResponse> discoveredServers = new Dictionary<long, ServerResponse>(); //list of discovered server's ip address
 
     //VARIABLES
     [Header("UI")]
@@ -227,6 +231,7 @@ public class NetworkRoom : NetworkBehaviour
 
         //clients all have to leave
         NetworkRoomManager.StopHost();
+        discoveredServers.Clear(); //clear existing servers
         //NetworkRoomManager.StopClient();
         //Debug.Log("Stop host");
         NetworkRoomManager.RoomPlayers.Clear(); //Clear out existing room players

@@ -1918,8 +1918,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b51864e586ab3f4c91046b300b32cfa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  vrCamera: {fileID: 1946205038}
-  mobileCam: {fileID: 580660444}
+  hostRoomBtn: {fileID: 0}
+  joinRoomBtn: {fileID: 0}
 --- !u!4 &1550642505
 Transform:
   m_ObjectHideFlags: 0
@@ -2000,6 +2000,12 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1568779757 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3015341057111696275, guid: 2d7b3e71dabc0ef4495a2b1e80093b4f,
+    type: 3}
+  m_PrefabInstance: {fileID: 4639397092461569830}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1753632367
 GameObject:
   m_ObjectHideFlags: 0
@@ -2221,6 +2227,12 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!1 &1868506911 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4639397092361214264, guid: 2d7b3e71dabc0ef4495a2b1e80093b4f,
+    type: 3}
+  m_PrefabInstance: {fileID: 4639397092461569830}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1873368038
 GameObject:
   m_ObjectHideFlags: 0
@@ -2418,6 +2430,7 @@ GameObject:
   - component: {fileID: 1946205038}
   - component: {fileID: 1946205037}
   - component: {fileID: 1946205040}
+  - component: {fileID: 1946205041}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -2497,7 +2510,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1946205036}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d34f3be723b7d574b88248c5ed72fdaf, type: 3}
   m_Name: 
@@ -2527,6 +2540,20 @@ MonoBehaviour:
   foldoutSettings: 0
   lastCamID: 0
   lastCam: {fileID: 0}
+--- !u!114 &1946205041
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1946205036}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1b51864e586ab3f4c91046b300b32cfa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hostRoomBtn: {fileID: 1868506911}
+  joinRoomBtn: {fileID: 1568779757}
 --- !u!1 &2060185032
 GameObject:
   m_ObjectHideFlags: 0
@@ -2770,6 +2797,11 @@ PrefabInstance:
       value: 1.1724
       objectReference: {fileID: 0}
     - target: {fileID: 4639397091621771285, guid: 2d7b3e71dabc0ef4495a2b1e80093b4f,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4639397092361214264, guid: 2d7b3e71dabc0ef4495a2b1e80093b4f,
         type: 3}
       propertyPath: m_IsActive
       value: 1

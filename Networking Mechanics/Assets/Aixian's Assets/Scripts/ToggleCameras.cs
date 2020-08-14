@@ -1,4 +1,5 @@
-﻿#define DEBUG
+﻿#define VR
+//#define MOBILE
 
 using System.Collections;
 using System.Collections.Generic;
@@ -8,46 +9,31 @@ using UnityEngine;
 //May include other toggling in the future
 public class ToggleCameras : MonoBehaviour
 {
+    public GameObject hostRoomBtn;
+    public GameObject joinRoomBtn;
 
-#if (DEBUG)
-
-    public void OnEnable()
-    {
-        Debug.Log("In editor");
-    }
-
-#endif  
-
-    public Camera vrCamera;
-    public Camera mobileCam;
-
-#if UNITY_EDITOR
+#if (VR)
 
     public void Awake()
     {
-        Debug.Log("In editor!");
-        vrCamera.gameObject.SetActive(true);
-        mobileCam.gameObject.SetActive(false);
-        
-    }
+        Debug.Log("In VR");
+        //Show the host room
+        hostRoomBtn.SetActive(true);
+        joinRoomBtn.SetActive(false);
 
-#elif UNITY_STANDALONE_WIN
-
-    public void Awake()
-    {
-        //Debug.Log("Standalone windows!");
-        mobileCam.gameObject.SetActive(true);
-        vrCamera.gameObject.SetActive(false);
-    }
-
-
-#elif UNITY_ANDROID
-
-    public void Awake()
-    {
-        Debug.Log("On android!");
-        mobileCam.gameObject.SetActive(true);
-        vrCamera.gameObject.SetActive(false);
     }
 #endif
+
+#if (MOBILE)
+
+    public void Awake()
+    {
+        Debug.Log("In mobile");
+        //Show the host room
+        hostRoomBtn.SetActive(false);
+        joinRoomBtn.SetActive(true);
+    }
+
+#endif
+
 }
