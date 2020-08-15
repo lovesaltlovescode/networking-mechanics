@@ -115,7 +115,6 @@ public class CustomerBehaviour_Seated : CustomerBehaviour
         }
     }
 
-
     #endregion
 
     #region Waiting and Ordering
@@ -185,9 +184,20 @@ public class CustomerBehaviour_Seated : CustomerBehaviour
     //customer has been served the wrong food
     public void WrongCustomer()
     {
-        //Debug.Log("wrong order!!!!!!!!");
+        if (isServer)
+        {
+            RpcWrongCustomer();
+        }
     }
 
+    [ClientRpc]
+    public void RpcWrongCustomer()
+    {
+        //play angry anim
+        CustomerFeedbackScript.PlayAngryPFX();
+        CustomerFeedbackScript.WrongOrderServed();
+        //reduce patience
+    }
 
     #endregion
 
@@ -217,6 +227,9 @@ public class CustomerBehaviour_Seated : CustomerBehaviour
     [ClientRpc]
     public void RpcEatingFood()
     {
+        //play customer happy anim
+        CustomerFeedbackScript.PlayHappyPFX();
+
         //disable the order icon
         orderIconPos.gameObject.SetActive(false); //may delete later, depending on if clients get this
 

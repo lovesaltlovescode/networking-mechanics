@@ -221,6 +221,7 @@ public class NetworkedDrinkInteraction : NetworkBehaviour
 
         //call method to increase patience here
         detectedObject.GetComponent<CustomerPatience>().IncreasePatience(CustomerPatienceStats.drinkPatienceIncrease);
+        detectedObject.GetComponent<CustomerFeedback>().PlayHappyPFX();
 
         Destroy(drink);
 

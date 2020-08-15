@@ -84,4 +84,8 @@ public class GameManager : NetworkBehaviour
         }
     }
 
+    private void Start()
+    {
+        LevelTimer.Instance.StartTimer();
+    }
 }

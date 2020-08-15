@@ -28,18 +28,6 @@ public class CustomerBehaviour_BeingHeld : NetworkBehaviour
     }
 
 
-    [ClientRpc]
-    public void RpcUpdateGroupSizeNum(int updatedSize)
-    {
-        groupSizeNum = updatedSize;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        //Debug.Log("CustomerBehaviour_BeingHeld - Group size: " + groupSizeNum);
-    }
-
     //display the number of people in the group of customer queueing 
     public void HeldCustomer_ShowGroupSizeIcon(int groupSize)
     {

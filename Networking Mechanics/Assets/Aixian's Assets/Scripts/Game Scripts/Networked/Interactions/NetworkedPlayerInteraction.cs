@@ -348,14 +348,7 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
     [Command]
     public void CmdPickUpObject(GameObject detectedObject)
     {
-        //set player's syncvar so clients can show the right ingredient
-        //according to which item the sceneobject currently contains
-        //Debug.Log("Debugging ingredient - Part 3" + detectedObject);
-
-        //destroy the scene object when it has been picked up, on the SERVER
-        //Debug.Log("Destroying detected object: " + detectedObject);
         NetworkServer.Destroy(detectedObject);
-        //Debug.Log("//Debugging ingredient - Part 5");
 
     }
 
@@ -551,6 +544,12 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
         {
             //no object hit
             Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * raycastLength, Color.white);
+            detectedObject = null;
+
+            if (CanChangePlayerState())
+            {
+                ChangePlayerState(PlayerState.Default);
+            }
             //Debug.Log("NetworkedPlayer - No object found");
 
         }

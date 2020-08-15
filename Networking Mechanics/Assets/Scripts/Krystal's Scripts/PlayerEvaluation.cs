@@ -53,25 +53,25 @@ public class Evaluation_OverallPlayerPerformance
 
 
     //returns the number of stars the player earned
-    //public static int EvaluateScore(float scoreEarned)
-    //{
-    //    if(scoreEarned >= LevelStats.ThreeStarScore_current)
-    //    {
-    //        return 3;
-    //    }
-    //    else if(scoreEarned >= LevelStats.TwoStarScore_current)
-    //    {
-    //        return 2;
-    //    }
-    //    else if(scoreEarned >= LevelStats.OneStarScore_current)
-    //    {
-    //        return 1;
-    //    }
-    //    else
-    //    {
-    //        return 0;
-    //    }
-    //}
+    public static int EvaluateScore(float scoreEarned)
+    {
+        if (scoreEarned >= LevelStats.ThreeStarScore_current)
+        {
+            return 3;
+        }
+        else if (scoreEarned >= LevelStats.TwoStarScore_current)
+        {
+            return 2;
+        }
+        else if (scoreEarned >= LevelStats.OneStarScore_current)
+        {
+            return 1;
+        }
+        else
+        {
+            return 0;
+        }
+    }
 
 }
 
@@ -137,12 +137,12 @@ public class Evaluation_CustomerService
     //updates the number of customers served, the mood they were in and the avg serving speed
     //call when a customer has been interacted with (seated, order taken, food served)
     public static void UpdateCustomerServiceStats(float fractionOfPatienceLeft)
-    {        
-        if(fractionOfPatienceLeft >= happy_minPatience)
+    {
+        if (fractionOfPatienceLeft >= happy_minPatience)
         {
             numHappyCustomers++;
         }
-        else if(fractionOfPatienceLeft > 0)
+        else if (fractionOfPatienceLeft > 0)
         {
             numNeutralCustomers++;
         }
@@ -186,7 +186,7 @@ public class Evaluation_CustomerService
 
 public class Evaluation_Cooking
 {
-    
+
     private static float servedFoodQuality_avg = 0f,
                         servedFoodQuality_total = 0f; //the chef's cooking evaluation score
     private static int numServedDishes = 0; //total num of dishes the chef has served

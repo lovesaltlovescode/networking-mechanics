@@ -11,6 +11,7 @@ using UnityEngine.UI;
 
 public class CustomerPatience : MonoBehaviour
 {
+    #region unchanged variables
     //variables
     [SerializeField] private float updateFrequency = 0.2f;
     [SerializeField] private Image patienceMeterImg;
@@ -19,6 +20,7 @@ public class CustomerPatience : MonoBehaviour
 
     private Coroutine patienceMeterCoroutine;
     private bool isCoroutineRunning = false; //bool used to ensure that coroutine does not get called while coroutine is running
+    #endregion
 
     [HideInInspector] public float currentPatience = 0f;
 
@@ -29,18 +31,15 @@ public class CustomerPatience : MonoBehaviour
     [SerializeField] private GameObject increaseFeedbackPFX;
     [SerializeField] private Transform overheadFeedbackGameObj;
 
+    private bool coroutineIsPaused = false;
+
     #region Debug Shortcuts
     /*
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            StartPatienceMeter(CustomerPatienceStats.customerPatience_Queue);
-        }
-
-        if (Input.GetKeyDown(KeyCode.X))
-        {
-            StopPatienceMeter();
+            IncreasePatience(CustomerPatienceStats.drinkPatienceIncrease, increaseFeedback, overheadFeedbackGameObj);
         }
     } 
     */
@@ -80,61 +79,86 @@ public class CustomerPatience : MonoBehaviour
 
         isCoroutineRunning = false;
 
+        //add customer to evaluation
+        Evaluation_CustomerService.UpdateCustomerServiceStats(patienceMeterImg.fillAmount);
+
         //disable the image
         patienceMeterImg.enabled = false;
 
         //reset the patience
-        currentPatience = 0f; //--------------------------------------------------------------------------- change here
+        currentPatience = 0f;
 
+        //stop the coroutine
         StopCoroutine(patienceMeterCoroutine);
+    }
+
+
+    public void TogglePausePatienceMeter(bool pause)
+    {
+        if (!isCoroutineRunning || coroutineIsPaused == pause)
+        {
+            //bool used to ensure that coroutine is only stopped once
+            return;
+        }
+        //update the bool
+        coroutineIsPaused = pause;
+
+        //toggle the image
+        patienceMeterImg.enabled = !pause; //if paused, patience meter should not be visible
+
     }
 
 
     //method that updates customers' patience meter, then, when patience runs out, calls the method (callback) passed into it 
     //understanding callbacks: https://stackoverflow.com/questions/54772578/passing-a-function-as-a-function-parameter/54772707
-    private IEnumerator UpdatePatienceMeter(float totalPatience, Action callback = null, bool changeColor = true, bool delayColorChange = true, float colorChangingPoint = 0.5f)
+    private IEnumerator UpdatePatienceMeter(float totalPatience, Action callback = null, bool changeColor = true, bool delayColorChange = true, float colorChangingPoint = 0.4f)
     {
-        currentPatience = totalPatience; //------------------------------------------------------------------------- change here
+        currentPatience = totalPatience;
 
         //enable the patience meter img so player can see
         patienceMeterImg.enabled = true;
 
         while (currentPatience > 0)
         {
-            //caps the current patience
-            if (currentPatience > totalPatience)
+            if (LevelTimer.IsPaused || coroutineIsPaused) //if the game or coroutine is paused
             {
-                currentPatience = totalPatience;
-            }
-
-            //calculate amount of patience left
-            currentPatience -= updateFrequency * reductionRate; //-------------------------------------------------- change here
-            patienceMeterImg.fillAmount = currentPatience / totalPatience;
-
-            if (changeColor)
-            {
-                float colorLerpAmt = currentPatience / totalPatience;
-
-                //if delayColorChange is set to true, 
-                //slider will not change colour until 
-                //the customer has colorChangingPoint amt of patience left 
-                if (delayColorChange && colorLerpAmt > colorChangingPoint) //--------------------------------------- change here
+                //caps the current patience
+                if (currentPatience > totalPatience)
                 {
-                    colorLerpAmt = 1f;
+                    currentPatience = totalPatience;
                 }
 
-                patienceMeterImg.color = Color.Lerp(finalColor, startColor, colorLerpAmt);
+                //calculate amount of patience left
+                currentPatience -= updateFrequency * reductionRate; //-------------------------------------------------- change here
+                patienceMeterImg.fillAmount = currentPatience / totalPatience;
+
+                if (changeColor)
+                {
+                    float colorLerpAmt = currentPatience / totalPatience;
+
+                    //if delayColorChange is set to true, 
+                    //slider will not change colour until 
+                    //the customer has colorChangingPoint amt of patience left 
+                    if (delayColorChange && colorLerpAmt > colorChangingPoint) //--------------------------------------- change here
+                    {
+                        colorLerpAmt = 1f;
+                    }
+
+                    patienceMeterImg.color = Color.Lerp(finalColor, startColor, colorLerpAmt);
+                }
             }
 
             yield return new WaitForSeconds(updateFrequency);
         }
 
-
-        //Debug.Log("Calling the impatient method");
+        Debug.Log("Calling the impatient method");
         if (callback != null)
         {
             callback?.Invoke();
         }
+
+        //add angry customer to evaluation
+        Evaluation_CustomerService.UpdateCustomerServiceStats(0);
 
         //disable the image
         patienceMeterImg.enabled = false;
@@ -142,6 +166,7 @@ public class CustomerPatience : MonoBehaviour
         isCoroutineRunning = false;
 
         yield return null;
+
     }
 
     //method that increases the patience meter of the customer
@@ -150,7 +175,7 @@ public class CustomerPatience : MonoBehaviour
     {
         if (isCoroutineRunning)
         {
-            //Debug.Log("IncreasePatience(): Coroutine is running");
+            Debug.Log("IncreasePatience(): Coroutine is running");
 
             //increase the customer's current patience
             currentPatience += amtIncrease;
@@ -164,10 +189,9 @@ public class CustomerPatience : MonoBehaviour
         }
         else
         {
-           // Debug.Log("IncreasePatience(): Coroutine is not running. Cannot increase patience.");
+            Debug.Log("IncreasePatience(): Coroutine is not running. Cannot increase patience.");
         }
 
     }
-
 
 }
