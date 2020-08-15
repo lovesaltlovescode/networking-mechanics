@@ -63,8 +63,8 @@ public class GameManager : NetworkBehaviour
     public bool isCooldown = false;
 
     [Header("Dishes")]
-    public Transform[] dishPositions;
-    public GameObject[] dishesOnCounter = new GameObject[3];
+    public Transform[] dishSpawnPoints;
+    public GameObject[] dishesOnCounter = new GameObject[3] { null, null, null };
     //public int dishCount; //number of dishes on the counter
 
     public List<ChickenRice> chickenRiceOrders = new List<ChickenRice>();

@@ -85,6 +85,8 @@ public class TableScript : NetworkBehaviour
             return false;
         }
 
+
+
        // Debug.Log("checking if there are sufficient seats");
 
         if (numGuests <= numSeats)
@@ -246,6 +248,12 @@ public class TableScript : NetworkBehaviour
         foreach (GameObject customer in customersSeated)
         {
             customer.GetComponent<CustomerBehaviour_Seated>().DisplayOrderAndWait();
+        }
+
+        //pass all the orders to the kitchen
+        foreach (ChickenRice order in tableOrders)
+        {
+            VR_OrderManagement.Instance.AddOrderToList(order.RoastedChic, order.RicePlain, order.HaveEgg);
         }
 
         //move the table collider back to the environment layer

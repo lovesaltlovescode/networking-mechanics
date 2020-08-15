@@ -1,13 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Mirror;
 
-public class GenerateDish : MonoBehaviour
+public class SpawnDishOnCounter : NetworkBehaviour
 {
     #region Singleton
 
-    private static GenerateDish _instance;
-    public static GenerateDish Instance { get { return _instance; } }
+    private static SpawnDishOnCounter _instance;
+    public static SpawnDishOnCounter Instance { get { return _instance; } }
 
     private void Awake()
     {
@@ -25,26 +26,31 @@ public class GenerateDish : MonoBehaviour
 
     #endregion
 
+    //variables
+    //dish prefabs
     [SerializeField] private GameObject roastedPlain, roastedPlain_egg, roastedBall, roastedBall_egg;
     [SerializeField] private GameObject steamedPlain, steamedPlain_egg, steamedBall, steamedBall_egg;
 
-    [SerializeField] private Transform[] dishSpawnPoints = new Transform[3];
-    private GameObject[] dishesSpawned = new GameObject[3];
 
     //Instantiates the order being served
-    public void SpawnDish(ChickenRice dishDetails)
+    public void SpawnDish(int _indexNum, bool isRoasted, bool ricePlain, bool haveEgg)
     {
-        //returns -1 if the counter is full
-        int indexNum = CheckCounterSpace();
+        ChickenRice dishToBeSpawned = OrderGeneration.Instance.CreateCustomOrder(isRoasted, ricePlain, haveEgg);
 
-        if(indexNum > -1)
-        {
-            //instantiate a new dish as a child of an empty spot on the counter
-            Instantiate(IdentifyOrder(dishDetails.ChickenRiceLabel), dishSpawnPoints[indexNum]);
-        }
+        //instantiate a new dish on empty spot on the counter
+        GameObject newDish = Instantiate(IdentifyOrder(dishToBeSpawned.ChickenRiceLabel), GameManager.Instance.dishSpawnPoints[_indexNum].position, GameManager.Instance.dishSpawnPoints[_indexNum].rotation);
+
+        NetworkServer.Spawn(newDish);
+
+        RpcSpawnDish(newDish, _indexNum);
     }
 
-
+    [ClientRpc]
+    public void RpcSpawnDish(GameObject newDish, int _indexNum)
+    {
+        //add the dish to the dish on counter array
+        GameManager.Instance.dishesOnCounter[_indexNum] = newDish;
+    }
 
     //Identifies which dish should be instantiated
     private GameObject IdentifyOrder(ChickenRice.PossibleChickenRiceLabel chickenRiceLabel)
@@ -87,19 +93,22 @@ public class GenerateDish : MonoBehaviour
     }
 
 
-    //checks if there is empty space on the counter to spawn a dish and returns the index num of the empty space. 
-    //If the counter is full, return -1. 
-    private int CheckCounterSpace()
+    //checks if there is empty space on the counter to spawn a dish. 
+    //If the counter is full, return false. 
+    public int CheckCounterHasSpace()
     {
-        for(int i = 0; i < dishSpawnPoints.Length; i++)
+        int i = 0;
+
+        foreach(GameObject dish in GameManager.Instance.dishesOnCounter)
         {
-            if (dishSpawnPoints[i].childCount == 0)
+            if(dish == null)
             {
                 return i;
             }
+
+            i++;
         }
 
         return -1;
     }
-
 }
