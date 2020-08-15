@@ -1534,6 +1534,7 @@ MonoBehaviour:
   currentPatience: 0
   reductionRate: 1
   increaseFeedbackPFX: {fileID: 0}
+  decreaseFeedbackPFX: {fileID: 0}
   overheadFeedbackGameObj: {fileID: 0}
 --- !u!114 &169466949
 MonoBehaviour:
@@ -1806,6 +1807,7 @@ MonoBehaviour:
   currentPatience: 0
   reductionRate: 1
   increaseFeedbackPFX: {fileID: 0}
+  decreaseFeedbackPFX: {fileID: 0}
   overheadFeedbackGameObj: {fileID: 0}
 --- !u!114 &188162165
 MonoBehaviour:
@@ -2876,7 +2878,7 @@ MonoBehaviour:
   cooldownImg: {fileID: 941879016}
   cooldown: 5
   isCooldown: 0
-  dishPositions:
+  dishSpawnPoints:
   - {fileID: 1958038697}
   - {fileID: 1448104066}
   - {fileID: 1441876598}
@@ -5830,6 +5832,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 125f602f700b0ed458ff10f964b2201d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
   roastedPlain: {fileID: 0}
   roastedPlain_egg: {fileID: 0}
   roastedBall: {fileID: 0}
@@ -5838,10 +5842,6 @@ MonoBehaviour:
   steamedPlain_egg: {fileID: 0}
   steamedBall: {fileID: 0}
   steamedBall_egg: {fileID: 0}
-  dishSpawnPoints:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
 --- !u!4 &772935874
 Transform:
   m_ObjectHideFlags: 0
@@ -10226,6 +10226,7 @@ MonoBehaviour:
   currentPatience: 0
   reductionRate: 1
   increaseFeedbackPFX: {fileID: 0}
+  decreaseFeedbackPFX: {fileID: 0}
   overheadFeedbackGameObj: {fileID: 0}
 --- !u!114 &1324333905
 MonoBehaviour:
@@ -11754,6 +11755,7 @@ MonoBehaviour:
   currentPatience: 0
   reductionRate: 1
   increaseFeedbackPFX: {fileID: 0}
+  decreaseFeedbackPFX: {fileID: 0}
   overheadFeedbackGameObj: {fileID: 0}
 --- !u!114 &1531288306
 MonoBehaviour:
@@ -13612,6 +13614,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 125f602f700b0ed458ff10f964b2201d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
   roastedPlain: {fileID: 0}
   roastedPlain_egg: {fileID: 0}
   roastedBall: {fileID: 0}
@@ -13620,10 +13624,6 @@ MonoBehaviour:
   steamedPlain_egg: {fileID: 0}
   steamedBall: {fileID: 0}
   steamedBall_egg: {fileID: 0}
-  dishSpawnPoints:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
 --- !u!64 &1780732749
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -15178,6 +15178,7 @@ MonoBehaviour:
   currentPatience: 0
   reductionRate: 1
   increaseFeedbackPFX: {fileID: 0}
+  decreaseFeedbackPFX: {fileID: 0}
   overheadFeedbackGameObj: {fileID: 0}
 --- !u!114 &2047958782
 MonoBehaviour:
@@ -15547,6 +15548,7 @@ MonoBehaviour:
   currentPatience: 0
   reductionRate: 1
   increaseFeedbackPFX: {fileID: 0}
+  decreaseFeedbackPFX: {fileID: 0}
   overheadFeedbackGameObj: {fileID: 0}
 --- !u!114 &2103324187
 MonoBehaviour:

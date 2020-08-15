@@ -196,6 +196,7 @@ public class CustomerBehaviour_Seated : CustomerBehaviour
         //play angry anim
         CustomerFeedbackScript.PlayAngryPFX();
         CustomerFeedbackScript.WrongOrderServed();
+        CustomerPatienceScript.DecreasePatience(CustomerPatienceStats.angryPatienceDecrease);
         //reduce patience
     }
 

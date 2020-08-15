@@ -35,6 +35,7 @@ public class NetworkRoom : NetworkBehaviour
     [SerializeField] private Button leaveRoomButton = null; //Disable if host, clients can leave room
     [SerializeField] private Button deleteRoomButton = null; //Enable for host, deletes whole room
     [SerializeField] private Button startGameButton = null; //Only enable for host, so they can decide when to start the game
+    [SerializeField] private Button readyButton = null; //only enable for clients
 
     //SYNCED VARIABLES (Hooks)
 
@@ -63,11 +64,16 @@ public class NetworkRoom : NetworkBehaviour
             //toggle buttons on/off based on if player is leader
             startGameButton.gameObject.SetActive(value);
 
-            //set start game button uninteractable
-            startGameButton.interactable = false;
+            //toggle ready button off if player is leader
+            readyButton.gameObject.SetActive(!value);
 
-            deleteRoomButton.gameObject.SetActive(value);
+            //set start game button uninteractable
+            //startGameButton.interactable = false;
+
+            deleteRoomButton.gameObject.SetActive(value); //set inactive
             leaveRoomButton.gameObject.SetActive(!value); //set inactive if leader
+
+            isReady = true;
 
         }
     }

@@ -539,6 +539,8 @@ MonoBehaviour:
   reductionRate: 1
   increaseFeedbackPFX: {fileID: 7009565534654490269, guid: a7ae3c29342ee5f40b4819db4579e20b,
     type: 3}
+  decreaseFeedbackPFX: {fileID: 7656189762680470825, guid: 77dc095fbde8a6b49b941c7aac21655f,
+    type: 3}
   overheadFeedbackGameObj: {fileID: 2417036022663916919}
 --- !u!114 &3156175993398286783
 MonoBehaviour:

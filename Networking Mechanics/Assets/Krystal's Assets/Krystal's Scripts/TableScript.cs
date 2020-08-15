@@ -250,11 +250,11 @@ public class TableScript : NetworkBehaviour
             customer.GetComponent<CustomerBehaviour_Seated>().DisplayOrderAndWait();
         }
 
-        //pass all the orders to the kitchen
-        foreach (ChickenRice order in tableOrders)
-        {
-            VR_OrderManagement.Instance.AddOrderToList(order.RoastedChic, order.RicePlain, order.HaveEgg);
-        }
+        ////pass all the orders to the kitchen
+        //foreach (ChickenRice order in tableOrders)
+        //{
+        //    VR_OrderManagement.Instance.AddOrderToList(order.RoastedChic, order.RicePlain, order.HaveEgg);
+        //}
 
         //move the table collider back to the environment layer
         TableColliderManager.ToggleTableDetection(false, this.gameObject);

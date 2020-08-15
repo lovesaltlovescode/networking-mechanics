@@ -99,6 +99,7 @@ public class CustomerPatienceStats
     public static float customerPatience_FoodWait = GameBalanceFormulae.customerPatience_base_FoodWait;
     public static float customerEatingDuration = 5f;
     public static float drinkPatienceIncrease = 5f;
+    public static float angryPatienceDecrease = 5f;
 
     public static void UpdateStats()
     {
