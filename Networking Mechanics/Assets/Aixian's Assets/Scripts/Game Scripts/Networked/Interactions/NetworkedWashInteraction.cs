@@ -159,7 +159,7 @@ public class NetworkedWashInteraction : NetworkBehaviour
         dirtyPlateInSink.layer = LayerMask.NameToLayer("UnInteractable");
 
         //increase plate in sink count
-        GameManager.Instance.platesInSinkCount += 1;
+        //GameManager.Instance.platesInSinkCount += 1;
     }
 
 

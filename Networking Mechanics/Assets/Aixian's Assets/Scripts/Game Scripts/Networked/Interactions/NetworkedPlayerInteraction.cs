@@ -681,7 +681,14 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
 
             default:
                 Debug.Log("default case");
-                break;
+
+                if(detectedObject.tag == "DirtyPlate" && detectedObject.layer == LayerMask.NameToLayer("TableItem"))
+                {
+                    Debug.Log("Looking at dirty plate");
+                    networkedIngredientInteraction.CmdTooManyPlates(detectedObject);
+                }
+
+                    break;
         }
     }
 

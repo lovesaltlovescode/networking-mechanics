@@ -6,6 +6,7 @@ using Mirror;
 public class DirtyDishScript : NetworkBehaviour
 {
     [SerializeField] private TableScript tableSeatedAt;
+    [SerializeField] private GameObject table;
 
     //public method to set the table the dirty dish belongs to
     public void SetTableScript(TableScript _tableScript)
@@ -68,6 +69,16 @@ public class DirtyDishScript : NetworkBehaviour
             //Debug.Log("Table script wasn't assigned to dirty dish");
 
             //Debug.Log("Checking DirtyDishScript - is table script null? " + tableSeatedAt == null);
+        }
+    }
+
+    public void TooManyPlates()
+    {
+        if(tableSeatedAt != null)
+        {
+            table = tableSeatedAt.gameObject;
+            //Debug.Log("Table name " + table.name);
+            table.GetComponent<TableFeedback>().SinkFull();
         }
     }
 

@@ -12,28 +12,28 @@ public class ToggleCameras : MonoBehaviour
     public GameObject hostRoomBtn;
     public GameObject joinRoomBtn;
 
-#if (VR)
+//#if (VR)
 
-    public void Awake()
-    {
-        Debug.Log("In VR");
-        //Show the host room
-        hostRoomBtn.SetActive(true);
-        joinRoomBtn.SetActive(false);
+//    public void Awake()
+//    {
+//        Debug.Log("In VR");
+//        //Show the host room
+//        hostRoomBtn.SetActive(true);
+//        joinRoomBtn.SetActive(false);
 
-    }
-#endif
+//    }
+//#endif
 
-#if (MOBILE)
+//#if (MOBILE)
 
-    public void Awake()
-    {
-        Debug.Log("In mobile");
-        //Show the host room
-        hostRoomBtn.SetActive(false);
-        joinRoomBtn.SetActive(true);
-    }
+//    public void Awake()
+//    {
+//        Debug.Log("In mobile");
+//        //Show the host room
+//        hostRoomBtn.SetActive(false);
+//        joinRoomBtn.SetActive(true);
+//    }
 
-#endif
+//#endif
 
 }

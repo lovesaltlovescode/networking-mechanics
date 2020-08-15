@@ -257,6 +257,28 @@ public class NetworkedIngredientInteraction : NetworkBehaviour
     public void CmdPickUpPlate(GameObject detectedObject)
     {
         detectedObject.GetComponent<DirtyDishScript>().RemoveFromTable();
+
+        RpcPickUpPlate();
+    }
+
+    [ClientRpc]
+    public void RpcPickUpPlate()
+    {
+        //add to sink
+        GameManager.Instance.platesInSinkCount += 1;
+    }
+
+    //too many plates in sink
+    [Command]
+    public void CmdTooManyPlates(GameObject detectedObject)
+    {
+        RpcTooManyPlates(detectedObject);
+    }
+
+    [ClientRpc]
+    public void RpcTooManyPlates(GameObject detectedObject)
+    {
+        detectedObject.GetComponent<DirtyDishScript>().TooManyPlates();
     }
 
     //Method to be called from player interaction script
