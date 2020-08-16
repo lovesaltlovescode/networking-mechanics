@@ -26,6 +26,8 @@ public class VR_OrderManagement : MonoBehaviour
 
     #endregion
 
+    #region Variables
+
     [SerializeField] private GameObject[] orderSlipSpawnPoints = new GameObject[10]; //the order slip spawn points
     [SerializeField] private GameObject hiddenOrderCount; // gameobject that shows how many order slips are hidden from VR player's view
     private List<ChickenRice> currentlyDisplayedOrders = new List<ChickenRice>();
@@ -34,7 +36,6 @@ public class VR_OrderManagement : MonoBehaviour
         get { return currentlyDisplayedOrders; }
         private set { currentlyDisplayedOrders = value; }
     }
-
     private List<ChickenRice> hiddenOrders = new List<ChickenRice>();
 
     public List<ChickenRice> HiddenOrders
@@ -43,10 +44,14 @@ public class VR_OrderManagement : MonoBehaviour
         private set { hiddenOrders = value; }
     }
 
+    #endregion
+
+    //add the passed in chicken rice order to the list of orders
     public void AddOrderToList(bool roastedChic, bool ricePlain, bool haveEgg)
     {
         ChickenRice tempOrderHolder = OrderGeneration.Instance.CreateCustomOrder(roastedChic, ricePlain, haveEgg);
 
+        //Check if should spawn in order slip or hide order first (order slip full)
         if (currentlyDisplayedOrders.Count() < orderSlipSpawnPoints.Length)
         {
             currentlyDisplayedOrders.Add(tempOrderHolder);
@@ -57,14 +62,14 @@ public class VR_OrderManagement : MonoBehaviour
             hiddenOrders.Add(tempOrderHolder);
             Debug.Log("hiddenOrders: " + hiddenOrders.Count);
         }
-        
+
     }
 
     public void SpawnOrderSlip(ChickenRice _chickenRiceOrder)
     {
         Debug.Log("Spawn Order slip called for " + _chickenRiceOrder.ChickenRiceLabel);
         //pick an empty order slip
-        
+
         //customize the order slip
 
         //make the order slip visible
@@ -95,28 +100,7 @@ public class VR_OrderManagement : MonoBehaviour
 
         if (indexNum > -1) // if there is space on the counter, remove the order slip and spawn the dish
         {
-            SpawnDishOnCounter.Instance.SpawnDish(indexNum, orderDetails.RoastedChic, orderDetails.RicePlain, orderDetails.HaveEgg);
-
-            RemoveOrderSlip(orderDetails);
-        }
-        else //if the serve counter is full, give feedback
-        {
-            Debug.Log("Service counter is too full to spawn dish");
-        }
-
-    }
-
-    public void CheckCanServeDish(VR_OrderSlipBehaviour _orderSlip)
-    {
-        //get the index num of the empty space on the counter
-        int indexNum = SpawnDishOnCounter.Instance.CheckCounterHasSpace(); //returns -1 if there is no space
-
-        //get the details of the order indicated on the orderslip
-        ChickenRice orderDetails = _orderSlip.orderSlipOrder;
-        
-        if (indexNum > -1) // if there is space on the counter, remove the order slip and spawn the dish
-        {
-            SpawnDishOnCounter.Instance.SpawnDish(indexNum, orderDetails.RoastedChic, orderDetails.RicePlain, orderDetails.HaveEgg);
+            SpawnDishOnCounter.Instance.ServerSpawnDish(indexNum, orderDetails.RoastedChic, orderDetails.RicePlain, orderDetails.HaveEgg);
 
             RemoveOrderSlip(orderDetails);
         }
@@ -138,6 +122,6 @@ public class VR_OrderManagement : MonoBehaviour
         //display the first hidden order 
         //update the hidden order count obj
 
-        
+
     }
 }

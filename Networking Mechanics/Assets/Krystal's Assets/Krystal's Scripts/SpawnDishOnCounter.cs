@@ -31,65 +31,100 @@ public class SpawnDishOnCounter : NetworkBehaviour
     [SerializeField] private GameObject roastedPlain, roastedPlain_egg, roastedBall, roastedBall_egg;
     [SerializeField] private GameObject steamedPlain, steamedPlain_egg, steamedBall, steamedBall_egg;
 
+    [SerializeField] private GameObject objectContainerPrefab;
 
-    //Instantiates the order being served
-    public void SpawnDish(int _indexNum, bool isRoasted, bool ricePlain, bool haveEgg)
+
+    ////Instantiates the order being served
+
+    //[ServerCallback]
+    //public void SpawnDish(int _indexNum, bool isRoasted, bool ricePlain, bool haveEgg)
+    //{
+    //    ChickenRice dishToBeSpawned = OrderGeneration.Instance.CreateCustomOrder(isRoasted, ricePlain, haveEgg);
+
+    //    //instantiate a new dish on empty spot on the counter
+    //    GameObject newDish = Instantiate(IdentifyOrder(dishToBeSpawned.ChickenRiceLabel), GameManager.Instance.dishSpawnPoints[_indexNum].position, GameManager.Instance.dishSpawnPoints[_indexNum].rotation);
+
+    //    NetworkServer.Spawn(newDish); //spawn on the network for clients to see
+
+    //    RpcSpawnDish(_indexNum, newDish);
+    //}
+
+    //spawn a dirty dish in front of the customer
+    [ServerCallback]
+    public void ServerSpawnDish(int _indexNum, bool isRoasted, bool ricePlain, bool haveEgg)
     {
         ChickenRice dishToBeSpawned = OrderGeneration.Instance.CreateCustomOrder(isRoasted, ricePlain, haveEgg);
 
-        //instantiate a new dish on empty spot on the counter
-        GameObject newDish = Instantiate(IdentifyOrder(dishToBeSpawned.ChickenRiceLabel), GameManager.Instance.dishSpawnPoints[_indexNum].position, GameManager.Instance.dishSpawnPoints[_indexNum].rotation);
+        GameObject newDish = Instantiate(objectContainerPrefab, GameManager.Instance.dishSpawnPoints[_indexNum].position, GameManager.Instance.dishSpawnPoints[_indexNum].rotation);
 
+        newDish.GetComponent<Rigidbody>().isKinematic = false;
+
+        ObjectContainer dishContainer = newDish.GetComponent<ObjectContainer>();
+
+        //Instantiate the right held item
+        dishContainer.SetObjToSpawn(IdentifyOrder(dishToBeSpawned.ChickenRiceLabel));
+
+        //Sync var
+        dishContainer.objToSpawn = IdentifyOrder(dishToBeSpawned.ChickenRiceLabel);
+
+        //Spawn on network
         NetworkServer.Spawn(newDish);
 
-        RpcSpawnDish(newDish, _indexNum);
+        RpcSpawnDish(_indexNum, newDish);
+
     }
 
+
     [ClientRpc]
-    public void RpcSpawnDish(GameObject newDish, int _indexNum)
+    public void RpcSpawnDish(int _indexNum, GameObject newDish)
     {
+        //spawn as a dish item
+        newDish.layer = LayerMask.NameToLayer("Dish");
+
         //add the dish to the dish on counter array
         GameManager.Instance.dishesOnCounter[_indexNum] = newDish;
     }
 
     //Identifies which dish should be instantiated
-    private GameObject IdentifyOrder(ChickenRice.PossibleChickenRiceLabel chickenRiceLabel)
+    private HeldItem IdentifyOrder (ChickenRice.PossibleChickenRiceLabel chickenRiceLabel)
     {
         switch (chickenRiceLabel)
         {
             #region Roasted Chicken
             case ChickenRice.PossibleChickenRiceLabel.RoastedChicWPlainRice:
-                return roastedPlain;
+                return HeldItem.roastedChicWPlainRice;
 
             case ChickenRice.PossibleChickenRiceLabel.RoastedChicWPlainRiceEgg:
-                return roastedPlain_egg;
+                return HeldItem.roastedChicWPlainRiceEgg;
 
             case ChickenRice.PossibleChickenRiceLabel.RoastedChicWRiceBall:
-                return roastedBall;
+                return HeldItem.roastedChicWRiceBall;
 
             case ChickenRice.PossibleChickenRiceLabel.RoastedChicWRiceBallEgg:
-                return roastedBall_egg;
+                return HeldItem.roastedChicWRiceBallEgg;
+
             #endregion
 
             #region Steamed Chicken
             case ChickenRice.PossibleChickenRiceLabel.SteamedChicWPlainRice:
-                return steamedPlain;
+                return HeldItem.steamedChicWPlainRice;
 
             case ChickenRice.PossibleChickenRiceLabel.SteamedChicWPlainRiceEgg:
-                return steamedPlain_egg;
+                return HeldItem.steamedChicWPlainRiceEgg;
 
             case ChickenRice.PossibleChickenRiceLabel.SteamedChicWRiceBall:
-                return steamedBall;
+                return HeldItem.steamedChicWRiceBall;
 
             case ChickenRice.PossibleChickenRiceLabel.SteamedChicWRiceBallEgg:
-                return steamedBall_egg;
+                return HeldItem.steamedChicWRiceBallEgg;
+
             #endregion
 
             default:
                 Debug.Log("The dish does not have a label.");
-                return null;
+                return HeldItem.nothing;
         }
-        
+
     }
 
 
@@ -99,9 +134,9 @@ public class SpawnDishOnCounter : NetworkBehaviour
     {
         int i = 0;
 
-        foreach(GameObject dish in GameManager.Instance.dishesOnCounter)
+        foreach (GameObject dish in GameManager.Instance.dishesOnCounter)
         {
-            if(dish == null)
+            if (dish == null)
             {
                 return i;
             }

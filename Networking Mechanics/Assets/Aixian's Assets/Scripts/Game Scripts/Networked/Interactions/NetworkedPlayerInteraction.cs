@@ -552,6 +552,12 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
                 {
                     return;
                 }
+
+                else if (networkedWashInteraction.atSink)
+                {
+                    return;
+                }
+
                 ChangePlayerState(PlayerState.Default);
             }
             //Debug.Log("NetworkedPlayer - No object found");

@@ -110,7 +110,7 @@ public class CustomerBehaviour_Seated : CustomerBehaviour
             //instantiate the order icon as the child of the orderIconPos obj
 
             GameObject orderIcon = Instantiate(customersOrder.OrderIcon, orderIconPos);
-            GameManager.Instance.chickenRiceOrders.Add(customersOrder);
+            //GameManager.Instance.chickenRiceOrders.Add(customersOrder);
             //NetworkServer.Spawn(orderIcon);
         }
     }
