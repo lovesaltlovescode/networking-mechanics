@@ -274,7 +274,7 @@ public class NetworkedWashInteraction : NetworkBehaviour
             {
                 //player can place plate in the sink
                 //Debug.Log("NetworkedWashInteraction - Player can place a plate in the sink!");
-                networkedPlayerInteraction.playerState = PlayerState.CanPlacePlateInSink;
+                networkedPlayerInteraction.ChangePlayerState(PlayerState.CanPlacePlateInSink, true);
             }
 
             //if player was washing plate, if they enter the sink zone again they can immediately wash

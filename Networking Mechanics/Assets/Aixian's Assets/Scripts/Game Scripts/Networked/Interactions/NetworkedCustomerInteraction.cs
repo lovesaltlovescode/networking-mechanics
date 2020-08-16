@@ -10,6 +10,9 @@ public class NetworkedCustomerInteraction : NetworkBehaviour
     [SyncVar]
     public int customerGroupSize;
 
+    [SyncVar]
+    public float customerLastPatience;
+
     private void Awake()
     {
         networkedPlayerInteraction = GetComponent<NetworkedPlayerInteraction>();
@@ -135,7 +138,8 @@ public class NetworkedCustomerInteraction : NetworkBehaviour
     public void PickUpCustomer()
     {
         //Get customer's group size
-        CmdPickUpCustomer(networkedPlayerInteraction.detectedObject.GetComponent<CustomerBehaviour_Queueing>().groupSizeNum);
+        CmdPickUpCustomer(networkedPlayerInteraction.detectedObject.GetComponent<CustomerBehaviour_Queueing>().groupSizeNum
+            , networkedPlayerInteraction.detectedObject.GetComponent<CustomerPatience>().currentPatience);
 
         networkedPlayerInteraction.CmdPickUpObject(networkedPlayerInteraction.detectedObject);
 
@@ -154,13 +158,12 @@ public class NetworkedCustomerInteraction : NetworkBehaviour
     #region Networked
 
     [Command]
-    public void CmdPickUpCustomer(int groupSize)
+    public void CmdPickUpCustomer(int groupSize, float lastPatienceLevel)
     {
         customerGroupSize = groupSize;
+        customerLastPatience = lastPatienceLevel;
         //RpcPickUpCustomer();
 
-        //DECREASE
-        GameManager.Instance.currentNumWaitingCustomers -= 1;
     }
 
 
@@ -208,6 +211,9 @@ public class NetworkedCustomerInteraction : NetworkBehaviour
         {
            // Debug.Log("NetworkedCustomerInteraction - Enough seats for customers");
             RpcSeatCustomer(playerInventory);
+
+            //DECREASE
+            GameManager.Instance.currentNumWaitingCustomers -= 1;
         }
         else
         {

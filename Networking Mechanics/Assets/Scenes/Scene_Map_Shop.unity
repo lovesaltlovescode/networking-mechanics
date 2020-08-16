@@ -1528,6 +1528,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c213ef51f383ead419684967eb61b2bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
   updateFrequency: 0.2
   patienceMeterImg: {fileID: 238294452}
   finalColor: {r: 1, g: 0, b: 0, a: 1}
@@ -1801,6 +1803,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c213ef51f383ead419684967eb61b2bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
   updateFrequency: 0.2
   patienceMeterImg: {fileID: 564970721}
   finalColor: {r: 1, g: 0, b: 0, a: 1}
@@ -2706,6 +2710,7 @@ GameObject:
   - component: {fileID: 326980039}
   - component: {fileID: 326980038}
   - component: {fileID: 326980042}
+  - component: {fileID: 326980043}
   m_Layer: 2
   m_Name: GameManager
   m_TagString: Untagged
@@ -2916,6 +2921,18 @@ MonoBehaviour:
   sceneId: 3162057532
   serverOnly: 0
   m_AssetId: 
+--- !u!114 &326980043
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 326980037}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f31ade5fff990aa4dbf3ed44a5a67f57, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &338889989
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10220,6 +10237,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c213ef51f383ead419684967eb61b2bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
   updateFrequency: 0.2
   patienceMeterImg: {fileID: 964684124}
   finalColor: {r: 1, g: 0, b: 0, a: 1}
@@ -11749,6 +11768,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c213ef51f383ead419684967eb61b2bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
   updateFrequency: 0.2
   patienceMeterImg: {fileID: 1720352475}
   finalColor: {r: 1, g: 0, b: 0, a: 1}
@@ -15172,6 +15193,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c213ef51f383ead419684967eb61b2bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
   updateFrequency: 0.2
   patienceMeterImg: {fileID: 1121309323}
   finalColor: {r: 1, g: 0, b: 0, a: 1}
@@ -15542,6 +15565,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c213ef51f383ead419684967eb61b2bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
   updateFrequency: 0.2
   patienceMeterImg: {fileID: 383800996}
   finalColor: {r: 1, g: 0, b: 0, a: 1}

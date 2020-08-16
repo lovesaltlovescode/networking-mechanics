@@ -8,8 +8,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Mirror;
 
-public class CustomerPatience : MonoBehaviour
+public class CustomerPatience : NetworkBehaviour
 {
     //variables
     [SerializeField] private float updateFrequency = 0.2f;
@@ -20,9 +21,11 @@ public class CustomerPatience : MonoBehaviour
     private Coroutine patienceMeterCoroutine;
     private bool isCoroutineRunning = false; //bool used to ensure that coroutine does not get called while coroutine is running
 
+    [SyncVar]
     [HideInInspector] public float currentPatience = 0f;
 
     //float to alter the rate at which the patience decreases
+    [SyncVar]
     [HideInInspector] public float reductionRate = 1f;
 
     [Header("Optional Variables")]

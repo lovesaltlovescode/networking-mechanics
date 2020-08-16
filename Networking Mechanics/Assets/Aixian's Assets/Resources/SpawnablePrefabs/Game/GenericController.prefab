@@ -262,7 +262,7 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   controllerBody: {fileID: 8454290605964818736}
-  moveForce: 10
+  moveForce: 8
   joystick: {fileID: 7920605301542410366}
   UI: {fileID: 6021133091292874556}
 --- !u!136 &1422875891317161630

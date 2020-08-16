@@ -6,7 +6,7 @@ using Mirror;
 public class PlayerMovement : NetworkBehaviour
 {
     public Rigidbody controllerBody;
-    public float moveForce = 10f;
+    public float moveForce = 8f;
 
     [SerializeField] private FixedJoystick joystick = null;
 

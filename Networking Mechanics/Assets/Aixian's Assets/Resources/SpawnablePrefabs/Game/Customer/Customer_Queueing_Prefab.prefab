@@ -532,6 +532,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c213ef51f383ead419684967eb61b2bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
   updateFrequency: 0.2
   patienceMeterImg: {fileID: 8498367869248578408}
   finalColor: {r: 1, g: 0, b: 0, a: 1}
@@ -607,10 +609,10 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_Enabled: 1
-  m_Radius: 0.5
-  m_Height: 2
+  m_Radius: 0.63190144
+  m_Height: 1.6328793
   m_Direction: 1
-  m_Center: {x: 0, y: 0.81, z: 0}
+  m_Center: {x: 0.012471855, y: 0.7825968, z: 0}
 --- !u!114 &2789798822642615306
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -548,6 +548,10 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
 
             if (CanChangePlayerState())
             {
+                if(playerInventory && playerInventory.tag == "DirtyPlate")
+                {
+                    return;
+                }
                 ChangePlayerState(PlayerState.Default);
             }
             //Debug.Log("NetworkedPlayer - No object found");
@@ -731,7 +735,8 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
     //checks whether the playerstate is something that should not be changed
     public bool CanChangePlayerState()
     {
-        if (playerState == PlayerState.HoldingCustomer || playerState == PlayerState.HoldingOrder || playerState == PlayerState.HoldingDrink)
+        if (playerState == PlayerState.HoldingCustomer || playerState == PlayerState.HoldingOrder 
+            || playerState == PlayerState.HoldingDirtyPlate || playerState == PlayerState.HoldingDrink)
         {
             return false;
         }

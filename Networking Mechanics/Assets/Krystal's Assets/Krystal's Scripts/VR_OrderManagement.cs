@@ -34,7 +34,14 @@ public class VR_OrderManagement : MonoBehaviour
         get { return currentlyDisplayedOrders; }
         private set { currentlyDisplayedOrders = value; }
     }
+
     private List<ChickenRice> hiddenOrders = new List<ChickenRice>();
+
+    public List<ChickenRice> HiddenOrders
+    {
+        get { return hiddenOrders; }
+        private set { hiddenOrders = value; }
+    }
 
     public void AddOrderToList(bool roastedChic, bool ricePlain, bool haveEgg)
     {
@@ -61,6 +68,42 @@ public class VR_OrderManagement : MonoBehaviour
         //customize the order slip
 
         //make the order slip visible
+    }
+
+    public void CheckCanServeDish(VR_OrderSlipBehaviour _orderSlip = null, ChickenRice _chickenRiceOrder = null)
+    {
+        //get the index num of the empty space on the counter
+        int indexNum = SpawnDishOnCounter.Instance.CheckCounterHasSpace(); //returns -1 if there is no space
+
+        ChickenRice orderDetails;
+
+        if (_orderSlip != null)
+        {
+            //get the details of the order indicated on the orderslip
+            orderDetails = _orderSlip.orderSlipOrder;
+        }
+        else if (_chickenRiceOrder != null)
+        {
+            orderDetails = _chickenRiceOrder;
+        }
+        else
+        {
+            Debug.Log("Please pass an order slip into this function");
+            return;
+        }
+
+
+        if (indexNum > -1) // if there is space on the counter, remove the order slip and spawn the dish
+        {
+            SpawnDishOnCounter.Instance.SpawnDish(indexNum, orderDetails.RoastedChic, orderDetails.RicePlain, orderDetails.HaveEgg);
+
+            RemoveOrderSlip(orderDetails);
+        }
+        else //if the serve counter is full, give feedback
+        {
+            Debug.Log("Service counter is too full to spawn dish");
+        }
+
     }
 
     public void CheckCanServeDish(VR_OrderSlipBehaviour _orderSlip)

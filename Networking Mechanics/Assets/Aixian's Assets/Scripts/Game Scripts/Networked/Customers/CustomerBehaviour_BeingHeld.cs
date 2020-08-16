@@ -20,10 +20,14 @@ public class CustomerBehaviour_BeingHeld : NetworkBehaviour
     [SyncVar]
     public int groupSizeNum;
 
+    [SyncVar]
+    public float lastPatienceLevel;
+
     // Start is called before the first frame update
     void Start()
     {
         groupSizeNum = GetComponentInParent<NetworkedCustomerInteraction>().customerGroupSize;
+        lastPatienceLevel = GetComponentInParent<NetworkedCustomerInteraction>().customerLastPatience;
         HeldCustomer_ShowGroupSizeIcon(groupSizeNum);
     }
 
