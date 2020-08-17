@@ -474,7 +474,7 @@ public class NetworkedIngredientInteraction : NetworkBehaviour
     [Command]
     void CmdTrashHeldItem(GameObject playerInventory)
     {
-        var thrownIngredient = playerInventory;
+        var thrownIngredient = networkedPlayerInteraction.playerInventory;
         //Debug.Log("NetworkedIngredientInteraction - Thrown ingredient is " + thrownIngredient);
 
         //destroy the thrown ingredient

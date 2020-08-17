@@ -116,9 +116,6 @@ public class NetworkedCustomerSpawn : NetworkBehaviour
         {
             //ensure that no other coroutines can start after this
             isCoroutineRunning = true;
-
-            //update the number of customers in the waiting area
-            GameManager.Instance.currentNumWaitingCustomers += 1;
         }
 
         while (true)
@@ -188,6 +185,8 @@ public class NetworkedCustomerSpawn : NetworkBehaviour
         //Debug.Log("CallSpawnEvent()");
         EventManager.CallSpawnEvent();
 
+        //update the number of customers in the waiting area
+        GameManager.Instance.currentNumWaitingCustomers += 1;
     }
 
     #endregion

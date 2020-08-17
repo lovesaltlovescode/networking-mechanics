@@ -1,9 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Mirror;
 
-public class CustomerWaitArea : NetworkBehaviour
+public class CustomerWaitArea : MonoBehaviour
 {
     [SerializeField] private GameObject customerQueueingPrefab;
     private bool isCoroutineRunning = false;
@@ -57,25 +56,17 @@ public class CustomerWaitArea : NetworkBehaviour
 
     //spawn a queueing customer prefab in the waiting area
     //move the queueing customer into a random position in the wait area
-    [Server]
     public void PutCustomerdown(GameObject customerBeingHeld)
     {
         //get the being held script
         CustomerBehaviour_BeingHeld _beingHeldScript = customerBeingHeld.GetComponent<CustomerBehaviour_BeingHeld>();
-        //RpcTestBeingHeld(customerBeingHeld);
-
-        Debug.Log(customerBeingHeld.name); 
-        Debug.Log(_beingHeldScript); 
 
         //get the starting position of the customer
         Vector3 startPosition = customerBeingHeld.transform.position;
 
         //hide the beingHeld customer and spawn a queueing customer
-        //customerBeingHeld.SetActive(false);
-
+        customerBeingHeld.SetActive(false);
         GameObject returnedQueueingCustomer = Instantiate(customerQueueingPrefab, startPosition, Quaternion.identity).gameObject;
-
-        NetworkServer.Spawn(returnedQueueingCustomer);
 
         //get a random position in the waiting area to put them down in
         Vector3 newPosition;
@@ -90,30 +81,11 @@ public class CustomerWaitArea : NetworkBehaviour
             }
         }
 
-        RpcPutCustomerDown(returnedQueueingCustomer, newPosition, customerBeingHeld);
-
-        //pass the group size and last level of patience stored in the beingHeld customer to the new spawn
-        returnedQueueingCustomer.GetComponent<CustomerBehaviour_Queueing>().CustomerResumesWaiting(_beingHeldScript.lastPatienceLevel, _beingHeldScript.groupSizeNum);
-
-
-    }
-
-    [ClientRpc]
-    public void RpcTestBeingHeld(GameObject customerBeingHeld)
-    {
-        Debug.Log(customerBeingHeld.name); //null reference exception
-    }
-
-    [ClientRpc]
-    public void RpcPutCustomerDown(GameObject returnedQueueingCustomer, Vector3 newPosition, GameObject customerBeingHeld)
-    {
         //move the newly spawned customer from the player's hands to the waiting area
         StartCoroutine(LerpCustomerPos(returnedQueueingCustomer, newPosition));
 
-        //Debug.Log(customerBeingHeld.name); //null reference exception
-
         //pass the group size and last level of patience stored in the beingHeld customer to the new spawn
-        //returnedQueueingCustomer.GetComponent<CustomerBehaviour_Queueing>().CustomerResumesWaiting(_beingHeldScript.lastPatienceLevel, _beingHeldScript.groupSizeNum);
+        returnedQueueingCustomer.GetComponent<CustomerBehaviour_Queueing>().CustomerResumesWaiting(_beingHeldScript.lastPatienceLevel, _beingHeldScript.groupSizeNum);
 
     }
 
