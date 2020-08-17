@@ -33,6 +33,8 @@ public class CustomerPatience : NetworkBehaviour
     [SerializeField] private GameObject decreaseFeedbackPFX;
     [SerializeField] private Transform overheadFeedbackGameObj;
 
+    private bool coroutineIsPaused = false;
+
     #region Debug Shortcuts
     /*
     private void Update()
@@ -49,10 +51,11 @@ public class CustomerPatience : NetworkBehaviour
     */
     #endregion
 
-    private void Start()
+    private void Awake()
     {
         //disable the image
         patienceMeterImg.enabled = false;
+
         startColor = patienceMeterImg.color;
     }
 
@@ -90,6 +93,43 @@ public class CustomerPatience : NetworkBehaviour
         currentPatience = 0f; //--------------------------------------------------------------------------- change here
 
         StopCoroutine(patienceMeterCoroutine);
+    }
+
+    //public method to call to start the patience meter at less than 100% patience
+    public void RestartPatienceMeter(float totalPatience, float startingPatience, Action callback = null)
+    {
+        if (isCoroutineRunning)
+        {
+            //bool used to ensure that coroutine does not get called while coroutine is running
+            return;
+        }
+
+        isCoroutineRunning = true;
+
+        //able the image
+        patienceMeterImg.enabled = true;
+        //Debug.Log("Total patience " + totalPatience + ", Starting patience " + startingPatience);
+
+        patienceMeterCoroutine = StartCoroutine(UpdatePatienceMeter(totalPatience, startingPatience, callback));
+
+    }
+
+
+    //method used to un/pause the coroutine
+    //currently not in use. Perhaps in the future, if we implement a pause feature of some sort
+    public void TogglePausePatienceMeter(bool pause)
+    {
+        if (!isCoroutineRunning || coroutineIsPaused == pause)
+        {
+            //bool used to ensure that coroutine is only stopped once
+            return;
+        }
+        //update the bool
+        coroutineIsPaused = pause;
+
+        //toggle the image
+        patienceMeterImg.enabled = !pause; //if paused, patience meter should not be visible
+
     }
 
 
@@ -147,6 +187,72 @@ public class CustomerPatience : NetworkBehaviour
         yield return null;
     }
 
+    //overload that accepts a starting patience level for the patience meter (has an extra required parameter "startingPatience")
+    //called when the customer is supposed to start their patience meter at less than 100% ie. after being held and put down
+    private IEnumerator UpdatePatienceMeter(float totalPatience, float startingPatience, Action callback = null, bool changeColor = true, bool delayColorChange = true, float colorChangingPoint = 0.4f)
+    {
+        currentPatience = startingPatience;
+
+        //enable the patience meter img so player can see
+        patienceMeterImg.enabled = true;
+
+        while (currentPatience > 0)
+        {
+            //Debug.Log("UpdatePatienceMeter - Total patience " + totalPatience + " , current patience " + currentPatience);
+
+            //caps the current patience
+            if (currentPatience > totalPatience)
+            {
+                currentPatience = totalPatience;
+            }
+
+            //calculate amount of patience left
+            currentPatience -= updateFrequency * reductionRate; //-------------------------------------------------- change here
+            //Debug.Log("UpdatePatienceMeter - Current patience " + currentPatience);
+
+            patienceMeterImg.fillAmount = currentPatience / totalPatience;
+            //Debug.Log("UpdatePatienceMeter - Patience meter image fill amt " + patienceMeterImg.fillAmount);
+
+            if (changeColor)
+            {
+                float colorLerpAmt = currentPatience / totalPatience;
+
+                //if delayColorChange is set to true, 
+                //slider will not change colour until 
+                //the customer has colorChangingPoint amt of patience left 
+                if (delayColorChange && colorLerpAmt > colorChangingPoint) //--------------------------------------- change here
+                {
+                    colorLerpAmt = 1f;
+                }
+
+                patienceMeterImg.color = Color.Lerp(finalColor, startColor, colorLerpAmt);
+            }
+
+
+            yield return new WaitForSeconds(updateFrequency);
+        }
+
+        Debug.Log("Calling the impatient method");
+        if (callback != null)
+        {
+            callback?.Invoke();
+        }
+
+        //add angry customer to evaluation
+        Evaluation_CustomerService.UpdateCustomerServiceStats(0);
+
+        //disable the image
+        patienceMeterImg.enabled = false;
+
+        isCoroutineRunning = false;
+
+        yield return null;
+
+    }
+
+
+    #region Affect customer patience level
+
     //method that increases the patience meter of the customer
     //call the method like this: IncreasePatience(CustomerPatienceStats.drinkPatienceIncrease);
     public void IncreasePatience(float amtIncrease)
@@ -196,6 +302,10 @@ public class CustomerPatience : NetworkBehaviour
         }
 
     }
+
+    #endregion
+
+
 
 
 }

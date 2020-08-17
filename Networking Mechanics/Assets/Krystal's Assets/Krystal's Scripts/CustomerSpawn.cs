@@ -6,6 +6,8 @@ using UnityEngine.PlayerLoop;
 
 public class CustomerSpawn : MonoBehaviour
 {
+    #region Variables
+
     [Header("Debugging Settings")]
     [SerializeField] private bool debuggingMode = false;
     [SerializeField] private GameObject sphereVisualisation;
@@ -17,7 +19,7 @@ public class CustomerSpawn : MonoBehaviour
 
     [SerializeField] private string customerTag = "Customer";
     [SerializeField] private GameObject customerQueueingPrefab, customerParent;
-    [SerializeField] private float checkRad = 0.625f, spawnFrequency = 15f, customerMoveSpd = 0.05f, maxGroupsOfCustomersInWaitingArea = 6;
+    [SerializeField] private float checkRad = 0.625f, spawnFrequency = 15f, numSeconds = 3f, maxGroupsOfCustomersInWaitingArea = 6;
 
     private float timeSinceLastSpawn = 0f, currentNumWaitingCustomers = 0f;
     private bool isCoroutineRunning = false;
@@ -44,6 +46,7 @@ public class CustomerSpawn : MonoBehaviour
 
     #endregion
 
+    #endregion
 
 
     private void Update()
@@ -91,6 +94,8 @@ public class CustomerSpawn : MonoBehaviour
         #endregion
     }
 
+
+    #region Spawn Customers
 
     //generates two random positions, one within the wait area and one within the spawn area
     //If the position within the wait area isn't too close to other customers, a customer is spawned in the spawn area,
@@ -147,57 +152,13 @@ public class CustomerSpawn : MonoBehaviour
     }
 
 
-    //spawn a customer prefab, assign a group size to it, then make it a child of an object in the scene
-    private GameObject SpawnCustomer(Vector3 spawnPos)
-    {
-        //create a new group of customers, and assign a group size to the customer
-        GameObject newGroupOfCustomers = Instantiate(customerQueueingPrefab, spawnPos, Quaternion.identity).gameObject;
-        newGroupOfCustomers.GetComponent<CustomerBehaviour_Queueing>().GenerateSizeOfGroup(spawnRates);
-
-        //make the new customer group spawned a child of the customerParent gameobj 
-        newGroupOfCustomers.transform.parent = customerParent.transform;
-
-        //update the number of customers in the waiting area
-        currentNumWaitingCustomers = customerParent.transform.childCount;
-        
-        // announce that a customer has spawned using the spawn event
-        Debug.Log("CallSpawnEvent()");
-        EventManager.CallSpawnEvent();
-
-        return newGroupOfCustomers;
-    }
-
-
-
-    //move the gameobject egg to the position newpos and set it active in the hierarchy //-------------------------------------change egg.........
-    IEnumerator MoveAndActivate(GameObject customer, Vector3 newPos)
-    {
-        Vector3 startPos = customer.transform.position;
-        float journeyProgress = 0;
-        
-        while(customer.transform.position != newPos)
-        {
-            yield return new WaitForSeconds(0.1f);
-
-            journeyProgress += customerMoveSpd;
-            customer.transform.position = Vector3.Lerp(startPos, newPos, journeyProgress);
-        }
-        
-        //customer starts waiting upon reaching waiting position
-        customer.gameObject.GetComponent<CustomerBehaviour_Queueing>().CustomerStartsWaiting();
-
-        yield return null;
-    }
-
-
-
     //returns true if the coordinates passed in does not overlap with any customer colliders
     private bool CheckPositionIsEmpty(Vector3 pos, float radius)
     {
         Collider[] hitColliders = Physics.OverlapSphere(pos, radius);
 
         //for debugging. if the sphereVisualisation object has been assigned, move it to the position that is being check currently
-        if(sphereVisualisation != null)
+        if (sphereVisualisation != null)
         {
             sphereVisualisation.transform.position = pos;
             sphereVisualisation.transform.localScale = new Vector3(radius * 2, radius * 2, radius * 2);
@@ -215,6 +176,58 @@ public class CustomerSpawn : MonoBehaviour
         return true;
 
     }
+
+    //spawn a customer prefab, assign a group size to it, then make it a child of an object in the scene
+    private GameObject SpawnCustomer(Vector3 spawnPos)
+    {
+        //create a new group of customers, and assign a group size to the customer
+        GameObject newGroupOfCustomers = Instantiate(customerQueueingPrefab, spawnPos, Quaternion.identity).gameObject;
+        //newGroupOfCustomers.GetComponent<CustomerBehaviour_Queueing>().GenerateSizeOfGroup(spawnRates);
+
+        //make the new customer group spawned a child of the customerParent gameobj 
+        newGroupOfCustomers.transform.parent = customerParent.transform;
+
+        //update the number of customers in the waiting area
+        currentNumWaitingCustomers = customerParent.transform.childCount;
+
+        // announce that a customer has spawned using the spawn event
+        Debug.Log("CallSpawnEvent()");
+        EventManager.CallSpawnEvent();
+
+        return newGroupOfCustomers;
+    }
+
+    #endregion
+
+
+    //move the gameobject to the position newpos and set it active in the hierarchy 
+    IEnumerator MoveAndActivate(GameObject customer, Vector3 newPos)
+    {
+        Vector3 startPos = customer.transform.position;
+
+        //calculate the desired speed at which the customer should lerp to their position
+        float dist = Vector3.Distance(startPos, newPos);
+        float desiredSpeed = dist / numSeconds; //how fast the customer has to move to get to their position in numSeconds seconds
+
+        //distance travelled by the customer
+        float distTravelled = 0;
+
+        while (distTravelled < dist)
+        {
+            distTravelled += desiredSpeed * Time.deltaTime;
+
+            customer.transform.position = Vector3.Lerp(startPos, newPos, distTravelled / dist);
+
+            yield return null;
+        }
+
+        //customer starts waiting upon reaching waiting position
+        customer.gameObject.GetComponent<CustomerBehaviour_Queueing>().CustomerStartsWaiting();
+
+        yield return null;
+    }
+
+
 } //end of customer spawn class
 
 

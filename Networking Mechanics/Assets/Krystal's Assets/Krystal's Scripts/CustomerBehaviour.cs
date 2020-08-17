@@ -14,12 +14,12 @@ public class CustomerBehaviour : NetworkBehaviour
     [SerializeField] public CustomerFeedback CustomerFeedbackScript;
     [SerializeField] public CustomerPatience CustomerPatienceScript;
     [SerializeField] private Collider CustomerCollider;
-    
+
 
     //Patience Meter is started / stopped, depending on the bool passed into it
     public void TriggerPatienceMeter(bool startPatience, float waitTime = 0f, Action callback = null)
     {
-        if(CustomerPatienceScript != null)
+        if (CustomerPatienceScript != null)
         {
             if (startPatience)
             {
@@ -31,10 +31,25 @@ public class CustomerBehaviour : NetworkBehaviour
             }
         }
         else
-        { 
+        {
             Debug.Log("Please assign the customer patience script to the customer prefab");
         }
-        
+
+    }
+
+    //TriggerPatienceMeter method overload (extra parameter "startingPatience")
+    //call when the customer is to start with less than 100% patience
+    public void TriggerPatienceMeter(float startingPatience, float waitTime, Action callback = null)
+    {
+        if (CustomerPatienceScript != null)
+        {
+            CustomerPatienceScript.RestartPatienceMeter(waitTime, startingPatience, callback);
+        }
+        else
+        {
+            Debug.Log("Please assign the customer patience script to the customer prefab");
+        }
+
     }
 
 

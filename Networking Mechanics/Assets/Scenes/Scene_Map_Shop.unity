@@ -2862,7 +2862,6 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  chickenRiceOrders: []
 --- !u!4 &326980041
 Transform:
   m_ObjectHideFlags: 0
@@ -7317,7 +7316,7 @@ MonoBehaviour:
   customerParent: {fileID: 1136903200}
   checkRad: 0.625
   spawnFrequency: 2
-  customerMoveSpd: 0.05
+  numSeconds: 3
   maxGroupsOfCustomersInWaitingArea: 6
 --- !u!114 &949375545
 MonoBehaviour:
@@ -13466,6 +13465,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1764966486}
   - component: {fileID: 1764966485}
+  - component: {fileID: 1764966487}
+  - component: {fileID: 1764966488}
   m_Layer: 9
   m_Name: Area_CustomerWait
   m_TagString: Untagged
@@ -13484,8 +13485,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 3.5466871, y: 1, z: 4.6690755}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 3.5466871, y: 1.7027225, z: 4.6690755}
+  m_Center: {x: 0, y: 0.35136127, z: 0}
 --- !u!4 &1764966486
 Transform:
   m_ObjectHideFlags: 0
@@ -13500,6 +13501,41 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 41
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1764966487
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1764966484}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17638738082a06e4eac327772269fc51, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  customerQueueingPrefab: {fileID: 4217755499028838569, guid: 570277c39e6c63242aaceef413f30529,
+    type: 3}
+  customerTag: Customer
+  detectableLayerName: Pickuppable
+  undetectableLayerName: Environment
+  playerLayer: Player
+  checkRad: 0.625
+  numSeconds: 1
+--- !u!114 &1764966488
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1764966484}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneId: 385503626
+  serverOnly: 0
+  m_AssetId: 
 --- !u!1 &1774113126
 GameObject:
   m_ObjectHideFlags: 0

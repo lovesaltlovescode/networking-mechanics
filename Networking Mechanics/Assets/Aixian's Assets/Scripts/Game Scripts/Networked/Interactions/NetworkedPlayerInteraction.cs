@@ -524,7 +524,7 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
                 {
                     //set hit object as detectedobject
                     detectedObject = hit.collider.gameObject;
-                    //Debug.Log("detected object: " + detectedObject.tag);
+                    Debug.Log("detected object: " + detectedObject.name);
                 }
             }
 
@@ -548,6 +548,7 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
 
             if (CanChangePlayerState())
             {
+                //if holding dirty plate
                 if(playerInventory && playerInventory.tag == "DirtyPlate")
                 {
                     return;
@@ -666,7 +667,7 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
                 break;
 
             case PlayerState.HoldingCustomer:
-                networkedCustomerInteraction.SeatCustomer();
+                networkedCustomerInteraction.CheckCanPutCustomerDown(playerInventory, detectedObject);
                 break;
 
             case PlayerState.CanTakeOrder:

@@ -25,7 +25,7 @@ public class CustomerBehaviour_Queueing : CustomerBehaviour
 
 
     //when the customer is first spawned, make sure that their group size icon and collider is disabled
-    private void Start()
+    private void Awake()
     {
         EnableGroupSizeIcon(false);
         TriggerCustomerCollider(false, true);
@@ -40,7 +40,8 @@ public class CustomerBehaviour_Queueing : CustomerBehaviour
     [ServerCallback]
     public void ServerGenerateSizeOfGroup(numGuestsSpawnRates[] spawnRates = null)
     {
-        RpcGenerateSizeOfGroup(spawnRates);   
+        RpcGenerateSizeOfGroup(spawnRates);
+
     }
 
     [ClientRpc]
@@ -70,26 +71,26 @@ public class CustomerBehaviour_Queueing : CustomerBehaviour
 
 
     //generate the size of the customer group
-    public void GenerateSizeOfGroup(numGuestsSpawnRates[] spawnRates = null)
-    {
-        int i = Random.Range(0, 100);
+    //public void GenerateSizeOfGroup(numGuestsSpawnRates[] spawnRates = null)
+    //{
+    //    int i = Random.Range(0, 100);
 
-        if (spawnRates != null)
-        {
-            foreach (numGuestsSpawnRates spawnableSize in spawnRates)
-            {
-                if (i >= spawnableSize.minProbability && i <= spawnableSize.maxProbability)
-                {
-                   // Debug.Log("Generate size of group: " + spawnableSize.numGuests);
-                    groupSizeNum = spawnableSize.numGuests;
+    //    if (spawnRates != null)
+    //    {
+    //        foreach (numGuestsSpawnRates spawnableSize in spawnRates)
+    //        {
+    //            if (i >= spawnableSize.minProbability && i <= spawnableSize.maxProbability)
+    //            {
+    //               // Debug.Log("Generate size of group: " + spawnableSize.numGuests);
+    //                groupSizeNum = spawnableSize.numGuests;
 
-                    return;
-                }
-            }
-        }
+    //                return;
+    //            }
+    //        }
+    //    }
 
-       // Debug.Log("Didn't get array, returning zero");
-    }
+    //   // Debug.Log("Didn't get array, returning zero");
+    //}
 
 
 
@@ -126,34 +127,66 @@ public class CustomerBehaviour_Queueing : CustomerBehaviour
     [ClientRpc]
     public void RpcCustomerStartsWaiting()
     {
-       // Debug.Log("CustomerBehaviour_Queuing - RpcCustomerStartsWaiting called");
+        CustomerWaitingBehaviour();
+
+        //enable the patience meter
+        TriggerPatienceMeter(true, CustomerPatienceStats.customerPatience_Queue, CustomerWaitsTooLong);
+    }
+
+    //call this when the player puts the customer back down after picking them up
+    //pass their prev patience level in
+
+    //RPC THIS
+    public void CustomerResumesWaiting(float resumedPatienceLevel, int groupSize)
+    {
+
+        //Debug.Log("Customer last patience level " + resumedPatienceLevel + " " + groupSize);
+
+        GroupSizeNum = groupSize;
+
+        //show group size num and activate collider
+        CustomerWaitingBehaviour();
+
+        //enable the patience meter
+        TriggerPatienceMeter(resumedPatienceLevel, CustomerPatienceStats.customerPatience_Queue, CustomerWaitsTooLong);
+
+    }
+
+    //to be called when customer begins waiting
+    private void CustomerWaitingBehaviour()
+    {
         //enable the customer's group size indicator
         ShowGroupSizeIcon(GroupSizeNum);
 
         //enable the customer's collider so that the player can interact with the customer
         TriggerCustomerCollider(true, true);
 
-        //enable the patience meter
-        TriggerPatienceMeter(true, CustomerPatienceStats.customerPatience_Queue, CustomerWaitsTooLong);
+        //animate the customer
+        //<insert animation here>
     }
 
+    #region Customer picked up or waits too long
 
     public void CustomerPickedUp(Transform carryPos)
     {
         //stop the patience meter
         TriggerPatienceMeter(false);
 
-       // Debug.Log("Animating the customer curling up: " + carryPos);
+        // Debug.Log("Animating the customer curling up: " + carryPos);
     }
 
     [ServerCallback]
     public void CustomerWaitsTooLong()
     {
-       // Debug.Log("Customer impatient method successfully invoked. Customer waited too long");
+        Debug.Log("Customer impatient method successfully invoked. Customer waited too long");
         //customer fades out of existence
-        
+
         RpcCustomerWaitsForTooLong();
-        //Debug.Log("Customer fading out of existence");
+
+        //CustomerAnimScript.LeaveAnim();
+        //Destroy(this.gameObject, 1f);
+
+        Debug.Log("Customer fading out of existence");
         GameManager.Instance.currentNumWaitingCustomers -= 1;
     }
 
@@ -162,8 +195,12 @@ public class CustomerBehaviour_Queueing : CustomerBehaviour
     {
         CustomerAnimScript.LeaveAnim();
         Destroy(this.gameObject, 1f);
-        
+
     }
+
+    #endregion
+
+
 
 
 }

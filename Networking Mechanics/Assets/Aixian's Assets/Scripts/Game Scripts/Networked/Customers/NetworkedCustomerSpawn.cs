@@ -18,7 +18,7 @@ public class NetworkedCustomerSpawn : NetworkBehaviour
 
     [SerializeField] private string customerTag = "Customer";
     [SerializeField] private GameObject customerQueueingPrefab, customerParent;
-    [SerializeField] private float checkRad = 0.625f, spawnFrequency = 15f, customerMoveSpd = 0.05f, maxGroupsOfCustomersInWaitingArea = 6;
+    [SerializeField] private float checkRad = 0.625f, spawnFrequency = 15f, numSeconds = 3f, maxGroupsOfCustomersInWaitingArea = 6;
 
     private bool isCoroutineRunning = false;
     private Coroutine moveLerpCoroutine;
@@ -189,6 +189,38 @@ public class NetworkedCustomerSpawn : NetworkBehaviour
         GameManager.Instance.currentNumWaitingCustomers += 1;
     }
 
+    #endregion
+
+    //move the gameobject egg to the position newpos and set it active in the hierarchy //-------------------------------------change egg.........
+
+    IEnumerator MoveAndActivate(GameObject customer, Vector3 newPos)
+    {
+        Vector3 startPos = customer.transform.position;
+
+        //calculate the desired speed at which the customer should lerp to their position
+        float dist = Vector3.Distance(startPos, newPos);
+
+        float desiredSpeed = dist / numSeconds; //how fast the customer has to move to get to their position in numSeconds seconds
+
+        //distance travelled by the customer
+        float distTravelled = 0;
+
+        while (distTravelled < dist)
+        {
+            distTravelled += desiredSpeed * Time.deltaTime;
+
+            customer.transform.position = Vector3.Lerp(startPos, newPos, distTravelled / dist);
+
+            yield return null;
+        }
+
+        //customer starts waiting upon reaching waiting position
+        ActivateCustomerWait(customer);
+
+        yield return null;
+    }
+
+
     [ServerCallback]
     public void ActivateCustomerWait(GameObject customer)
     {
@@ -199,33 +231,7 @@ public class NetworkedCustomerSpawn : NetworkBehaviour
     [ClientRpc]
     public void RpcActivateCustomerWait(GameObject customer)
     {
-        //Debug.Log("NetworkedCustomerSpawn - RpcActivateCustomerWait called");
-        //customer starts waiting upon reaching waiting position
         customer.gameObject.GetComponent<CustomerBehaviour_Queueing>().CustomerStartsWaiting();
-    }
-
-
-    #endregion
-
-    //move the gameobject egg to the position newpos and set it active in the hierarchy //-------------------------------------change egg.........
-
-    IEnumerator MoveAndActivate(GameObject customer, Vector3 newPos)
-    {
-        Vector3 startPos = customer.transform.position;
-        float journeyProgress = 0;
-
-        while (customer.transform.position != newPos)
-        {
-            yield return new WaitForSeconds(0.1f);
-
-            journeyProgress += customerMoveSpd;
-            customer.transform.position = Vector3.Lerp(startPos, newPos, journeyProgress);
-        }
-
-        //customer starts waiting upon reaching waiting position
-        ActivateCustomerWait(customer);
-
-        yield return null;
     }
 
 
