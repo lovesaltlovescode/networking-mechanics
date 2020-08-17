@@ -56,10 +56,10 @@ public class NetworkedWashInteraction : NetworkBehaviour
 
     #region RemoteMethods
 
-    public void PlacePlateInSink()
+    public void PlacePlateInSink(GameObject playerInventory)
     {
 
-        CmdPlacePlateInSink();
+        CmdPlacePlateInSink(playerInventory);
 
         networkedPlayerInteraction.CmdChangeHeldItem(HeldItem.nothing);
 
@@ -96,8 +96,11 @@ public class NetworkedWashInteraction : NetworkBehaviour
 
     //Send command to server 
     [Command]
-    public void CmdPlacePlateInSink()
+    public void CmdPlacePlateInSink(GameObject playerInventory)
     {
+
+        Debug.Log("Place plate " + playerInventory.name);
+
         //loop through plate in sink array
         //if the gameobject is null, assign heldplate to it
         for (int i = 0; i < GameManager.Instance.platesInSink.Length; i++)
@@ -138,7 +141,7 @@ public class NetworkedWashInteraction : NetworkBehaviour
                 NetworkServer.Spawn(dirtyPlateInSink);
 
                 //clear the inventory after placing in sink
-                networkedPlayerInteraction.playerInventory = null;
+                playerInventory = null;
                 //Debug.Log("CmdPlacePlateInSink called");
 
                 RpcPlacePlateInSink(dirtyPlateInSink, i);

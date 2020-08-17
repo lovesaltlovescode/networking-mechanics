@@ -32,6 +32,7 @@ public class LevelTimer : NetworkBehaviour
 
     private static bool isPaused = false;
 
+    [SyncVar]
     private float currentTime = 0f;
 
     [SyncVar]

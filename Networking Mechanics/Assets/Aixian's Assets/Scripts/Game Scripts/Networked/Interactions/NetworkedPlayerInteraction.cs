@@ -152,6 +152,7 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
     public GameObject dropPoint;
 
     //player's inventory
+
     public GameObject playerInventory;
 
     public GameObject customer;
@@ -437,8 +438,23 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
 
         #endregion
 
+        if (Input.GetKeyDown(KeyCode.D))
+        {
+            TestInventory(playerInventory);
+        }
 
 
+    }
+
+    public void TestInventory(GameObject _playerInventory)
+    {
+        CmdTestInventory(_playerInventory);
+    }
+
+    [Command]
+    public void CmdTestInventory(GameObject _playerInventory)
+    {
+        Debug.Log("Player inventory " + _playerInventory.name);
     }
 
     #region Raycast
@@ -648,7 +664,7 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
 
             case PlayerState.CanPlacePlateInSink:
                 //Debug.Log("NetworkedPlayerInteraction - Place plate in sink!");
-                networkedWashInteraction.PlacePlateInSink();
+                networkedWashInteraction.PlacePlateInSink(playerInventory);
                 break;
 
             case PlayerState.CanWashPlate:
@@ -667,7 +683,7 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
                 break;
 
             case PlayerState.HoldingCustomer:
-                networkedCustomerInteraction.CheckCanPutCustomerDown(playerInventory, detectedObject);
+                networkedCustomerInteraction.CheckCanPutCustomerDown();
                 break;
 
             case PlayerState.CanTakeOrder:
