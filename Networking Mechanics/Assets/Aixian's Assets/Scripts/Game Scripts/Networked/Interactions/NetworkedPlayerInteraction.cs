@@ -439,6 +439,7 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
 
 
 <<<<<<< HEAD
+<<<<<<< HEAD
     public void TestInventory(GameObject _playerInventory)
     {
         Debug.Log("Player inventory " + _playerInventory.name);
@@ -449,6 +450,9 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
     public void CmdTestInventory(GameObject _playerInventory)
     {
         Debug.Log("CMD Player inventory " + _playerInventory.name);
+=======
+
+>>>>>>> parent of 1e64533... Implemented basic networking of place customer down mechanic
 =======
 
 >>>>>>> parent of 1e64533... Implemented basic networking of place customer down mechanic
