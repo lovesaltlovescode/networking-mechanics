@@ -364,8 +364,6 @@ MonoBehaviour:
   nearIngredientTray: 0
   nearTrashBin: 0
   canDropIngredient: 1
-  platePrefab: {fileID: 7752808417109432923, guid: 8750cf14d568ea441a6c6a4b60675d2f,
-    type: 3}
 --- !u!114 &8668585866358223757
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -418,9 +416,6 @@ MonoBehaviour:
   syncInterval: 0.1
   networkedPlayerInteraction: {fileID: 0}
   customerGroupSize: 0
-  customerLastPatience: 0
-  CustomerWaitAreaManager: {fileID: 0}
-  isPlayerInWaitArea: 0
 --- !u!1 &2166442203535815449
 GameObject:
   m_ObjectHideFlags: 0

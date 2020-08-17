@@ -137,11 +137,19 @@ public class CustomerBehaviour_Queueing : CustomerBehaviour
     //pass their prev patience level in
 
     //RPC THIS
+    [Server]
     public void CustomerResumesWaiting(float resumedPatienceLevel, int groupSize)
     {
 
         //Debug.Log("Customer last patience level " + resumedPatienceLevel + " " + groupSize);
 
+        RpcCustomerResumesWaiting(resumedPatienceLevel, groupSize);
+
+    }
+
+    [ClientRpc]
+    public void RpcCustomerResumesWaiting(float resumedPatienceLevel, int groupSize)
+    {
         GroupSizeNum = groupSize;
 
         //show group size num and activate collider
@@ -149,7 +157,6 @@ public class CustomerBehaviour_Queueing : CustomerBehaviour
 
         //enable the patience meter
         TriggerPatienceMeter(resumedPatienceLevel, CustomerPatienceStats.customerPatience_Queue, CustomerWaitsTooLong);
-
     }
 
     //to be called when customer begins waiting
@@ -179,12 +186,10 @@ public class CustomerBehaviour_Queueing : CustomerBehaviour
     public void CustomerWaitsTooLong()
     {
         Debug.Log("Customer impatient method successfully invoked. Customer waited too long");
+
+
         //customer fades out of existence
-
         RpcCustomerWaitsForTooLong();
-
-        //CustomerAnimScript.LeaveAnim();
-        //Destroy(this.gameObject, 1f);
 
         Debug.Log("Customer fading out of existence");
         GameManager.Instance.currentNumWaitingCustomers -= 1;
@@ -193,6 +198,9 @@ public class CustomerBehaviour_Queueing : CustomerBehaviour
     [ClientRpc]
     public void RpcCustomerWaitsForTooLong()
     {
+
+        TriggerCustomerCollider(false, false);
+
         CustomerAnimScript.LeaveAnim();
         Destroy(this.gameObject, 1f);
 

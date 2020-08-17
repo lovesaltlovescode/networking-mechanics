@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 6811657128323775526}
   - component: {fileID: 6811657128323775488}
   - component: {fileID: 6811657128323775987}
-  - component: {fileID: -1880743778417226616}
   m_Layer: 13
   m_Name: RottenIngredientContainer
   m_TagString: RottenIngredient
@@ -55,21 +54,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.329216, y: 2.1888359, z: 1.1409582}
   m_Center: {x: -0.046958685, y: 0.67147887, z: 0.0022470355}
---- !u!114 &-1880743778417226616
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6811657128323775590}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sceneId: 0
-  serverOnly: 0
-  m_AssetId: 
 --- !u!1 &6811657128323775602
 GameObject:
   m_ObjectHideFlags: 0

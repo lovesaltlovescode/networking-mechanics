@@ -438,24 +438,7 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
         #endregion
 
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-    public void TestInventory(GameObject _playerInventory)
-    {
-        Debug.Log("Player inventory " + _playerInventory.name);
-        CmdTestInventory(_playerInventory);
-    }
 
-    [Command]
-    public void CmdTestInventory(GameObject _playerInventory)
-    {
-        Debug.Log("CMD Player inventory " + _playerInventory.name);
-=======
-
->>>>>>> parent of 1e64533... Implemented basic networking of place customer down mechanic
-=======
-
->>>>>>> parent of 1e64533... Implemented basic networking of place customer down mechanic
     }
 
     #region Raycast
@@ -684,7 +667,7 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
                 break;
 
             case PlayerState.HoldingCustomer:
-                networkedCustomerInteraction.CheckCanPutCustomerDown(playerInventory, detectedObject);
+                networkedCustomerInteraction.CheckCanPutCustomerDown();
                 break;
 
             case PlayerState.CanTakeOrder:
