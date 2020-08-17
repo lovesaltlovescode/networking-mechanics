@@ -27,6 +27,8 @@ public class NetworkedIngredientInteraction : NetworkBehaviour
     public bool nearTrashBin; //check if player is in the trash zone
     [SerializeField] bool canDropIngredient = true; //check if player can drop ingredient
 
+    public GameObject platePrefab;
+
     private void Awake()
     {
         networkedPlayerInteraction = GetComponent<NetworkedPlayerInteraction>();
@@ -227,10 +229,22 @@ public class NetworkedIngredientInteraction : NetworkBehaviour
     {
         //spawn a plate on the server
         //for now, on key press
-        networkedPlayerInteraction.ServerSpawnObject(networkedPlayerInteraction.dropPoint.transform.position, networkedPlayerInteraction.dropPoint.transform.rotation, HeldItem.dirtyplate, "TableItem");
-
+        //networkedPlayerInteraction.ServerSpawnObject(networkedPlayerInteraction.dropPoint.transform.position, networkedPlayerInteraction.dropPoint.transform.rotation, HeldItem.dirtyplate, "TableItem");
+        CmdSpawnPlate();
     }
 
+    [Command]
+    public void CmdSpawnPlate()
+    {
+        //instantiate scene object
+        GameObject spawnObject = Instantiate(platePrefab, networkedPlayerInteraction.dropPoint.transform.position, Quaternion.identity);
+
+        //set rigidbody as non-kinematic
+        spawnObject.GetComponent<Rigidbody>().isKinematic = false;
+
+        //spawn on network
+        NetworkServer.Spawn(spawnObject);
+    }
 
     public void PickUpPlate()
     {
@@ -312,10 +326,14 @@ public class NetworkedIngredientInteraction : NetworkBehaviour
 
     public void PickUpIngredient()
     {
-        networkedPlayerInteraction.CmdPickUpObject(networkedPlayerInteraction.detectedObject);
+        //networkedPlayerInteraction.CmdPickUpObject(networkedPlayerInteraction.detectedObject);
         //Debug.Log("//Debugging ingredient - Part 1");
 
-        networkedPlayerInteraction.CmdChangeHeldItem(networkedPlayerInteraction.detectedObject.GetComponent<ObjectContainer>().objToSpawn);
+        //networkedPlayerInteraction.CmdChangeHeldItem(networkedPlayerInteraction.detectedObject.GetComponent<ObjectContainer>().objToSpawn);
+
+        networkedPlayerInteraction.detectedObject.transform.position = networkedPlayerInteraction.attachmentPoint.transform.position;
+        networkedPlayerInteraction.detectedObject.transform.parent = networkedPlayerInteraction.attachmentPoint.transform;
+        networkedPlayerInteraction.playerInventory = networkedPlayerInteraction.detectedObject;
 
         //Debug.Log("//Debugging ingredient - Part 2");
         //Debug.Log("NetworkedIngredientInteraction - Ingredient tag: " + networkedPlayerInteraction.playerInventory.tag);

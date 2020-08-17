@@ -91,6 +91,7 @@ GameObject:
   - component: {fileID: 2144616528253818171}
   - component: {fileID: 2720496572672339171}
   - component: {fileID: 5741209548803367548}
+  - component: {fileID: 3544799063715290739}
   m_Layer: 13
   m_Name: EggContainer
   m_TagString: Egg
@@ -155,6 +156,21 @@ MonoBehaviour:
   spoiledPFX: {fileID: 0}
   spoiledIcon: {fileID: 0}
   isRotten: 0
+--- !u!114 &3544799063715290739
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2144616528253818311}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneId: 0
+  serverOnly: 0
+  m_AssetId: 
 --- !u!1 &6731684774924444603
 GameObject:
   m_ObjectHideFlags: 0

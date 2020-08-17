@@ -448,13 +448,14 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
 
     public void TestInventory(GameObject _playerInventory)
     {
+        Debug.Log("Player inventory " + _playerInventory.name);
         CmdTestInventory(_playerInventory);
     }
 
     [Command]
     public void CmdTestInventory(GameObject _playerInventory)
     {
-        Debug.Log("Player inventory " + _playerInventory.name);
+        Debug.Log("CMD Player inventory " + _playerInventory.name);
     }
 
     #region Raycast
