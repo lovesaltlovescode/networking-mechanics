@@ -24,6 +24,7 @@ public class NetworkedDrinkInteraction : NetworkBehaviour
     void Start()
     {
        GameManager.Instance.cooldownImg.fillAmount = 1; //cooldown should be full 
+       GameManager.Instance.cooldownImg.color = Color.white;
     }
 
     #region Methods to Detect
@@ -79,22 +80,18 @@ public class NetworkedDrinkInteraction : NetworkBehaviour
         if (GameManager.Instance.isCooldown)
         {
             RpcStartCooldown();
-            if (GameManager.Instance.cooldownImg.fillAmount >= 1)
-            {
-                GameManager.Instance.cooldownImg.fillAmount = 1;
-                GameManager.Instance.isCooldown = false;
-            }
+            GameManager.Instance.isCooldown = false;
         }
     }
 
     [ClientRpc]
     public void RpcStartCooldown()
     {
-        GameManager.Instance.cooldownImg.fillAmount += 1 / GameManager.Instance.cooldown * Time.deltaTime;
-        //if (!isCoroutineRunning)
-        //{
-        //    StartCoroutine("DrinkCooldown");
-        //}
+        //GameManager.Instance.cooldownImg.fillAmount += 1 / GameManager.Instance.cooldown * Time.deltaTime;
+        if (!isCoroutineRunning)
+        {
+            StartCoroutine("DrinkCooldown");
+        }
     }
 
     //coroutine that updates the timer indicating how much time is left for the food before it rots
@@ -102,16 +99,16 @@ public class NetworkedDrinkInteraction : NetworkBehaviour
     {
         isCoroutineRunning = true;
 
-
+        //reset fill amount and colour
+        GameManager.Instance.cooldownImg.color = new Color32(63, 63, 63, 255);
         GameManager.Instance.cooldownImg.fillAmount = 1f;
+
         float timeLeft = GameManager.Instance.cooldown;
 
         while (timeLeft > 0)
         {
             yield return new WaitForSeconds(0.2f);
-
-            //calculate amount of time left
-            timeLeft -= 0.2f;
+            timeLeft -= 0.1f * 2f;
 
             //display amount of time left
             GameManager.Instance.cooldownImg.fillAmount = timeLeft / GameManager.Instance.cooldown;
@@ -119,6 +116,9 @@ public class NetworkedDrinkInteraction : NetworkBehaviour
         }
 
         isCoroutineRunning = false;
+        GameManager.Instance.cooldownImg.fillAmount = 1;
+        GameManager.Instance.cooldownImg.color = Color.white;
+        
     }
 
 

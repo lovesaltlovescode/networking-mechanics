@@ -211,7 +211,7 @@ public class Evaluation_Cooking
     #endregion
 
     //updates the number of ingredients burnt / rotted / eaten / thrown away by chef
-    public static void increaseWastedIngredients()
+    public static void IncreaseWastedIngredients()
     {
         numWastedIngredients++;
     }
