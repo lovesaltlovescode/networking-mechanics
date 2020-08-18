@@ -416,6 +416,9 @@ MonoBehaviour:
   syncInterval: 0.1
   networkedPlayerInteraction: {fileID: 0}
   customerGroupSize: 0
+  customerLastPatience: 0
+  CustomerWaitAreaManager: {fileID: 0}
+  isPlayerInWaitArea: 0
 --- !u!1 &2166442203535815449
 GameObject:
   m_ObjectHideFlags: 0
@@ -709,7 +712,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: f3ee5fd8638443649a03ef1c280d3874, type: 3}
+  m_Sprite: {fileID: 21300000, guid: b6dc933018668ac4983bd1594b09c912, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -936,7 +939,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: ffcf3930df68f40439ac047cbf79230d, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 43ae8afb78e2b0447ae7c7754560f828, type: 3}
   m_Type: 3
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -1422,7 +1425,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttonIcon: {fileID: 4590608265888959337}
-  defaultIcon: {fileID: 21300000, guid: f3ee5fd8638443649a03ef1c280d3874, type: 3}
+  defaultIcon: {fileID: 21300000, guid: b6dc933018668ac4983bd1594b09c912, type: 3}
   eggIcon: {fileID: 21300000, guid: 256a1b8f95e7a344692e4d24e1d1a959, type: 3}
   chickenIcon: {fileID: 21300000, guid: 98b935a3d2aca874584abe4d8decbb25, type: 3}
   cucumberIcon: {fileID: 21300000, guid: 90441338102d3af45af56c99685d3774, type: 3}

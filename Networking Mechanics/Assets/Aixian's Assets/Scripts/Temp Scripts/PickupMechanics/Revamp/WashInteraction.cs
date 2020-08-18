@@ -45,13 +45,13 @@ public class WashInteraction : MonoBehaviour
     {
         Transform[] sinkPositions = new Transform[2];
 
-        if (sinkParentObj.GetComponent<SinkScript_Temp>() != null)
-        {
-            sinkPositions = sinkParentObj.GetComponent<SinkScript_Temp>().sinkPositions;
-        } else
-        {
-            Debug.Log("SinkScript not present");
-        }
+        //if (sinkParentObj.GetComponent<SinkScript_Temp>() != null)
+        //{
+        //    sinkPositions = sinkParentObj.GetComponent<SinkScript_Temp>().sinkPositions;
+        //} else
+        //{
+        //    Debug.Log("SinkScript not present");
+        //}
         
 
         //loop through plate in sink array
