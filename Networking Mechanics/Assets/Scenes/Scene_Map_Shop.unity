@@ -13558,6 +13558,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17638738082a06e4eac327772269fc51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
   customerQueueingPrefab: {fileID: 4217755499028838569, guid: 570277c39e6c63242aaceef413f30529,
     type: 3}
   customerTag: Customer

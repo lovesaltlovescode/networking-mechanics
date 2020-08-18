@@ -13,6 +13,8 @@ public class NetworkedDrinkInteraction : NetworkBehaviour
     
     private NetworkedPlayerInteraction networkedPlayerInteraction;
 
+    private bool isCoroutineRunning = false; //bool used to ensure that coroutine does not get called while coroutine is running
+
     private void Awake()
     {
         networkedPlayerInteraction = GetComponent<NetworkedPlayerInteraction>();
@@ -66,19 +68,59 @@ public class NetworkedDrinkInteraction : NetworkBehaviour
         //detected drink
         networkedPlayerInteraction.PickUpObject(networkedPlayerInteraction.detectedObject, 22, networkedPlayerInteraction.IsInventoryFull(), PlayerState.CanPickUpDrink);
 
+        CmdStopCooldown();
+
+    }
+
+    [Command]
+    public void CmdStopCooldown()
+    {
         //if cooldown
         if (GameManager.Instance.isCooldown)
         {
-            GameManager.Instance.cooldownImg.fillAmount += 1 / GameManager.Instance.cooldown * Time.deltaTime;
+            RpcStartCooldown();
             if (GameManager.Instance.cooldownImg.fillAmount >= 1)
             {
                 GameManager.Instance.cooldownImg.fillAmount = 1;
                 GameManager.Instance.isCooldown = false;
             }
         }
-
-
     }
+
+    [ClientRpc]
+    public void RpcStartCooldown()
+    {
+        GameManager.Instance.cooldownImg.fillAmount += 1 / GameManager.Instance.cooldown * Time.deltaTime;
+        //if (!isCoroutineRunning)
+        //{
+        //    StartCoroutine("DrinkCooldown");
+        //}
+    }
+
+    //coroutine that updates the timer indicating how much time is left for the food before it rots
+    IEnumerator DrinkCooldown()
+    {
+        isCoroutineRunning = true;
+
+
+        GameManager.Instance.cooldownImg.fillAmount = 1f;
+        float timeLeft = GameManager.Instance.cooldown;
+
+        while (timeLeft > 0)
+        {
+            yield return new WaitForSeconds(0.2f);
+
+            //calculate amount of time left
+            timeLeft -= 0.2f;
+
+            //display amount of time left
+            GameManager.Instance.cooldownImg.fillAmount = timeLeft / GameManager.Instance.cooldown;
+
+        }
+
+        isCoroutineRunning = false;
+    }
+
 
     #region Remote Methods
 

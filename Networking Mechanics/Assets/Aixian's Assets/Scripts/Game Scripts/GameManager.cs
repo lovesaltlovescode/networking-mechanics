@@ -58,9 +58,15 @@ public class GameManager : NetworkBehaviour
     public int drinksCount; //number of drinks on the counter
 
     [Header("DrinksCooldown")]
+
     public Image cooldownImg;
+
+    [SyncVar]
     public float cooldown = 5f;
+
+    [SyncVar]
     public bool isCooldown = false;
+
 
     [Header("Dishes")]
     public Transform[] dishSpawnPoints;

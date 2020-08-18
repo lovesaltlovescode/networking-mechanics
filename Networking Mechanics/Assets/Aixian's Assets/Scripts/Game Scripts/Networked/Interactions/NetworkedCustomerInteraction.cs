@@ -230,7 +230,7 @@ public class NetworkedCustomerInteraction : NetworkBehaviour
                 Debug.Log("player is looking at customer wait area");
 
                 Debug.Log("CMD Player inventory " + networkedPlayerInteraction.playerInventory);
-                PlaceCustomerDown(networkedPlayerInteraction.playerInventory, "HELP ME");
+                PlaceCustomerDown(networkedPlayerInteraction.playerInventory);
                 
             }
         }
@@ -239,33 +239,31 @@ public class NetworkedCustomerInteraction : NetworkBehaviour
             Debug.Log("player is in customer wait area");
 
             Debug.Log("CMD Player inventory " + networkedPlayerInteraction.playerInventory);
-            PlaceCustomerDown(networkedPlayerInteraction.playerInventory, "HELP ME");
+            PlaceCustomerDown(networkedPlayerInteraction.playerInventory);
             
         }
     }
 
-    public void PlaceCustomerDown(GameObject playerInventory, string testString)
+    public void PlaceCustomerDown(GameObject playerInventory)
     {
-        Debug.Log("Test string " + testString);
 
         Debug.Log("Local player inventory " + playerInventory);
 
-        CmdPlaceCustomerDown(networkedPlayerInteraction.playerInventory, testString);
+        CmdPlaceCustomerDown(networkedPlayerInteraction.playerInventory);
 
-        //RemoveCustomerFromInventory();
+        RemoveCustomerFromInventory();
     }
 
 
     [Command]
-    public void CmdPlaceCustomerDown(GameObject playerInventory, string testString)
+    public void CmdPlaceCustomerDown(GameObject playerInventory)
     {
-        Debug.Log("CMD Test string " + testString);
-        Debug.Log("CMD Inside Inventory" + playerInventory);
+        Debug.Log("CMD Inside Inventory" + networkedPlayerInteraction.playerInventory);
 
 
-        //CustomerWaitAreaManager.PutCustomerdown(playerInventory);
+        CustomerWaitAreaManager.PutCustomerdown(networkedPlayerInteraction.playerInventory);
 
-        //RpcPlaceCustomerDown();
+        RpcPlaceCustomerDown();
 
     }
 
@@ -307,19 +305,13 @@ public class NetworkedCustomerInteraction : NetworkBehaviour
         //get table's table script
         TableScript tableScript = detectedObject.GetComponent<TableScript>();
 
-        var heldCustomer = networkedPlayerInteraction.attachmentPoint.transform.GetChild(0);
+        var heldCustomer = networkedPlayerInteraction.playerInventory;
 
         //if table has enough seats
         if (tableScript.CheckSufficientSeats(heldCustomer.GetComponent<CustomerBehaviour_BeingHeld>().groupSizeNum))
         {
            // Debug.Log("NetworkedCustomerInteraction - Enough seats for customers");
             RpcSeatCustomer(playerInventory);
-
-
-            //can I move this to cmd later?... v
-            //remove the beingHeld customer (destroy it)
-            RemoveCustomerFromInventory();
-
 
             //DECREASE
             GameManager.Instance.currentNumWaitingCustomers -= 1;
@@ -339,6 +331,7 @@ public class NetworkedCustomerInteraction : NetworkBehaviour
             return;
         }
 
+        RemoveCustomerFromInventory();
 
         //toggle layer undetectable
         ToggleWaitAreaAndTableDetection(false);
