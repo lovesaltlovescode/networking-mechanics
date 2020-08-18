@@ -37,8 +37,9 @@ public class LevelTimer : NetworkBehaviour
 
     [SyncVar]
     private float timeLeft;
-    private float levelLength = 240f; //4 minutes long
+    private float levelLength = 35f; //4 minutes long
 
+    private float flashTimer;
 
     public float TimeLeft
     {
@@ -109,6 +110,33 @@ public class LevelTimer : NetworkBehaviour
             yield return null;
         }
 
+    }
+
+    private void Update()
+    {
+        if(timeLeft <= 31)
+        {
+            TextFlash();
+        }
+    }
+
+    public void TextFlash()
+    {
+        flashTimer += Time.deltaTime;
+
+        if (flashTimer >= 0.5f)
+        {
+            timerText.enabled = true;
+
+            //timerText.color = new Color32(238, 0, 0, 255);
+
+        }
+
+        if (flashTimer >= 1f)
+        {
+            timerText.enabled = false;
+            flashTimer = 0;
+        }
     }
 
     //returns the time as a string in MM:SS format to be displayed in the clocks
