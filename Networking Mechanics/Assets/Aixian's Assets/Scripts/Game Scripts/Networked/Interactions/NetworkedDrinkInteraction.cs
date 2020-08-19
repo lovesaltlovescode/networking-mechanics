@@ -13,7 +13,7 @@ public class NetworkedDrinkInteraction : NetworkBehaviour
     
     private NetworkedPlayerInteraction networkedPlayerInteraction;
 
-    private bool isCoroutineRunning = false; //bool used to ensure that coroutine does not get called while coroutine is running
+    
 
     private void Awake()
     {
@@ -80,7 +80,6 @@ public class NetworkedDrinkInteraction : NetworkBehaviour
         if (GameManager.Instance.isCooldown)
         {
             RpcStartCooldown();
-            GameManager.Instance.isCooldown = false;
         }
     }
 
@@ -88,16 +87,21 @@ public class NetworkedDrinkInteraction : NetworkBehaviour
     public void RpcStartCooldown()
     {
         //GameManager.Instance.cooldownImg.fillAmount += 1 / GameManager.Instance.cooldown * Time.deltaTime;
-        if (!isCoroutineRunning)
+        if (!GameManager.Instance.isDrinkCoroutineRunning)
         {
             StartCoroutine("DrinkCooldown");
+            GameManager.Instance.isCooldown = true;
+        }
+        else if (GameManager.Instance.isDrinkCoroutineRunning)
+        {
+            GameManager.Instance.isCooldown = false;
         }
     }
 
     //coroutine that updates the timer indicating how much time is left for the food before it rots
     IEnumerator DrinkCooldown()
     {
-        isCoroutineRunning = true;
+        GameManager.Instance.isDrinkCoroutineRunning = true;
 
         //reset fill amount and colour
         GameManager.Instance.cooldownImg.color = new Color32(63, 63, 63, 255);
@@ -115,10 +119,11 @@ public class NetworkedDrinkInteraction : NetworkBehaviour
 
         }
 
-        isCoroutineRunning = false;
+        GameManager.Instance.isDrinkCoroutineRunning = false;
         GameManager.Instance.cooldownImg.fillAmount = 1;
         GameManager.Instance.cooldownImg.color = Color.white;
-        
+
+
     }
 
 
@@ -126,6 +131,11 @@ public class NetworkedDrinkInteraction : NetworkBehaviour
 
     public void SpawnDrink()
     {
+        if (GameManager.Instance.isDrinkCoroutineRunning)
+        {
+            return;
+        }
+
         CmdSpawnDrink();
         //spawnedDrink = true;
 

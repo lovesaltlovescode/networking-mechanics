@@ -152,7 +152,7 @@ public class NetworkedUIManager : MonoBehaviour
                         buttonIcon.sprite = fridgeIcon;
                     }
 
-                    else if (GameManager.Instance.isCooldown)
+                    if (GameManager.Instance.isDrinkCoroutineRunning)
                     {
                         buttonIcon.color = Color.grey;
                         buttonIcon.sprite = fridgeIcon;

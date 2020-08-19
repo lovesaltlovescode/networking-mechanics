@@ -37,7 +37,7 @@ public class LevelTimer : NetworkBehaviour
 
     [SyncVar]
     private float timeLeft;
-    private float levelLength = 35f; //4 minutes long
+    private float levelLength = 240f; //4 minutes long
 
     [SyncVar]
     private float flashTimer;

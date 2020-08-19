@@ -60,12 +60,12 @@ public class GameManager : NetworkBehaviour
     [Header("DrinksCooldown")]
 
     public Image cooldownImg;
-
     [SyncVar]
     public float cooldown = 5f;
-
     [SyncVar]
     public bool isCooldown = false;
+    [SyncVar]
+    public bool isDrinkCoroutineRunning = false;
 
 
     [Header("Dishes")]
