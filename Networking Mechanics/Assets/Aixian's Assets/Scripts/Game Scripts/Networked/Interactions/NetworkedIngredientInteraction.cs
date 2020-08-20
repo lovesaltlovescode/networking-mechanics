@@ -206,13 +206,6 @@ public class NetworkedIngredientInteraction : NetworkBehaviour
             
         }
 
-        //Temp spawn plate
-        if (Input.GetKeyDown(KeyCode.S))
-        {
-            //Debug.Log("NetworkedIngredientInteraction - Spawning dirty plate!");
-            SpawnPlate();
-        }
-
         //if player sees a rotten ingredient
         networkedPlayerInteraction.PickUpObject(networkedPlayerInteraction.detectedObject, 23, networkedPlayerInteraction.IsInventoryFull(), PlayerState.CanPickUpRottenIngredient);
 
@@ -227,7 +220,7 @@ public class NetworkedIngredientInteraction : NetworkBehaviour
     {
         //spawn a plate on the server
         //for now, on key press
-        networkedPlayerInteraction.ServerSpawnObject(networkedPlayerInteraction.dropPoint.transform.position, networkedPlayerInteraction.dropPoint.transform.rotation, HeldItem.dirtyplate, "TableItem");
+        //networkedPlayerInteraction.ServerSpawnObject(networkedPlayerInteraction.dropPoint.transform.position, networkedPlayerInteraction.dropPoint.transform.rotation, HeldItem.dirtyplate, "TableItem");
 
     }
 

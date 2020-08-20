@@ -896,6 +896,13 @@ MonoBehaviour:
   decreaseFeedbackPFX: {fileID: 7656189762680470825, guid: 77dc095fbde8a6b49b941c7aac21655f,
     type: 3}
   overheadFeedbackGameObj: {fileID: 2417036022663916919}
+  customerState: Queueing
+  customerQueueing: Queueing
+  customerOrdering: Ordering
+  customerWaiting: Waiting For Food
+  customerHappy: 0
+  customerImpatient: 0
+  customerAngry: 0
 --- !u!114 &3156175993398286783
 MonoBehaviour:
   m_ObjectHideFlags: 0

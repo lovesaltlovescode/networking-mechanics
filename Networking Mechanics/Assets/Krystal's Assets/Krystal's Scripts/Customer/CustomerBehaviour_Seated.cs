@@ -103,6 +103,8 @@ public class CustomerBehaviour_Seated : CustomerBehaviour
     public void RpcGenerateOrder(bool roastedChic, bool ricePlain, bool haveEgg)
     {
         CustomerFeedbackScript.PlayHappyPFX();
+        CustomerPatienceScript.CustomerState = CustomerPatienceScript.CustomerOrdering;
+
         customersOrder = orderGenerationScript.CreateCustomOrder(roastedChic, ricePlain, haveEgg);
 
         if (customersOrder.OrderIcon != null)
@@ -134,6 +136,8 @@ public class CustomerBehaviour_Seated : CustomerBehaviour
     [ClientRpc]
     public void RpcDisplayOrderAndWait()
     {
+        CustomerPatienceScript.CustomerState = CustomerPatienceScript.CustomerWaiting;
+
         CustomerAnimScript.WaitForFoodAnim();
 
         //display the customer's order
@@ -344,6 +348,7 @@ public class CustomerBehaviour_Seated : CustomerBehaviour
             tableSeatedAt.GetComponent<TableFeedback>().CustomerLeaves();
         }
 
+        tableSeatedAt.GetComponent<CustomerPatience>().ResetCustomerPatience();
         CustomerAnimScript.LeaveAnim();
         Destroy(this.gameObject, 1f);
     }

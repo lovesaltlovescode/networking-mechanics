@@ -15,6 +15,8 @@ public class NetworkedCustomerInteraction : NetworkBehaviour
 
     public CustomerWaitArea CustomerWaitAreaManager;
     public bool isPlayerInWaitArea = false; // set to true when the player enters the customer wait area
+    [SerializeField] private float customerQueueingPatience;
+    [SerializeField] private string gain20Points = "+20", gain10Points = "+10", gain5Points = "+5", lose10Points = "-10";
 
     private void Awake()
     {
@@ -96,7 +98,7 @@ public class NetworkedCustomerInteraction : NetworkBehaviour
     {
         customerGroupSize = groupSize;
         customerLastPatience = lastPatienceLevel;
-
+        customerQueueingPatience = detectedObject.GetComponent<CustomerPatience>().currentPatience;
     }
 
     #endregion
@@ -264,12 +266,32 @@ public class NetworkedCustomerInteraction : NetworkBehaviour
         }
 
         RemoveCustomerFromInventory();
-
-        detectedObject.GetComponent<TableFeedback>().CustomerSeatedOrderTaken();
+        GetQueueingCustomerPatience(detectedObject);
+        
 
         //toggle layer undetectable
         ToggleWaitAreaAndTableDetection(false);
 
+    }
+
+    public void GetQueueingCustomerPatience(GameObject detectedObject)
+    {
+        //check customer patience level when queueing
+        float customerQueuedPatience = (customerQueueingPatience / CustomerPatienceStats.customerPatience_Queue) * 100;
+        Debug.Log("Customer Queued Patience: " + customerQueuedPatience);
+
+        if (customerQueuedPatience >= 50 && customerQueuedPatience > 0)
+        {
+            detectedObject.GetComponent<TableFeedback>().CustomerSeated(gain20Points);
+        }
+        else if (customerQueuedPatience >= 30 && customerQueuedPatience < 50)
+        {
+            detectedObject.GetComponent<TableFeedback>().CustomerSeated(gain10Points);
+        }
+        else if (customerQueuedPatience >= 20 && customerQueuedPatience < 30 && customerQueuedPatience > 0)
+        {
+            detectedObject.GetComponent<TableFeedback>().CustomerSeated(gain5Points);
+        }
     }
 
     #endregion

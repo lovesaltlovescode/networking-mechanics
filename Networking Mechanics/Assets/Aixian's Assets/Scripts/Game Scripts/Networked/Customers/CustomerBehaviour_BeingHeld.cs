@@ -26,7 +26,7 @@ public class CustomerBehaviour_BeingHeld : CustomerBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        GetComponent<CustomerFeedback>().PlayHappyPFX();
+        //GetComponent<CustomerFeedback>().PlayHappyPFX();
 
         groupSizeNum = GetComponentInParent<NetworkedCustomerInteraction>().customerGroupSize;
         lastPatienceLevel = GetComponentInParent<NetworkedCustomerInteraction>().customerLastPatience;

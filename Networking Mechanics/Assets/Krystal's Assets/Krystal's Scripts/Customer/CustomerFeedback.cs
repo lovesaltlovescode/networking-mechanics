@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-public class CustomerFeedback : MonoBehaviour
+public class CustomerFeedback : CustomerBehaviour
 {
     [SerializeField] private ParticleSystem eating_PFX, angry_PFX, happy_PFX;
 
@@ -19,7 +19,7 @@ public class CustomerFeedback : MonoBehaviour
     [SerializeField] private string lose10Points = "-10"; //for queueing customers
     
     [Header("Order served")]
-    [SerializeField] private string gain60Points = "+60", gain40Points = "+40", gain30Points = "+30", gain10Points = "+10";
+    [SerializeField] private string gain60Points = "+60", gain40Points = "+40", gain10Points = "+10";
 
     public void Start()
     {
@@ -59,7 +59,18 @@ public class CustomerFeedback : MonoBehaviour
     {
         if (greenText)
         {
-            StartCoroutine(FadeInFadeOutText(gain60Points, greenText, true));
+            if (CustomerPatienceScript.CustomerHappy)
+            {
+                StartCoroutine(FadeInFadeOutText(gain60Points, greenText, true));
+            }
+            else if (CustomerPatienceScript.CustomerImpatient)
+            {
+                StartCoroutine(FadeInFadeOutText(gain40Points, greenText, true));
+            }
+            else if (CustomerPatienceScript.CustomerAngry)
+            {
+                StartCoroutine(FadeInFadeOutText(gain10Points, greenText, true));
+            }
         }
     }
 

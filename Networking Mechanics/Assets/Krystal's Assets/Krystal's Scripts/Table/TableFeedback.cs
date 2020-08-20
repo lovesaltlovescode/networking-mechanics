@@ -94,9 +94,15 @@ public class TableFeedback : MonoBehaviour
 
     #region Points Feedback
 
-    public void CustomerSeatedOrderTaken()
+    //when customers have been seated
+    public void CustomerSeated(string pointsGained)
     {
-        StartCoroutine(FadeInFadeOutText(gain20Points, pointsText, true));
+        StartCoroutine(FadeInFadeOutText(pointsGained, pointsText, true));
+    }
+
+    public void CustomerOrderTaken(string pointsGained)
+    {
+        StartCoroutine(FadeInFadeOutText(pointsGained, pointsText, true));
     }
 
     public void CustomerLeaves()

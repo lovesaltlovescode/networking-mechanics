@@ -35,6 +35,72 @@ public class CustomerPatience : NetworkBehaviour
 
     private bool coroutineIsPaused = false;
 
+    [Header("Identify customer state")]
+    [SerializeField] private string customerState = null;
+    [SerializeField] private string customerQueueing = "Queueing";
+    [SerializeField] private string customerOrdering = "Ordering";
+    [SerializeField] private string customerWaiting = "Waiting For Food";
+
+    [Header("Customer patience levels")]
+    //checks if customers are happy, impatient or angry and awards scores accordingly
+    [SerializeField] private bool customerHappy;
+    [SerializeField] private bool customerImpatient;
+    [SerializeField] private bool customerAngry;
+    //[SerializeField] private bool customerLeft;
+
+    #region Getters and setters
+
+    #region Customer States
+
+    public string CustomerState
+    {
+        get { return customerState; }
+        set { customerState = value; }
+    }
+    public string CustomerQueueing
+    {
+        get { return customerQueueing; }
+        set { customerQueueing = value; }
+    }
+    public string CustomerOrdering
+    {
+        get { return customerOrdering; }
+        set { customerOrdering = value; }
+    }
+    public string CustomerWaiting
+    {
+        get { return customerWaiting; }
+        set { customerWaiting = value; }
+    }
+
+    #endregion
+
+    #region Customer Patience Levels
+
+    public bool CustomerHappy
+    {
+        get { return customerHappy; }
+        private set { customerHappy = value; }
+    }
+    public bool CustomerImpatient
+    {
+        get { return customerImpatient; }
+        private set { customerImpatient = value; }
+    }
+    public bool CustomerAngry
+    {
+        get { return customerAngry; }
+        private set { customerAngry = value; }
+    }
+
+    #endregion
+
+
+    #endregion
+
+
+
+
     #region Debug Shortcuts
     /*
     private void Update()
@@ -57,6 +123,15 @@ public class CustomerPatience : NetworkBehaviour
         patienceMeterImg.enabled = false;
 
         startColor = patienceMeterImg.color;
+
+        if(gameObject.layer == LayerMask.NameToLayer("Queue"))
+        {
+            customerState = customerQueueing;
+        }
+        else if(gameObject.layer == LayerMask.NameToLayer("Table"))
+        {
+            customerState = customerOrdering;
+        }
     }
 
 
@@ -131,6 +206,116 @@ public class CustomerPatience : NetworkBehaviour
         patienceMeterImg.enabled = !pause; //if paused, patience meter should not be visible
 
     }
+
+    public void Update()
+    {
+        CheckCustomerState();   
+    }
+
+    public void CheckCustomerState()
+    {
+        if(customerState == customerQueueing)
+        {
+            Debug.Log("Customer is queueing");
+            CalculatePatiencePercentage();
+        }
+        else if(customerState == customerOrdering)
+        {
+            Debug.Log("Customer is ordering");
+            CalculatePatiencePercentage(true);
+        }
+        else if(customerState == customerWaiting)
+        {
+            Debug.Log("Customer is waiting for food");
+            CalculatePatiencePercentage(false, true);
+        }
+    }
+
+    //reset patience set to true when customer has been seated
+    public void CalculatePatiencePercentage(bool ordering = false, bool waitingForFood = false, bool resetPatience = false)
+    {
+        if (resetPatience)
+        {
+            ResetCustomerPatience();
+            return;
+        }
+
+        if (ordering)
+        {
+            float customerOrderingPatience = (currentPatience / CustomerPatienceStats.customerPatience_TakeOrder) * 100;
+            Debug.Log("Current ordering customer patience: " + customerOrderingPatience);
+
+            if (customerOrderingPatience >= 50 && customerOrderingPatience > 0)
+            {
+                customerHappy = true;
+                customerImpatient = customerAngry = false;
+            }
+            else if (customerOrderingPatience >= 30 && customerOrderingPatience < 50)
+            {
+                customerImpatient = true;
+                customerHappy = customerAngry = false;
+            }
+            else if (customerOrderingPatience >= 20 && customerOrderingPatience < 30 && customerOrderingPatience > 0)
+            {
+                customerAngry = true;
+                customerImpatient = customerHappy = false;
+            }
+        }
+        else if (waitingForFood)
+        {
+            float customerWaitingPatience = (currentPatience / CustomerPatienceStats.customerPatience_FoodWait) * 100;
+            Debug.Log("Current waiting customer patience: " + customerWaitingPatience);
+
+            if (customerWaitingPatience >= 50 && customerWaitingPatience > 0)
+            {
+                customerHappy = true;
+                customerImpatient = customerAngry = false;
+            }
+            else if (customerWaitingPatience >= 30 && customerWaitingPatience < 50)
+            {
+                customerImpatient = true;
+                customerHappy = customerAngry = false;
+            }
+            else if (customerWaitingPatience >= 20 && customerWaitingPatience < 30 && customerWaitingPatience > 0)
+            {
+                customerAngry = true;
+                customerImpatient = customerHappy = false;
+            }
+        }
+        //queueing
+        else
+        {
+            float customerQueueingPatience = (currentPatience / CustomerPatienceStats.customerPatience_Queue) * 100;
+            Debug.Log("Current queueing customer patience: " + customerQueueingPatience);
+
+            if (customerQueueingPatience >= 50 && customerQueueingPatience > 0)
+            {
+                customerHappy = true;
+                customerImpatient = customerAngry = false;
+            }
+            else if (customerQueueingPatience >= 30 && customerQueueingPatience < 50)
+            {
+                customerImpatient = true;
+                customerHappy = customerAngry = false;
+            }
+            else if (customerQueueingPatience >= 20 && customerQueueingPatience < 30 && customerQueueingPatience > 0)
+            {
+                customerAngry = true;
+                customerImpatient = customerHappy = false;
+            }
+        }
+
+        
+
+    }
+
+    public void ResetCustomerPatience()
+    {
+        customerHappy = false;
+        customerImpatient = false;
+        customerAngry = false;
+    }
+
 
 
     //method that updates customers' patience meter, then, when patience runs out, calls the method (callback) passed into it 

@@ -450,6 +450,13 @@ MonoBehaviour:
   decreaseFeedbackPFX: {fileID: 7656189762680470825, guid: 77dc095fbde8a6b49b941c7aac21655f,
     type: 3}
   overheadFeedbackGameObj: {fileID: 8100879364930874577}
+  customerState: 
+  customerQueueing: Queueing
+  customerOrdering: Ordering
+  customerWaiting: Waiting For Food
+  customerHappy: 0
+  customerImpatient: 0
+  customerAngry: 0
 --- !u!114 &8061215714513260892
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -494,12 +501,11 @@ MonoBehaviour:
   wrongOrder: Wrong order
   pointsAnim: {fileID: 5120664753700187114}
   greenText: {fileID: 1751021971549608602}
+  lose10Points: -10
   gain60Points: +60
   gain40Points: +40
   gain30Points: +30
   gain10Points: +10
-  lose10Points: -10
-  gain50Points: +50
 --- !u!114 &188312658767743909
 MonoBehaviour:
   m_ObjectHideFlags: 0

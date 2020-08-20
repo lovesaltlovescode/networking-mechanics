@@ -98,7 +98,7 @@ public class CustomerWaitArea : NetworkBehaviour
     public void RpcPutCustomerDown(GameObject returnedQueueingCustomer, Vector3 newPosition, GameObject customerBeingHeld)
     {
 
-        returnedQueueingCustomer.GetComponent<CustomerFeedback>().PlayAngryPFX();
+        //returnedQueueingCustomer.GetComponent<CustomerFeedback>().PlayAngryPFX();
         //move the newly spawned customer from the player's hands to the waiting area
         StartCoroutine(LerpCustomerPos(returnedQueueingCustomer, newPosition));
 

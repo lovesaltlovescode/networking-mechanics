@@ -70,6 +70,7 @@ public class LevelTimer : NetworkBehaviour
         }
 
         timeLeft = levelLength;
+        currentTime = 0;
 
         isCoroutineRunning = true;
 
