@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-public class CustomerFeedback : CustomerBehaviour
+public class CustomerFeedback : MonoBehaviour
 {
     [SerializeField] private ParticleSystem eating_PFX, angry_PFX, happy_PFX;
 
@@ -16,7 +16,7 @@ public class CustomerFeedback : CustomerBehaviour
     [SerializeField] private Animator pointsAnim;
     [SerializeField] private TextMeshProUGUI greenText;
     
-    [SerializeField] private string lose10Points = "-10"; //for queueing customers
+    [SerializeField] private string loseOneCustomer = "-10", loseTwoCustomers = "-20", loseThreeCustomers = "-30", loseFourCustomers = "-40"; //for queueing customers
     
     [Header("Order served")]
     [SerializeField] private string gain60Points = "+60", gain40Points = "+40", gain10Points = "+10";
@@ -34,9 +34,34 @@ public class CustomerFeedback : CustomerBehaviour
 
     public void CustomerLeaves()
     {
+        CustomerBehaviour_Queueing customerBehaviour_Queueing = GetComponent<CustomerBehaviour_Queueing>();
+
         if (redText)
         {
-            StartCoroutine(FadeInFadeOutText(lose10Points, redText));
+            switch (customerBehaviour_Queueing.groupSizeNum)
+            {
+                case 1:
+                    StartCoroutine(FadeInFadeOutText(loseOneCustomer, redText));
+                    GameManager.Instance.ReduceServerScore(10);
+                    break;
+
+                case 2:
+                    StartCoroutine(FadeInFadeOutText(loseTwoCustomers, redText));
+                    GameManager.Instance.ReduceServerScore(20);
+                    break;
+
+                case 3:
+                    StartCoroutine(FadeInFadeOutText(loseThreeCustomers, redText));
+                    GameManager.Instance.ReduceServerScore(30);
+                    break;
+
+                case 4:
+                    StartCoroutine(FadeInFadeOutText(loseFourCustomers, redText));
+                    GameManager.Instance.ReduceServerScore(40);
+                    break;
+            }
+            
+            
         }
     }
 
@@ -57,19 +82,24 @@ public class CustomerFeedback : CustomerBehaviour
 
     public void RightOrderServed()
     {
+        CustomerPatience customerPatienceScript = GetComponent<CustomerPatience>();
+
         if (greenText)
         {
-            if (CustomerPatienceScript.CustomerHappy)
+            if (customerPatienceScript.customerMood == CurrentCustomerMood.customerHappy)
             {
                 StartCoroutine(FadeInFadeOutText(gain60Points, greenText, true));
+                GameManager.Instance.AddServerScore(60);
             }
-            else if (CustomerPatienceScript.CustomerImpatient)
+            else if (customerPatienceScript.customerMood == CurrentCustomerMood.customerImpatient)
             {
                 StartCoroutine(FadeInFadeOutText(gain40Points, greenText, true));
+                GameManager.Instance.AddServerScore(40);
             }
-            else if (CustomerPatienceScript.CustomerAngry)
+            else if (customerPatienceScript.customerMood == CurrentCustomerMood.customerAngry)
             {
                 StartCoroutine(FadeInFadeOutText(gain10Points, greenText, true));
+                GameManager.Instance.AddServerScore(10);
             }
         }
     }

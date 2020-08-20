@@ -15,8 +15,10 @@ public class NetworkedCustomerInteraction : NetworkBehaviour
 
     public CustomerWaitArea CustomerWaitAreaManager;
     public bool isPlayerInWaitArea = false; // set to true when the player enters the customer wait area
-    [SerializeField] private float customerQueueingPatience;
-    [SerializeField] private string gain20Points = "+20", gain10Points = "+10", gain5Points = "+5", lose10Points = "-10";
+
+    [SyncVar]
+    public float customerQueueingPatience;
+    [SerializeField] private string gain20Points = "+20", gain10Points = "+10", gain5Points = "+5";
 
     private void Awake()
     {
@@ -266,6 +268,7 @@ public class NetworkedCustomerInteraction : NetworkBehaviour
         }
 
         RemoveCustomerFromInventory();
+
         GetQueueingCustomerPatience(detectedObject);
         
 
@@ -276,21 +279,24 @@ public class NetworkedCustomerInteraction : NetworkBehaviour
 
     public void GetQueueingCustomerPatience(GameObject detectedObject)
     {
-        //check customer patience level when queueing
+        //check queueing customer patience level when they were picked up
         float customerQueuedPatience = (customerQueueingPatience / CustomerPatienceStats.customerPatience_Queue) * 100;
         Debug.Log("Customer Queued Patience: " + customerQueuedPatience);
 
         if (customerQueuedPatience >= 50 && customerQueuedPatience > 0)
         {
             detectedObject.GetComponent<TableFeedback>().CustomerSeated(gain20Points);
+            GameManager.Instance.AddServerScore(20);
         }
         else if (customerQueuedPatience >= 30 && customerQueuedPatience < 50)
         {
             detectedObject.GetComponent<TableFeedback>().CustomerSeated(gain10Points);
+            GameManager.Instance.AddServerScore(10);
         }
-        else if (customerQueuedPatience >= 20 && customerQueuedPatience < 30 && customerQueuedPatience > 0)
+        else if (customerQueuedPatience >= 20 || customerQueuedPatience < 30 && customerQueuedPatience > 0)
         {
             detectedObject.GetComponent<TableFeedback>().CustomerSeated(gain5Points);
+            GameManager.Instance.AddServerScore(5);
         }
     }
 
@@ -316,13 +322,13 @@ public class NetworkedCustomerInteraction : NetworkBehaviour
         //get table script
         TableScript tableScript = networkedPlayerInteraction.detectedObject.GetComponent<TableScript>();
 
-        //if player's hands are full, do not take order
-        if (networkedPlayerInteraction.IsInventoryFull())
-        {
-            //Debug.Log("NetworkedCustomerInteraction- Player's hands are full, do not take order");
-            tableScript.TableFeedbackScript.HandsFullFeedback();
-            return;
-        }
+        ////if player's hands are full, do not take order
+        //if (networkedPlayerInteraction.playerInventory != null)
+        //{
+        //    //Debug.Log("NetworkedCustomerInteraction- Player's hands are full, do not take order");
+        //    tableScript.TableFeedbackScript.HandsFullFeedback();
+        //    return;
+        //}
 
         CmdCheckHandsEmpty(networkedPlayerInteraction.detectedObject, networkedPlayerInteraction.IsInventoryFull());
         networkedPlayerInteraction.ChangePlayerState(PlayerState.Default);
@@ -335,6 +341,7 @@ public class NetworkedCustomerInteraction : NetworkBehaviour
     public void CmdCheckHandsEmpty(GameObject detectedObject, bool inventoryFull)
     {
         RpcCheckHandsEmpty(detectedObject);
+
     }
 
     [ClientRpc]
@@ -342,6 +349,10 @@ public class NetworkedCustomerInteraction : NetworkBehaviour
     {
         //Else, take order of customers at table
         detectedObject.GetComponent<TableScript>().ServerTakeOrder();
+
+        //get current mood of customer and display points
+        detectedObject.GetComponent<CustomerPatience>().CheckCustomerMood();
+        detectedObject.GetComponent<TableFeedback>().CustomerOrderTaken();
     }
 
     #endregion

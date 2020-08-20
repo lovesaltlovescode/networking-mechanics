@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Mirror;
+using TMPro;
 
 /// <summary>
 /// Singleton game manager to contain all server-controlled variables
@@ -73,6 +74,11 @@ public class GameManager : NetworkBehaviour
     public GameObject[] dishesOnCounter = new GameObject[3] { null, null, null };
     //public int dishCount; //number of dishes on the counter
 
+    [Header("Scores")]
+    [SyncVar]
+    public float serverScore;
+    public TextMeshProUGUI serverScoreText;
+    public float chefScore; //only visible to chef
 
     #endregion
 
@@ -91,6 +97,23 @@ public class GameManager : NetworkBehaviour
 
     private void Start()
     {
+        serverScore = 0;
+        serverScoreText.text = "0";
+        chefScore = 0;
         LevelTimer.Instance.StartTimer();
+    }
+
+    //add score
+    public void AddServerScore(float score)
+    {
+        serverScore += score;
+        serverScoreText.text = serverScore.ToString();
+    }
+
+    //reduce score
+    public void ReduceServerScore(float score)
+    {
+        serverScore -= score;
+        serverScoreText.text = serverScore.ToString();
     }
 }

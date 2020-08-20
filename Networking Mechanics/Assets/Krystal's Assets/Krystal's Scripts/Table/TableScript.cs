@@ -31,6 +31,8 @@ public class TableScript : NetworkBehaviour
 
     //list of customers that are seated at table
     public List<GameObject> customersSeated = new List<GameObject>();
+    [SyncVar]
+    public float customersAtTable;
 
     public List<GameObject> CustomersSeated
     {
@@ -61,6 +63,7 @@ public class TableScript : NetworkBehaviour
 
         //clear the customer and orders lists
         customersSeated.Clear();
+        customersAtTable = 0;
         tableOrders.Clear();
         dirtyDishes.Clear(); //-------------------------------------change here
 
@@ -176,6 +179,9 @@ public class TableScript : NetworkBehaviour
 
         customersSeated.Add(newSittingCustomer);
         tableOrders.Add(newSittingCustomer.GetComponent<CustomerBehaviour_Seated>().CustomersOrder);
+
+        customersAtTable = CustomersSeated.Count;
+
         //Debug.Log("TableScript - Table orders: " + tableOrders.Count);
     }
 
@@ -294,8 +300,14 @@ public class TableScript : NetworkBehaviour
             customerScript.LeaveRestaurant(isCustomerAngry);
         }
 
+        if (!isCustomerAngry)
+        {
+            tableFeedbackScript.SuccessfulCustomerService();
+        }
+
         //clear the lists
         customersSeated.Clear();
+        customersAtTable = 0;
         tableOrders.Clear();
     }
 

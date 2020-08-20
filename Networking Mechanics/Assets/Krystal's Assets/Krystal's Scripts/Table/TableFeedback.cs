@@ -18,11 +18,12 @@ public class TableFeedback : MonoBehaviour
 
     [Header("text to display")]
     [SerializeField] private TextMeshProUGUI word_tmpObj;
-    [SerializeField] private string insufficientSeats = "Not enough seats", tableOccupied = "Table occupied", handsFull = "Your hands are full!", tableDirty = "Table dirty", sinkFull = "Sink full";
+    [SerializeField] private string insufficientSeats = "Not enough seats", tableOccupied = "Table occupied", handsFull = "Hands full!", tableDirty = "Table dirty", sinkFull = "Sink full";
     [SerializeField] private string gain20Points = "+20", gain10Points = "+10", gain5Points = "+5", lose10Points = "-10";
 
-    [Header("Successfully serve customers")]
+    [Header("Customers served/lost")]
     [SerializeField] private string servedOneCustomer = "+50", servedTwoCustomers = "+100", servedThreeCustomers = "+150", servedFourCustomers = "+200";
+    [SerializeField] private string loseOneCustomer = "-10", loseTwoCustomers = "-20", loseThreeCustomers = "-30", loseFourCustomers = "-40";
 
     #region Debugging
     /*
@@ -100,20 +101,88 @@ public class TableFeedback : MonoBehaviour
         StartCoroutine(FadeInFadeOutText(pointsGained, pointsText, true));
     }
 
-    public void CustomerOrderTaken(string pointsGained)
+    //when customers order has been taken
+    public void CustomerOrderTaken()
     {
-        StartCoroutine(FadeInFadeOutText(pointsGained, pointsText, true));
+        CustomerPatience customerPatienceScript = GetComponent<CustomerPatience>();
+        
+        if(customerPatienceScript.customerMood == CurrentCustomerMood.customerHappy)
+        {
+            StartCoroutine(FadeInFadeOutText(gain20Points, pointsText, true));
+            GameManager.Instance.AddServerScore(20);
+        }
+        else if(customerPatienceScript.customerMood == CurrentCustomerMood.customerImpatient)
+        {
+            StartCoroutine(FadeInFadeOutText(gain10Points, pointsText, true));
+            GameManager.Instance.AddServerScore(10);
+        }
+        else if(customerPatienceScript.customerMood == CurrentCustomerMood.customerAngry)
+        {
+            StartCoroutine(FadeInFadeOutText(gain5Points, pointsText, true));
+            GameManager.Instance.AddServerScore(5);
+        }
+        
     }
 
     public void CustomerLeaves()
     {
-        StartCoroutine(FadeInFadeOutText(lose10Points, word_tmpObj));
+        TableScript tableScript = GetComponent<TableScript>();
+
+        switch (tableScript.customersAtTable)
+        {
+            case 1:
+                StartCoroutine(FadeInFadeOutText(loseOneCustomer, word_tmpObj));
+                GameManager.Instance.ReduceServerScore(10);
+                break;
+
+            case 2:
+                StartCoroutine(FadeInFadeOutText(loseTwoCustomers, word_tmpObj));
+                GameManager.Instance.ReduceServerScore(20);
+                break;
+
+            case 3:
+                StartCoroutine(FadeInFadeOutText(loseThreeCustomers, word_tmpObj));
+                GameManager.Instance.ReduceServerScore(30);
+                break;
+
+            case 4:
+                StartCoroutine(FadeInFadeOutText(loseFourCustomers, word_tmpObj));
+                GameManager.Instance.ReduceServerScore(40);
+                break;
+        }
+
+        
+        
     }
 
     public void SuccessfulCustomerService()
     {
+        TableScript tableScript = GetComponent<TableScript>();
+
         //TODO: Change according to how many customers there are
-        StartCoroutine(FadeInFadeOutText(servedOneCustomer, pointsText, true));
+        switch (tableScript.customersAtTable)
+        {
+            case 1:
+                StartCoroutine(FadeInFadeOutText(servedOneCustomer, pointsText, true));
+                GameManager.Instance.AddServerScore(50);
+                break;
+
+            case 2:
+                StartCoroutine(FadeInFadeOutText(servedTwoCustomers, pointsText, true));
+                GameManager.Instance.AddServerScore(100);
+                break;
+
+            case 3:
+                StartCoroutine(FadeInFadeOutText(servedThreeCustomers, pointsText, true));
+                GameManager.Instance.AddServerScore(150);
+                break;
+
+            case 4:
+                StartCoroutine(FadeInFadeOutText(servedFourCustomers, pointsText, true));
+                GameManager.Instance.AddServerScore(200);
+                break;
+        }
+        
     }
 
     #endregion

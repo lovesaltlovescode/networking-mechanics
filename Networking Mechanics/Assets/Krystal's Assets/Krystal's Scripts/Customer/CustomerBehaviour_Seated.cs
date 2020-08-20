@@ -160,6 +160,9 @@ public class CustomerBehaviour_Seated : CustomerBehaviour
     //check that the order being served to them is correct
     public bool CheckOrder(GameObject servedFood)
     {
+
+        //get current customer moood
+        CustomerPatienceScript.CheckCustomerMood();
         OrderScript servedFoodScript = servedFood.GetComponent<OrderScript>();
 
         //Debug.Log("Checking if food served to customer is correct");
@@ -168,6 +171,7 @@ public class CustomerBehaviour_Seated : CustomerBehaviour
         {
             //stop customer's patience meter
             TriggerPatienceMeter(false);
+
 
             //animate the customer eating
             EatingFood(servedFood, servedFoodScript);
@@ -220,18 +224,21 @@ public class CustomerBehaviour_Seated : CustomerBehaviour
         servedFood.transform.position = dishSpawnPoint.position;
         servedFood.layer = LayerMask.NameToLayer("UnInteractable"); //do not allow player to interact with the dish
 
+
         //enable eating animation
         //Debug.Log("Animating customer eating food");
 
         if (isServer)
         {
             RpcEatingFood();
+
         }
     }
 
     [ClientRpc]
     public void RpcEatingFood()
     {
+
 
         //play right order feedback
         CustomerFeedbackScript.RightOrderServed();

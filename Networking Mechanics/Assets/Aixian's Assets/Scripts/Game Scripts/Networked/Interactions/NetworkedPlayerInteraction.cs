@@ -403,7 +403,7 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
             playerInventory = null;
         }
 
-        Debug.Log("playerstate is " + playerState);
+        //Debug.Log("playerstate is " + playerState);
 
         DetectObjects();
 
@@ -524,7 +524,7 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
                 {
                     //set hit object as detectedobject
                     detectedObject = hit.collider.gameObject;
-                    Debug.Log("detected object: " + detectedObject.name);
+                    //Debug.Log("detected object: " + detectedObject.name);
                 }
             }
 

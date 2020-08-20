@@ -10,6 +10,16 @@ using UnityEngine;
 using UnityEngine.UI;
 using Mirror;
 
+//Current customer mood
+public enum CurrentCustomerMood
+{
+    customerHappy,
+    customerImpatient,
+    customerAngry,
+    customerStewing, //if customer is waiting for order past 0 patience
+    customerDefault
+}
+
 public class CustomerPatience : NetworkBehaviour
 {
     //variables
@@ -41,12 +51,8 @@ public class CustomerPatience : NetworkBehaviour
     [SerializeField] private string customerOrdering = "Ordering";
     [SerializeField] private string customerWaiting = "Waiting For Food";
 
-    [Header("Customer patience levels")]
-    //checks if customers are happy, impatient or angry and awards scores accordingly
-    [SerializeField] private bool customerHappy;
-    [SerializeField] private bool customerImpatient;
-    [SerializeField] private bool customerAngry;
-    //[SerializeField] private bool customerLeft;
+    [SyncVar]
+    public CurrentCustomerMood customerMood;
 
     #region Getters and setters
 
@@ -74,27 +80,6 @@ public class CustomerPatience : NetworkBehaviour
     }
 
     #endregion
-
-    #region Customer Patience Levels
-
-    public bool CustomerHappy
-    {
-        get { return customerHappy; }
-        private set { customerHappy = value; }
-    }
-    public bool CustomerImpatient
-    {
-        get { return customerImpatient; }
-        private set { customerImpatient = value; }
-    }
-    public bool CustomerAngry
-    {
-        get { return customerAngry; }
-        private set { customerAngry = value; }
-    }
-
-    #endregion
-
 
     #endregion
 
@@ -134,6 +119,7 @@ public class CustomerPatience : NetworkBehaviour
         }
     }
 
+    #region Toggle Patience Meter
 
     //public method to call to start coroutine
     public void StartPatienceMeter(float totalPatience, Action callback = null)
@@ -207,24 +193,31 @@ public class CustomerPatience : NetworkBehaviour
 
     }
 
+    #endregion
+
+
+
     public void Update()
     {
-        CheckCustomerState();   
+        //CheckCustomerMood();   
     }
 
-    public void CheckCustomerState()
+    #region Check Customer Mood
+
+
+    public void CheckCustomerMood()
     {
-        if(customerState == customerQueueing)
+        if (customerState == customerQueueing)
         {
             Debug.Log("Customer is queueing");
             CalculatePatiencePercentage();
         }
-        else if(customerState == customerOrdering)
+        else if (customerState == customerOrdering)
         {
             Debug.Log("Customer is ordering");
             CalculatePatiencePercentage(true);
         }
-        else if(customerState == customerWaiting)
+        else if (customerState == customerWaiting)
         {
             Debug.Log("Customer is waiting for food");
             CalculatePatiencePercentage(false, true);
@@ -247,18 +240,15 @@ public class CustomerPatience : NetworkBehaviour
 
             if (customerOrderingPatience >= 50 && customerOrderingPatience > 0)
             {
-                customerHappy = true;
-                customerImpatient = customerAngry = false;
+                customerMood = CurrentCustomerMood.customerHappy;
             }
             else if (customerOrderingPatience >= 30 && customerOrderingPatience < 50)
             {
-                customerImpatient = true;
-                customerHappy = customerAngry = false;
+                customerMood = CurrentCustomerMood.customerImpatient;
             }
-            else if (customerOrderingPatience >= 20 && customerOrderingPatience < 30 && customerOrderingPatience > 0)
+            else if (customerOrderingPatience >= 20 || customerOrderingPatience < 30 && customerOrderingPatience > 0)
             {
-                customerAngry = true;
-                customerImpatient = customerHappy = false;
+                customerMood = CurrentCustomerMood.customerAngry;
             }
         }
         else if (waitingForFood)
@@ -268,18 +258,15 @@ public class CustomerPatience : NetworkBehaviour
 
             if (customerWaitingPatience >= 50 && customerWaitingPatience > 0)
             {
-                customerHappy = true;
-                customerImpatient = customerAngry = false;
+                customerMood = CurrentCustomerMood.customerHappy;
             }
             else if (customerWaitingPatience >= 30 && customerWaitingPatience < 50)
             {
-                customerImpatient = true;
-                customerHappy = customerAngry = false;
+                customerMood = CurrentCustomerMood.customerImpatient;
             }
-            else if (customerWaitingPatience >= 20 && customerWaitingPatience < 30 && customerWaitingPatience > 0)
+            else if (customerWaitingPatience >= 20 || customerWaitingPatience < 30 && customerWaitingPatience > 0)
             {
-                customerAngry = true;
-                customerImpatient = customerHappy = false;
+                customerMood = CurrentCustomerMood.customerAngry;
             }
         }
         //queueing
@@ -290,33 +277,33 @@ public class CustomerPatience : NetworkBehaviour
 
             if (customerQueueingPatience >= 50 && customerQueueingPatience > 0)
             {
-                customerHappy = true;
-                customerImpatient = customerAngry = false;
+                customerMood = CurrentCustomerMood.customerHappy;
             }
             else if (customerQueueingPatience >= 30 && customerQueueingPatience < 50)
             {
-                customerImpatient = true;
-                customerHappy = customerAngry = false;
+                customerMood = CurrentCustomerMood.customerImpatient;
             }
-            else if (customerQueueingPatience >= 20 && customerQueueingPatience < 30 && customerQueueingPatience > 0)
+            else if (customerQueueingPatience >= 20 || customerQueueingPatience < 30 && customerQueueingPatience > 0)
             {
-                customerAngry = true;
-                customerImpatient = customerHappy = false;
+                customerMood = CurrentCustomerMood.customerAngry;
             }
         }
 
-        
+
 
     }
 
     public void ResetCustomerPatience()
     {
-        customerHappy = false;
-        customerImpatient = false;
-        customerAngry = false;
+        customerMood = CurrentCustomerMood.customerDefault;
     }
 
+    #endregion
 
+
+
+
+    #region Update patience meter
 
     //method that updates customers' patience meter, then, when patience runs out, calls the method (callback) passed into it 
     //understanding callbacks: https://stackoverflow.com/questions/54772578/passing-a-function-as-a-function-parameter/54772707
@@ -434,6 +421,11 @@ public class CustomerPatience : NetworkBehaviour
         yield return null;
 
     }
+
+
+    #endregion
+
+
 
 
     #region Affect customer patience level
