@@ -66,75 +66,6 @@ public class NetworkedCustomerInteraction : NetworkBehaviour
 
     #endregion
 
-    private void Update()
-    {
-
-        if (!hasAuthority)
-        {
-            return;
-        }
-
-        //networkedPlayerInteraction.DetectObjectLookingAt(networkedPlayerInteraction.detectedObject, 19, DetectCustomer);
-        //networkedPlayerInteraction.DetectObjectLookingAt(networkedPlayerInteraction.detectedObject, 25, DetectDish);
-
-        #region Spawn Dishes
-
-        //SPAWN DISHES
-        var input = Input.inputString;
-
-        //ignore null input to avoid unnecessary computation
-        if (!string.IsNullOrEmpty(input))
-        {
-            switch (input)
-            {
-                case "1":
-                   // Debug.Log("Spawn RoastedChicWRiceBall");
-                    SpawnDish(1);
-                    break;
-
-                case "2":
-                   // Debug.Log("Spawn RoastedChicWPlainRice");
-                    SpawnDish(2);
-                    break;
-
-                case "3":
-                   // Debug.Log("Spawn RoastedChicWRiceBallEgg");
-                    SpawnDish(3);
-                    break;
-
-                case "4":
-                  //  Debug.Log("Spawn RoastedChicWPlainRiceEgg");
-                    SpawnDish(4);
-                    break;
-
-                case "5":
-                   // Debug.Log("Spawn SteamedChicWRiceBall");
-                    SpawnDish(5);
-                    break;
-
-                case "6":
-                   // Debug.Log("Spawn SteamedChicWPlainRice");
-                    SpawnDish(6);
-                    break;
-
-                case "7":
-                   // Debug.Log("Spawn SteamedChicWRiceBallEgg");
-                    SpawnDish(7);
-                    break;
-
-                case "8":
-                   // Debug.Log("Spawn SteamedChicWPlainRiceEgg");
-                    SpawnDish(8);
-                    break;
-
-            }
-        }
-
-        #endregion
-
-
-    }
-
     #region Pick Up Customers
 
     //pick up customer
@@ -283,7 +214,7 @@ public class NetworkedCustomerInteraction : NetworkBehaviour
         //check if detected object is table
         if (!networkedPlayerInteraction.detectedObject.GetComponent<TableScript>())
         {
-            //  Debug.Log("NetworkedCustomerInteraction- Player is not looking at a table");
+            
             return;
         }
 
@@ -295,6 +226,7 @@ public class NetworkedCustomerInteraction : NetworkBehaviour
 
     //help
     #region Networked
+
 
     [Command]
     public void CmdSeatCustomer(GameObject detectedObject, GameObject playerInventory)
@@ -311,7 +243,7 @@ public class NetworkedCustomerInteraction : NetworkBehaviour
         if (tableScript.CheckSufficientSeats(heldCustomer.GetComponent<CustomerBehaviour_BeingHeld>().groupSizeNum))
         {
            // Debug.Log("NetworkedCustomerInteraction - Enough seats for customers");
-            RpcSeatCustomer(playerInventory);
+            RpcSeatCustomer(playerInventory, detectedObject);
 
             //DECREASE
             GameManager.Instance.currentNumWaitingCustomers -= 1;
@@ -324,7 +256,7 @@ public class NetworkedCustomerInteraction : NetworkBehaviour
     }
 
     [ClientRpc]
-    public void RpcSeatCustomer(GameObject playerInventory)
+    public void RpcSeatCustomer(GameObject playerInventory, GameObject detectedObject)
     {
         if (!hasAuthority)
         {
@@ -332,6 +264,8 @@ public class NetworkedCustomerInteraction : NetworkBehaviour
         }
 
         RemoveCustomerFromInventory();
+
+        detectedObject.GetComponent<TableFeedback>().CustomerSeatedOrderTaken();
 
         //toggle layer undetectable
         ToggleWaitAreaAndTableDetection(false);
@@ -394,74 +328,74 @@ public class NetworkedCustomerInteraction : NetworkBehaviour
 
     #region Spawn Dishes
 
-    //Spawning dishes
-    [ServerCallback]
-    public void SpawnDish(int dish)
-    {
-        ServerSpawnDish(dish);
-    }
+    ////Spawning dishes
+    //[ServerCallback]
+    //public void SpawnDish(int dish)
+    //{
+    //    ServerSpawnDish(dish);
+    //}
 
-    [ServerCallback]
-    public void ServerSpawnDish(int dish)
-    {
-        //spawn dish
+    //[ServerCallback]
+    //public void ServerSpawnDish(int dish)
+    //{
+    //    //spawn dish
 
-        //spawn in the right positions
-        for (int i = 0; i < GameManager.Instance.dishSpawnPoints.Length; i++)
-        {
-            if (GameManager.Instance.dishesOnCounter[i] == null)
-            {
-                //spawn according to which number is pressed
-                switch (dish)
-                {
-                    case 1:
-                        var spawnedDish = networkedPlayerInteraction.ServerSpawnObject(GameManager.Instance.dishSpawnPoints[i].position, Quaternion.identity, HeldItem.roastedChicWRiceBall, "Dish");
-                        GameManager.Instance.dishesOnCounter[i] = spawnedDish;
-                        break;
+    //    //spawn in the right positions
+    //    for (int i = 0; i < GameManager.Instance.dishSpawnPoints.Length; i++)
+    //    {
+    //        if (GameManager.Instance.dishesOnCounter[i] == null)
+    //        {
+    //            //spawn according to which number is pressed
+    //            switch (dish)
+    //            {
+    //                case 1:
+    //                    var spawnedDish = networkedPlayerInteraction.ServerSpawnObject(GameManager.Instance.dishSpawnPoints[i].position, Quaternion.identity, HeldItem.roastedChicWRiceBall, "Dish");
+    //                    GameManager.Instance.dishesOnCounter[i] = spawnedDish;
+    //                    break;
 
-                    case 2:
-                        var spawnedDish2 = networkedPlayerInteraction.ServerSpawnObject(GameManager.Instance.dishSpawnPoints[i].position, Quaternion.identity, HeldItem.roastedChicWPlainRice, "Dish");
-                        GameManager.Instance.dishesOnCounter[i] = spawnedDish2;
-                        break;
+    //                case 2:
+    //                    var spawnedDish2 = networkedPlayerInteraction.ServerSpawnObject(GameManager.Instance.dishSpawnPoints[i].position, Quaternion.identity, HeldItem.roastedChicWPlainRice, "Dish");
+    //                    GameManager.Instance.dishesOnCounter[i] = spawnedDish2;
+    //                    break;
 
-                    case 3:
-                        var spawnedDish3 = networkedPlayerInteraction.ServerSpawnObject(GameManager.Instance.dishSpawnPoints[i].position, Quaternion.identity, HeldItem.roastedChicWRiceBallEgg, "Dish");
-                        GameManager.Instance.dishesOnCounter[i] = spawnedDish3;
-                        break;
+    //                case 3:
+    //                    var spawnedDish3 = networkedPlayerInteraction.ServerSpawnObject(GameManager.Instance.dishSpawnPoints[i].position, Quaternion.identity, HeldItem.roastedChicWRiceBallEgg, "Dish");
+    //                    GameManager.Instance.dishesOnCounter[i] = spawnedDish3;
+    //                    break;
 
-                    case 4:
-                        var spawnedDish4 = networkedPlayerInteraction.ServerSpawnObject(GameManager.Instance.dishSpawnPoints[i].position, Quaternion.identity, HeldItem.roastedChicWPlainRiceEgg, "Dish");
-                        GameManager.Instance.dishesOnCounter[i] = spawnedDish4;
-                        break;
+    //                case 4:
+    //                    var spawnedDish4 = networkedPlayerInteraction.ServerSpawnObject(GameManager.Instance.dishSpawnPoints[i].position, Quaternion.identity, HeldItem.roastedChicWPlainRiceEgg, "Dish");
+    //                    GameManager.Instance.dishesOnCounter[i] = spawnedDish4;
+    //                    break;
 
-                    case 5:
-                        var spawnedDish5 = networkedPlayerInteraction.ServerSpawnObject(GameManager.Instance.dishSpawnPoints[i].position, Quaternion.identity, HeldItem.steamedChicWRiceBall, "Dish");
-                        GameManager.Instance.dishesOnCounter[i] = spawnedDish5;
-                        break;
+    //                case 5:
+    //                    var spawnedDish5 = networkedPlayerInteraction.ServerSpawnObject(GameManager.Instance.dishSpawnPoints[i].position, Quaternion.identity, HeldItem.steamedChicWRiceBall, "Dish");
+    //                    GameManager.Instance.dishesOnCounter[i] = spawnedDish5;
+    //                    break;
 
-                    case 6:
-                        var spawnedDish6 = networkedPlayerInteraction.ServerSpawnObject(GameManager.Instance.dishSpawnPoints[i].position, Quaternion.identity, HeldItem.steamedChicWPlainRice, "Dish");
-                        GameManager.Instance.dishesOnCounter[i] = spawnedDish6;
-                        break;
+    //                case 6:
+    //                    var spawnedDish6 = networkedPlayerInteraction.ServerSpawnObject(GameManager.Instance.dishSpawnPoints[i].position, Quaternion.identity, HeldItem.steamedChicWPlainRice, "Dish");
+    //                    GameManager.Instance.dishesOnCounter[i] = spawnedDish6;
+    //                    break;
 
-                    case 7:
-                        var spawnedDish7 = networkedPlayerInteraction.ServerSpawnObject(GameManager.Instance.dishSpawnPoints[i].position, Quaternion.identity, HeldItem.steamedChicWRiceBallEgg, "Dish");
-                        GameManager.Instance.dishesOnCounter[i] = spawnedDish7;
-                        break;
+    //                case 7:
+    //                    var spawnedDish7 = networkedPlayerInteraction.ServerSpawnObject(GameManager.Instance.dishSpawnPoints[i].position, Quaternion.identity, HeldItem.steamedChicWRiceBallEgg, "Dish");
+    //                    GameManager.Instance.dishesOnCounter[i] = spawnedDish7;
+    //                    break;
 
-                    case 8:
-                        var spawnedDish8 = networkedPlayerInteraction.ServerSpawnObject(GameManager.Instance.dishSpawnPoints[i].position, Quaternion.identity, HeldItem.steamedChicWPlainRiceEgg, "Dish");
-                        GameManager.Instance.dishesOnCounter[i] = spawnedDish8;
-                        break;
-                }
+    //                case 8:
+    //                    var spawnedDish8 = networkedPlayerInteraction.ServerSpawnObject(GameManager.Instance.dishSpawnPoints[i].position, Quaternion.identity, HeldItem.steamedChicWPlainRiceEgg, "Dish");
+    //                    GameManager.Instance.dishesOnCounter[i] = spawnedDish8;
+    //                    break;
+    //            }
 
-                //GameManager.Instance.dishCount += 1;
-                return;
-            }
+    //            //GameManager.Instance.dishCount += 1;
+    //            return;
+    //        }
 
-        }
+    //    }
 
-    }
+    //}
 
 
     #endregion

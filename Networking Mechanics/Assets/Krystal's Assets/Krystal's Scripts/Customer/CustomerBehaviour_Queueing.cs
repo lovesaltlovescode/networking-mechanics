@@ -200,6 +200,8 @@ public class CustomerBehaviour_Queueing : CustomerBehaviour
     {
 
         TriggerCustomerCollider(false, false);
+        CustomerFeedbackScript.PlayAngryPFX();
+        CustomerFeedbackScript.CustomerLeaves();
 
         CustomerAnimScript.LeaveAnim();
         Destroy(this.gameObject, 1f);

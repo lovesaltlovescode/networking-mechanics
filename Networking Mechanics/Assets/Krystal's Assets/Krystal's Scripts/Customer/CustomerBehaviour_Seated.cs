@@ -102,7 +102,7 @@ public class CustomerBehaviour_Seated : CustomerBehaviour
     [ClientRpc]
     public void RpcGenerateOrder(bool roastedChic, bool ricePlain, bool haveEgg)
     {
-
+        CustomerFeedbackScript.PlayHappyPFX();
         customersOrder = orderGenerationScript.CreateCustomOrder(roastedChic, ricePlain, haveEgg);
 
         if (customersOrder.OrderIcon != null)
@@ -228,8 +228,13 @@ public class CustomerBehaviour_Seated : CustomerBehaviour
     [ClientRpc]
     public void RpcEatingFood()
     {
+
+        //play right order feedback
+        CustomerFeedbackScript.RightOrderServed();
+
         //play customer happy anim
         CustomerFeedbackScript.PlayHappyPFX();
+
 
         //disable the order icon
         orderIconPos.gameObject.SetActive(false); //may delete later, depending on if clients get this
@@ -323,22 +328,22 @@ public class CustomerBehaviour_Seated : CustomerBehaviour
         //animate customer standing up
         //Debug.Log("Standing from table");
 
-        //if the customer is angry, play angry anim
-        if (isCustomerAngry)
-        {
-            //animate the customer being angry
-            //Debug.Log("customer is angry!");
-        }
 
         //customer fades out of existence
        // Debug.Log("Customer fading out of existence");
-        RpcLeaveRestaurant();
+        RpcLeaveRestaurant(isCustomerAngry);
 
     }
 
     [ClientRpc]
-    public void RpcLeaveRestaurant()
+    public void RpcLeaveRestaurant(bool isCustomerAngry)
     {
+        if (isCustomerAngry)
+        {
+            CustomerFeedbackScript.PlayAngryPFX();
+            tableSeatedAt.GetComponent<TableFeedback>().CustomerLeaves();
+        }
+
         CustomerAnimScript.LeaveAnim();
         Destroy(this.gameObject, 1f);
     }

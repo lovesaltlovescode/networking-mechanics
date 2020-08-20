@@ -10,7 +10,7 @@ using Mirror;
 /// get the group size num variable from the customerr
 /// </summary>
 
-public class CustomerBehaviour_BeingHeld : NetworkBehaviour
+public class CustomerBehaviour_BeingHeld : CustomerBehaviour
 {
     [Header("Group Size Icon Variables")]
     [SerializeField] private TextMeshProUGUI groupSizeText;
@@ -26,6 +26,8 @@ public class CustomerBehaviour_BeingHeld : NetworkBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        GetComponent<CustomerFeedback>().PlayHappyPFX();
+
         groupSizeNum = GetComponentInParent<NetworkedCustomerInteraction>().customerGroupSize;
         lastPatienceLevel = GetComponentInParent<NetworkedCustomerInteraction>().customerLastPatience;
         HeldCustomer_ShowGroupSizeIcon(groupSizeNum);

@@ -62,10 +62,6 @@ public class CustomerWaitArea : NetworkBehaviour
     {
         //get the being held script
         CustomerBehaviour_BeingHeld _beingHeldScript = customerBeingHeld.GetComponent<CustomerBehaviour_BeingHeld>();
-        //RpcTestBeingHeld(customerBeingHeld);
-
-        Debug.Log(customerBeingHeld.name); 
-        Debug.Log(_beingHeldScript); 
 
         //get the starting position of the customer
         Vector3 startPosition = customerBeingHeld.transform.position;
@@ -99,16 +95,13 @@ public class CustomerWaitArea : NetworkBehaviour
     }
 
     [ClientRpc]
-    public void RpcTestBeingHeld(GameObject customerBeingHeld)
-    {
-        Debug.Log(customerBeingHeld.name); //null reference exception
-    }
-
-    [ClientRpc]
     public void RpcPutCustomerDown(GameObject returnedQueueingCustomer, Vector3 newPosition, GameObject customerBeingHeld)
     {
+
+        returnedQueueingCustomer.GetComponent<CustomerFeedback>().PlayAngryPFX();
         //move the newly spawned customer from the player's hands to the waiting area
         StartCoroutine(LerpCustomerPos(returnedQueueingCustomer, newPosition));
+
 
         //Debug.Log(customerBeingHeld.name); //null reference exception
 
