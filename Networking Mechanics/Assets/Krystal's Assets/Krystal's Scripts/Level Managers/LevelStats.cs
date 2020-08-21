@@ -82,7 +82,7 @@ public class LevelStats : MonoBehaviour
         float currentPassingScore = GameBalanceFormulae.increaseOneStarScore_formula(Level);
 
         twoStarScore_current = currentPassingScore * 2;
-        threeStarScore_current = currentPassingScore * 4;
+        threeStarScore_current = currentPassingScore * 5;
 
         return currentPassingScore;
     }
@@ -93,20 +93,154 @@ public class LevelStats : MonoBehaviour
 //All stats related to how much patience the customer has
 public class CustomerPatienceStats
 {
-    public static float customerPatience_General = GameBalanceFormulae.customerPatience_base_General;
-    public static float customerPatience_Queue = GameBalanceFormulae.customerPatience_base_Queue;
-    public static float customerPatience_TakeOrder = GameBalanceFormulae.customerPatience_base_TakeOrder;
-    public static float customerPatience_FoodWait = GameBalanceFormulae.customerPatience_base_FoodWait;
+    private static float _customerPatience_General = GameBalanceFormulae.customerPatience_base_General;
+    private static float _customerPatience_Queue = GameBalanceFormulae.customerPatience_base_Queue;
+    private static float _customerPatience_TakeOrder = GameBalanceFormulae.customerPatience_base_TakeOrder;
+    private static float _customerPatience_FoodWait = GameBalanceFormulae.customerPatience_base_FoodWait;
+
+    public static float CustomerPatience_General
+    {
+        get { return _customerPatience_General; }
+        private set { _customerPatience_General = value;  }
+    }
+
+    public static float CustomerPatience_Queue
+    {
+        get { return _customerPatience_Queue; }
+        private set { _customerPatience_Queue = value; }
+    }
+
+    public static float CustomerPatience_TakeOrder
+    {
+        get { return _customerPatience_TakeOrder; }
+        private set { _customerPatience_TakeOrder = value; }
+    }
+
+    public static float CustomerPatience_FoodWait
+    {
+        get { return _customerPatience_FoodWait; }
+        private set { _customerPatience_FoodWait = value; }
+    }
+
     public static float customerEatingDuration = 5f;
     public static float drinkPatienceIncrease = 5f;
     public static float angryPatienceDecrease = 5f;
 
+    public static float customerQueuePatienceLimit_80;
+    public static float customerQueuePatienceLimit_90;
+    public static float customerQueuePatienceLimit_100;
+    public static float customerQueuePatienceLimit_110;
+    public static float customerQueuePatienceLimit_120;
+
+
     public static void UpdateStats()
     {
-        customerPatience_General = GameBalanceFormulae.customerPatience_formula_General(GameBalanceFormulae.customerPatience_base_General, LevelStats.Level);
-        customerPatience_Queue = GameBalanceFormulae.customerPatience_formula_General(GameBalanceFormulae.customerPatience_base_Queue, LevelStats.Level);
-        customerPatience_TakeOrder = GameBalanceFormulae.customerPatience_formula_General(GameBalanceFormulae.customerPatience_base_TakeOrder, LevelStats.Level);
+        CustomerPatience_General = GameBalanceFormulae.customerPatience_formula_General(GameBalanceFormulae.customerPatience_base_General, LevelStats.Level);
+        CustomerPatience_Queue = GameBalanceFormulae.customerPatience_formula_General(GameBalanceFormulae.customerPatience_base_Queue, LevelStats.Level);
+        CustomerPatience_TakeOrder = GameBalanceFormulae.customerPatience_formula_General(GameBalanceFormulae.customerPatience_base_TakeOrder, LevelStats.Level);
         //customerPatience_FoodWait = GameBalanceFormulae.customerPatience_formula_General(GameBalanceFormulae.customerPatience_base_FoodWait, LevelStats.Level);
+    }
+
+    public static void CheckPatienceLimit()
+    {
+        customerQueuePatienceLimit_80 = _customerPatience_Queue * 80 / 100;
+        customerQueuePatienceLimit_90 = _customerPatience_Queue * 90 / 100;
+        customerQueuePatienceLimit_100 = _customerPatience_Queue;
+        customerQueuePatienceLimit_110 = _customerPatience_Queue * 110 / 100;
+        customerQueuePatienceLimit_120 = _customerPatience_Queue * 120 / 100;
+    }
+
+    public static void UpdatePatienceFromMood(float percentage)
+    {
+        //CheckPatienceLimit();
+
+        //switch (percentage)
+        //{
+        //    case 80:
+        //        if (CustomerPatience_Queue == customerQueuePatienceLimit_80)
+        //        {
+        //            return;
+        //        }
+        //        else
+        //        {
+        //            CustomerPatience_Queue = CustomerPatience_Queue * (percentage / 100);
+        //        }
+        //        Debug.Log("Updated queue patience: " + CustomerPatience_Queue);
+        //        break;
+
+        //    case 90:
+        //        if (CustomerPatience_Queue == customerQueuePatienceLimit_80)
+        //        {
+        //            return;
+        //        }
+        //        else
+        //        {
+        //            CustomerPatience_Queue = CustomerPatience_Queue * (percentage / 100);
+        //        }
+        //        Debug.Log("Updated queue patience: " + CustomerPatience_Queue);
+        //        break;
+
+        //    case 100:
+        //        if (CustomerPatience_Queue == _customerPatience_Queue)
+        //        {
+        //            return;
+        //        }
+        //        else
+        //        {
+        //            CustomerPatience_Queue = CustomerPatience_Queue * (percentage / 100);
+        //        }
+        //        Debug.Log("Updated queue patience: " + CustomerPatience_Queue);
+        //        break;
+
+        //    case 110:
+        //        if (CustomerPatience_Queue == customerQueuePatienceLimit_80)
+        //        {
+        //            return;
+        //        }
+        //        else
+        //        {
+        //            CustomerPatience_Queue = CustomerPatience_Queue * (percentage / 100);
+        //        }
+        //        Debug.Log("Updated queue patience: " + CustomerPatience_Queue);
+        //        break;
+
+        //    case 120:
+        //        if (CustomerPatience_Queue == customerQueuePatienceLimit_80)
+        //        {
+        //            return;
+        //        }
+        //        else
+        //        {
+        //            CustomerPatience_Queue = CustomerPatience_Queue * (percentage / 100);
+        //        }
+        //        Debug.Log("Updated queue patience: " + CustomerPatience_Queue);
+        //        break;
+        //}
+
+        //float normal_patience_general = GameBalanceFormulae.customerPatience_formula_General(GameBalanceFormulae.customerPatience_base_General, LevelStats.Level);
+        //float normal_patience_queue = GameBalanceFormulae.customerPatience_formula_General(GameBalanceFormulae.customerPatience_base_Queue, LevelStats.Level);
+        //float normal_patience_order = GameBalanceFormulae.customerPatience_formula_General(GameBalanceFormulae.customerPatience_base_TakeOrder, LevelStats.Level);
+
+        //if (CustomerPatience_General == (percentage / 100) * normal_patience_general 
+        //    && CustomerPatience_Queue == (percentage / 100) * normal_patience_queue
+        //    && CustomerPatience_TakeOrder == (percentage / 100) * normal_patience_order)
+        //{
+        //    return;
+        //}
+        //else
+        //{
+        //    Debug.Log("Updated general patience: " + customerPatience_General);
+        //    Debug.Log("Updated queue patience: " + customerPatience_Queue);
+        //    Debug.Log("Updated order patience: " + customerPatience_TakeOrder);
+        //    Debug.Log("Updated wait patience: " + customerPatience_FoodWait);
+
+        //    customerPatience_General = customerPatience_General * (percentage / 100);
+        //    customerPatience_Queue = customerPatience_Queue * (percentage / 100);
+        //    customerPatience_TakeOrder = customerPatience_TakeOrder * (percentage / 100);
+        //}
+
+
+        //customerPatience_FoodWait = customerPatience_FoodWait * (percentage / 100);
     }
 }
 #endregion

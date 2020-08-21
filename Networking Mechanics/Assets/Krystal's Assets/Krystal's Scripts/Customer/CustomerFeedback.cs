@@ -10,7 +10,7 @@ public class CustomerFeedback : MonoBehaviour
     [Header("Wrong order feedback / Lose points")]
     [SerializeField] private Animator canvasAnim, wordAnim;
     [SerializeField] private TextMeshProUGUI redText;
-    [SerializeField] private string wrongOrder = "Wrong order";
+    [SerializeField] private string wrongOrder = "Wrong order -20";
 
     [Header("Right order feedback / Gain points")]
     [SerializeField] private Animator pointsAnim;
@@ -19,7 +19,7 @@ public class CustomerFeedback : MonoBehaviour
     [SerializeField] private string loseOneCustomer = "-10", loseTwoCustomers = "-20", loseThreeCustomers = "-30", loseFourCustomers = "-40"; //for queueing customers
     
     [Header("Order served")]
-    [SerializeField] private string gain60Points = "+60", gain40Points = "+40", gain10Points = "+10";
+    [SerializeField] private string gain40Points = "+60", gain20Points = "+40", gain10Points = "+10";
 
     public void Start()
     {
@@ -35,6 +35,7 @@ public class CustomerFeedback : MonoBehaviour
     public void CustomerLeaves()
     {
         CustomerBehaviour_Queueing customerBehaviour_Queueing = GetComponent<CustomerBehaviour_Queueing>();
+        CustomerPatience customerPatienceScript = GetComponent<CustomerPatience>();
 
         if (redText)
         {
@@ -43,25 +44,29 @@ public class CustomerFeedback : MonoBehaviour
                 case 1:
                     StartCoroutine(FadeInFadeOutText(loseOneCustomer, redText));
                     GameManager.Instance.ReduceServerScore(10);
+                    GameManager.Instance.LostCustomer(1); 
                     break;
 
                 case 2:
                     StartCoroutine(FadeInFadeOutText(loseTwoCustomers, redText));
                     GameManager.Instance.ReduceServerScore(20);
+                    GameManager.Instance.LostCustomer(2);
                     break;
 
                 case 3:
                     StartCoroutine(FadeInFadeOutText(loseThreeCustomers, redText));
                     GameManager.Instance.ReduceServerScore(30);
+                    GameManager.Instance.LostCustomer(3);
                     break;
 
                 case 4:
                     StartCoroutine(FadeInFadeOutText(loseFourCustomers, redText));
                     GameManager.Instance.ReduceServerScore(40);
+                    GameManager.Instance.LostCustomer(4);
                     break;
             }
-            
-            
+
+            GameManager.Instance.IncrementMood(5, true);
         }
     }
 
@@ -77,6 +82,8 @@ public class CustomerFeedback : MonoBehaviour
         if (redText)
         {
             StartCoroutine(FadeInFadeOutText(wrongOrder, redText));
+            GameManager.Instance.ReduceServerScore(20);
+            GameManager.Instance.IncrementMood(5, true);
         }
     }
 
@@ -88,18 +95,21 @@ public class CustomerFeedback : MonoBehaviour
         {
             if (customerPatienceScript.customerMood == CurrentCustomerMood.customerHappy)
             {
-                StartCoroutine(FadeInFadeOutText(gain60Points, greenText, true));
-                GameManager.Instance.AddServerScore(60);
+                StartCoroutine(FadeInFadeOutText(gain40Points, greenText, true));
+                GameManager.Instance.AddServerScore(40);
+                GameManager.Instance.IncrementMood(10);
             }
             else if (customerPatienceScript.customerMood == CurrentCustomerMood.customerImpatient)
             {
-                StartCoroutine(FadeInFadeOutText(gain40Points, greenText, true));
-                GameManager.Instance.AddServerScore(40);
+                StartCoroutine(FadeInFadeOutText(gain20Points, greenText, true));
+                GameManager.Instance.AddServerScore(20);
+                GameManager.Instance.IncrementMood(5);
             }
             else if (customerPatienceScript.customerMood == CurrentCustomerMood.customerAngry)
             {
                 StartCoroutine(FadeInFadeOutText(gain10Points, greenText, true));
                 GameManager.Instance.AddServerScore(10);
+                GameManager.Instance.IncrementMood(2);
             }
         }
     }

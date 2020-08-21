@@ -121,7 +121,7 @@ public class PlayerCustomerInteractionManager : MonoBehaviour
         }
 
         //else, take the order of the customers at the table
-        tableScript.TakeOrder();
+        //tableScript.TakeOrder();
         PlayerInteractionManager.ChangePlayerState(PlayerInteractionManager.PlayerState.Default);
     }
 

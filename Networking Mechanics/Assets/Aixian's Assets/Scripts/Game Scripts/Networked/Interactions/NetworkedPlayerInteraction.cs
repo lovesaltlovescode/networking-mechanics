@@ -62,7 +62,6 @@ public enum PlayerState
     CanSpawnDrink,
     CanPickUpDrink,
     HoldingDrink,
-    CanUseDrink, //temp
     CanThrowDrink,
 
     //Table items
@@ -384,6 +383,26 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
         spawnObject.layer = LayerMask.NameToLayer(layerName);
     }
 
+    #region Hands full feedback
+
+    [Command]
+    public void CmdHandsFull()
+    {
+        RpcHandsFull();
+    }
+
+    [ClientRpc]
+    public void RpcHandsFull()
+    {
+        if (detectedObject.layer == LayerMask.NameToLayer("Ordering"))
+        {
+            detectedObject.GetComponent<TableFeedback>().HandsFullFeedback();
+            return;
+        }
+    }
+
+    #endregion
+
     #endregion
 
     void Update()
@@ -524,6 +543,7 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
                 {
                     //set hit object as detectedobject
                     detectedObject = hit.collider.gameObject;
+
                     //Debug.Log("detected object: " + detectedObject.name);
                 }
             }
@@ -532,11 +552,12 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
             //if inventory not full
             if (hit.collider.gameObject.layer == LayerMask.NameToLayer(takeOrderLayer) && !IsInventoryFull())
             {
-                playerState = PlayerState.CanTakeOrder;
+                    ChangePlayerState(PlayerState.CanTakeOrder, true);
 
-                //set hit object as detectedobject
-                detectedObject = hit.collider.gameObject;
-                //Debug.Log("detected object: " + detectedObject.tag);
+                    //set hit object as detectedobject
+                    detectedObject = hit.collider.gameObject;
+                    //Debug.Log("detected object: " + detectedObject.tag);
+                
             }
 
         }
@@ -549,7 +570,7 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
             if (CanChangePlayerState())
             {
                 //if holding dirty plate
-                if(playerInventory && playerInventory.tag == "DirtyPlate")
+                if(playerInventory && playerInventory.tag == "DirtyPlate" || playerInventory && playerInventory.tag == "Drink")
                 {
                     return;
                 }
@@ -637,6 +658,7 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
 
             case PlayerState.HoldingDrink:
                 networkedDrinkInteraction.ServeDrink();
+                CmdHandsFull();
                 break;
 
 
@@ -644,6 +666,10 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
             case PlayerState.CanPickUpDirtyPlate:
                 //Debug.Log("NetworkedPlayerInteraction - Pick up the dirty plate!");
                 networkedIngredientInteraction.PickUpPlate();
+                break;
+
+            case PlayerState.HoldingDirtyPlate:
+                CmdHandsFull();
                 break;
 
             case PlayerState.CanPlacePlateInSink:
@@ -668,6 +694,7 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
 
             case PlayerState.HoldingCustomer:
                 networkedCustomerInteraction.CheckCanPutCustomerDown();
+                CmdHandsFull();
                 break;
 
             case PlayerState.CanTakeOrder:
@@ -684,6 +711,7 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
 
             case PlayerState.HoldingOrder:
                 networkedCustomerInteraction.CheckCanPutDownOrder();
+                CmdHandsFull();
                 break;
 
             #endregion

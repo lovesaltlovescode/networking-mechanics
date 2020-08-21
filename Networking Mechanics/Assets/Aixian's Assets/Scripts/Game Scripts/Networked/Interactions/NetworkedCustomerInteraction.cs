@@ -280,18 +280,20 @@ public class NetworkedCustomerInteraction : NetworkBehaviour
     public void GetQueueingCustomerPatience(GameObject detectedObject)
     {
         //check queueing customer patience level when they were picked up
-        float customerQueuedPatience = (customerQueueingPatience / CustomerPatienceStats.customerPatience_Queue) * 100;
+        float customerQueuedPatience = (customerQueueingPatience / CustomerPatienceStats.CustomerPatience_Queue) * 100;
         Debug.Log("Customer Queued Patience: " + customerQueuedPatience);
 
         if (customerQueuedPatience >= 50 && customerQueuedPatience > 0)
         {
             detectedObject.GetComponent<TableFeedback>().CustomerSeated(gain20Points);
             GameManager.Instance.AddServerScore(20);
+            GameManager.Instance.IncrementMood(5);
         }
         else if (customerQueuedPatience >= 30 && customerQueuedPatience < 50)
         {
             detectedObject.GetComponent<TableFeedback>().CustomerSeated(gain10Points);
             GameManager.Instance.AddServerScore(10);
+            GameManager.Instance.IncrementMood(2);
         }
         else if (customerQueuedPatience >= 20 || customerQueuedPatience < 30 && customerQueuedPatience > 0)
         {
@@ -321,14 +323,6 @@ public class NetworkedCustomerInteraction : NetworkBehaviour
 
         //get table script
         TableScript tableScript = networkedPlayerInteraction.detectedObject.GetComponent<TableScript>();
-
-        ////if player's hands are full, do not take order
-        //if (networkedPlayerInteraction.playerInventory != null)
-        //{
-        //    //Debug.Log("NetworkedCustomerInteraction- Player's hands are full, do not take order");
-        //    tableScript.TableFeedbackScript.HandsFullFeedback();
-        //    return;
-        //}
 
         CmdCheckHandsEmpty(networkedPlayerInteraction.detectedObject, networkedPlayerInteraction.IsInventoryFull());
         networkedPlayerInteraction.ChangePlayerState(PlayerState.Default);

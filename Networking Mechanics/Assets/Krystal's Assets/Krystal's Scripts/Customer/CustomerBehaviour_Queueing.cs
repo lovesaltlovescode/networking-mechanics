@@ -130,7 +130,7 @@ public class CustomerBehaviour_Queueing : CustomerBehaviour
         CustomerWaitingBehaviour();
 
         //enable the patience meter
-        TriggerPatienceMeter(true, CustomerPatienceStats.customerPatience_Queue, CustomerWaitsTooLong);
+        TriggerPatienceMeter(true, CustomerPatienceStats.CustomerPatience_Queue, CustomerWaitsTooLong);
     }
 
     //call this when the player puts the customer back down after picking them up
@@ -156,7 +156,7 @@ public class CustomerBehaviour_Queueing : CustomerBehaviour
         CustomerWaitingBehaviour();
 
         //enable the patience meter
-        TriggerPatienceMeter(resumedPatienceLevel, CustomerPatienceStats.customerPatience_Queue, CustomerWaitsTooLong);
+        TriggerPatienceMeter(resumedPatienceLevel, CustomerPatienceStats.CustomerPatience_Queue, CustomerWaitsTooLong);
     }
 
     //to be called when customer begins waiting

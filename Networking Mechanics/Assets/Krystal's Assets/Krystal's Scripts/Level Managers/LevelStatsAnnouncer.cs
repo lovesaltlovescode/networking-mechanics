@@ -16,8 +16,6 @@ public class LevelStatsAnnouncer : MonoBehaviour
     {
         LevelStats.UpdateLevel();
         CustomerPatienceStats.UpdateStats();
-
-        
     }
 
     #region Debug Stuff

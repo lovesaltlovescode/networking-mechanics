@@ -224,7 +224,7 @@ public class TableScript : NetworkBehaviour
         }
 
         //start the patience script
-        patienceScript.StartPatienceMeter(CustomerPatienceStats.customerPatience_TakeOrder, OrderNotTaken);
+        patienceScript.StartPatienceMeter(CustomerPatienceStats.CustomerPatience_TakeOrder, OrderNotTaken);
         
     }
 
@@ -303,6 +303,8 @@ public class TableScript : NetworkBehaviour
         if (!isCustomerAngry)
         {
             tableFeedbackScript.SuccessfulCustomerService();
+            GameManager.Instance.ServedCustomer(customersAtTable);
+            GameManager.Instance.IncrementMood(5);
         }
 
         //clear the lists
@@ -326,89 +328,6 @@ public class TableScript : NetworkBehaviour
         }
 
         return true;
-    }
-
-    #endregion
-
-    #region Unused Methods
-
-    //instantiate 1 customer at every seat, add them to a list, then call the method on the customer to manage their sitting animation + order
-    public void SeatGuests(int numGuests)
-    {
-      //  Debug.Log("Guests are being seated");
-
-        //call the seated event
-        for (int i = 0; i < numGuests; i++)
-        {
-            //instantiate customer and get its script
-            GameObject newSittingCustomer = Instantiate(customerSeatedPrefab, seatPositions[i].position, seatPositions[i].rotation).gameObject;
-            newSittingCustomer.transform.parent = seatedCustomerParent;
-            CustomerBehaviour_Seated newCustomerScript = newSittingCustomer.GetComponent<CustomerBehaviour_Seated>();
-
-            //animate customer sitting, assign this table to the customer, and get it to generate an order
-            newCustomerScript.CustomerJustSeated(this);
-
-            //add customer and their to list of customers seated at table
-            if (newCustomerScript.CustomersOrder != null)
-            {
-                customersSeated.Add(newSittingCustomer);
-                tableOrders.Add(newCustomerScript.CustomersOrder);
-            }
-            else
-            {
-               // Debug.Log("tried to add customer to list, but customer's order was null");
-            }
-        }
-
-        numSeated = numGuests;
-       // Debug.Log("numGuests: " + numSeated + ", customersSeated: " + customersSeated.Count);
-
-        //after a random amount of time, call a server to take their order
-        Invoke("ServerReadyToOrder", Random.Range(minAndMaxOrderGenTime.x, minAndMaxOrderGenTime.y));
-
-    }
-
-
-    //enable the ui and start the patience meter.
-    public void TestReadyToOrder()
-    {
-       // Debug.Log("TableScript - ReadyToOrder");
-        //move the table collider to a separate layer
-        TableColliderManager.ToggleTableDetection(true, this.gameObject, takeOrderLayer);
-
-        //enable the UI
-        tableFeedbackScript.ToggleOrderIcon(true);
-
-        //animate the customers ordering food
-        foreach (GameObject customer in customersSeated)
-        {
-            //customer.GetComponent<CustomerBehaviour_Seated>().CustomerAnimScript.OrderAnim();
-        }
-
-        //start the patience script
-        patienceScript.StartPatienceMeter(CustomerPatienceStats.customerPatience_TakeOrder, OrderNotTaken);
-    }
-
-
-    public void TakeOrder()
-    {
-        //stop the patience script
-        patienceScript.StopPatienceMeter();
-
-        //disable the order icon UI
-        tableFeedbackScript.ToggleOrderIcon(false);
-
-        //move the table collider back to the environment layer
-        TableColliderManager.ToggleTableDetection(false, this.gameObject);
-
-        //pass all the orders to the kitchen
-        //Debug.Log("All orders: " + tableOrders);
-
-        //display the customer's order and make them wait
-        foreach (GameObject customer in customersSeated)
-        {
-            customer.GetComponent<CustomerBehaviour_Seated>().DisplayOrderAndWait();
-        }
     }
 
     #endregion

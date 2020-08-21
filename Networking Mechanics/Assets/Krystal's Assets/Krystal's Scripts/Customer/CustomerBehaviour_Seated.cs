@@ -147,7 +147,7 @@ public class CustomerBehaviour_Seated : CustomerBehaviour
         TriggerCustomerCollider(true, true);
 
         //if the customer waits too long for their food, they will SitAngrily() will be called
-        TriggerPatienceMeter(true, CustomerPatienceStats.customerPatience_FoodWait, SitAngrily);
+        TriggerPatienceMeter(true, CustomerPatienceStats.CustomerPatience_FoodWait, SitAngrily);
     }
 
 

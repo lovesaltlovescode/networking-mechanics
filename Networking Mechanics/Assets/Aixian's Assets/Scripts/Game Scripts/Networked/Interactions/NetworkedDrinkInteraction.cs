@@ -160,7 +160,8 @@ public class NetworkedDrinkInteraction : NetworkBehaviour
 
     public void ServeDrink()
     {
-        if(networkedPlayerInteraction.detectedObject && networkedPlayerInteraction.detectedObject.tag == "Customer" && 
+
+        if (networkedPlayerInteraction.detectedObject && networkedPlayerInteraction.detectedObject.tag == "Customer" && 
             networkedPlayerInteraction.detectedObject.layer == LayerMask.NameToLayer("Queue") ||
             networkedPlayerInteraction.detectedObject.layer == LayerMask.NameToLayer("Table"))
         {

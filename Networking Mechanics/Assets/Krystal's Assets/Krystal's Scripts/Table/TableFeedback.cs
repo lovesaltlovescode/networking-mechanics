@@ -110,11 +110,13 @@ public class TableFeedback : MonoBehaviour
         {
             StartCoroutine(FadeInFadeOutText(gain20Points, pointsText, true));
             GameManager.Instance.AddServerScore(20);
+            GameManager.Instance.IncrementMood(5);
         }
         else if(customerPatienceScript.customerMood == CurrentCustomerMood.customerImpatient)
         {
             StartCoroutine(FadeInFadeOutText(gain10Points, pointsText, true));
             GameManager.Instance.AddServerScore(10);
+            GameManager.Instance.IncrementMood(2);
         }
         else if(customerPatienceScript.customerMood == CurrentCustomerMood.customerAngry)
         {
@@ -133,26 +135,31 @@ public class TableFeedback : MonoBehaviour
             case 1:
                 StartCoroutine(FadeInFadeOutText(loseOneCustomer, word_tmpObj));
                 GameManager.Instance.ReduceServerScore(10);
+                GameManager.Instance.LostCustomer(1);
                 break;
 
             case 2:
                 StartCoroutine(FadeInFadeOutText(loseTwoCustomers, word_tmpObj));
                 GameManager.Instance.ReduceServerScore(20);
+                GameManager.Instance.LostCustomer(2);
                 break;
 
             case 3:
                 StartCoroutine(FadeInFadeOutText(loseThreeCustomers, word_tmpObj));
                 GameManager.Instance.ReduceServerScore(30);
+                GameManager.Instance.LostCustomer(3);
                 break;
 
             case 4:
                 StartCoroutine(FadeInFadeOutText(loseFourCustomers, word_tmpObj));
                 GameManager.Instance.ReduceServerScore(40);
+                GameManager.Instance.LostCustomer(4);
                 break;
         }
 
-        
-        
+        GameManager.Instance.IncrementMood(5, true);
+
+
     }
 
     public void SuccessfulCustomerService()

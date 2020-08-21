@@ -80,6 +80,26 @@ public class GameManager : NetworkBehaviour
     public TextMeshProUGUI serverScoreText;
     public float chefScore; //only visible to chef
 
+    [Header("Customer count")]
+    [SyncVar]
+    public float customersServed;
+    [SyncVar]
+    public float customersLost;
+
+    [Header("Mood")]
+    [SyncVar]
+    public float currentShopMood = 50;
+    public Slider moodIndicator;
+    [SerializeField] private bool isMoodCoroutineRunning = false;
+    [SerializeField] private float updateMoodFrequency = 0.4f;
+
+    [Header("Mood feedback")]
+    [SerializeField] private Animator moodIncreaseAnim;
+    [SerializeField] private TextMeshProUGUI moodIncreaseText;
+
+    [SerializeField] private Animator moodDecreaseAnim;
+    [SerializeField] private TextMeshProUGUI moodDecreaseText;
+
     #endregion
 
     private void Awake()
@@ -93,15 +113,26 @@ public class GameManager : NetworkBehaviour
         {
             _instance = this;
         }
+
     }
 
     private void Start()
     {
+        if(moodIncreaseText && moodDecreaseText)
+        {
+            moodIncreaseText.gameObject.SetActive(false);
+            moodDecreaseText.gameObject.SetActive(false);
+        }
+
         serverScore = 0;
         serverScoreText.text = "0";
         chefScore = 0;
         LevelTimer.Instance.StartTimer();
+
+        moodIndicator.interactable = false;
     }
+
+    #region Handle Scores and Customers
 
     //add score
     public void AddServerScore(float score)
@@ -116,4 +147,186 @@ public class GameManager : NetworkBehaviour
         serverScore -= score;
         serverScoreText.text = serverScore.ToString();
     }
+
+    //add customers
+    public void ServedCustomer(float customers)
+    {
+        customersServed += customers;
+    }
+
+
+    //reduce customers
+    public void LostCustomer(float customers)
+    {
+        customersLost += customers;
+    }
+
+    #endregion
+
+    public void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            IncrementMood(5);
+        }
+
+        if (Input.GetKeyDown(KeyCode.D))
+        {
+            IncrementMood(5, true);
+        }
+        
+    }
+
+    //decrease = true if mood decrease
+    public void IncrementMood(float value, bool decrease = false)
+    {
+        if (decrease)
+        {
+            if(currentShopMood == 0)
+            {
+                return;
+            }
+            else
+            {
+                StartMoveMoodIndicator(value, true);
+                StartCoroutine(FadeInFadeOutText("-" + value, moodDecreaseText));
+            }
+        }
+        else
+        {
+            if(currentShopMood == 100)
+            {
+                return;
+            }
+            else
+            {
+                StartMoveMoodIndicator(value);
+                StartCoroutine(FadeInFadeOutText("+" + value, moodIncreaseText, true));
+            }
+            
+        }
+        
+        currentShopMood = Mathf.RoundToInt(moodIndicator.value);
+
+        Debug.Log("Current shop mood " + currentShopMood);
+
+    }
+
+    
+
+    public void StartMoveMoodIndicator(float value, bool decrease = false)
+    {
+        if (isMoodCoroutineRunning)
+        {
+            //bool used to ensure that coroutine does not get called while coroutine is running
+            return;
+        }
+
+        isMoodCoroutineRunning = true;
+
+        if (decrease)
+        {
+            StartCoroutine(MoveMoodIndicator(value, true));
+        }
+        else
+        {
+            StartCoroutine(MoveMoodIndicator(value));
+        }
+
+    }
+
+    IEnumerator MoveMoodIndicator(float value, bool decrease = false)
+    {
+        if (decrease)
+        {
+            currentShopMood -= value;
+        }
+        else
+        {
+            currentShopMood += value;
+        }
+
+        float updatedMood = currentShopMood;
+
+
+        while (moodIndicator.value != updatedMood)
+        {
+            moodIndicator.value = Mathf.MoveTowards(currentShopMood, updatedMood, 1*Time.deltaTime);
+        }
+
+        yield return null;
+        isMoodCoroutineRunning = false;
+    }
+
+    #region DisplayMoodText
+
+    //if gain points, play green text anim 
+    IEnumerator FadeInFadeOutText(string _text, TextMeshProUGUI textToDisplay, bool _moodIncrease = false, bool _fadeIn = true, bool _fadeOut = true)
+    {
+        textToDisplay.text = _text;
+
+        textToDisplay.gameObject.SetActive(true);
+
+
+        if (_fadeIn)
+        {
+            if (_moodIncrease)
+            {
+                moodIncreaseAnim.SetBool("fadeIn", true);
+                //Debug.Log("fade in bool set to true");
+                yield return null;
+
+                //Debug.Log("fade in clip length: " + wordAnim.GetCurrentAnimatorStateInfo(0).length);
+
+                yield return new WaitForSeconds(0.4f);
+            }
+            else
+            {
+
+                moodDecreaseAnim.SetBool("fadeIn", true);
+                //Debug.Log("fade in bool set to true");
+                yield return null;
+
+                //Debug.Log("fade in clip length: " + wordAnim.GetCurrentAnimatorStateInfo(0).length);
+
+                yield return new WaitForSeconds(0.4f);
+            }
+
+
+        }
+
+        if (_fadeOut)
+        {
+            if (_moodIncrease)
+            {
+                moodIncreaseAnim.SetBool("fadeIn", false);
+                //Debug.Log("fade in bool set to false");
+                yield return null;
+
+                //Debug.Log("fade out clip length: " + wordAnim.GetCurrentAnimatorStateInfo(0).length);
+
+                yield return new WaitForSeconds(0.4f);
+            }
+            else
+            {
+                moodDecreaseAnim.SetBool("fadeIn", false);
+                //Debug.Log("fade in bool set to false");
+                yield return null;
+
+                //Debug.Log("fade out clip length: " + wordAnim.GetCurrentAnimatorStateInfo(0).length);
+
+                yield return new WaitForSeconds(0.4f);
+            }
+
+
+        }
+
+        textToDisplay.gameObject.SetActive(false);
+        // Debug.Log("set words to false");
+
+        yield return null;
+    }
+
+    #endregion
+
 }

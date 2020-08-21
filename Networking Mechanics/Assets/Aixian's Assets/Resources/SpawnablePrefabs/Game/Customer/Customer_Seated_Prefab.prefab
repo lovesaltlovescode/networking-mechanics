@@ -454,9 +454,7 @@ MonoBehaviour:
   customerQueueing: Queueing
   customerOrdering: Ordering
   customerWaiting: Waiting For Food
-  customerHappy: 0
-  customerImpatient: 0
-  customerAngry: 0
+  customerMood: 0
 --- !u!114 &8061215714513260892
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -498,13 +496,15 @@ MonoBehaviour:
   canvasAnim: {fileID: 2338999103466523230}
   wordAnim: {fileID: 5116727188022608170}
   redText: {fileID: 3471847153847346581}
-  wrongOrder: Wrong order
+  wrongOrder: Wrong order -20
   pointsAnim: {fileID: 5120664753700187114}
   greenText: {fileID: 1751021971549608602}
-  lose10Points: -10
-  gain60Points: +60
+  loseOneCustomer: -10
+  loseTwoCustomers: -20
+  loseThreeCustomers: -30
+  loseFourCustomers: -40
   gain40Points: +40
-  gain30Points: +30
+  gain20Points: +40
   gain10Points: +10
 --- !u!114 &188312658767743909
 MonoBehaviour:

@@ -147,6 +147,7 @@ public class NetworkedIngredientInteraction : NetworkBehaviour
                     else
                     {
                         Debug.Log("Player inventory tag " + networkedPlayerInteraction.playerInventory.tag);
+                        return;
                     }
                     break;
 

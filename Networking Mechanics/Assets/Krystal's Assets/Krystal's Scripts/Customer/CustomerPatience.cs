@@ -235,7 +235,7 @@ public class CustomerPatience : NetworkBehaviour
 
         if (ordering)
         {
-            float customerOrderingPatience = (currentPatience / CustomerPatienceStats.customerPatience_TakeOrder) * 100;
+            float customerOrderingPatience = (currentPatience / CustomerPatienceStats.CustomerPatience_TakeOrder) * 100;
             Debug.Log("Current ordering customer patience: " + customerOrderingPatience);
 
             if (customerOrderingPatience >= 50 && customerOrderingPatience > 0)
@@ -253,7 +253,7 @@ public class CustomerPatience : NetworkBehaviour
         }
         else if (waitingForFood)
         {
-            float customerWaitingPatience = (currentPatience / CustomerPatienceStats.customerPatience_FoodWait) * 100;
+            float customerWaitingPatience = (currentPatience / CustomerPatienceStats.CustomerPatience_FoodWait) * 100;
             Debug.Log("Current waiting customer patience: " + customerWaitingPatience);
 
             if (customerWaitingPatience >= 50 && customerWaitingPatience > 0)
@@ -272,7 +272,7 @@ public class CustomerPatience : NetworkBehaviour
         //queueing
         else
         {
-            float customerQueueingPatience = (currentPatience / CustomerPatienceStats.customerPatience_Queue) * 100;
+            float customerQueueingPatience = (currentPatience / CustomerPatienceStats.CustomerPatience_Queue) * 100;
             Debug.Log("Current queueing customer patience: " + customerQueueingPatience);
 
             if (customerQueueingPatience >= 50 && customerQueueingPatience > 0)
@@ -301,6 +301,81 @@ public class CustomerPatience : NetworkBehaviour
     #endregion
 
 
+    #region Check Shop Mood
+
+    public void CheckCurrentShopMood()
+    {
+        Debug.Log("Current shop mood " + GameManager.Instance.currentShopMood);
+
+        if (GameManager.Instance.currentShopMood <= 25 || GameManager.Instance.currentShopMood == 0)
+        {
+            if(reductionRate == 1f * 120 / 100)
+            {
+                return;
+            }
+            else
+            {
+                reductionRate = 1f * 120 / 100;
+            }
+           
+            Debug.Log("120% reduction rate: " + reductionRate);
+        }
+        else if (GameManager.Instance.currentShopMood > 25 && GameManager.Instance.currentShopMood < 50)
+        {
+            if(reductionRate == 1f * 110 / 100)
+            {
+                return;
+            }
+            else
+            {
+                reductionRate = 1f * 110 / 100;
+            }
+            
+            Debug.Log("110% reduction rate: " + reductionRate);
+        }
+        else if (GameManager.Instance.currentShopMood == 50)
+        {
+            if(reductionRate == 1f)
+            {
+                return;
+            }
+            else
+            {
+                reductionRate = 1f;
+            }
+            
+            Debug.Log("100% reduction rate: " + reductionRate);
+        }
+        else if (GameManager.Instance.currentShopMood > 50 && GameManager.Instance.currentShopMood < 75)
+        {
+            if(reductionRate == 1f * 90 / 100)
+            {
+                return;
+            }
+            else
+            {
+                reductionRate = 1f * 90 / 100;
+            }
+            
+            Debug.Log("90% reduction rate: " + reductionRate);
+        }
+        else if (GameManager.Instance.currentShopMood >= 75 || GameManager.Instance.currentShopMood == 100)
+        {
+            
+            if(reductionRate == 1f * 80 / 100)
+            {
+                return;
+            }
+            else
+            {
+                reductionRate = 1f * 80 / 100;
+            }
+            
+            Debug.Log("80% reduction rate: " + reductionRate);
+        }
+    }
+
+    #endregion
 
 
     #region Update patience meter
@@ -323,6 +398,7 @@ public class CustomerPatience : NetworkBehaviour
             }
 
             //calculate amount of patience left
+            CheckCurrentShopMood(); //get updated reduction rate
             currentPatience -= updateFrequency * reductionRate; //-------------------------------------------------- change here
             patienceMeterImg.fillAmount = currentPatience / totalPatience;
 
