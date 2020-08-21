@@ -1358,8 +1358,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.25}
   m_AnchorMax: {x: 1, y: 0.75}
-  m_AnchoredPosition: {x: -0.94000244, y: 17.40004}
-  m_SizeDelta: {x: 162.2, y: 5}
+  m_AnchoredPosition: {x: -0.34999847, y: 17.40004}
+  m_SizeDelta: {x: 176.66, y: 5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!64 &164405138
 MeshCollider:
@@ -1709,8 +1709,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.94000244, y: 18.1}
-  m_SizeDelta: {x: 162.21, y: 0}
+  m_AnchoredPosition: {x: -0.34999847, y: 18.1}
+  m_SizeDelta: {x: 176.67, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &178684749
 GameObject:
@@ -2498,6 +2498,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f9e61a9edb6501e4f919d850c9daf878, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+  evaluationScreen: {fileID: 1151624222864931435, guid: 181596259e510a549a874330fda58d07,
+    type: 3}
 --- !u!4 &248123276
 Transform:
   m_ObjectHideFlags: 0
@@ -2746,11 +2750,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  serverScore: 0
   serverScoreText: {fileID: 5257589612246529131}
-  chefScore: 0
-  customersServed: 0
-  customersLost: 0
   currentShopMood: 50
   moodIndicator: {fileID: 800936404}
   isMoodCoroutineRunning: 0

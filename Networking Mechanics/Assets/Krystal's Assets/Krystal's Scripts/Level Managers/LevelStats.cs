@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using System.Xml.Schema;
 using UnityEngine;
+using Mirror;
 
 //All stats related to the level number and score
-public class LevelStats : MonoBehaviour
+public class LevelStats : NetworkBehaviour
 {
     #region Singleton
 
@@ -61,7 +62,20 @@ public class LevelStats : MonoBehaviour
         private set { threeStarScore_current = value; }
     }
 
+    [Header("Evaluation")]
+    [SerializeField] private GameObject evaluationScreen;
+
     #endregion
+
+
+    //Spawn evaluation canvas
+    [ServerCallback]
+    public void ShowEvaluationScreen()
+    {
+        GameObject spawnedEvaluationScreen = Instantiate(evaluationScreen, evaluationScreen.transform.position, evaluationScreen.transform.rotation);
+        NetworkServer.Spawn(spawnedEvaluationScreen);
+
+    }
 
     //updates level number, the minimum score required to pass, and the highest level they've reached.
     public static void UpdateLevel()

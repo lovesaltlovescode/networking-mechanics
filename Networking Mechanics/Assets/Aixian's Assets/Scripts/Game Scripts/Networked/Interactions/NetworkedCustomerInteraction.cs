@@ -300,6 +300,8 @@ public class NetworkedCustomerInteraction : NetworkBehaviour
             detectedObject.GetComponent<TableFeedback>().CustomerSeated(gain5Points);
             GameManager.Instance.AddServerScore(5);
         }
+
+        Evaluation_OverallPlayerPerformance.UpdateMaxCustomerServiceScore(20);
     }
 
     #endregion

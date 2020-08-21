@@ -204,6 +204,11 @@ public class TableScript : NetworkBehaviour
     [ServerCallback]
     public void ReadyToOrder()
     {
+        if (LevelTimer.Instance.hasLevelEnded)
+        {
+            return;
+        }
+
        // Debug.Log("Table Script - ServerReadyToOrder");
         RpcReadyToOrder();
     }
@@ -211,6 +216,11 @@ public class TableScript : NetworkBehaviour
     [ClientRpc]
     public void RpcReadyToOrder()
     {
+        if (LevelTimer.Instance.hasLevelEnded)
+        {
+            return;
+        }
+
         //move the table collider to a separate layer
         TableColliderManager.ToggleTableDetection(true, this.gameObject, takeOrderLayer);
 
@@ -303,7 +313,7 @@ public class TableScript : NetworkBehaviour
         if (!isCustomerAngry)
         {
             tableFeedbackScript.SuccessfulCustomerService();
-            GameManager.Instance.ServedCustomer(customersAtTable);
+            Evaluation_CustomerService.UpdateNumCustomersServed(customersAtTable);
             GameManager.Instance.IncrementMood(5);
         }
 

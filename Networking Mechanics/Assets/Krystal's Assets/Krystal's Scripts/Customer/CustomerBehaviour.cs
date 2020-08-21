@@ -60,6 +60,13 @@ public class CustomerBehaviour : NetworkBehaviour
         CustomerCollider.enabled = isEnabled;
     }
 
+    private void Update()
+    {
+        if (LevelTimer.Instance.hasLevelEnded)
+        {
+            CustomerPatienceScript.StopPatienceMeter();
+        }
+    }
 
 
 } //end of customer behaviour class

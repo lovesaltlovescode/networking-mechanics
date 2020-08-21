@@ -123,7 +123,8 @@ public class TableFeedback : MonoBehaviour
             StartCoroutine(FadeInFadeOutText(gain5Points, pointsText, true));
             GameManager.Instance.AddServerScore(5);
         }
-        
+
+        Evaluation_OverallPlayerPerformance.UpdateMaxCustomerServiceScore(20);
     }
 
     public void CustomerLeaves()
@@ -135,29 +136,27 @@ public class TableFeedback : MonoBehaviour
             case 1:
                 StartCoroutine(FadeInFadeOutText(loseOneCustomer, word_tmpObj));
                 GameManager.Instance.ReduceServerScore(10);
-                GameManager.Instance.LostCustomer(1);
                 break;
 
             case 2:
                 StartCoroutine(FadeInFadeOutText(loseTwoCustomers, word_tmpObj));
                 GameManager.Instance.ReduceServerScore(20);
-                GameManager.Instance.LostCustomer(2);
                 break;
 
             case 3:
                 StartCoroutine(FadeInFadeOutText(loseThreeCustomers, word_tmpObj));
                 GameManager.Instance.ReduceServerScore(30);
-                GameManager.Instance.LostCustomer(3);
                 break;
 
             case 4:
                 StartCoroutine(FadeInFadeOutText(loseFourCustomers, word_tmpObj));
                 GameManager.Instance.ReduceServerScore(40);
-                GameManager.Instance.LostCustomer(4);
                 break;
         }
 
         GameManager.Instance.IncrementMood(5, true);
+
+        Evaluation_CustomerService.UpdateNumCustomersServed(1, true);
 
 
     }
@@ -172,21 +171,26 @@ public class TableFeedback : MonoBehaviour
             case 1:
                 StartCoroutine(FadeInFadeOutText(servedOneCustomer, pointsText, true));
                 GameManager.Instance.AddServerScore(50);
+                Evaluation_OverallPlayerPerformance.UpdateMaxCustomerServiceScore(50);
+
                 break;
 
             case 2:
                 StartCoroutine(FadeInFadeOutText(servedTwoCustomers, pointsText, true));
                 GameManager.Instance.AddServerScore(100);
+                Evaluation_OverallPlayerPerformance.UpdateMaxCustomerServiceScore(100);
                 break;
 
             case 3:
                 StartCoroutine(FadeInFadeOutText(servedThreeCustomers, pointsText, true));
                 GameManager.Instance.AddServerScore(150);
+                Evaluation_OverallPlayerPerformance.UpdateMaxCustomerServiceScore(150);
                 break;
 
             case 4:
                 StartCoroutine(FadeInFadeOutText(servedFourCustomers, pointsText, true));
                 GameManager.Instance.AddServerScore(200);
+                Evaluation_OverallPlayerPerformance.UpdateMaxCustomerServiceScore(200);
                 break;
         }
         

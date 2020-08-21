@@ -74,17 +74,7 @@ public class GameManager : NetworkBehaviour
     public GameObject[] dishesOnCounter = new GameObject[3] { null, null, null };
     //public int dishCount; //number of dishes on the counter
 
-    [Header("Scores")]
-    [SyncVar]
-    public float serverScore;
     public TextMeshProUGUI serverScoreText;
-    public float chefScore; //only visible to chef
-
-    [Header("Customer count")]
-    [SyncVar]
-    public float customersServed;
-    [SyncVar]
-    public float customersLost;
 
     [Header("Mood")]
     [SyncVar]
@@ -124,12 +114,12 @@ public class GameManager : NetworkBehaviour
             moodDecreaseText.gameObject.SetActive(false);
         }
 
-        serverScore = 0;
         serverScoreText.text = "0";
-        chefScore = 0;
+        moodIndicator.interactable = false;
+        moodIndicator.value = 50f;
+
         LevelTimer.Instance.StartTimer();
 
-        moodIndicator.interactable = false;
     }
 
     #region Handle Scores and Customers
@@ -137,71 +127,72 @@ public class GameManager : NetworkBehaviour
     //add score
     public void AddServerScore(float score)
     {
-        serverScore += score;
-        serverScoreText.text = serverScore.ToString();
+        float updatedServerScore = Evaluation_OverallPlayerPerformance.UpdateCustomerServiceScore(score);
+        serverScoreText.text = updatedServerScore.ToString();
     }
 
     //reduce score
     public void ReduceServerScore(float score)
     {
-        serverScore -= score;
-        serverScoreText.text = serverScore.ToString();
-    }
-
-    //add customers
-    public void ServedCustomer(float customers)
-    {
-        customersServed += customers;
-    }
-
-
-    //reduce customers
-    public void LostCustomer(float customers)
-    {
-        customersLost += customers;
+        float updatedServerScore = Evaluation_OverallPlayerPerformance.UpdateCustomerServiceScore(score, true);
+        serverScoreText.text = updatedServerScore.ToString();
     }
 
     #endregion
 
-    public void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.S))
-        {
-            IncrementMood(5);
-        }
+    //public void Update()
+    //{
+    //    if (Input.GetKeyDown(KeyCode.S))
+    //    {
+    //        IncrementMood(5);
+    //    }
 
-        if (Input.GetKeyDown(KeyCode.D))
-        {
-            IncrementMood(5, true);
-        }
+    //    if (Input.GetKeyDown(KeyCode.D))
+    //    {
+    //        IncrementMood(5, true);
+    //    }
         
-    }
+    //}
 
     //decrease = true if mood decrease
     public void IncrementMood(float value, bool decrease = false)
     {
         if (decrease)
         {
-            if(currentShopMood == 0)
+            float updatedShopMood = currentShopMood -= value;
+
+            //dont allow mood to decrease below 0
+            if (updatedShopMood < 0 || currentShopMood <= 0)
             {
                 return;
             }
             else
             {
-                StartMoveMoodIndicator(value, true);
-                StartCoroutine(FadeInFadeOutText("-" + value, moodDecreaseText));
+                if(updatedShopMood > moodIndicator.minValue)
+                {
+                    moodIndicator.value = updatedShopMood;
+                }
+
+                //StartCoroutine(FadeInFadeOutText("-" + value, moodDecreaseText));
             }
         }
         else
         {
-            if(currentShopMood == 100)
+            float updatedShopmood = currentShopMood += value;
+
+            //dont allow mood to increase above 100
+            if (updatedShopmood > 100 || currentShopMood >= 100)
             {
                 return;
             }
             else
             {
-                StartMoveMoodIndicator(value);
-                StartCoroutine(FadeInFadeOutText("+" + value, moodIncreaseText, true));
+                //StartMoveMoodIndicator(value);
+                if(updatedShopmood < moodIndicator.maxValue)
+                {
+                    moodIndicator.value = updatedShopmood;
+                }
+                //StartCoroutine(FadeInFadeOutText("+" + value, moodIncreaseText, true));
             }
             
         }
@@ -214,49 +205,49 @@ public class GameManager : NetworkBehaviour
 
     
 
-    public void StartMoveMoodIndicator(float value, bool decrease = false)
-    {
-        if (isMoodCoroutineRunning)
-        {
-            //bool used to ensure that coroutine does not get called while coroutine is running
-            return;
-        }
+    //public void StartMoveMoodIndicator(float value, bool decrease = false)
+    //{
+    //    if (isMoodCoroutineRunning)
+    //    {
+    //        //bool used to ensure that coroutine does not get called while coroutine is running
+    //        return;
+    //    }
 
-        isMoodCoroutineRunning = true;
+    //    isMoodCoroutineRunning = true;
 
-        if (decrease)
-        {
-            StartCoroutine(MoveMoodIndicator(value, true));
-        }
-        else
-        {
-            StartCoroutine(MoveMoodIndicator(value));
-        }
+    //    if (decrease)
+    //    {
+    //        StartCoroutine(MoveMoodIndicator(value, true));
+    //    }
+    //    else
+    //    {
+    //        StartCoroutine(MoveMoodIndicator(value));
+    //    }
 
-    }
+    //}
 
-    IEnumerator MoveMoodIndicator(float value, bool decrease = false)
-    {
-        if (decrease)
-        {
-            currentShopMood -= value;
-        }
-        else
-        {
-            currentShopMood += value;
-        }
+    //IEnumerator MoveMoodIndicator(float value, bool decrease = false)
+    //{
+    //    if (decrease)
+    //    {
+    //        currentShopMood -= value;
+    //    }
+    //    else
+    //    {
+    //        currentShopMood += value;
+    //    }
 
-        float updatedMood = currentShopMood;
+    //    float updatedMood = currentShopMood;
 
 
-        while (moodIndicator.value != updatedMood)
-        {
-            moodIndicator.value = Mathf.MoveTowards(currentShopMood, updatedMood, 1*Time.deltaTime);
-        }
+    //    while (moodIndicator.value != updatedMood)
+    //    {
+    //        moodIndicator.value = Mathf.MoveTowards(currentShopMood, updatedMood, 1*Time.deltaTime);
+    //    }
 
-        yield return null;
-        isMoodCoroutineRunning = false;
-    }
+    //    yield return null;
+    //    isMoodCoroutineRunning = false;
+    //}
 
     #region DisplayMoodText
 

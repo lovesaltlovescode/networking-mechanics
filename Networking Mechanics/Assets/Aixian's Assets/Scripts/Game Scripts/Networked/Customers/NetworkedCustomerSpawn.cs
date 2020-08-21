@@ -48,6 +48,12 @@ public class NetworkedCustomerSpawn : NetworkBehaviour
 
     private void Update()
     {
+
+        if (LevelTimer.Instance.hasLevelEnded)
+        {
+            StopSpawnCustomer();
+        }
+
         //if the number of customers in the waiting area is below the max num of customers, 
         if (GameManager.Instance.currentNumWaitingCustomers < maxGroupsOfCustomersInWaitingArea)
         {
@@ -235,6 +241,10 @@ public class NetworkedCustomerSpawn : NetworkBehaviour
         customer.gameObject.GetComponent<CustomerBehaviour_Queueing>().CustomerStartsWaiting();
     }
 
+    public void StopSpawnCustomer()
+    {
+        StopCoroutine(SpawnAndCheck());
+    }
 
 
     //returns true if the coordinates passed in does not overlap with any customer colliders

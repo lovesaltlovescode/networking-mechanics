@@ -48,7 +48,7 @@ public class LevelTimer : NetworkBehaviour
         private set { timeLeft = value; }
     }
 
-    private static bool hasLevelEnded = false;
+    public bool hasLevelEnded = false;
     private bool isCoroutineRunning = false;
     private Coroutine timerCoroutine;
 
@@ -120,6 +120,16 @@ public class LevelTimer : NetworkBehaviour
         {
             TextFlash();
         }
+
+        if(Evaluation_CustomerService.NumCustomersLost >= 10)
+        {
+            EndLevel();
+        }
+
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            EndLevel();
+        }
     }
 
     public void TextFlash()
@@ -173,13 +183,20 @@ public class LevelTimer : NetworkBehaviour
 
         hasLevelEnded = true;
 
-        timerText.text = "Dead";
+        if(currentTime != 0)
+        {
+            PauseTimer(true);
+        }
+
+        timerText.text = "CLOSED";
 
         Debug.Log("level time is up");
 
         //evaluate player scores
         //call the ui manager, which should have the evaluation screen method. then, pass the following methods into it
-        Evaluation_OverallPlayerPerformance.EvaluateScore(Evaluation_OverallPlayerPerformance.CalculateOverallScore());
+        LevelStats.Instance.ShowEvaluationScreen();
+        //Evaluation_OverallPlayerPerformance.EvaluateScore(Evaluation_OverallPlayerPerformance.CalculateOverallScore());
+
 
     }
 

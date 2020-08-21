@@ -44,29 +44,26 @@ public class CustomerFeedback : MonoBehaviour
                 case 1:
                     StartCoroutine(FadeInFadeOutText(loseOneCustomer, redText));
                     GameManager.Instance.ReduceServerScore(10);
-                    GameManager.Instance.LostCustomer(1); 
                     break;
 
                 case 2:
                     StartCoroutine(FadeInFadeOutText(loseTwoCustomers, redText));
                     GameManager.Instance.ReduceServerScore(20);
-                    GameManager.Instance.LostCustomer(2);
                     break;
 
                 case 3:
                     StartCoroutine(FadeInFadeOutText(loseThreeCustomers, redText));
                     GameManager.Instance.ReduceServerScore(30);
-                    GameManager.Instance.LostCustomer(3);
                     break;
 
                 case 4:
                     StartCoroutine(FadeInFadeOutText(loseFourCustomers, redText));
                     GameManager.Instance.ReduceServerScore(40);
-                    GameManager.Instance.LostCustomer(4);
                     break;
             }
 
             GameManager.Instance.IncrementMood(5, true);
+            Evaluation_CustomerService.UpdateNumCustomersServed(1, true);
         }
     }
 
@@ -111,6 +108,8 @@ public class CustomerFeedback : MonoBehaviour
                 GameManager.Instance.AddServerScore(10);
                 GameManager.Instance.IncrementMood(2);
             }
+
+            Evaluation_OverallPlayerPerformance.UpdateMaxCustomerServiceScore(40);
         }
     }
 

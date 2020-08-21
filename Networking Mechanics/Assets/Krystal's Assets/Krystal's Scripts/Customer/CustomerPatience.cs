@@ -487,7 +487,7 @@ public class CustomerPatience : NetworkBehaviour
         }
 
         //add angry customer to evaluation
-        Evaluation_CustomerService.UpdateCustomerServiceStats(0);
+        //Evaluation_CustomerService.UpdateCustomerServiceStats(0);
 
         //disable the image
         patienceMeterImg.enabled = false;
