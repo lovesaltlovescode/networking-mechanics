@@ -41,6 +41,7 @@ public class NetworkedUIManager : MonoBehaviour
 
     [Header("Customers")]
     public Sprite customerIcon;
+    public Sprite takeOrderIcon;
 
     [Header("Dishes")]
     public Sprite roastedChicWRiceBall;
@@ -176,7 +177,11 @@ public class NetworkedUIManager : MonoBehaviour
                 // Debug.Log("Looking at " + networkedPlayerInteraction.detectedObject.transform.GetChild(0).GetComponent<OrderScript>().dishLabel);
             }
 
-
+            if(!networkedPlayerInteraction.playerInventory && networkedPlayerInteraction.detectedObject.layer == LayerMask.NameToLayer("Ordering"))
+            {
+                buttonIcon.sprite = takeOrderIcon;
+                buttonIcon.color = Color.white;
+            }
         }
 
         //If no detected object or default state, show default icon
@@ -343,8 +348,16 @@ public class NetworkedUIManager : MonoBehaviour
 
                 //customers
                 case "Customer":
-                    buttonIcon.sprite = customerIcon;
-                    buttonIcon.color = Color.white;
+                    if(networkedPlayerInteraction.detectedObject && networkedPlayerInteraction.detectedObject.GetComponent<TableScript>())
+                    {
+                        buttonIcon.sprite = customerIcon;
+                        buttonIcon.color = Color.white;
+                    }
+                    else
+                    {
+                        buttonIcon.color = Color.gray;
+                        buttonIcon.sprite = customerIcon;
+                    }
                     break;
 
                 //drinks

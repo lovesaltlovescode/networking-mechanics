@@ -250,7 +250,7 @@ public class NetworkedCustomerInteraction : NetworkBehaviour
         //if table has enough seats
         if (tableScript.CheckSufficientSeats(heldCustomer.GetComponent<CustomerBehaviour_BeingHeld>().groupSizeNum))
         {
-           // Debug.Log("NetworkedCustomerInteraction - Enough seats for customers");
+            GetQueueingCustomerPatience(detectedObject);
             RpcSeatCustomer(player, detectedObject);
 
             //DECREASE
@@ -272,8 +272,6 @@ public class NetworkedCustomerInteraction : NetworkBehaviour
         }
 
         RemoveCustomerFromInventory();
-
-        GetQueueingCustomerPatience(detectedObject);
         
 
         //toggle layer undetectable

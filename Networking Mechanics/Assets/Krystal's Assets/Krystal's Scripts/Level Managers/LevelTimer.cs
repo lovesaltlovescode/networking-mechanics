@@ -40,8 +40,6 @@ public class LevelTimer : NetworkBehaviour
     private float timeLeft;
     private float levelLength = 240f; //4 minutes long
 
-    [SyncVar]
-    private float flashTimer;
 
     public float TimeLeft
     {
@@ -50,6 +48,7 @@ public class LevelTimer : NetworkBehaviour
     }
 
     public bool hasLevelEnded = false;
+    public bool levelStarted = false;
     private bool isCoroutineRunning = false;
     private Coroutine timerCoroutine;
 
@@ -69,6 +68,10 @@ public class LevelTimer : NetworkBehaviour
         {
             return;
         }
+        PauseTimer(false);
+
+        hasLevelEnded = false;
+        levelStarted = true;
 
         timeLeft = levelLength;
         currentTime = 0;
@@ -78,7 +81,22 @@ public class LevelTimer : NetworkBehaviour
         timerCoroutine = StartCoroutine(TimerCoroutine());
     }
 
-    public static void PauseTimer(bool setPauseTrue)
+    public void EndTimer()
+    {
+        if (!isCoroutineRunning)
+        {
+            return;
+        }
+
+        levelStarted = false;
+
+        isCoroutineRunning = false;
+
+        StopCoroutine(timerCoroutine);
+    }
+
+
+        public static void PauseTimer(bool setPauseTrue)
     {
         isPaused = setPauseTrue;
     }
@@ -87,16 +105,20 @@ public class LevelTimer : NetworkBehaviour
     {
         while (true)
         {
-
-            timerText.text = TimingToString();
+            
 
             //the total amount of time that has passed
             currentTime += Time.deltaTime; //public get, for use elsewhere
+
+            //Debug.Log("Is coroutine running " + currentTime);
 
             if (!isPaused)
             {
                 //time left (to be used to display countdown timer for players)
                 timeLeft = levelLength - currentTime;
+                //Debug.Log("Level length " + levelLength);
+                //Debug.Log("Current time " + currentTime);
+                //Debug.Log("Time left " + timeLeft);
 
                 if (timeLeft <= 0)
                 {
@@ -119,11 +141,6 @@ public class LevelTimer : NetworkBehaviour
 
     private void Update()
     {
-        if(timeLeft <= 31)
-        {
-            TextFlash();
-        }
-
         if(Evaluation_CustomerService.NumCustomersLost >= 10)
         {
             EndLevel();
@@ -135,24 +152,7 @@ public class LevelTimer : NetworkBehaviour
         }
     }
 
-    public void TextFlash()
-    {
-        flashTimer += Time.deltaTime;
-
-        if (flashTimer >= 0.5f)
-        {
-            timerText.enabled = true;
-
-            //timerText.color = new Color32(238, 0, 0, 255);
-
-        }
-
-        if (flashTimer >= 1f)
-        {
-            timerText.enabled = false;
-            flashTimer = 0;
-        }
-    }
+   
 
     //returns the time as a string in MM:SS format to be displayed in the clocks
     public string TimingToString()
@@ -161,6 +161,8 @@ public class LevelTimer : NetworkBehaviour
         {
             return "00:00";
         }
+
+        //Debug.Log("Time left " + timeLeft);
 
         //get the time left in minutes and seconds
         string string_min = Mathf.Floor(timeLeft / 60).ToString("00");
@@ -171,8 +173,9 @@ public class LevelTimer : NetworkBehaviour
             string_min = (Mathf.Floor(timeLeft / 60) + 1).ToString("00");
             string_sec = "00";
         }
-
+        //Debug.Log("Time " + string_min + ":" + string_sec);
         return string_min + ":" + string_sec;
+        
     }
 
     //announce that the game is over
@@ -186,7 +189,9 @@ public class LevelTimer : NetworkBehaviour
 
         hasLevelEnded = true;
 
-        if(currentTime != 0)
+        EndTimer();
+
+        if (currentTime != 0)
         {
             PauseTimer(true);
         }
@@ -198,7 +203,7 @@ public class LevelTimer : NetworkBehaviour
         LevelStats.Instance.ShowEvaluationScreen();
         //Evaluation_OverallPlayerPerformance.EvaluateScore(Evaluation_OverallPlayerPerformance.CalculateOverallScore());
 
-
     }
+
 
 }

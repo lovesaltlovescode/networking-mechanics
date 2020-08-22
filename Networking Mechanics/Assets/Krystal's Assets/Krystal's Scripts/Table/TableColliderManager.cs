@@ -30,6 +30,12 @@ public class TableColliderManager : MonoBehaviour
     public static void AddTableToTableColliderManager(GameObject table)
     {
         allTableColliders.Add(table);
+        Debug.Log("Table? " + table.name);
+    }
+
+    public static void ClearTableList()
+    {
+        allTableColliders.Clear();
     }
 
 

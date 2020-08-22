@@ -17,59 +17,53 @@ public class PlayerMovement : NetworkBehaviour
     //A list of all active players' ID in the game scene
     public static List<string> PlayerIDs = new List<string>();
 
+    [SerializeField] private Vector3 playerStartPos;
+    [SerializeField] private Quaternion playerStartRot;
+
     //movement UI canvas, toggle on off for clients
     public GameObject UI;
 
 
-    //    #region Platform Specifics
-
-    //#if UNITY_EDITOR
-
-    //    public void Awake()
-    //    {
-    //        Debug.Log("In editor!");
-    //        //movementUI.enabled = false;
-
-    //    }
-
-    //#elif UNITY_STANDALONE_WIN
-
-    //    public void Awake()
-    //    {
-    //        //Debug.Log("Standalone windows!");
-    //    }
-
-
-    //#elif UNITY_ANDROID
-
-    //    public void Awake()
-    //    {
-    //        Debug.Log("On android!");
-    //    }
-    //#endif
-
-    //#endregion
+    private void Awake()
+    {
+        
+    }
 
     private void Start()
     {
+        DontDestroyOnLoad(gameObject);
+        playerStartPos = gameObject.transform.position;
+        playerStartRot = gameObject.transform.rotation;
         ActivePlayers.Add(gameObject);
         PlayerIDs.Add(gameObject.GetComponent<NetworkIdentity>().netId.ToString());
 
         for (int i = 0; i < ActivePlayers.Count; i++)
         {
-           // Debug.Log($"There are {ActivePlayers.Count} active players");
-           // Debug.Log($"Player Movement - Player {i} is {ActivePlayers[i]}");
-           // Debug.Log($"Player Movement - Player {i}'s Net ID is {PlayerIDs[i]}");
+           Debug.Log($"There are {ActivePlayers.Count} active players");
+           Debug.Log($"Player Movement - Player {i} is {ActivePlayers[i]}");
+           Debug.Log($"Player Movement - Player {i}'s Net ID is {PlayerIDs[i]}");
         }
     }
-
 
 
 
     // Update is called once per frame
     void Update()
     {
+        if (!hasAuthority)
+        {
+            //Debug.Log("Player does not have authority");
+            return;
+        }
+
         MovePlayer();
+
+        if (LevelTimer.Instance.hasLevelEnded)
+        {
+            gameObject.transform.position = playerStartPos;
+            gameObject.transform.rotation = playerStartRot;
+            return;
+        }
     }
 
     //function to move the player

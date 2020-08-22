@@ -2557,6 +2557,7 @@ MonoBehaviour:
   syncInterval: 0.1
   timerText: {fileID: 2089368358}
   hasLevelEnded: 0
+  levelStarted: 0
 --- !u!81 &248123279
 AudioListener:
   m_ObjectHideFlags: 0
@@ -2749,8 +2750,6 @@ MonoBehaviour:
   serverScoreText: {fileID: 5257589612246529131}
   currentShopMood: 50
   moodIndicator: {fileID: 800936404}
-  isMoodCoroutineRunning: 0
-  updateMoodFrequency: 0.4
   moodIncreaseAnim: {fileID: 2008633261}
   moodIncreaseText: {fileID: 2008633259}
   moodDecreaseAnim: {fileID: 1723036479}
@@ -8291,7 +8290,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  debuggingMode: 1
+  debuggingMode: 0
   sphereVisualisation: {fileID: 0}
   spawnArea: {fileID: 949375540}
   waitingArea: {fileID: 1764966484}
@@ -17726,6 +17725,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &2089368359 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2086618020085152650, guid: 25c8e699ad2ee1d49900c556867fedd2,
+    type: 3}
+  m_PrefabInstance: {fileID: 2089368356}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2089368360
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2089368359}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f6d61217378a734797540e02f776c17, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+  timerText: {fileID: 2089368358}
 --- !u!1 &2090272565
 GameObject:
   m_ObjectHideFlags: 0

@@ -51,60 +51,63 @@ public class NetworkedCustomerSpawn : NetworkBehaviour
 
         if (LevelTimer.Instance.hasLevelEnded)
         {
-            this.enabled = false;
             return;
         }
-
-        //if the number of customers in the waiting area is below the max num of customers, 
-        if (GameManager.Instance.currentNumWaitingCustomers < maxGroupsOfCustomersInWaitingArea)
+        else
         {
-            //if we're not in debugging mode, spawn customers every few seconds. 
-            //If not, spawn customers only when the user presses 'P'
-            if (!debuggingMode)
+            //if the number of customers in the waiting area is below the max num of customers, 
+            if (GameManager.Instance.currentNumWaitingCustomers < maxGroupsOfCustomersInWaitingArea)
             {
-                //update the amount of time since the last customer group was spawned
-                GameManager.Instance.timeSinceLastSpawn += Time.deltaTime;
-
-                //check that the last customer spawned at least spawnFrequency seconds ago
-                if (GameManager.Instance.timeSinceLastSpawn > spawnFrequency)
+                //if we're not in debugging mode, spawn customers every few seconds. 
+                //If not, spawn customers only when the user presses 'P'
+                if (!debuggingMode)
                 {
-                    if (!isServer)
+                    //update the amount of time since the last customer group was spawned
+                    GameManager.Instance.timeSinceLastSpawn += Time.deltaTime;
+
+                    //check that the last customer spawned at least spawnFrequency seconds ago
+                    if (GameManager.Instance.timeSinceLastSpawn > spawnFrequency)
                     {
-                        return;
+                        if (!isServer)
+                        {
+                            return;
+                        }
+
+                        //call the spawn coroutine
+                        StartCoroutine(SpawnAndCheck());
+
+                        //reset the time since the last customer group was spawned
+                        GameManager.Instance.timeSinceLastSpawn = 0;
                     }
-
-                    //call the spawn coroutine
-                    StartCoroutine(SpawnAndCheck());
-
-                    //reset the time since the last customer group was spawned
-                    GameManager.Instance.timeSinceLastSpawn = 0;
                 }
+                else
+                {
+                    if (Input.GetKeyDown(KeyCode.P))
+                    {
+                        if (!isServer)
+                        {
+                            return;
+                        }
+                        //call the spawn coroutine
+                        StartCoroutine(SpawnAndCheck());
+                    }
+                }
+
             }
-            else
+
+
+            #region Debug shortcuts
+            /* 
+            //Debug command. On pressing V, the spawn customer method will be called
+            if (Input.GetKeyDown(KeyCode.V))
             {
-                if (Input.GetKeyDown(KeyCode.P))
-                {
-                    if (!isServer)
-                    {
-                        return;
-                    }
-                    //call the spawn coroutine
-                    StartCoroutine(SpawnAndCheck());
-                }
+                SpawnCustomer(new Vector3(0,0,0));
             }
-
+            */
+            #endregion
         }
 
 
-        #region Debug shortcuts
-        /* 
-        //Debug command. On pressing V, the spawn customer method will be called
-        if (Input.GetKeyDown(KeyCode.V))
-        {
-            SpawnCustomer(new Vector3(0,0,0));
-        }
-        */
-        #endregion
     }
 
 

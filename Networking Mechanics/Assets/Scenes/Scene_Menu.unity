@@ -580,6 +580,7 @@ MonoBehaviour:
   spawnPrefabs: []
   minPlayers: 1
   menuScene: Assets/Scenes/Scene_Menu.unity
+  gameScene: Assets/Scenes/Scene_Map_Shop.unity
   roomPlayerPrefab: {fileID: 1065554968133040953, guid: 0c8ff0ac31c21d24ebb6564ab4ae64f7,
     type: 3}
   gamePlayerPrefab: {fileID: 8674835852363225698, guid: b89d9ede7386efd4d8b1f2bedd831ab2,

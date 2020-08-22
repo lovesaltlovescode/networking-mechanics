@@ -154,9 +154,12 @@ public class CustomerPatience : NetworkBehaviour
             return;
         }
 
-        if (LevelTimer.Instance.hasLevelEnded)
+        if (isServer)
         {
-            gameObject.SetActive(false);
+            if (LevelTimer.Instance.hasLevelEnded)
+            {
+                NetworkServer.Destroy(gameObject);
+            }
         }
 
         isCoroutineRunning = false;

@@ -29,11 +29,35 @@ public class LevelEvaluation : NetworkBehaviour
     [SerializeField] private GameObject[] filledStars = new GameObject[3];
     [SerializeField] private GameObject[] greyStars = new GameObject[3];
 
+    [Header("Player Performance")]
+    [SerializeField] private Image serverStars;
+    [SerializeField] private Image chefStars;
+
     [Header("Buttons")]
     [SerializeField] GameObject nextLevel;
     //[SerializeField] GameObject retryLevel;
+    [Scene] [SerializeField] private string gameScene = string.Empty;
 
     #endregion
+
+    public static CustomNetworkManager networkGameManager; //Network manager object
+
+    //Property
+    private CustomNetworkManager NetworkGameManager
+    {
+        get
+        {
+            if (networkGameManager != null)
+            {
+                return networkGameManager; //If there is a network room manager, then return that object
+            }
+
+            //If its null, then just get it
+            return networkGameManager = NetworkManager.singleton as CustomNetworkManager;
+            //Cast network manager as a singleton to get our custom network manager
+        }
+
+    }
 
     private void Awake()
     {
@@ -44,9 +68,19 @@ public class LevelEvaluation : NetworkBehaviour
 
     private void Start()
     {
-        Evaluation_OverallPlayerPerformance.CalculateOverallScore();
         UpdateEvaluationValues();
     }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.X))
+        {
+
+            UpdateEvaluationValues();
+        }
+    }
+
+    #region Calculate and Update Values
 
     [ServerCallback]
     public void UpdateEvaluationValues()
@@ -59,16 +93,28 @@ public class LevelEvaluation : NetworkBehaviour
     {
         levelNumber.text = LevelStats.Level.ToString();
 
+        Evaluation_OverallPlayerPerformance.CalculateOverallScore();
+
         float overallScore = Mathf.RoundToInt(Evaluation_OverallPlayerPerformance.OverallScore);
         totalScore.text = Mathf.RoundToInt(Evaluation_OverallPlayerPerformance.OverallScore).ToString();
 
         serversPerformance.text = Mathf.RoundToInt(Evaluation_CustomerService.CalculateCustomerServiceScore()).ToString() + "%";
+        DisplayServerStars();
 
         customersServed.text = Evaluation_CustomerService.NumCustomersServed.ToString();
         customersLost.text = Evaluation_CustomerService.NumCustomersLost.ToString();
 
         starsAttained.text = Mathf.RoundToInt(Evaluation_OverallPlayerPerformance.EvaluateScore(overallScore)).ToString() + "Stars";
         CalculateStars();
+    }
+
+    public void DisplayServerStars()
+    {
+        float serversPerformance = Evaluation_CustomerService.CalculateCustomerServiceScore();
+        serversPerformance = Mathf.Round(serversPerformance * 10.0f) * 0.1f;
+
+        Debug.Log("Servers performance decimal" + serversPerformance);
+        serverStars.fillAmount = serversPerformance;
     }
 
     public void CalculateStars()
@@ -104,4 +150,45 @@ public class LevelEvaluation : NetworkBehaviour
                 break;
         }
     }
+
+    #endregion
+
+    //when next level button is pressed
+    public void NextLevel()
+    {
+        Debug.Log("Next level");
+        
+        NetworkGameManager.ServerChangeScene(gameScene);
+        NetworkGameManager.OnServerSceneChanged(gameScene);
+
+        LevelStatsAnnouncer.MoveToNextLevel();
+        ResetLevel();
+    }
+
+    //retry level
+    public void RetryLevel()
+    {
+        Debug.Log("Retry level");
+
+        //NetworkGameManager.ServerChangeScene(gameScene);
+        //NetworkGameManager.OnServerSceneChanged(gameScene);
+        ResetLevel();
+    }
+
+    public void ResetLevel()
+    {
+        GameManager.Instance.ResetLevel();
+
+        //TableColliderManager.ClearTableList();
+        Evaluation_OverallPlayerPerformance.ResetAllScores();
+
+        LevelTimer.Instance.levelStarted = true;
+        NetworkServer.Destroy(this.gameObject);
+    }
+
+    [ClientRpc]
+    public void RpcResetLevel()
+    {
+    }
+
 }

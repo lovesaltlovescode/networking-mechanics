@@ -18,6 +18,7 @@ public class CustomerWaitArea : NetworkBehaviour
 
 
 
+
     //toggles the layer the wait area collider is on
     public void ToggleWaitAreaDetection(bool setDetectable)
     {

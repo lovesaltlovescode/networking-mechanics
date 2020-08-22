@@ -153,8 +153,15 @@ public class Evaluation_CustomerService
     public static float CalculateCustomerServiceScore()
     {
         Debug.Log("calculating customer service score...");
+
+        if(Evaluation_OverallPlayerPerformance.CustomerServiceScore <= 0)
+        {
+            return 0;
+        }
+
         float customerServiceScoreAttained =
-            (Evaluation_OverallPlayerPerformance.CustomerServiceScore / Evaluation_OverallPlayerPerformance.MaxCustomerServiceScore) * 100;
+            (Evaluation_OverallPlayerPerformance.CustomerServiceScore / Evaluation_OverallPlayerPerformance.MaxCustomerServiceScore);
+        Debug.Log("Final customer service score" + customerServiceScoreAttained);
 
         return customerServiceScoreAttained;
     }

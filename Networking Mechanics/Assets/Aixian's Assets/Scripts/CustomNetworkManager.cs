@@ -30,6 +30,8 @@ public class CustomNetworkManager : NetworkManager
     //Scene name
     [Header("Scenes")]
     [Scene][SerializeField] private string menuScene = string.Empty;
+    [Scene] [SerializeField] private string gameScene = string.Empty;
+    
 
 
     [Header("Room")]
@@ -236,6 +238,12 @@ public class CustomNetworkManager : NetworkManager
         }
     }
 
+    public void NextLevel()
+    {
+        ServerChangeScene("Scene_Map_Shop");
+        
+    }
+
     //called on server when a scene is completed
     //all clients will now have a spawn system and it is owned by the server
     //Handles change from menu to game scene
@@ -275,6 +283,12 @@ public class CustomNetworkManager : NetworkManager
 
             NetworkServer.Spawn(playerSpawnSystemInstance); //No conn parameter is being passed in, so this is owned by the server
         }
+
+        if(SceneManager.GetActiveScene().path == gameScene)
+        {
+            GameManager.Instance.StartLevel();
+        }
+        
     }
 
     public override void OnServerReady(NetworkConnection conn)

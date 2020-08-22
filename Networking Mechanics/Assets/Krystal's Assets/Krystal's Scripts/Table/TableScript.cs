@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Linq.Expressions;
 using UnityEngine;
 using Mirror;
+using UnityEngine.SceneManagement;
 
 public class TableScript : NetworkBehaviour
 {
@@ -55,12 +56,22 @@ public class TableScript : NetworkBehaviour
     //[HideInInspector] public bool isTableDirty = false;
     public List<GameObject> dirtyDishes = new List<GameObject>();
 
+    void Awake()
+    {
+
+        //add current table to table collider manager list
+        TableColliderManager.AddTableToTableColliderManager(gameObject);
+    }
+
 
     void Start()
     {
-        //add current table to table collider manager list
-        TableColliderManager.AddTableToTableColliderManager(gameObject);
+        ResetTables();
 
+    }
+
+    public void ResetTables()
+    {
         //clear the customer and orders lists
         customersSeated.Clear();
         customersAtTable = 0;
@@ -69,7 +80,6 @@ public class TableScript : NetworkBehaviour
 
         //update the number of seats the table has
         numSeats = seatPositions.Count;
-
     }
 
 
@@ -204,10 +214,6 @@ public class TableScript : NetworkBehaviour
     [ServerCallback]
     public void ReadyToOrder()
     {
-        if (LevelTimer.Instance.hasLevelEnded)
-        {
-            return;
-        }
 
        // Debug.Log("Table Script - ServerReadyToOrder");
         RpcReadyToOrder();
@@ -216,7 +222,6 @@ public class TableScript : NetworkBehaviour
     [ClientRpc]
     public void RpcReadyToOrder()
     {
-
         //move the table collider to a separate layer
         TableColliderManager.ToggleTableDetection(true, this.gameObject, takeOrderLayer);
 
@@ -231,13 +236,6 @@ public class TableScript : NetworkBehaviour
 
         //start the patience script
         patienceScript.StartPatienceMeter(CustomerPatienceStats.CustomerPatience_TakeOrder, OrderNotTaken);
-
-
-        if (LevelTimer.Instance.hasLevelEnded)
-        {
-            patienceScript.StopPatienceMeter();
-            return;
-        }
     }
 
     #region Take orders

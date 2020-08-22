@@ -290,7 +290,7 @@ public class GameBalanceFormulae
 
         if (newOneStarScore <= OneStarScore_max)
         {
-            return newOneStarScore;
+            return Mathf.RoundToInt(newOneStarScore);
         }
         else
         {
