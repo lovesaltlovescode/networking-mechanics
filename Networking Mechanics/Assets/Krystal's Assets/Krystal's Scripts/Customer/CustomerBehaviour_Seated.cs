@@ -146,7 +146,7 @@ public class CustomerBehaviour_Seated : CustomerBehaviour
         //enable their collider
         TriggerCustomerCollider(true, true);
 
-        //if the customer waits too long for their food, they will SitAngrily() will be called
+        //if the customer waits too long for their food, they will SitAngrily()
         TriggerPatienceMeter(true, CustomerPatienceStats.CustomerPatience_FoodWait, SitAngrily);
     }
 
@@ -154,7 +154,7 @@ public class CustomerBehaviour_Seated : CustomerBehaviour
     //when customer waits too long for their order, they will sit angrily
     public void SitAngrily()
     {
-       // Debug.Log("Sit angrily");
+        CustomerPatienceScript.StartOrderPenaltyTimer();
     }
 
     //check that the order being served to them is correct
@@ -238,7 +238,7 @@ public class CustomerBehaviour_Seated : CustomerBehaviour
     [ClientRpc]
     public void RpcEatingFood()
     {
-
+        CustomerPatienceScript.StopOrderPenaltyTimer();
 
         //play right order feedback
         CustomerFeedbackScript.RightOrderServed();

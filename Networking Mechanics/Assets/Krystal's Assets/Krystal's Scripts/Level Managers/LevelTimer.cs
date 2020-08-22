@@ -35,6 +35,7 @@ public class LevelTimer : NetworkBehaviour
     [SyncVar]
     private float currentTime = 0f;
 
+
     [SyncVar]
     private float timeLeft;
     private float levelLength = 240f; //4 minutes long
@@ -114,6 +115,8 @@ public class LevelTimer : NetworkBehaviour
 
     }
 
+    
+
     private void Update()
     {
         if(timeLeft <= 31)
@@ -189,8 +192,6 @@ public class LevelTimer : NetworkBehaviour
         }
 
         timerText.text = "CLOSED";
-
-        Debug.Log("level time is up");
 
         //evaluate player scores
         //call the ui manager, which should have the evaluation screen method. then, pass the following methods into it

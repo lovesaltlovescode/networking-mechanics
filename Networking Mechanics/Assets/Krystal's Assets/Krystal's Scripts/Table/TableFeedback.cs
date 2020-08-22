@@ -123,6 +123,10 @@ public class TableFeedback : MonoBehaviour
             StartCoroutine(FadeInFadeOutText(gain5Points, pointsText, true));
             GameManager.Instance.AddServerScore(5);
         }
+        else if(customerPatienceScript.customerMood == CurrentCustomerMood.customerStewing)
+        {
+            return;
+        }
 
         Evaluation_OverallPlayerPerformance.UpdateMaxCustomerServiceScore(20);
     }

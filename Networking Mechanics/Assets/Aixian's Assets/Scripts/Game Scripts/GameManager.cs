@@ -173,7 +173,7 @@ public class GameManager : NetworkBehaviour
                     moodIndicator.value = updatedShopMood;
                 }
 
-                //StartCoroutine(FadeInFadeOutText("-" + value, moodDecreaseText));
+                StartCoroutine(FadeInFadeOutText("-" + value, moodDecreaseText));
             }
         }
         else
@@ -192,14 +192,14 @@ public class GameManager : NetworkBehaviour
                 {
                     moodIndicator.value = updatedShopmood;
                 }
-                //StartCoroutine(FadeInFadeOutText("+" + value, moodIncreaseText, true));
+                StartCoroutine(FadeInFadeOutText("+" + value, moodIncreaseText, true));
             }
             
         }
         
         currentShopMood = Mathf.RoundToInt(moodIndicator.value);
 
-        Debug.Log("Current shop mood " + currentShopMood);
+        //Debug.Log("Current shop mood " + currentShopMood);
 
     }
 
@@ -296,7 +296,7 @@ public class GameManager : NetworkBehaviour
 
                 //Debug.Log("fade out clip length: " + wordAnim.GetCurrentAnimatorStateInfo(0).length);
 
-                yield return new WaitForSeconds(0.4f);
+                yield return new WaitForSeconds(0.6f);
             }
             else
             {
@@ -306,7 +306,7 @@ public class GameManager : NetworkBehaviour
 
                 //Debug.Log("fade out clip length: " + wordAnim.GetCurrentAnimatorStateInfo(0).length);
 
-                yield return new WaitForSeconds(0.4f);
+                yield return new WaitForSeconds(0.6f);
             }
 
 

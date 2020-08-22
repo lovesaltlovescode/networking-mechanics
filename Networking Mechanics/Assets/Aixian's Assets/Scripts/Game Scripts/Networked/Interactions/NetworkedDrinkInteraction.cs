@@ -166,7 +166,7 @@ public class NetworkedDrinkInteraction : NetworkBehaviour
             networkedPlayerInteraction.detectedObject.layer == LayerMask.NameToLayer("Table"))
         {
             //Debug.Log("Serve drinks");
-            CmdServeDrink(networkedPlayerInteraction.detectedObject);
+            CmdServeDrink(networkedPlayerInteraction.detectedObject, gameObject);
 
             networkedPlayerInteraction.CmdChangeHeldItem(HeldItem.nothing);
             networkedPlayerInteraction.ChangePlayerState(PlayerState.Default, true);
@@ -260,15 +260,15 @@ public class NetworkedDrinkInteraction : NetworkBehaviour
     }
 
     [Command]
-    public void CmdServeDrink(GameObject detectedObject)
+    public void CmdServeDrink(GameObject detectedObject, GameObject player)
     {
-            RpcServeDrink(detectedObject);
+            RpcServeDrink(detectedObject, player);
 
 
     }
 
     [ClientRpc]
-    public void RpcServeDrink(GameObject detectedObject)
+    public void RpcServeDrink(GameObject detectedObject, GameObject player)
     {
         var drink = networkedPlayerInteraction.playerInventory;
 
@@ -278,7 +278,9 @@ public class NetworkedDrinkInteraction : NetworkBehaviour
 
         Destroy(drink);
 
-        networkedPlayerInteraction.playerInventory = null;
+        GameObject playerInventory = player.transform.GetChild(0).GetChild(1).gameObject;
+
+        playerInventory = null;
     }
 
     #endregion

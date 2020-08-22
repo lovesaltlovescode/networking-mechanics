@@ -388,6 +388,11 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
     [Command]
     public void CmdHandsFull()
     {
+        if(!detectedObject || detectedObject && detectedObject.layer != LayerMask.NameToLayer("Ordering"))
+        {
+            return;
+        }
+
         RpcHandsFull();
     }
 

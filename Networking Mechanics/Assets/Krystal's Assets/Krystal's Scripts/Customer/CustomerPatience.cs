@@ -54,6 +54,9 @@ public class CustomerPatience : NetworkBehaviour
     [SyncVar]
     public CurrentCustomerMood customerMood;
 
+    private bool isPenaltyCoroutineRunning = false;
+    private Coroutine penaltyCoroutine;
+
     #region Getters and setters
 
     #region Customer States
@@ -127,6 +130,12 @@ public class CustomerPatience : NetworkBehaviour
         if (isCoroutineRunning)
         {
             //bool used to ensure that coroutine does not get called while coroutine is running
+
+            if (LevelTimer.Instance.hasLevelEnded)
+            {
+                StopPatienceMeter();
+            }
+
             return;
         }
 
@@ -143,6 +152,11 @@ public class CustomerPatience : NetworkBehaviour
         {
             //bool used to ensure that coroutine is only stopped once
             return;
+        }
+
+        if (LevelTimer.Instance.hasLevelEnded)
+        {
+            gameObject.SetActive(false);
         }
 
         isCoroutineRunning = false;
@@ -195,12 +209,47 @@ public class CustomerPatience : NetworkBehaviour
 
     #endregion
 
+    #region Penalty
 
-
-    public void Update()
+    public IEnumerator OrderPenaltyTimer()
     {
-        //CheckCustomerMood();   
+        while (true)
+        {
+
+            GameManager.Instance.IncrementMood(1, true);
+            GetComponent<CustomerFeedback>().PlayAngryPFX();
+            Debug.Log("Current shop mood " + GameManager.Instance.currentShopMood);
+
+            yield return new WaitForSeconds(5f);
+        }
+
     }
+
+    //public method to call to start coroutine
+    public void StartOrderPenaltyTimer()
+    {
+        if (isPenaltyCoroutineRunning)
+        {
+            return;
+        }
+
+        isPenaltyCoroutineRunning = true;
+        penaltyCoroutine = StartCoroutine(OrderPenaltyTimer());
+
+    }
+
+    public void StopOrderPenaltyTimer()
+    {
+        if (!isPenaltyCoroutineRunning)
+        {
+            return;
+        }
+        isPenaltyCoroutineRunning = false;
+        StopCoroutine(penaltyCoroutine);
+    }
+
+    #endregion
+
 
     #region Check Customer Mood
 
@@ -267,6 +316,10 @@ public class CustomerPatience : NetworkBehaviour
             else if (customerWaitingPatience >= 20 || customerWaitingPatience < 30 && customerWaitingPatience > 0)
             {
                 customerMood = CurrentCustomerMood.customerAngry;
+            }
+            else if(customerWaitingPatience < 1)
+            {
+                customerMood = CurrentCustomerMood.customerStewing;
             }
         }
         //queueing
@@ -384,18 +437,20 @@ public class CustomerPatience : NetworkBehaviour
     //understanding callbacks: https://stackoverflow.com/questions/54772578/passing-a-function-as-a-function-parameter/54772707
     private IEnumerator UpdatePatienceMeter(float totalPatience, Action callback = null, bool changeColor = true, bool delayColorChange = true, float colorChangingPoint = 0.5f)
     {
+
         currentPatience = totalPatience; //------------------------------------------------------------------------- change here
 
         //enable the patience meter img so player can see
         patienceMeterImg.enabled = true;
 
-        while (currentPatience > 0)
+        while (currentPatience > 0 && !LevelTimer.Instance.hasLevelEnded)
         {
             //caps the current patience
             if (currentPatience > totalPatience)
             {
                 currentPatience = totalPatience;
             }
+            
 
             //calculate amount of patience left
             CheckCurrentShopMood(); //get updated reduction rate
@@ -439,12 +494,13 @@ public class CustomerPatience : NetworkBehaviour
     //called when the customer is supposed to start their patience meter at less than 100% ie. after being held and put down
     private IEnumerator UpdatePatienceMeter(float totalPatience, float startingPatience, Action callback = null, bool changeColor = true, bool delayColorChange = true, float colorChangingPoint = 0.4f)
     {
+
         currentPatience = startingPatience;
 
         //enable the patience meter img so player can see
         patienceMeterImg.enabled = true;
 
-        while (currentPatience > 0)
+        while (currentPatience > 0 && !LevelTimer.Instance.hasLevelEnded)
         {
             //Debug.Log("UpdatePatienceMeter - Total patience " + totalPatience + " , current patience " + currentPatience);
 

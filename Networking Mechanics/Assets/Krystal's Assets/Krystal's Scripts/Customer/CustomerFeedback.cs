@@ -94,19 +94,18 @@ public class CustomerFeedback : MonoBehaviour
             {
                 StartCoroutine(FadeInFadeOutText(gain40Points, greenText, true));
                 GameManager.Instance.AddServerScore(40);
-                GameManager.Instance.IncrementMood(10);
+                GameManager.Instance.IncrementMood(5);
             }
             else if (customerPatienceScript.customerMood == CurrentCustomerMood.customerImpatient)
             {
                 StartCoroutine(FadeInFadeOutText(gain20Points, greenText, true));
                 GameManager.Instance.AddServerScore(20);
-                GameManager.Instance.IncrementMood(5);
+                GameManager.Instance.IncrementMood(2);
             }
             else if (customerPatienceScript.customerMood == CurrentCustomerMood.customerAngry)
             {
                 StartCoroutine(FadeInFadeOutText(gain10Points, greenText, true));
                 GameManager.Instance.AddServerScore(10);
-                GameManager.Instance.IncrementMood(2);
             }
 
             Evaluation_OverallPlayerPerformance.UpdateMaxCustomerServiceScore(40);

@@ -143,7 +143,7 @@ public class NetworkedCustomerInteraction : NetworkBehaviour
     {
         if (networkedPlayerInteraction.playerInventory.GetComponent<CustomerBehaviour_BeingHeld>() == null) //check whether the player is holding a customer
         {
-            Debug.Log("player is not holding customer??");
+            //Debug.Log("player is not holding customer??");
             return;
         }
 
@@ -155,48 +155,51 @@ public class NetworkedCustomerInteraction : NetworkBehaviour
             if (networkedPlayerInteraction.detectedObject.GetComponent<TableScript>()) 
             {
                 Debug.Log("player is looking at table");
-                SeatCustomer(networkedPlayerInteraction.playerInventory, networkedPlayerInteraction.detectedObject);
+                SeatCustomer(gameObject, networkedPlayerInteraction.detectedObject);
 
             }
 
             //if the player is looking at the waiting area
             else if (networkedPlayerInteraction.detectedObject.GetComponent<CustomerWaitArea>() || isPlayerInWaitArea)
             {
-                Debug.Log("player is looking at customer wait area");
+                //Debug.Log("player is looking at customer wait area");
 
-                Debug.Log("CMD Player inventory " + networkedPlayerInteraction.playerInventory);
-                PlaceCustomerDown(networkedPlayerInteraction.playerInventory);
+                //Debug.Log("CMD Player inventory " + networkedPlayerInteraction.playerInventory);
+                PlaceCustomerDown(gameObject);
                 
             }
         }
         else if (isPlayerInWaitArea) //if the player is in the waiting area
         {
-            Debug.Log("player is in customer wait area");
+            //Debug.Log("player is in customer wait area");
 
-            Debug.Log("CMD Player inventory " + networkedPlayerInteraction.playerInventory);
-            PlaceCustomerDown(networkedPlayerInteraction.playerInventory);
+            //Debug.Log("CMD Player inventory " + networkedPlayerInteraction.playerInventory);
+            PlaceCustomerDown(gameObject);
             
         }
     }
 
-    public void PlaceCustomerDown(GameObject playerInventory)
+    public void PlaceCustomerDown(GameObject player)
     {
+        GameObject playerInventory = player.transform.GetChild(0).GetChild(1).GetChild(0).gameObject;
 
         Debug.Log("Local player inventory " + playerInventory);
 
-        CmdPlaceCustomerDown(networkedPlayerInteraction.playerInventory);
+        CmdPlaceCustomerDown(player);
 
         RemoveCustomerFromInventory();
     }
 
 
     [Command]
-    public void CmdPlaceCustomerDown(GameObject playerInventory)
+    public void CmdPlaceCustomerDown(GameObject player)
     {
-        Debug.Log("CMD Inside Inventory" + networkedPlayerInteraction.playerInventory);
+        GameObject playerInventory = player.transform.GetChild(0).GetChild(1).GetChild(0).gameObject;
+
+        Debug.Log("CMD Inside Inventory" + playerInventory);
 
 
-        CustomerWaitAreaManager.PutCustomerdown(networkedPlayerInteraction.playerInventory);
+        CustomerWaitAreaManager.PutCustomerdown(playerInventory);
 
         RpcPlaceCustomerDown();
 
@@ -211,7 +214,7 @@ public class NetworkedCustomerInteraction : NetworkBehaviour
 
 
     //Seat customer
-    public void SeatCustomer(GameObject _playerInventory, GameObject _tableGameObj)
+    public void SeatCustomer(GameObject player, GameObject _tableGameObj)
     {
         Debug.Log("Seat customer method called");
 
@@ -224,7 +227,7 @@ public class NetworkedCustomerInteraction : NetworkBehaviour
 
         // Debug.Log("NetworkedCustomerInteraction - Seat customer");
 
-        CmdSeatCustomer(_tableGameObj, _playerInventory);
+        CmdSeatCustomer(_tableGameObj, player);
 
     }
 
@@ -233,7 +236,7 @@ public class NetworkedCustomerInteraction : NetworkBehaviour
 
 
     [Command]
-    public void CmdSeatCustomer(GameObject detectedObject, GameObject playerInventory)
+    public void CmdSeatCustomer(GameObject detectedObject, GameObject player)
     {
        // Debug.Log("NetworkedCustomerInteraction - CmdSeatCustomer");
       //  Debug.Log("NetworkedCustomerInteraction - Detected object: " + detectedObject.tag);
@@ -241,13 +244,14 @@ public class NetworkedCustomerInteraction : NetworkBehaviour
         //get table's table script
         TableScript tableScript = detectedObject.GetComponent<TableScript>();
 
-        var heldCustomer = networkedPlayerInteraction.playerInventory;
+        var heldCustomer = player.transform.GetChild(0).GetChild(1).GetChild(0).gameObject;
+
 
         //if table has enough seats
         if (tableScript.CheckSufficientSeats(heldCustomer.GetComponent<CustomerBehaviour_BeingHeld>().groupSizeNum))
         {
            // Debug.Log("NetworkedCustomerInteraction - Enough seats for customers");
-            RpcSeatCustomer(playerInventory, detectedObject);
+            RpcSeatCustomer(player, detectedObject);
 
             //DECREASE
             GameManager.Instance.currentNumWaitingCustomers -= 1;
@@ -514,25 +518,26 @@ public class NetworkedCustomerInteraction : NetworkBehaviour
             return;
         }
 
-        CmdCheckCanPutDownOrder(networkedPlayerInteraction.detectedObject, networkedPlayerInteraction.playerInventory);
+        CmdCheckCanPutDownOrder(networkedPlayerInteraction.detectedObject, gameObject);
 
 
     }
 
     [Command]
-    public void CmdCheckCanPutDownOrder(GameObject detectedObject, GameObject playerInventory)
+    public void CmdCheckCanPutDownOrder(GameObject detectedObject, GameObject player)
     {
-        RpcCheckCanPutDownOrder(detectedObject, playerInventory);
+        RpcCheckCanPutDownOrder(detectedObject, player);
 
 
     }
 
     [ClientRpc]
-    public void RpcCheckCanPutDownOrder(GameObject detectedObject, GameObject playerInventory)
+    public void RpcCheckCanPutDownOrder(GameObject detectedObject, GameObject player)
     {
 
-        GameObject heldDish = networkedPlayerInteraction.playerInventory;
-       // Debug.Log("NetworkedCustomerInteraction - Held dish is " + heldDish.GetComponent<OrderScript>().dishLabel);
+        GameObject heldDish = player.transform.GetChild(0).GetChild(1).GetChild(0).gameObject;
+
+        // Debug.Log("NetworkedCustomerInteraction - Held dish is " + heldDish.GetComponent<OrderScript>().dishLabel);
 
         //if there is a detectedobject
         if (detectedObject)

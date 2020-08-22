@@ -51,7 +51,8 @@ public class NetworkedCustomerSpawn : NetworkBehaviour
 
         if (LevelTimer.Instance.hasLevelEnded)
         {
-            StopSpawnCustomer();
+            this.enabled = false;
+            return;
         }
 
         //if the number of customers in the waiting area is below the max num of customers, 

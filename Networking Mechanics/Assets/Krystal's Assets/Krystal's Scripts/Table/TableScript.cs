@@ -216,10 +216,6 @@ public class TableScript : NetworkBehaviour
     [ClientRpc]
     public void RpcReadyToOrder()
     {
-        if (LevelTimer.Instance.hasLevelEnded)
-        {
-            return;
-        }
 
         //move the table collider to a separate layer
         TableColliderManager.ToggleTableDetection(true, this.gameObject, takeOrderLayer);
@@ -235,7 +231,13 @@ public class TableScript : NetworkBehaviour
 
         //start the patience script
         patienceScript.StartPatienceMeter(CustomerPatienceStats.CustomerPatience_TakeOrder, OrderNotTaken);
-        
+
+
+        if (LevelTimer.Instance.hasLevelEnded)
+        {
+            patienceScript.StopPatienceMeter();
+            return;
+        }
     }
 
     #region Take orders

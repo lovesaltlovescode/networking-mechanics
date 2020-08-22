@@ -267,7 +267,7 @@ public class GameBalanceFormulae
     public static float customerPatience_base_TakeOrder = 7f;
     public static float customerPatience_base_FoodWait = 120f;
 
-    private static float oneStarScore_base = 60f; //amount of points needed to earn one star (the passing score)
+    private static float oneStarScore_base = 150f; //amount of points needed to earn one star (the passing score)
     private static float oneStarScore_max = 500f;
     public static float OneStarScore_base
     {
@@ -284,7 +284,9 @@ public class GameBalanceFormulae
     }
     public static float increaseOneStarScore_formula(float levelNum)
     {
-        float newOneStarScore = oneStarScore_base * levelNum;
+        //float newOneStarScore = oneStarScore_base * levelNum;
+
+        float newOneStarScore = oneStarScore_base * levelNum - ((levelNum - 1) / 2);
 
         if (newOneStarScore <= OneStarScore_max)
         {
