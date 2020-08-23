@@ -5,6 +5,27 @@ using UnityEngine.SceneManagement;
 
 public class LevelStatsAnnouncer : MonoBehaviour
 {
+    #region Singleton
+
+    private static LevelStatsAnnouncer _instance;
+    public static LevelStatsAnnouncer Instance { get { return _instance; } }
+
+    private void Awake()
+    {
+        Debug.Log(this.gameObject.name);
+
+        if (_instance != null && _instance != this)
+        {
+            Destroy(this.gameObject);
+        }
+        else
+        {
+            _instance = this;
+        }
+    }
+
+    #endregion
+
 
     // Start is called before the first frame update
     void Start()
@@ -12,7 +33,7 @@ public class LevelStatsAnnouncer : MonoBehaviour
         CustomerPatienceStats.UpdateStats();
     }
 
-    public static void MoveToNextLevel()
+    public void MoveToNextLevel()
     {
         LevelStats.Instance.UpdateLevel();
         CustomerPatienceStats.UpdateStats();

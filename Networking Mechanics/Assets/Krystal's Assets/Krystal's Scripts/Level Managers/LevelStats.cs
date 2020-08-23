@@ -14,6 +14,7 @@ public class LevelStats : NetworkBehaviour
 
     private void Awake()
     {
+        //DontDestroyOnLoad(this);
         Debug.Log(this.gameObject.name);
 
         if (_instance != null && _instance != this)
@@ -74,18 +75,12 @@ public class LevelStats : NetworkBehaviour
         oneStarScore_current = UpdatePassingScore();
     }
 
-    [Header("Evaluation")]
-    [SerializeField] private GameObject evaluationScreen;
-
-    //Spawn evaluation canvas
-    [ServerCallback]
-    public void ShowEvaluationScreen()
+    private void Update()
     {
-        GameObject spawnedEvaluationScreen = Instantiate(evaluationScreen, evaluationScreen.transform.position, evaluationScreen.transform.rotation);
-        spawnedEvaluationScreen.GetComponent<LevelEvaluation>().UpdateEvaluationValues();
-        NetworkServer.Spawn(spawnedEvaluationScreen);
-
+        Debug.Log("One star current " + oneStarScore_current);
     }
+
+    
 
     //updates level number, the minimum score required to pass, and the highest level they've reached.
     public void UpdateLevel()
@@ -93,6 +88,7 @@ public class LevelStats : NetworkBehaviour
         level++;
 
         oneStarScore_current = UpdatePassingScore();
+        Debug.Log("One star score current " + oneStarScore_current);
 
         if (level > highestLevel)
         {

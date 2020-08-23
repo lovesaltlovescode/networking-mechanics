@@ -26,6 +26,11 @@ public class TimerScript : NetworkBehaviour
         {
             TextFlash();
         }
+
+        if (LevelTimer.Instance.hasLevelEnded)
+        {
+            timerText.text = "CLOSED";
+        }
     }
 
     public void UpdateTime()

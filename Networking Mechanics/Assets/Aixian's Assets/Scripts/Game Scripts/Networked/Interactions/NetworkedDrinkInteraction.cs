@@ -23,10 +23,17 @@ public class NetworkedDrinkInteraction : NetworkBehaviour
     // Start is called before the first frame update
     void Start()
     {
-       
+        InitialiseFridge();
     }
 
+    [ServerCallback]
     public void InitialiseFridge()
+    {
+        RpcInitialiseFridge();
+    }
+
+    [ClientRpc]
+    public void RpcInitialiseFridge()
     {
         GameManager.Instance.cooldownImg.fillAmount = 1; //cooldown should be full 
         GameManager.Instance.cooldownImg.color = Color.white;

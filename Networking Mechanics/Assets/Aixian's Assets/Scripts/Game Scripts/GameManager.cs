@@ -89,6 +89,11 @@ public class GameManager : NetworkBehaviour
     [SerializeField] private Animator moodDecreaseAnim;
     [SerializeField] private TextMeshProUGUI moodDecreaseText;
 
+
+
+    [Header("Evaluation")]
+    [SerializeField] private GameObject evaluationScreen;
+
     #endregion
 
     private void Awake()
@@ -125,6 +130,17 @@ public class GameManager : NetworkBehaviour
         LevelTimer.Instance.StartTimer();
     }
 
+    //Spawn evaluation canvas
+    [ServerCallback]
+    public void ShowEvaluationScreen()
+    {
+        GameObject spawnedEvaluationScreen = Instantiate(evaluationScreen, evaluationScreen.transform.position, evaluationScreen.transform.rotation);
+
+        NetworkServer.Spawn(spawnedEvaluationScreen);
+        spawnedEvaluationScreen.GetComponent<LevelEvaluation>().UpdateEvaluationValues();
+
+    }
+
     #region Reset Level
 
 
@@ -145,7 +161,6 @@ public class GameManager : NetworkBehaviour
         ResetDrinks();
         ResetDishes();
 
-        serverScoreText.text = "0";
         LevelTimer.Instance.StartTimer();
 
     }
@@ -153,7 +168,7 @@ public class GameManager : NetworkBehaviour
     [ClientRpc]
     public void RpcResetLevel()
     {
-
+        serverScoreText.text = "0";
         moodIndicator.value = 50;
         currentShopMood = 50;
     }
@@ -245,6 +260,11 @@ public class GameManager : NetworkBehaviour
         if (Input.GetKeyDown(KeyCode.D))
         {
             DecreaseMood(3);
+        }
+
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            AddServerScore(100);
         }
 
 

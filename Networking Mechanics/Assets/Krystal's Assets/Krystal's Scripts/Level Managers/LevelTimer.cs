@@ -200,11 +200,11 @@ public class LevelTimer : NetworkBehaviour
             PauseTimer(true);
         }
 
-        timerText.text = "CLOSED";
+        //timerText.text = "CLOSED";
 
         //evaluate player scores
         //call the ui manager, which should have the evaluation screen method. then, pass the following methods into it
-        LevelStats.Instance.ShowEvaluationScreen();
+        GameManager.Instance.ShowEvaluationScreen();
         //Evaluation_OverallPlayerPerformance.EvaluateScore(Evaluation_OverallPlayerPerformance.CalculateOverallScore());
 
     }

@@ -59,23 +59,19 @@ public class LevelEvaluation : NetworkBehaviour
 
     }
 
-    private void Awake()
-    {
-        oneStarScore.text = LevelStats.Instance.oneStarScore_current.ToString();
-        twoStarsScore.text = LevelStats.Instance.twoStarScore_current.ToString();
-        threeStarsScore.text = LevelStats.Instance.threeStarScore_current.ToString();
-    }
 
     private void Start()
     {
-        UpdateEvaluationValues();
+        //UpdateEvaluationValues();
     }
 
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.X))
         {
-            UpdateEvaluationValues();
+            //UpdateEvaluationValues();
+
+            //LevelStatsAnnouncer.Instance.MoveToNextLevel();
         }
     }
 
@@ -90,6 +86,8 @@ public class LevelEvaluation : NetworkBehaviour
     [ClientRpc]
     public void RpcUpdateEvaluationValues()
     {
+        UpdateStarRequirements();
+
         levelNumber.text = LevelStats.Instance.level.ToString();
 
         Evaluation_OverallPlayerPerformance.Instance.CalculateOverallScore();
@@ -105,6 +103,14 @@ public class LevelEvaluation : NetworkBehaviour
 
         starsAttained.text = Mathf.RoundToInt(Evaluation_OverallPlayerPerformance.Instance.EvaluateScore(calculatedOverallScore)).ToString() + "Stars";
         CalculateStars();
+    }
+
+    public void UpdateStarRequirements()
+    {
+        oneStarScore.text = LevelStats.Instance.oneStarScore_current.ToString();
+        Debug.Log("Update current one star " + LevelStats.Instance.oneStarScore_current);
+        twoStarsScore.text = LevelStats.Instance.twoStarScore_current.ToString();
+        threeStarsScore.text = LevelStats.Instance.threeStarScore_current.ToString();
     }
 
     public void DisplayServerStars()
@@ -156,12 +162,15 @@ public class LevelEvaluation : NetworkBehaviour
     public void NextLevel()
     {
         Debug.Log("Next level");
-        
-        NetworkGameManager.ServerChangeScene(gameScene);
-        NetworkGameManager.OnServerSceneChanged(gameScene);
 
-        LevelStatsAnnouncer.MoveToNextLevel();
+        //NetworkGameManager.ServerChangeScene(gameScene);
+        //NetworkGameManager.OnServerSceneChanged(gameScene);
+
         ResetLevel();
+
+        LevelStatsAnnouncer.Instance.MoveToNextLevel();
+        Debug.Log("Move to next level one star " + LevelStats.Instance.oneStarScore_current);
+
     }
 
     //retry level
@@ -169,8 +178,8 @@ public class LevelEvaluation : NetworkBehaviour
     {
         Debug.Log("Retry level");
 
-        NetworkGameManager.ServerChangeScene(gameScene);
-        NetworkGameManager.OnServerSceneChanged(gameScene);
+        //NetworkGameManager.ServerChangeScene(gameScene);
+        //NetworkGameManager.OnServerSceneChanged(gameScene);
         ResetLevel();
     }
 
@@ -182,12 +191,14 @@ public class LevelEvaluation : NetworkBehaviour
         Evaluation_OverallPlayerPerformance.Instance.ResetAllScores();
 
         LevelTimer.Instance.levelStarted = true;
-        //NetworkServer.Destroy(this.gameObject);
+        NetworkServer.Destroy(this.gameObject);
     }
 
     [ClientRpc]
-    public void RpcResetLevel()
+    public void RpcNextLevel()
     {
+        LevelStatsAnnouncer.Instance.MoveToNextLevel();
+        Debug.Log("Move to next level one star " + LevelStats.Instance.oneStarScore_current);
     }
 
 }

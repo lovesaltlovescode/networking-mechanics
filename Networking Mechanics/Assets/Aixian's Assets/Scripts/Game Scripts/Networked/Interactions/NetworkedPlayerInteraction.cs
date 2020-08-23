@@ -351,6 +351,12 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
 
     }
 
+    public void ResetPlayer()
+    {
+        CmdChangeHeldItem(HeldItem.nothing);
+        ChangePlayerState(PlayerState.Default);
+    }
+
     [ServerCallback]
     public GameObject ServerSpawnObject(Vector3 pos, Quaternion rot, HeldItem itemToSpawn, string layerName)
     {
@@ -417,6 +423,10 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
             return;
         }
 
+        if (LevelTimer.Instance.hasLevelEnded)
+        {
+            ResetPlayer();
+        }
 
         if (!playerInventory && attachmentPoint.transform.childCount > 0)
         {
