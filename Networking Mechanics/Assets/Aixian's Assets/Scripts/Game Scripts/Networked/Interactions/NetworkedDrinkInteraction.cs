@@ -23,8 +23,13 @@ public class NetworkedDrinkInteraction : NetworkBehaviour
     // Start is called before the first frame update
     void Start()
     {
-       GameManager.Instance.cooldownImg.fillAmount = 1; //cooldown should be full 
-       GameManager.Instance.cooldownImg.color = Color.white;
+       
+    }
+
+    public void InitialiseFridge()
+    {
+        GameManager.Instance.cooldownImg.fillAmount = 1; //cooldown should be full 
+        GameManager.Instance.cooldownImg.color = Color.white;
     }
 
     #region Methods to Detect
@@ -62,6 +67,10 @@ public class NetworkedDrinkInteraction : NetworkBehaviour
             return;
         }
 
+        if (LevelTimer.Instance.hasLevelEnded)
+        {
+            InitialiseFridge();
+        }
 
         //detect fridge
         //networkedPlayerInteraction.DetectObjectLookingAt(networkedPlayerInteraction.detectedObject, 21, DetectFridge);

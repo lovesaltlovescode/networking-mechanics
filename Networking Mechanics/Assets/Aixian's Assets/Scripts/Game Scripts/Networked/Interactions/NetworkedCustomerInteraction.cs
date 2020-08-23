@@ -113,7 +113,7 @@ public class NetworkedCustomerInteraction : NetworkBehaviour
     public void ToggleWaitAreaAndTableDetection(bool setDetectable)
     {
         //toggle table detection
-        TableColliderManager.ToggleTableDetection(setDetectable);
+        TableColliderManager.Instance.ToggleTableDetection(setDetectable);
 
         //toggle wait area detection
         CustomerWaitAreaManager.ToggleWaitAreaDetection(setDetectable);

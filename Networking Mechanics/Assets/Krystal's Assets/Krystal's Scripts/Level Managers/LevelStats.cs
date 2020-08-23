@@ -73,6 +73,7 @@ public class LevelStats : NetworkBehaviour
     public void ShowEvaluationScreen()
     {
         GameObject spawnedEvaluationScreen = Instantiate(evaluationScreen, evaluationScreen.transform.position, evaluationScreen.transform.rotation);
+        spawnedEvaluationScreen.GetComponent<LevelEvaluation>().UpdateEvaluationValues();
         NetworkServer.Spawn(spawnedEvaluationScreen);
 
     }

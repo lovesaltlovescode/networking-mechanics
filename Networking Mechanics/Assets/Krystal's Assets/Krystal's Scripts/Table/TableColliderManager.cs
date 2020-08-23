@@ -4,6 +4,28 @@ using UnityEngine;
 
 public class TableColliderManager : MonoBehaviour
 {
+
+    #region Singleton
+
+    private static TableColliderManager _instance;
+    public static TableColliderManager Instance { get { return _instance; } }
+
+    private void Awake()
+    {
+        Debug.Log(this.gameObject.name);
+
+        if (_instance != null && _instance != this)
+        {
+            Destroy(this.gameObject);
+        }
+        else
+        {
+            _instance = this;
+        }
+    }
+
+    #endregion
+
     #region Debug shortcut
     /*
     private void Update()
@@ -22,25 +44,26 @@ public class TableColliderManager : MonoBehaviour
     #endregion
 
 
-    private static List<GameObject> allTableColliders = new List<GameObject>();
-    private static string tableLayer = "Table", environmentLayer = "Environment";
+    [SerializeField] private List<GameObject> allTableColliders = new List<GameObject>();
+    private string tableLayer = "Table", environmentLayer = "Environment";
 
 
     //add current table to the list of tables in TableColliderManager script
-    public static void AddTableToTableColliderManager(GameObject table)
+    public void AddTableToTableColliderManager(GameObject table)
     {
         allTableColliders.Add(table);
         Debug.Log("Table? " + table.name);
     }
 
-    public static void ClearTableList()
+    
+    public void ClearTableList()
     {
         allTableColliders.Clear();
     }
 
 
     //switch the layers of all the tables 
-    public static void ToggleTableDetection(bool allowDetection)
+    public void ToggleTableDetection(bool allowDetection)
     {
         if (allowDetection)
         {
@@ -76,7 +99,7 @@ public class TableColliderManager : MonoBehaviour
         }
         else
         {
-            table.gameObject.layer = LayerMask.NameToLayer(environmentLayer);
+            table.gameObject.layer = LayerMask.NameToLayer(TableColliderManager.Instance.environmentLayer);
         }
 
     }

@@ -47,8 +47,12 @@ public class LevelTimer : NetworkBehaviour
         private set { timeLeft = value; }
     }
 
+    [SyncVar]
     public bool hasLevelEnded = false;
+
+    [SyncVar]
     public bool levelStarted = false;
+
     private bool isCoroutineRunning = false;
     private Coroutine timerCoroutine;
 

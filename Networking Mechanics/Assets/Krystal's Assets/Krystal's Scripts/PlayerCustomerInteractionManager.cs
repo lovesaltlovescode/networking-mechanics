@@ -32,7 +32,7 @@ public class PlayerCustomerInteractionManager : MonoBehaviour
         playerInventory.Add(customerGameobj);
 
         //allow tables to be detected
-        TableColliderManager.ToggleTableDetection(true);
+        TableColliderManager.Instance.ToggleTableDetection(true);
 
         PlayerInteractionManager.ChangePlayerState(PlayerInteractionManager.PlayerState.HoldingCustomer);
     }
@@ -64,7 +64,7 @@ public class PlayerCustomerInteractionManager : MonoBehaviour
             //Debug.Log("Enough seats for customers");
 
             //disallow tables from being detected
-            TableColliderManager.ToggleTableDetection(false);
+            TableColliderManager.Instance.ToggleTableDetection(false);
 
             //remove the customer from the inventory
             playerInventory.Remove(customerBeingHeld);

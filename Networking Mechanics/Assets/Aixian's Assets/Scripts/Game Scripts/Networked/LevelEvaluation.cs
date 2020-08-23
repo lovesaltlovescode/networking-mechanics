@@ -75,21 +75,14 @@ public class LevelEvaluation : NetworkBehaviour
     {
         if (Input.GetKeyDown(KeyCode.X))
         {
-
             UpdateEvaluationValues();
         }
     }
 
     #region Calculate and Update Values
 
-    [ServerCallback]
-    public void UpdateEvaluationValues()
-    {
-        RpcUpdateEvaluationValues();
-    }
 
-    [ClientRpc]
-    public void RpcUpdateEvaluationValues()
+    public void UpdateEvaluationValues()
     {
         levelNumber.text = LevelStats.Level.ToString();
 
@@ -170,8 +163,8 @@ public class LevelEvaluation : NetworkBehaviour
     {
         Debug.Log("Retry level");
 
-        //NetworkGameManager.ServerChangeScene(gameScene);
-        //NetworkGameManager.OnServerSceneChanged(gameScene);
+        NetworkGameManager.ServerChangeScene(gameScene);
+        NetworkGameManager.OnServerSceneChanged(gameScene);
         ResetLevel();
     }
 
@@ -179,11 +172,11 @@ public class LevelEvaluation : NetworkBehaviour
     {
         GameManager.Instance.ResetLevel();
 
-        //TableColliderManager.ClearTableList();
+        //TableColliderManager.Instance.ClearTableList();
         Evaluation_OverallPlayerPerformance.ResetAllScores();
 
         LevelTimer.Instance.levelStarted = true;
-        NetworkServer.Destroy(this.gameObject);
+        //NetworkServer.Destroy(this.gameObject);
     }
 
     [ClientRpc]

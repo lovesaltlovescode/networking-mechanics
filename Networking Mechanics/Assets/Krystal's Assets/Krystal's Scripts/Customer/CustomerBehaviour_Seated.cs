@@ -89,6 +89,14 @@ public class CustomerBehaviour_Seated : CustomerBehaviour
 
     }
 
+    private void Update()
+    {
+        if (LevelTimer.Instance.hasLevelEnded)
+        {
+            NetworkServer.Destroy(gameObject);
+            return;
+        }
+    }
 
     //generates and assigns an order to the customer
     //Local method, send command, 

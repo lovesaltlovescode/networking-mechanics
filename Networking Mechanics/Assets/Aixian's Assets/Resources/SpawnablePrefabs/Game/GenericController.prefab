@@ -227,7 +227,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 112
+  m_Constraints: 116
   m_CollisionDetection: 0
 --- !u!114 &8662618684159450209
 MonoBehaviour:
@@ -264,6 +264,8 @@ MonoBehaviour:
   controllerBody: {fileID: 8454290605964818736}
   moveForce: 8
   joystick: {fileID: 7920605301542410366}
+  playerStartPos: {x: 0, y: 0, z: 0}
+  playerStartRot: {x: 0, y: 0, z: 0, w: 0}
   UI: {fileID: 6021133091292874556}
 --- !u!136 &1422875891317161630
 CapsuleCollider:

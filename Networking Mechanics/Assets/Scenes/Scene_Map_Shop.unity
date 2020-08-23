@@ -11467,6 +11467,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: beb4e67d44a39b24d803abf4a72b9627, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  allTableColliders:
+  - {fileID: 1324333901}
+  - {fileID: 2103324177}
+  - {fileID: 169466944}
+  - {fileID: 188162160}
+  - {fileID: 1531288301}
+  - {fileID: 2047958777}
 --- !u!4 &1347085402
 Transform:
   m_ObjectHideFlags: 0
@@ -21975,7 +21982,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 1000
+  m_text: 0
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 33027a6e874eb7f4fa037e5943d032c0, type: 2}
   m_sharedMaterial: {fileID: -1441875983731720451, guid: 33027a6e874eb7f4fa037e5943d032c0,
@@ -22045,7 +22052,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: -133.03873, w: 11.740763}
   m_textInfo:
     textComponent: {fileID: 5257589612246529131}
-    characterCount: 4
+    characterCount: 1
     spriteCount: 0
     spaceCount: 0
     wordCount: 1

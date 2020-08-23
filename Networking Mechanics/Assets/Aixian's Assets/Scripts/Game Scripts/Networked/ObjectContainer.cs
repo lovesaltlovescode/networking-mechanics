@@ -160,6 +160,9 @@ public class ObjectContainer : NetworkBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (LevelTimer.Instance.hasLevelEnded)
+        {
+            NetworkServer.Destroy(gameObject);
+        }
     }
 }

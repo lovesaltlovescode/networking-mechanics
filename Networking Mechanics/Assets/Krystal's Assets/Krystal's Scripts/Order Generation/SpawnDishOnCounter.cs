@@ -49,7 +49,6 @@ public class SpawnDishOnCounter : NetworkBehaviour
     //    RpcSpawnDish(_indexNum, newDish);
     //}
 
-    //spawn a dirty dish in front of the customer
     [ServerCallback]
     public void ServerSpawnDish(int _indexNum, bool isRoasted, bool ricePlain, bool haveEgg)
     {

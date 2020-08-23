@@ -65,6 +65,12 @@ public class VR_OrderManagement : MonoBehaviour
 
     }
 
+    public void ClearOrderList()
+    {
+        currentlyDisplayedOrders.Clear();
+        hiddenOrders.Clear();
+    }
+
     public void SpawnOrderSlip(ChickenRice _chickenRiceOrder)
     {
         Debug.Log("Spawn Order slip called for " + _chickenRiceOrder.ChickenRiceLabel);

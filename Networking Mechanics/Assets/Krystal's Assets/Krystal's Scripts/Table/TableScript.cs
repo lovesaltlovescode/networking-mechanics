@@ -60,28 +60,46 @@ public class TableScript : NetworkBehaviour
     {
 
         //add current table to table collider manager list
-        TableColliderManager.AddTableToTableColliderManager(gameObject);
+        //TableColliderManager.Instance.AddTableToTableColliderManager(gameObject);
     }
 
 
     void Start()
     {
         ResetTables();
-
     }
 
+    [ServerCallback]
     public void ResetTables()
     {
+        RpcResetTables();
+    }
+
+    [ClientRpc]
+    public void RpcResetTables()
+    {
+
         //clear the customer and orders lists
         customersSeated.Clear();
         customersAtTable = 0;
         tableOrders.Clear();
         dirtyDishes.Clear(); //-------------------------------------change here
 
+        TableColliderManager.ToggleTableDetection(false, gameObject);
+        VR_OrderManagement.Instance.ClearOrderList();
+
         //update the number of seats the table has
         numSeats = seatPositions.Count;
     }
 
+    public void Update()
+    {
+        if (LevelTimer.Instance.hasLevelEnded)
+        {
+            ResetTables();
+            return;
+        }
+    }
 
     //-------------------------------------------------------- METHODS RELATED TO CUSTOMERS INTERACTING WITH TABLE AND SEATS
     //check number of customers
