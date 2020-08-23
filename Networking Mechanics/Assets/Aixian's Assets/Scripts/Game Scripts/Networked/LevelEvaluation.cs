@@ -35,7 +35,7 @@ public class LevelEvaluation : NetworkBehaviour
 
     [Header("Buttons")]
     [SerializeField] GameObject nextLevel;
-    //[SerializeField] GameObject retryLevel;
+    [SerializeField] GameObject retryLevel;
     //[Scene] [SerializeField] private string gameScene = string.Empty;
 
     #endregion
@@ -59,20 +59,23 @@ public class LevelEvaluation : NetworkBehaviour
 
     }
 
+    private void Awake()
+    {
+
+    }
 
     private void Start()
     {
-        //UpdateEvaluationValues();
+        if (isServer)
+        {
+            retryLevel.SetActive(true);
+            nextLevel.SetActive(true);
+        }
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.X))
-        {
-            //UpdateEvaluationValues();
-
-            //LevelStatsAnnouncer.Instance.MoveToNextLevel();
-        }
+        
     }
 
     #region Calculate and Update Values
