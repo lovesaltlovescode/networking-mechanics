@@ -133,7 +133,7 @@ public class CustomerWaitArea : NetworkBehaviour
         //distance travelled by the customer
         float distTravelled = 0;
 
-        while (distTravelled < dist)
+        while (distTravelled < dist && !LevelTimer.Instance.hasLevelEnded)
         {
             distTravelled += desiredSpeed * Time.deltaTime;
 

@@ -2737,7 +2737,7 @@ MonoBehaviour:
   moodIncreaseText: {fileID: 2008633259}
   moodDecreaseAnim: {fileID: 1723036479}
   moodDecreaseText: {fileID: 1723036480}
-  evaluationScreen: {fileID: 1151624222864931435, guid: 181596259e510a549a874330fda58d07,
+  evaluationScreen: {fileID: 2284005435051130954, guid: f39d831e07427ab45b753ecc24d01e47,
     type: 3}
 --- !u!114 &248123283
 MonoBehaviour:
@@ -8328,7 +8328,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  debuggingMode: 0
+  debuggingMode: 1
   sphereVisualisation: {fileID: 0}
   spawnArea: {fileID: 949375540}
   waitingArea: {fileID: 1764966484}

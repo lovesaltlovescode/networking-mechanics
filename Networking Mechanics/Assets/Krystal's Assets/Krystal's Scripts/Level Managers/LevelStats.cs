@@ -82,7 +82,7 @@ public class LevelStats : NetworkBehaviour
 
     
 
-    //updates level number, the minimum score required to pass, and the highest level they've reached.
+    //updates level number, the minimum score required to pass, and the highest level they've reached.oneStarScore_base
     public void UpdateLevel()
     {
         level++;
@@ -100,7 +100,7 @@ public class LevelStats : NetworkBehaviour
     private float UpdatePassingScore()
     {
         float currentPassingScore = GameBalanceFormulae.increaseOneStarScore_formula(level);
-
+        Debug.Log("oneStarScore_current " + oneStarScore_current);
         twoStarScore_current = currentPassingScore * 2;
         threeStarScore_current = currentPassingScore * 5;
 
@@ -291,8 +291,10 @@ public class GameBalanceFormulae
     public static float increaseOneStarScore_formula(float levelNum)
     {
         //float newOneStarScore = oneStarScore_base * levelNum;
-
+        Debug.Log("oneStarScore_current " + LevelStats.Instance.oneStarScore_current);
+        Debug.Log("oneStarScore_base " + oneStarScore_base);
         float newOneStarScore = oneStarScore_base * levelNum - ((levelNum - 1) / 2);
+        Debug.Log("newOneStarScore " + newOneStarScore);
 
         if (newOneStarScore <= OneStarScore_max)
         {

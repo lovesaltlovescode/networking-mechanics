@@ -354,7 +354,7 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
     public void ResetPlayer()
     {
         CmdChangeHeldItem(HeldItem.nothing);
-        ChangePlayerState(PlayerState.Default);
+        ChangePlayerState(PlayerState.Default, true);
     }
 
     [ServerCallback]
@@ -394,20 +394,24 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
     [Command]
     public void CmdHandsFull()
     {
-        if(!detectedObject || detectedObject && detectedObject.layer != LayerMask.NameToLayer("Ordering"))
+        if(detectedObject && detectedObject.layer != LayerMask.NameToLayer("Ordering"))
         {
+            Debug.Log("CMDHANDSFULL sh0uld n0t be sh0wing");
             return;
         }
-
+        Debug.Log("CMDHANDSFULL");
         RpcHandsFull();
     }
 
     [ClientRpc]
     public void RpcHandsFull()
     {
-        if (detectedObject.layer == LayerMask.NameToLayer("Ordering"))
+        Debug.Log("RPCHANDSFULL Hands are full");
+
+        if (detectedObject && detectedObject.layer == LayerMask.NameToLayer("Ordering"))
         {
             detectedObject.GetComponent<TableFeedback>().HandsFullFeedback();
+            Debug.Log("RPCHANDSFULL Hands are full, feedback?????");
             return;
         }
     }
@@ -426,6 +430,7 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
         if (LevelTimer.Instance.hasLevelEnded)
         {
             ResetPlayer();
+            return;
         }
 
         if (!playerInventory && attachmentPoint.transform.childCount > 0)

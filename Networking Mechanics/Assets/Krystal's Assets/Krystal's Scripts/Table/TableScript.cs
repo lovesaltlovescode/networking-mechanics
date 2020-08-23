@@ -87,6 +87,7 @@ public class TableScript : NetworkBehaviour
 
         TableColliderManager.Instance.ToggleTableDetection(false);
         VR_OrderManagement.Instance.ClearOrderList();
+        tableFeedbackScript.ToggleOrderIcon(false);
 
         //update the number of seats the table has
         numSeats = seatPositions.Count;

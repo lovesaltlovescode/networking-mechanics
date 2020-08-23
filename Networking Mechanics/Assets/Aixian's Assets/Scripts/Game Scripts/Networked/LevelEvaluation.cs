@@ -36,7 +36,7 @@ public class LevelEvaluation : NetworkBehaviour
     [Header("Buttons")]
     [SerializeField] GameObject nextLevel;
     //[SerializeField] GameObject retryLevel;
-    [Scene] [SerializeField] private string gameScene = string.Empty;
+    //[Scene] [SerializeField] private string gameScene = string.Empty;
 
     #endregion
 
@@ -95,13 +95,13 @@ public class LevelEvaluation : NetworkBehaviour
         float calculatedOverallScore = Mathf.RoundToInt(Evaluation_OverallPlayerPerformance.Instance.overallScore);
         totalScore.text = Mathf.RoundToInt(Evaluation_OverallPlayerPerformance.Instance.overallScore).ToString();
 
-        serversPerformance.text = Mathf.RoundToInt(Evaluation_CustomerService.Instance.CalculateCustomerServiceScore()).ToString() + "%";
+        //serversPerformance.text = Mathf.RoundToInt(Evaluation_CustomerService.Instance.CalculateCustomerServiceScore()).ToString() + "%";
         DisplayServerStars();
 
         customersServed.text = Evaluation_CustomerService.Instance.numCustomersServed.ToString();
         customersLost.text = Evaluation_CustomerService.Instance.numCustomersLost.ToString();
 
-        starsAttained.text = Mathf.RoundToInt(Evaluation_OverallPlayerPerformance.Instance.EvaluateScore(calculatedOverallScore)).ToString() + "Stars";
+        //starsAttained.text = Mathf.RoundToInt(Evaluation_OverallPlayerPerformance.Instance.EvaluateScore(calculatedOverallScore)).ToString() + "Stars";
         CalculateStars();
     }
 
@@ -118,7 +118,7 @@ public class LevelEvaluation : NetworkBehaviour
         float serversPerformance = Evaluation_CustomerService.Instance.CalculateCustomerServiceScore();
         serversPerformance = Mathf.Round(serversPerformance * 10.0f) * 0.1f;
 
-        Debug.Log("Servers performance decimal" + serversPerformance);
+        //Debug.Log("Servers performance decimal" + serversPerformance);
         serverStars.fillAmount = serversPerformance;
     }
 
@@ -169,7 +169,7 @@ public class LevelEvaluation : NetworkBehaviour
         ResetLevel();
 
         LevelStatsAnnouncer.Instance.MoveToNextLevel();
-        Debug.Log("Move to next level one star " + LevelStats.Instance.oneStarScore_current);
+        //Debug.Log("Move to next level one star " + LevelStats.Instance.oneStarScore_current);
 
     }
 
@@ -194,11 +194,11 @@ public class LevelEvaluation : NetworkBehaviour
         NetworkServer.Destroy(this.gameObject);
     }
 
-    [ClientRpc]
-    public void RpcNextLevel()
-    {
-        LevelStatsAnnouncer.Instance.MoveToNextLevel();
-        Debug.Log("Move to next level one star " + LevelStats.Instance.oneStarScore_current);
-    }
+    //[ClientRpc]
+    //public void RpcNextLevel()
+    //{
+    //    LevelStatsAnnouncer.Instance.MoveToNextLevel();
+    //    //Debug.Log("Move to next level one star " + LevelStats.Instance.oneStarScore_current);
+    //}
 
 }
