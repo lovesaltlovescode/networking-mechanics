@@ -14,7 +14,7 @@ public class LevelStatsAnnouncer : MonoBehaviour
 
     public static void MoveToNextLevel()
     {
-        LevelStats.UpdateLevel();
+        LevelStats.Instance.UpdateLevel();
         CustomerPatienceStats.UpdateStats();
     }
 

@@ -91,7 +91,7 @@ public class TableColliderManager : MonoBehaviour
     }
 
     //switch the layers of a single table
-    public static void ToggleTableDetection(bool allowDetection, GameObject table, string _layerName = "Table")
+    public void ToggleTableDetection(bool allowDetection, GameObject table, string _layerName = "Table")
     {
         if (allowDetection)
         {
@@ -99,7 +99,7 @@ public class TableColliderManager : MonoBehaviour
         }
         else
         {
-            table.gameObject.layer = LayerMask.NameToLayer(TableColliderManager.Instance.environmentLayer);
+            table.gameObject.layer = LayerMask.NameToLayer(environmentLayer);
         }
 
     }

@@ -64,7 +64,7 @@ public class CustomerBehaviour : NetworkBehaviour
     {
         if (LevelTimer.Instance.hasLevelEnded)
         {
-            CustomerPatienceScript.StopPatienceMeter();
+            GetComponent<CustomerPatience>().StopPatienceMeter();
         }
     }
 

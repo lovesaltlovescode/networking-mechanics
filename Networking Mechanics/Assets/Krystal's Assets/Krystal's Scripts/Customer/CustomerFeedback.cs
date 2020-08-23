@@ -62,8 +62,8 @@ public class CustomerFeedback : MonoBehaviour
                     break;
             }
 
-            GameManager.Instance.IncrementMood(5, true);
-            Evaluation_CustomerService.UpdateNumCustomersServed(1, true);
+            GameManager.Instance.DecreaseMood(5);
+            Evaluation_CustomerService.Instance.UpdateNumCustomersServed(1, true);
         }
     }
 
@@ -80,7 +80,7 @@ public class CustomerFeedback : MonoBehaviour
         {
             StartCoroutine(FadeInFadeOutText(wrongOrder, redText));
             GameManager.Instance.ReduceServerScore(20);
-            GameManager.Instance.IncrementMood(5, true);
+            GameManager.Instance.DecreaseMood(5);
         }
     }
 
@@ -94,13 +94,13 @@ public class CustomerFeedback : MonoBehaviour
             {
                 StartCoroutine(FadeInFadeOutText(gain40Points, greenText, true));
                 GameManager.Instance.AddServerScore(40);
-                GameManager.Instance.IncrementMood(5);
+                GameManager.Instance.IncreaseMood(5);
             }
             else if (customerPatienceScript.customerMood == CurrentCustomerMood.customerImpatient)
             {
                 StartCoroutine(FadeInFadeOutText(gain20Points, greenText, true));
                 GameManager.Instance.AddServerScore(20);
-                GameManager.Instance.IncrementMood(2);
+                GameManager.Instance.IncreaseMood(2);
             }
             else if (customerPatienceScript.customerMood == CurrentCustomerMood.customerAngry)
             {
@@ -108,7 +108,7 @@ public class CustomerFeedback : MonoBehaviour
                 GameManager.Instance.AddServerScore(10);
             }
 
-            Evaluation_OverallPlayerPerformance.UpdateMaxCustomerServiceScore(40);
+            Evaluation_OverallPlayerPerformance.Instance.UpdateMaxCustomerServiceScore(40);
         }
     }
 

@@ -61,9 +61,9 @@ public class LevelEvaluation : NetworkBehaviour
 
     private void Awake()
     {
-        oneStarScore.text = LevelStats.OneStarScore_current.ToString();
-        twoStarsScore.text = LevelStats.TwoStarScore_current.ToString();
-        threeStarsScore.text = LevelStats.ThreeStarScore_current.ToString();
+        oneStarScore.text = LevelStats.Instance.oneStarScore_current.ToString();
+        twoStarsScore.text = LevelStats.Instance.twoStarScore_current.ToString();
+        threeStarsScore.text = LevelStats.Instance.threeStarScore_current.ToString();
     }
 
     private void Start()
@@ -81,29 +81,35 @@ public class LevelEvaluation : NetworkBehaviour
 
     #region Calculate and Update Values
 
-
+    [ServerCallback]
     public void UpdateEvaluationValues()
     {
-        levelNumber.text = LevelStats.Level.ToString();
+        RpcUpdateEvaluationValues();
+    }
 
-        Evaluation_OverallPlayerPerformance.CalculateOverallScore();
+    [ClientRpc]
+    public void RpcUpdateEvaluationValues()
+    {
+        levelNumber.text = LevelStats.Instance.level.ToString();
 
-        float overallScore = Mathf.RoundToInt(Evaluation_OverallPlayerPerformance.OverallScore);
-        totalScore.text = Mathf.RoundToInt(Evaluation_OverallPlayerPerformance.OverallScore).ToString();
+        Evaluation_OverallPlayerPerformance.Instance.CalculateOverallScore();
 
-        serversPerformance.text = Mathf.RoundToInt(Evaluation_CustomerService.CalculateCustomerServiceScore()).ToString() + "%";
+        float calculatedOverallScore = Mathf.RoundToInt(Evaluation_OverallPlayerPerformance.Instance.overallScore);
+        totalScore.text = Mathf.RoundToInt(Evaluation_OverallPlayerPerformance.Instance.overallScore).ToString();
+
+        serversPerformance.text = Mathf.RoundToInt(Evaluation_CustomerService.Instance.CalculateCustomerServiceScore()).ToString() + "%";
         DisplayServerStars();
 
-        customersServed.text = Evaluation_CustomerService.NumCustomersServed.ToString();
-        customersLost.text = Evaluation_CustomerService.NumCustomersLost.ToString();
+        customersServed.text = Evaluation_CustomerService.Instance.numCustomersServed.ToString();
+        customersLost.text = Evaluation_CustomerService.Instance.numCustomersLost.ToString();
 
-        starsAttained.text = Mathf.RoundToInt(Evaluation_OverallPlayerPerformance.EvaluateScore(overallScore)).ToString() + "Stars";
+        starsAttained.text = Mathf.RoundToInt(Evaluation_OverallPlayerPerformance.Instance.EvaluateScore(calculatedOverallScore)).ToString() + "Stars";
         CalculateStars();
     }
 
     public void DisplayServerStars()
     {
-        float serversPerformance = Evaluation_CustomerService.CalculateCustomerServiceScore();
+        float serversPerformance = Evaluation_CustomerService.Instance.CalculateCustomerServiceScore();
         serversPerformance = Mathf.Round(serversPerformance * 10.0f) * 0.1f;
 
         Debug.Log("Servers performance decimal" + serversPerformance);
@@ -112,8 +118,8 @@ public class LevelEvaluation : NetworkBehaviour
 
     public void CalculateStars()
     {
-        float overallScore = Mathf.RoundToInt(Evaluation_OverallPlayerPerformance.OverallScore);
-        int starsAttained = Evaluation_OverallPlayerPerformance.EvaluateScore(overallScore);
+        float calculatedOverallScore = Mathf.RoundToInt(Evaluation_OverallPlayerPerformance.Instance.overallScore);
+        int starsAttained = Evaluation_OverallPlayerPerformance.Instance.EvaluateScore(calculatedOverallScore);
 
         switch (starsAttained)
         {
@@ -173,7 +179,7 @@ public class LevelEvaluation : NetworkBehaviour
         GameManager.Instance.ResetLevel();
 
         //TableColliderManager.Instance.ClearTableList();
-        Evaluation_OverallPlayerPerformance.ResetAllScores();
+        Evaluation_OverallPlayerPerformance.Instance.ResetAllScores();
 
         LevelTimer.Instance.levelStarted = true;
         //NetworkServer.Destroy(this.gameObject);

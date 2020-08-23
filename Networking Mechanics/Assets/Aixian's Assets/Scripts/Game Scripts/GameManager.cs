@@ -107,7 +107,7 @@ public class GameManager : NetworkBehaviour
 
     private void Start()
     {
-        //StartLevel();
+        StartLevel();
     }
 
     public void StartLevel()
@@ -140,15 +140,22 @@ public class GameManager : NetworkBehaviour
 
         timeSinceLastSpawn = 0f;
         currentNumWaitingCustomers = 0f;
+        RpcResetLevel();
         ResetPlates();
         ResetDrinks();
         ResetDishes();
 
         serverScoreText.text = "0";
-        moodIndicator.value = 50;
-        currentShopMood = 50;
         LevelTimer.Instance.StartTimer();
 
+    }
+
+    [ClientRpc]
+    public void RpcResetLevel()
+    {
+
+        moodIndicator.value = 50;
+        currentShopMood = 50;
     }
 
     public void ResetPlates()
@@ -192,7 +199,7 @@ public class GameManager : NetworkBehaviour
     [ServerCallback]
     public void AddServerScore(float score)
     {
-        float updatedServerScore = Evaluation_OverallPlayerPerformance.UpdateCustomerServiceScore(score);
+        float updatedServerScore = Evaluation_OverallPlayerPerformance.Instance.UpdateCustomerServiceScore(score);
         RpcAddServerScore(score, updatedServerScore);
     }
 
@@ -201,7 +208,7 @@ public class GameManager : NetworkBehaviour
     [Command]
     public void CmdAddServerScore(float score)
     {
-        float updatedServerScore = Evaluation_OverallPlayerPerformance.UpdateCustomerServiceScore(score);
+        float updatedServerScore = Evaluation_OverallPlayerPerformance.Instance.UpdateCustomerServiceScore(score);
         RpcAddServerScore(score, updatedServerScore);
     }
 
@@ -215,7 +222,7 @@ public class GameManager : NetworkBehaviour
     [ServerCallback]
     public void ReduceServerScore(float score)
     {
-        float updatedServerScore = Evaluation_OverallPlayerPerformance.UpdateCustomerServiceScore(score, true);
+        float updatedServerScore = Evaluation_OverallPlayerPerformance.Instance.UpdateCustomerServiceScore(score, true);
         RpcReduceServerScore(score, updatedServerScore);   
     }
 
@@ -228,103 +235,105 @@ public class GameManager : NetworkBehaviour
 
     #endregion
 
-    //public void Update()
-    //{
-    //    if (Input.GetKeyDown(KeyCode.S))
-    //    {
-    //        IncrementMood(5);
-    //    }
+    public void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            IncreaseMood(4);
+        }
 
-    //    if (Input.GetKeyDown(KeyCode.D))
-    //    {
-    //        IncrementMood(5, true);
-    //    }
-        
-    //}
+        if (Input.GetKeyDown(KeyCode.D))
+        {
+            DecreaseMood(3);
+        }
+
+
+    }
 
     //decrease = true if mood decrease
 
     [ServerCallback]
-    public void IncrementMood(float value, bool decrease = false)
+    //decrease = true if mood decrease
+    public void IncreaseMood(float value)
     {
-        if (decrease)
+        float testMood = currentShopMood;
+        float updatedShopMood = testMood += value;
+
+        if (updatedShopMood > 100 || currentShopMood == 100)
         {
-            float updatedShopMood = currentShopMood -= value;
-
-            //dont allow mood to decrease below 0
-            if (updatedShopMood < 0 || currentShopMood <= 0)
-            {
-                return;
-            }
-            else
-            {
-                RpcDecreaseMood(updatedShopMood, value);
-            }
-        }
-        else
-        {
-            float updatedShopMood = currentShopMood += value;
-
-            //dont allow mood to increase above 100
-            if (updatedShopMood > 100 || currentShopMood >= 100)
-            {
-                return;
-            }
-            else
-            {
-                RpcIncreaseMood(updatedShopMood, value);
-            }
-            
-        }
-        
-        currentShopMood = Mathf.RoundToInt(moodIndicator.value);
-
-        //Debug.Log("Current shop mood " + currentShopMood);
-
-    }
-
-    [Command]
-    public void CmdIncrementMood(float value)
-    {
-        float updatedShopMood = currentShopMood += value;
-
-        //dont allow mood to increase above 100
-        if (updatedShopMood > 100 || currentShopMood >= 100)
-        {
+            currentShopMood = 100;
+            //moodIndicator.value = currentShopMood;
+            RpcUpdateMoodIndicator(currentShopMood);
             return;
         }
         else
         {
-            RpcIncreaseMood(updatedShopMood, value);
+            RpcIncreaseMood(value);
+            //currentShopMood += value;
+            //moodIndicator.value = currentShopMood;
+            //Debug.Log("Current shop mood is " + currentShopMood);
+            //RpcIncreaseMood(value, true);
+            //currentShopMood = Mathf.RoundToInt(moodIndicator.value);
         }
 
-        currentShopMood = Mathf.RoundToInt(moodIndicator.value);
-
-        //Debug.Log("Current shop mood " + currentShopMood);
 
     }
 
-    [ClientRpc]
-    public void RpcDecreaseMood(float updatedShopMood, float value)
+    [ServerCallback]
+    public void DecreaseMood(float value)
     {
-        if (updatedShopMood > moodIndicator.minValue)
-        {
-            moodIndicator.value = updatedShopMood;
-        }
+        float testMood = currentShopMood;
+        float updatedShopMood = testMood -= value;
 
-        StartCoroutine(FadeInFadeOutText("-" + value, moodDecreaseText));
+        if (testMood < 0 || currentShopMood == 0)
+        {
+            currentShopMood = 0;
+            //moodIndicator.value = currentShopMood;
+            RpcUpdateMoodIndicator(currentShopMood);
+            return;
+        }
+        else
+        {
+            RpcDecreaseMood(value);
+            //currentShopMood -= value;
+            //moodIndicator.value = currentShopMood;
+            //Debug.Log("Current shop mood is " + currentShopMood);
+            //RpcDecreaseMood(value, true);
+            //currentShopMood = Mathf.RoundToInt(moodIndicator.value);
+
+        }
     }
 
     [ClientRpc]
-    public void RpcIncreaseMood(float updatedShopMood, float value)
+    public void RpcUpdateMoodIndicator(float value)
     {
-        //StartMoveMoodIndicator(value);
-        if (updatedShopMood < moodIndicator.maxValue)
-        {
-            moodIndicator.value = updatedShopMood;
-        }
+        moodIndicator.value = value;
+    }
+
+    [ClientRpc]
+    public void RpcIncreaseMood(float value)
+    {
+        currentShopMood += value;
+        moodIndicator.value = currentShopMood;
         StartCoroutine(FadeInFadeOutText("+" + value, moodIncreaseText, true));
+        // currentShopMood = Mathf.RoundToInt(moodIndicator.value);
+        Debug.Log("Current shop mood " + currentShopMood);
+        
     }
+
+    [ClientRpc]
+    public void RpcDecreaseMood(float value)
+    {
+    
+        currentShopMood -= value;
+        moodIndicator.value = currentShopMood;
+        StartCoroutine(FadeInFadeOutText("-" + value, moodDecreaseText));
+        Debug.Log("Current shop mood " + currentShopMood);
+    }
+
+
+
+
 
     //public void StartMoveMoodIndicator(float value, bool decrease = false)
     //{
@@ -390,7 +399,7 @@ public class GameManager : NetworkBehaviour
 
                 //Debug.Log("fade in clip length: " + wordAnim.GetCurrentAnimatorStateInfo(0).length);
 
-                yield return new WaitForSeconds(0.4f);
+                yield return new WaitForSeconds(0.6f);
             }
             else
             {
@@ -401,7 +410,7 @@ public class GameManager : NetworkBehaviour
 
                 //Debug.Log("fade in clip length: " + wordAnim.GetCurrentAnimatorStateInfo(0).length);
 
-                yield return new WaitForSeconds(0.4f);
+                yield return new WaitForSeconds(0.6f);
             }
 
 

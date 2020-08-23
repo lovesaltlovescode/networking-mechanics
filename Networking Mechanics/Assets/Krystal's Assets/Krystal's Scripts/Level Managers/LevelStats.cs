@@ -29,44 +29,53 @@ public class LevelStats : NetworkBehaviour
     #endregion
 
     //private fields
-    private static int level = 1;
-    private static int highestLevel = 1;
+    [SyncVar]
+    public int level = 1;
 
-    private static float oneStarScore_current = UpdatePassingScore(),
+    [SyncVar]
+    public int highestLevel = 1;
+
+    [SyncVar]
+    public float oneStarScore_current,
         twoStarScore_current, threeStarScore_current;
 
-    #region Getters and Setters
-    public static int Level
+    //#region Getters and Setters
+    //public static int Level
+    //{
+    //    get { return level; }
+    //    private set { level = value; }
+    //}
+    //public static int HighestLevel
+    //{
+    //    get { return highestLevel; }
+    //    private set { highestLevel = value; }
+    //}
+    //public static float OneStarScore_current
+    //{
+    //    get { return oneStarScore_current; }
+    //    private set { oneStarScore_current = value; }
+    //}
+    //public static float TwoStarScore_current
+    //{
+    //    get { return twoStarScore_current; }
+    //    private set { twoStarScore_current = value; }
+    //}
+    //public static float ThreeStarScore_current
+    //{
+    //    get { return threeStarScore_current; }
+    //    private set { threeStarScore_current = value; }
+    //}
+
+
+    //#endregion
+
+    private void Start()
     {
-        get { return level; }
-        private set { level = value; }
-    }
-    public static int HighestLevel
-    {
-        get { return highestLevel; }
-        private set { highestLevel = value; }
-    }
-    public static float OneStarScore_current
-    {
-        get { return oneStarScore_current; }
-        private set { oneStarScore_current = value; }
-    }
-    public static float TwoStarScore_current
-    {
-        get { return twoStarScore_current; }
-        private set { twoStarScore_current = value; }
-    }
-    public static float ThreeStarScore_current
-    {
-        get { return threeStarScore_current; }
-        private set { threeStarScore_current = value; }
+        oneStarScore_current = UpdatePassingScore();
     }
 
     [Header("Evaluation")]
     [SerializeField] private GameObject evaluationScreen;
-
-    #endregion
-
 
     //Spawn evaluation canvas
     [ServerCallback]
@@ -79,22 +88,22 @@ public class LevelStats : NetworkBehaviour
     }
 
     //updates level number, the minimum score required to pass, and the highest level they've reached.
-    public static void UpdateLevel()
+    public void UpdateLevel()
     {
-        Level++;
+        level++;
 
-        OneStarScore_current = UpdatePassingScore();
+        oneStarScore_current = UpdatePassingScore();
 
-        if (Level > HighestLevel)
+        if (level > highestLevel)
         {
-            HighestLevel = Level;
+            highestLevel = level;
         }
     }
 
     //updates the passing score and the higher achievements
-    private static float UpdatePassingScore()
+    private float UpdatePassingScore()
     {
-        float currentPassingScore = GameBalanceFormulae.increaseOneStarScore_formula(Level);
+        float currentPassingScore = GameBalanceFormulae.increaseOneStarScore_formula(level);
 
         twoStarScore_current = currentPassingScore * 2;
         threeStarScore_current = currentPassingScore * 5;
@@ -150,9 +159,9 @@ public class CustomerPatienceStats
 
     public static void UpdateStats()
     {
-        CustomerPatience_General = GameBalanceFormulae.customerPatience_formula_General(GameBalanceFormulae.customerPatience_base_General, LevelStats.Level);
-        CustomerPatience_Queue = GameBalanceFormulae.customerPatience_formula_General(GameBalanceFormulae.customerPatience_base_Queue, LevelStats.Level);
-        CustomerPatience_TakeOrder = GameBalanceFormulae.customerPatience_formula_General(GameBalanceFormulae.customerPatience_base_TakeOrder, LevelStats.Level);
+        CustomerPatience_General = GameBalanceFormulae.customerPatience_formula_General(GameBalanceFormulae.customerPatience_base_General, LevelStats.Instance.level);
+        CustomerPatience_Queue = GameBalanceFormulae.customerPatience_formula_General(GameBalanceFormulae.customerPatience_base_Queue, LevelStats.Instance.level);
+        CustomerPatience_TakeOrder = GameBalanceFormulae.customerPatience_formula_General(GameBalanceFormulae.customerPatience_base_TakeOrder, LevelStats.Instance.level);
         //customerPatience_FoodWait = GameBalanceFormulae.customerPatience_formula_General(GameBalanceFormulae.customerPatience_base_FoodWait, LevelStats.Level);
     }
 

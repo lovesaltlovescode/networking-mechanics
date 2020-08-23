@@ -364,6 +364,7 @@ public class CustomerBehaviour_Seated : CustomerBehaviour
         }
 
         tableSeatedAt.GetComponent<CustomerPatience>().ResetCustomerPatience();
+        TableColliderManager.Instance.ToggleTableDetection(false);
         CustomerAnimScript.LeaveAnim();
         Destroy(this.gameObject, 1f);
     }

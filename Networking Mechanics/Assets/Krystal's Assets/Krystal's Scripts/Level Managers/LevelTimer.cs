@@ -145,7 +145,7 @@ public class LevelTimer : NetworkBehaviour
 
     private void Update()
     {
-        if(Evaluation_CustomerService.NumCustomersLost >= 10)
+        if(Evaluation_CustomerService.Instance.numCustomersLost >= 10)
         {
             EndLevel();
         }

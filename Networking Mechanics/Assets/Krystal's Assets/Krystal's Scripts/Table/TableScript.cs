@@ -85,7 +85,7 @@ public class TableScript : NetworkBehaviour
         tableOrders.Clear();
         dirtyDishes.Clear(); //-------------------------------------change here
 
-        TableColliderManager.ToggleTableDetection(false, gameObject);
+        TableColliderManager.Instance.ToggleTableDetection(false);
         VR_OrderManagement.Instance.ClearOrderList();
 
         //update the number of seats the table has
@@ -241,7 +241,7 @@ public class TableScript : NetworkBehaviour
     public void RpcReadyToOrder()
     {
         //move the table collider to a separate layer
-        TableColliderManager.ToggleTableDetection(true, this.gameObject, takeOrderLayer);
+        TableColliderManager.Instance.ToggleTableDetection(true, this.gameObject, takeOrderLayer);
 
         //enable the UI
         tableFeedbackScript.ToggleOrderIcon(true);
@@ -291,7 +291,7 @@ public class TableScript : NetworkBehaviour
 
 
         //move the table collider back to the environment layer
-        TableColliderManager.ToggleTableDetection(false, this.gameObject);
+        TableColliderManager.Instance.ToggleTableDetection(false, this.gameObject);
     }
 
     //call this method when customer waits too long for their order
@@ -331,14 +331,16 @@ public class TableScript : NetworkBehaviour
         if (!isCustomerAngry)
         {
             tableFeedbackScript.SuccessfulCustomerService();
-            Evaluation_CustomerService.UpdateNumCustomersServed(customersAtTable);
-            GameManager.Instance.IncrementMood(5);
+            Evaluation_CustomerService.Instance.UpdateNumCustomersServed(customersAtTable);
+            GameManager.Instance.IncreaseMood(5);
         }
 
         //clear the lists
         customersSeated.Clear();
         customersAtTable = 0;
         tableOrders.Clear();
+
+        TableColliderManager.Instance.ToggleTableDetection(false, gameObject, "Table");
     }
 
 

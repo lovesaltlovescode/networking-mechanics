@@ -219,9 +219,9 @@ public class CustomerPatience : NetworkBehaviour
         while (true)
         {
 
-            GameManager.Instance.IncrementMood(1, true);
+            GameManager.Instance.DecreaseMood(1);
             GetComponent<CustomerFeedback>().PlayAngryPFX();
-            Debug.Log("Current shop mood " + GameManager.Instance.currentShopMood);
+            //Debug.Log("Current shop mood " + GameManager.Instance.currentShopMood);
 
             yield return new WaitForSeconds(5f);
         }
@@ -261,17 +261,17 @@ public class CustomerPatience : NetworkBehaviour
     {
         if (customerState == customerQueueing)
         {
-            Debug.Log("Customer is queueing");
+            //Debug.Log("Customer is queueing");
             CalculatePatiencePercentage();
         }
         else if (customerState == customerOrdering)
         {
-            Debug.Log("Customer is ordering");
+            //Debug.Log("Customer is ordering");
             CalculatePatiencePercentage(true);
         }
         else if (customerState == customerWaiting)
         {
-            Debug.Log("Customer is waiting for food");
+            //Debug.Log("Customer is waiting for food");
             CalculatePatiencePercentage(false, true);
         }
     }
@@ -288,7 +288,7 @@ public class CustomerPatience : NetworkBehaviour
         if (ordering)
         {
             float customerOrderingPatience = (currentPatience / CustomerPatienceStats.CustomerPatience_TakeOrder) * 100;
-            Debug.Log("Current ordering customer patience: " + customerOrderingPatience);
+            //Debug.Log("Current ordering customer patience: " + customerOrderingPatience);
 
             if (customerOrderingPatience >= 50 && customerOrderingPatience > 0)
             {
@@ -306,7 +306,7 @@ public class CustomerPatience : NetworkBehaviour
         else if (waitingForFood)
         {
             float customerWaitingPatience = (currentPatience / CustomerPatienceStats.CustomerPatience_FoodWait) * 100;
-            Debug.Log("Current waiting customer patience: " + customerWaitingPatience);
+            //Debug.Log("Current waiting customer patience: " + customerWaitingPatience);
 
             if (customerWaitingPatience >= 50 && customerWaitingPatience > 0)
             {
@@ -361,7 +361,7 @@ public class CustomerPatience : NetworkBehaviour
 
     public void CheckCurrentShopMood()
     {
-        Debug.Log("Current shop mood " + GameManager.Instance.currentShopMood);
+        //Debug.Log("Current shop mood " + GameManager.Instance.currentShopMood);
 
         if (GameManager.Instance.currentShopMood <= 25 || GameManager.Instance.currentShopMood == 0)
         {
@@ -374,7 +374,7 @@ public class CustomerPatience : NetworkBehaviour
                 reductionRate = 1f * 120 / 100;
             }
            
-            Debug.Log("120% reduction rate: " + reductionRate);
+            //Debug.Log("120% reduction rate: " + reductionRate);
         }
         else if (GameManager.Instance.currentShopMood > 25 && GameManager.Instance.currentShopMood < 50)
         {
@@ -387,7 +387,7 @@ public class CustomerPatience : NetworkBehaviour
                 reductionRate = 1f * 110 / 100;
             }
             
-            Debug.Log("110% reduction rate: " + reductionRate);
+            //Debug.Log("110% reduction rate: " + reductionRate);
         }
         else if (GameManager.Instance.currentShopMood == 50)
         {
@@ -400,7 +400,7 @@ public class CustomerPatience : NetworkBehaviour
                 reductionRate = 1f;
             }
             
-            Debug.Log("100% reduction rate: " + reductionRate);
+            //Debug.Log("100% reduction rate: " + reductionRate);
         }
         else if (GameManager.Instance.currentShopMood > 50 && GameManager.Instance.currentShopMood < 75)
         {
@@ -413,7 +413,7 @@ public class CustomerPatience : NetworkBehaviour
                 reductionRate = 1f * 90 / 100;
             }
             
-            Debug.Log("90% reduction rate: " + reductionRate);
+            //Debug.Log("90% reduction rate: " + reductionRate);
         }
         else if (GameManager.Instance.currentShopMood >= 75 || GameManager.Instance.currentShopMood == 100)
         {
@@ -427,7 +427,7 @@ public class CustomerPatience : NetworkBehaviour
                 reductionRate = 1f * 80 / 100;
             }
             
-            Debug.Log("80% reduction rate: " + reductionRate);
+            //Debug.Log("80% reduction rate: " + reductionRate);
         }
     }
 

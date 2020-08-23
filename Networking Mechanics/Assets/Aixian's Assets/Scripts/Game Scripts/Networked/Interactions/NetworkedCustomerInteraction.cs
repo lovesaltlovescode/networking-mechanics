@@ -287,23 +287,42 @@ public class NetworkedCustomerInteraction : NetworkBehaviour
 
         if (customerQueuedPatience >= 50 && customerQueuedPatience > 0)
         {
-            detectedObject.GetComponent<TableFeedback>().CustomerSeated(gain20Points);
+            RpcShowScoreFeedback(detectedObject, 20);
             GameManager.Instance.AddServerScore(20);
-            GameManager.Instance.IncrementMood(5);
+            GameManager.Instance.IncreaseMood(5);
         }
         else if (customerQueuedPatience >= 30 && customerQueuedPatience < 50)
         {
-            detectedObject.GetComponent<TableFeedback>().CustomerSeated(gain10Points);
+            RpcShowScoreFeedback(detectedObject, 10);
             GameManager.Instance.AddServerScore(10);
-            GameManager.Instance.IncrementMood(2);
+            GameManager.Instance.IncreaseMood(2);
         }
         else if (customerQueuedPatience >= 20 || customerQueuedPatience < 30 && customerQueuedPatience > 0)
         {
-            detectedObject.GetComponent<TableFeedback>().CustomerSeated(gain5Points);
+            RpcShowScoreFeedback(detectedObject, 5);
             GameManager.Instance.AddServerScore(5);
         }
 
-        Evaluation_OverallPlayerPerformance.UpdateMaxCustomerServiceScore(20);
+        Evaluation_OverallPlayerPerformance.Instance.UpdateMaxCustomerServiceScore(20);
+    }
+
+    [ClientRpc]
+    public void RpcShowScoreFeedback(GameObject detectedObject, float points)
+    {
+        switch (points)
+        {
+            case 20:
+                detectedObject.GetComponent<TableFeedback>().CustomerSeated(gain20Points);
+                break;
+
+            case 10:
+                detectedObject.GetComponent<TableFeedback>().CustomerSeated(gain10Points);
+                break;
+
+            case 5:
+                detectedObject.GetComponent<TableFeedback>().CustomerSeated(gain5Points);
+                break;
+        }
     }
 
     #endregion
