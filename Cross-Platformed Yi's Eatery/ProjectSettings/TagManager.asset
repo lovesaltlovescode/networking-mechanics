@@ -1,0 +1,95 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 2
+  tags:
+  - NetworkManager
+  - XiaoLi
+  - XiaoFan
+  - DaLi
+  - DaFan
+  - XiaoBen
+  - Plate
+  - DirtyPlate
+  - DropZone
+  - Ingredient
+  - ObjectIcon
+  - HeldIngredient
+  - HeldDirtyPlates
+  - Sink
+  - SinkZone
+  - CleanPlate
+  - StoreroomZone
+  - EggShelf
+  - ChickenShelf
+  - CucumberShelf
+  - RiceTub
+  - Rice
+  - Egg
+  - SinkPos
+  - Chicken
+  - Cucumber
+  - Floor
+  - DaFanCam
+  - DaLiCam
+  - XiaoLiCam
+  - AttachPoint
+  - ConnectButton
+  - ConnectToServerText
+  - NoButton
+  - TryAgainButton
+  - EggShelfZone
+  - ChickenShelfZone
+  - CucumberShelfZone
+  - ShelfZone
+  - RiceTubZone
+  - TrashBin
+  - TrashZone
+  - RottenIngredient
+  - Drink
+  - IngredientTrayZone
+  - DrinkFridge
+  - NoDropZone
+  - Dish
+  - Customer
+  - Table
+  - IngredientTableZone
+  - Plateable
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - 
+  - Water
+  - UI
+  - 
+  - 
+  - Player
+  - Environment
+  - Zones
+  - PickedUp
+  - PlateOnSink
+  - UnInteractable
+  - IngredientShelf
+  - Ingredient
+  - TableItem
+  - Pickuppable
+  - Floor
+  - Queue
+  - Ordering
+  - DrinkMachine
+  - Drink
+  - RottenIngredient
+  - Table
+  - Dish
+  - 
+  - 
+  - 
+  - VR Rig
+  - Hands
+  - 
+  m_SortingLayers:
+  - name: Default
+    uniqueID: 0
+    locked: 0
