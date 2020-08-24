@@ -956,6 +956,7 @@ MonoBehaviour:
   customerAudioSource: {fileID: 4399458754197644381}
   angrySFX: {fileID: 8300000, guid: 4088c3151b80b63469cf9158e5b203fd, type: 3}
   happySFX: {fileID: 8300000, guid: 5734b096b89cec143a5d5ee17103c18d, type: 3}
+  enterSFX: {fileID: 8300000, guid: b93b30e6839eeb1489a55b310d89fa4b, type: 3}
 --- !u!114 &-1954861481824424288
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1031,7 +1032,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
-  m_Volume: 0.3
+  m_Volume: 0.8
   m_Pitch: 1
   Loop: 0
   Mute: 0

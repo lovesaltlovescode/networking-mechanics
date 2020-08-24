@@ -26,6 +26,7 @@ public class CustomNetworkManager : NetworkManager
     public static event Action OnClientConnected;
     public static event Action OnClientDisconnected;
     public static event Action<NetworkConnection> OnServerReadied;
+    public static event Action OnServerStopped;
 
     //Scene name
     [Header("Scenes")]
@@ -44,6 +45,7 @@ public class CustomNetworkManager : NetworkManager
     [SerializeField] private NetworkGamePlayer gamePlayerPrefab = null;
     //player spawn system
     [SerializeField] private GameObject playerSpawnSystem = null; //Spawn system for players
+    [SerializeField] private GameObject roundSystem = null;
 
     //Create and store a list of game players currently in the map
     public List<NetworkGamePlayer> GamePlayers { get; } = new List<NetworkGamePlayer>();
@@ -141,7 +143,10 @@ public class CustomNetworkManager : NetworkManager
     //Perhaps when a delete room button is clicked? Which will result in kicking every one out of the room
     public override void OnStopServer()
     {
+        OnServerStopped?.Invoke();
+
         RoomPlayers.Clear(); //Clear the list of existing players, ready for a new game
+        GamePlayers.Clear();
     }
 
     public override void OnStopHost()
@@ -279,6 +284,9 @@ public class CustomNetworkManager : NetworkManager
             GameObject playerSpawnSystemInstance = Instantiate(playerSpawnSystem);
 
             NetworkServer.Spawn(playerSpawnSystemInstance); //No conn parameter is being passed in, so this is owned by the server
+
+            GameObject roundSystemInstance = Instantiate(roundSystem);
+            NetworkServer.Spawn(roundSystemInstance);
         }
     }
 

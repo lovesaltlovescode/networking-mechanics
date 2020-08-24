@@ -243,6 +243,8 @@ public class NetworkedCustomerSpawn : NetworkBehaviour
     public void RpcActivateCustomerWait(GameObject customer)
     {
         customer.gameObject.GetComponent<CustomerBehaviour_Queueing>().CustomerStartsWaiting();
+        customer.gameObject.GetComponent<CustomerFeedback>().EnterShop();
+        customer.gameObject.GetComponent<CustomerAnimationManager>().StopWalkingAnim();
     }
 
     public void StopSpawnCustomer()

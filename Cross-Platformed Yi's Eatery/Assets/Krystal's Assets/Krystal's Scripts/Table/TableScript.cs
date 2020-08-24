@@ -207,7 +207,7 @@ public class TableScript : NetworkBehaviour
 
         //animate customer sitting, assign this table to the customer, and get it to generate an order
         newSittingCustomer.GetComponent<CustomerBehaviour_Seated>().CustomerJustSeated(this);
-
+        //newSittingCustomer.GetComponent<CustomerAnimationManager>().StopWalkingAnim();
 
         customersSeated.Add(newSittingCustomer);
         tableOrders.Add(newSittingCustomer.GetComponent<CustomerBehaviour_Seated>().CustomersOrder);

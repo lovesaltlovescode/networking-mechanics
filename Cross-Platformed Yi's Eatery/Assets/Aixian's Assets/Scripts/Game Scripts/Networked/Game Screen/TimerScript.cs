@@ -25,7 +25,7 @@ public class TimerScript : NetworkBehaviour
     {
         UpdateTime();
 
-        if (LevelTimer.Instance.TimeLeft <= 31)
+        if (LevelTimer.Instance.TimeLeft <= 31 && LevelTimer.Instance.levelStarted)
         {
             TextFlash();
         }
@@ -33,12 +33,8 @@ public class TimerScript : NetworkBehaviour
         if (LevelTimer.Instance.hasLevelEnded)
         {
             timerAudio.Stop();
+            timerText.gameObject.SetActive(true);
             timerText.text = "CLOSED";
-        }
-
-        if (LevelTimer.Instance.levelStarted)
-        {
-            timerAudio.Play();
         }
     }
 

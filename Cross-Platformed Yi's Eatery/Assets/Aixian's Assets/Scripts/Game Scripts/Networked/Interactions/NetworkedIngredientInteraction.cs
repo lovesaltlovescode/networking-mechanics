@@ -228,6 +228,7 @@ public class NetworkedIngredientInteraction : NetworkBehaviour
 
     public void PickUpPlate()
     {
+        networkedPlayerInteraction.serverAnimationScript.GrabAnim();
         CmdPickUpPlate(networkedPlayerInteraction.detectedObject);
 
         networkedPlayerInteraction.CmdChangeHeldItem(HeldItem.dirtyplate);
@@ -311,6 +312,8 @@ public class NetworkedIngredientInteraction : NetworkBehaviour
 
         networkedPlayerInteraction.CmdChangeHeldItem(networkedPlayerInteraction.detectedObject.GetComponent<ObjectContainer>().objToSpawn);
 
+        networkedPlayerInteraction.serverAnimationScript.GrabAnim();
+
         //Debug.Log("//Debugging ingredient - Part 2");
         //Debug.Log("NetworkedIngredientInteraction - Ingredient tag: " + networkedPlayerInteraction.playerInventory.tag);
         //networkedPlayerInteraction.playerInventory.layer = LayerMask.NameToLayer("Ingredient");
@@ -323,9 +326,11 @@ public class NetworkedIngredientInteraction : NetworkBehaviour
     //throw ingredient
     public void TrashHeldItem()
     {
+        networkedPlayerInteraction.serverAnimationScript.StopGrabAnim();
         CmdTrashHeldItem(networkedPlayerInteraction.playerInventory);
 
         networkedPlayerInteraction.CmdChangeHeldItem(HeldItem.nothing);
+        networkedPlayerInteraction.serverAnimationScript.StopGrabAnim();
         //Debug.Log("NetworkedIngredientInteraction - Player has thrown an ingredient");
 
     }
@@ -335,6 +340,7 @@ public class NetworkedIngredientInteraction : NetworkBehaviour
         networkedPlayerInteraction.CmdPickUpObject(networkedPlayerInteraction.detectedObject);
         //heldItem = HeldItem.rotten;
         networkedPlayerInteraction.CmdChangeHeldItem(HeldItem.rotten);
+        networkedPlayerInteraction.serverAnimationScript.GrabAnim();
 
         ////Debug.Log("NetworkedIngredientInteraction - Rotten Ingredient tag: " + networkedPlayerInteraction.playerInventory.tag);
         //Debug.Log("NetworkedingredientInteraction - Picked up a rotten ingredient!");

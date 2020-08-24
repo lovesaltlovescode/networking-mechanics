@@ -58,7 +58,7 @@ public class NetworkedWashInteraction : NetworkBehaviour
 
     public void PlacePlateInSink()
     {
-
+        networkedPlayerInteraction.serverAnimationScript.StopGrabAnim();
         CmdPlacePlateInSink();
 
         networkedPlayerInteraction.CmdChangeHeldItem(HeldItem.nothing);
@@ -73,7 +73,7 @@ public class NetworkedWashInteraction : NetworkBehaviour
 
     public void WashPlate()
     {
-
+        networkedPlayerInteraction.serverAnimationScript.WashAnim();
         //set bool to start the timer on UI manager
         startTimer = true;
 
@@ -82,10 +82,25 @@ public class NetworkedWashInteraction : NetworkBehaviour
 
         //set state to washing plate
         networkedPlayerInteraction.playerState = PlayerState.WashingPlate;
+        CmdWashPlate();
+    }
+
+    [Command]
+    public void CmdWashPlate()
+    {
+        RpcWashPlate();
+    }
+
+    [ClientRpc]
+    public void RpcWashPlate()
+    {
+        networkedPlayerInteraction.audioSource.Stop();
+        networkedPlayerInteraction.audioSource.PlayOneShot(networkedPlayerInteraction.washSFX);
     }
 
     public void FinishWashingPlate()
     {
+        networkedPlayerInteraction.serverAnimationScript.StopWashAnim();
         CmdFinishWashingPlate(startTimer, networkedPlayerInteraction.playerState);
         //Debug.Log("NetworkedWashInteraction - Finished washing plate!");
     }
@@ -323,6 +338,8 @@ public class NetworkedWashInteraction : NetworkBehaviour
         //if exit sink zone
         if (other.tag == "SinkZone")
         {
+            networkedPlayerInteraction.serverAnimationScript.StopWashAnim();
+            CmdStopWashingPrematurely();
             atSink = false;
             canWash = false;
 
@@ -341,7 +358,7 @@ public class NetworkedWashInteraction : NetworkBehaviour
             if (networkedPlayerInteraction.playerState == PlayerState.WashingPlate)
             {
                 //change state
-                networkedPlayerInteraction.playerState = PlayerState.StoppedWashingPlate;
+                networkedPlayerInteraction.ChangePlayerState(PlayerState.StoppedWashingPlate);
 
                 //set bool true
                 stoppedWashingPlate = true;
@@ -350,7 +367,18 @@ public class NetworkedWashInteraction : NetworkBehaviour
         }
     }
 
+    [Command]
+    public void CmdStopWashingPrematurely()
+    {
+        
+        RpcStopWashingPrematurely();
+    }
 
+    [ClientRpc]
+    public void RpcStopWashingPrematurely()
+    {
+        networkedPlayerInteraction.audioSource.Stop();
+    }
 
     #endregion
 }

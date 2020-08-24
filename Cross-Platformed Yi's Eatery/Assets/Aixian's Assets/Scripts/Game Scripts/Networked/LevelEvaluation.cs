@@ -146,24 +146,18 @@ public class LevelEvaluation : NetworkBehaviour
                 filledStars[0].SetActive(true);
                 greyStars[1].SetActive(true);
                 greyStars[2].SetActive(true);
-                evalAudio.PlayOneShot(starSFX);
                 break;
 
             case 2:
                 filledStars[0].SetActive(true);
                 filledStars[1].SetActive(true);
                 greyStars[2].SetActive(true);
-                evalAudio.PlayOneShot(starSFX);
-                evalAudio.PlayOneShot(starSFX);
                 break;
 
             case 3:
                 filledStars[0].SetActive(true);
                 filledStars[1].SetActive(true);
                 filledStars[2].SetActive(true);
-                evalAudio.PlayOneShot(starSFX);
-                evalAudio.PlayOneShot(starSFX);
-                evalAudio.PlayOneShot(starSFX);
                 break;
         }
     }
@@ -202,7 +196,8 @@ public class LevelEvaluation : NetworkBehaviour
         //TableColliderManager.Instance.ClearTableList();
         Evaluation_OverallPlayerPerformance.Instance.ResetAllScores();
 
-        LevelTimer.Instance.levelStarted = true;
+        GameManager.Instance.CountdownToLevel();
+
         NetworkServer.Destroy(this.gameObject);
     }
 

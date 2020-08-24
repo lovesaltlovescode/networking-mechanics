@@ -69,7 +69,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3180777485875929350}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.060199976, y: 0.907, z: 0.839}
+  m_LocalPosition: {x: -0.060199976, y: 0.55, z: 0.839}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 8061215714513260891}
@@ -511,6 +511,7 @@ MonoBehaviour:
   customerAudioSource: {fileID: 1358843335050204242}
   angrySFX: {fileID: 8300000, guid: 4088c3151b80b63469cf9158e5b203fd, type: 3}
   happySFX: {fileID: 8300000, guid: 5734b096b89cec143a5d5ee17103c18d, type: 3}
+  enterSFX: {fileID: 0}
 --- !u!114 &188312658767743909
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1541,11 +1542,26 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8061215714513260891}
     m_Modifications:
+    - target: {fileID: 2479534269137748759, guid: 0d7eaffcad66beb48814e85078e7d0eb,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.000004410731
+      objectReference: {fileID: 0}
+    - target: {fileID: 2479534269137748759, guid: 0d7eaffcad66beb48814e85078e7d0eb,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.00029612245
+      objectReference: {fileID: 0}
     - target: {fileID: 6645930283255418281, guid: 0d7eaffcad66beb48814e85078e7d0eb,
         type: 3}
       propertyPath: m_Name
       value: male_customer_character
       objectReference: {fileID: 0}
+    - target: {fileID: 6645930283255418282, guid: 0d7eaffcad66beb48814e85078e7d0eb,
+        type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: ad63cdbe410377c44a95b7c857d4efbb, type: 2}
     - target: {fileID: 7665214223532015546, guid: 0d7eaffcad66beb48814e85078e7d0eb,
         type: 3}
       propertyPath: m_LocalPosition.x

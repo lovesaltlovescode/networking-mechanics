@@ -7,6 +7,17 @@ public class CustomerAnimationManager : MonoBehaviour
     [SerializeField] private Animator customerAnim;
     [SerializeField] private Animator overheadFeedbackAnim;
 
+
+    public void StopWalkingAnim()
+    {
+        customerAnim.SetBool("isWalking", false);
+    }
+
+    public void WalkingAnim()
+    {
+        customerAnim.SetBool("isWalking", true);
+    }
+
     #region seated customer animations
     //customer sitting down on seat
     public void SitDownAnim()

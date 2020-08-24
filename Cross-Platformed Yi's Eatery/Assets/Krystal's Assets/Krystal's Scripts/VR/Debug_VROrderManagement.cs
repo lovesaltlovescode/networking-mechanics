@@ -40,4 +40,9 @@ public class Debug_VROrderManagement : NetworkBehaviour
             Debug.Log("hiddenOrderCount list (in VR_OrderManagement): " + MobileVR_OrderManagement.Instance.HiddenOrders);
         }
     }
+
+    public void CheckServeDish()
+    {
+        MobileVR_OrderManagement.Instance.CheckCanServeDish(null, MobileVR_OrderManagement.Instance.CurrentlyDisplayedOrders[0]);
+    }
 }

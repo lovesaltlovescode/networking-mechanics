@@ -75,6 +75,7 @@ public class NetworkedCustomerInteraction : NetworkBehaviour
     //pick up customer
     public void PickUpCustomer()
     {
+        networkedPlayerInteraction.serverAnimationScript.GrabAnim();
         //Get customer's group size
         CmdPickUpCustomer(networkedPlayerInteraction.detectedObject.GetComponent<CustomerBehaviour_Queueing>().groupSizeNum
             ,networkedPlayerInteraction.detectedObject.GetComponent<CustomerPatience>().currentPatience, networkedPlayerInteraction.detectedObject);
@@ -133,6 +134,7 @@ public class NetworkedCustomerInteraction : NetworkBehaviour
 
         //stop holding the customer
         networkedPlayerInteraction.CmdChangeHeldItem(HeldItem.nothing);
+        networkedPlayerInteraction.serverAnimationScript.StopGrabAnim();
 
         networkedPlayerInteraction.ChangePlayerState(PlayerState.Default, true);
     }
@@ -182,11 +184,13 @@ public class NetworkedCustomerInteraction : NetworkBehaviour
     public void PlaceCustomerDown(GameObject player)
     {
         GameObject playerInventory = player.transform.GetChild(0).GetChild(1).GetChild(0).gameObject;
+        networkedPlayerInteraction.serverAnimationScript.StopGrabAnim();
 
         Debug.Log("Local player inventory " + playerInventory);
 
         CmdPlaceCustomerDown(player);
 
+        networkedPlayerInteraction.serverAnimationScript.StopGrabAnim();
         RemoveCustomerFromInventory();
     }
 
@@ -226,7 +230,7 @@ public class NetworkedCustomerInteraction : NetworkBehaviour
         }
 
         // Debug.Log("NetworkedCustomerInteraction - Seat customer");
-
+        networkedPlayerInteraction.serverAnimationScript.StopGrabAnim();
         CmdSeatCustomer(_tableGameObj, player);
 
     }
@@ -454,7 +458,7 @@ public class NetworkedCustomerInteraction : NetworkBehaviour
     //Picking up dishes
     public void PickUpDish()
     {
-
+        networkedPlayerInteraction.serverAnimationScript.GrabAnim();
         CheckDish(networkedPlayerInteraction.detectedObject.GetComponentInChildren<OrderScript>().dishLabel, PlayerState.HoldingOrder);
         networkedPlayerInteraction.CmdPickUpObject(networkedPlayerInteraction.detectedObject);
 
@@ -534,7 +538,7 @@ public class NetworkedCustomerInteraction : NetworkBehaviour
             //Debug("NetworkedCustomerInteraction - Player not holding a dish");
             return;
         }
-
+        networkedPlayerInteraction.serverAnimationScript.StopGrabAnim();
         CmdCheckCanPutDownOrder(networkedPlayerInteraction.detectedObject, gameObject);
 
 

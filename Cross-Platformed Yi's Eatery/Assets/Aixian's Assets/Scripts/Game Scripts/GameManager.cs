@@ -89,7 +89,8 @@ public class GameManager : NetworkBehaviour
     [SerializeField] private Animator moodDecreaseAnim;
     [SerializeField] private TextMeshProUGUI moodDecreaseText;
 
-
+    [Header("Countdown")]
+    [SerializeField] private GameObject countdownSystem;
 
     [Header("Evaluation")]
     [SerializeField] private GameObject evaluationScreen;
@@ -112,7 +113,7 @@ public class GameManager : NetworkBehaviour
 
     private void Start()
     {
-        StartLevel();
+        Invoke("StartLevel", 1.5f);
     }
 
     public void StartLevel()
@@ -143,6 +144,14 @@ public class GameManager : NetworkBehaviour
 
     #region Reset Level
 
+    [ServerCallback]
+    public void CountdownToLevel()
+    {
+        GameObject countdownDisplay = Instantiate(countdownSystem, countdownSystem.transform.position, countdownSystem.transform.rotation);
+        NetworkServer.Spawn(countdownDisplay);
+        countdownDisplay.GetComponent<RoundSystem>().StartCountdown();
+    }
+
 
     //Method to reset all values when level is started
     public void ResetLevel()
@@ -161,7 +170,6 @@ public class GameManager : NetworkBehaviour
         ResetDrinks();
         ResetDishes();
 
-        LevelTimer.Instance.StartTimer();
 
     }
 

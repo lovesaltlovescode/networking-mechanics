@@ -23,10 +23,13 @@ public class PlayerMovement : NetworkBehaviour
     //movement UI canvas, toggle on off for clients
     public GameObject UI;
 
+    [SerializeField] private ServerAnimationManager serverAnimationScript;
+    [SerializeField] private NetworkedPlayerInteraction networkedPlayerInteraction;
 
     private void Awake()
     {
-        
+        serverAnimationScript = GetComponent<ServerAnimationManager>();
+        networkedPlayerInteraction = GetComponent<NetworkedPlayerInteraction>();
     }
 
     private void Start()
@@ -64,13 +67,18 @@ public class PlayerMovement : NetworkBehaviour
             gameObject.transform.rotation = playerStartRot;
             return;
         }
+
+        if(controllerBody.velocity.magnitude <= 0)
+        {
+            serverAnimationScript.StopRunAnim();
+        }
     }
 
     //function to move the player
     void MovePlayer()
     {
 
-        if (!hasAuthority)
+        if (!hasAuthority || !LevelTimer.Instance.levelStarted)
         {
             //Debug.Log("Player does not have authority");
             return;
@@ -78,14 +86,21 @@ public class PlayerMovement : NetworkBehaviour
 
         controllerBody.velocity = new Vector3(joystick.Horizontal * moveForce, controllerBody.velocity.y, joystick.Vertical * moveForce);
 
-        //print(joystick.Horizontal);
-
 
         UI.gameObject.SetActive(true);
 
         if (joystick.Horizontal != 0f || joystick.Vertical != 0f)
         {
             transform.rotation = Quaternion.LookRotation(controllerBody.velocity);
+        }
+
+        if (networkedPlayerInteraction.heldItem != HeldItem.nothing)
+        {
+            serverAnimationScript.GrabRunAnim();
+        }
+        else
+        {
+            serverAnimationScript.RunAnim();
         }
     }
 

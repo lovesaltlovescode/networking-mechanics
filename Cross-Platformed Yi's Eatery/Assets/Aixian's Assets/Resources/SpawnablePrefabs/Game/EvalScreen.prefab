@@ -903,9 +903,9 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: 5734b096b89cec143a5d5ee17103c18d, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.5
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -1000,6 +1000,7 @@ GameObject:
   - component: {fileID: 2284005435058224076}
   - component: {fileID: 2284005435058224078}
   - component: {fileID: 2284005435058224079}
+  - component: {fileID: 5795865763799580795}
   m_Layer: 5
   m_Name: StarFilled2
   m_TagString: Untagged
@@ -1062,6 +1063,20 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &5795865763799580795
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2284005435058224077}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 430e334d7fe0d7a41b67ee648eb7bfc8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  starAudio: {fileID: 7224661040531626348}
+  starSFX: {fileID: 8300000, guid: 5734b096b89cec143a5d5ee17103c18d, type: 3}
 --- !u!1 &2284005435187967829
 GameObject:
   m_ObjectHideFlags: 0
@@ -1369,6 +1384,7 @@ GameObject:
   - component: {fileID: 2284005435305729476}
   - component: {fileID: 2284005435305729478}
   - component: {fileID: 2284005435305729479}
+  - component: {fileID: 6860415622730132945}
   m_Layer: 5
   m_Name: StarFilled3
   m_TagString: Untagged
@@ -1431,6 +1447,20 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &6860415622730132945
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2284005435305729477}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 430e334d7fe0d7a41b67ee648eb7bfc8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  starAudio: {fileID: 7224661040531626348}
+  starSFX: {fileID: 8300000, guid: 5734b096b89cec143a5d5ee17103c18d, type: 3}
 --- !u!1 &2284005435370078914
 GameObject:
   m_ObjectHideFlags: 0
@@ -2743,6 +2773,7 @@ GameObject:
   - component: {fileID: 2284005436236831717}
   - component: {fileID: 2284005436236831719}
   - component: {fileID: 2284005436236831716}
+  - component: {fileID: 5757915384092102967}
   m_Layer: 5
   m_Name: StarFilled1
   m_TagString: Untagged
@@ -2805,6 +2836,20 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &5757915384092102967
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2284005436236831714}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 430e334d7fe0d7a41b67ee648eb7bfc8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  starAudio: {fileID: 7224661040531626348}
+  starSFX: {fileID: 8300000, guid: 5734b096b89cec143a5d5ee17103c18d, type: 3}
 --- !u!1 &2284005436245873129
 GameObject:
   m_ObjectHideFlags: 0

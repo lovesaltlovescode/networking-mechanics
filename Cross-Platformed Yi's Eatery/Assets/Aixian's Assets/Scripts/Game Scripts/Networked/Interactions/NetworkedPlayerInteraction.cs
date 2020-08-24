@@ -171,6 +171,7 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
     [SerializeField] private NetworkedWashInteraction networkedWashInteraction;
     [SerializeField] private NetworkedDrinkInteraction networkedDrinkInteraction;
     [SerializeField] private NetworkedCustomerInteraction networkedCustomerInteraction;
+    public ServerAnimationManager serverAnimationScript;
 
     #endregion
 
@@ -446,6 +447,12 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
             playerInventory = null;
         }
 
+        if (networkedWashInteraction.stoppedWashingPlate)
+        {
+            serverAnimationScript.StopWashAnim();
+            ChangePlayerState(PlayerState.StoppedWashingPlate);
+        }
+
         //Debug.Log("playerstate is " + playerState);
 
         DetectObjects();
@@ -704,7 +711,7 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
             case PlayerState.CanWashPlate:
                 //Debug.Log("NetworkedPlayerInteraction - Wash plate in sink!");
                 networkedWashInteraction.WashPlate();
-                audioSource.PlayOneShot(washSFX);
+
                 break;
 
             #endregion
@@ -744,6 +751,7 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
 
             default:
                 Debug.Log("default case");
+                serverAnimationScript.StopGrabAnim();
 
                 if(detectedObject.tag == "DirtyPlate" && detectedObject.layer == LayerMask.NameToLayer("TableItem"))
                 {

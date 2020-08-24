@@ -61,13 +61,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  xiaoBenPrefab: {fileID: 1667403136376427111, guid: cc47935628c3e8946841a6859265b87b,
+  xiaoBenPrefab: {fileID: 5032411307941789823, guid: 56fb15055771ef946b6b2939a977fe0c,
     type: 3}
-  daFanPrefab: {fileID: 1817381823316905504, guid: a0c4c2e7212866e4dbf3106a6f26ffa4,
+  daFanPrefab: {fileID: 1667403136376427111, guid: cc47935628c3e8946841a6859265b87b,
     type: 3}
-  xiaoFanPrefab: {fileID: 1817381823316905504, guid: a0c4c2e7212866e4dbf3106a6f26ffa4,
+  xiaoFanPrefab: {fileID: 5488088718150435508, guid: e9a4fc1bb634034499d4645b73d52622,
     type: 3}
-  xiaoLiPrefab: {fileID: 1817381823316905504, guid: a0c4c2e7212866e4dbf3106a6f26ffa4,
+  xiaoLiPrefab: {fileID: 1662100402488060508, guid: ab3098f15460a2b43912129ae4e6b4c2,
     type: 3}
-  daLiPrefab: {fileID: 1817381823316905504, guid: a0c4c2e7212866e4dbf3106a6f26ffa4,
+  daLiPrefab: {fileID: 5488088718150435508, guid: e9a4fc1bb634034499d4645b73d52622,
     type: 3}

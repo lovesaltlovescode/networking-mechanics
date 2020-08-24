@@ -159,8 +159,9 @@ public class NetworkedDrinkInteraction : NetworkBehaviour
 
     public void PickUpDrink()
     {
-        
+
         //Debug.Log("Picked up drink called");
+        networkedPlayerInteraction.serverAnimationScript.GrabAnim();
 
         networkedPlayerInteraction.CmdPickUpObject(networkedPlayerInteraction.detectedObject);
 
@@ -183,6 +184,7 @@ public class NetworkedDrinkInteraction : NetworkBehaviour
         {
             //Debug.Log("Serve drinks");
             CmdServeDrink(networkedPlayerInteraction.detectedObject, gameObject);
+            networkedPlayerInteraction.serverAnimationScript.StopGrabAnim();
 
             networkedPlayerInteraction.CmdChangeHeldItem(HeldItem.nothing);
             networkedPlayerInteraction.ChangePlayerState(PlayerState.Default, true);

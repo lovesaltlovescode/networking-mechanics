@@ -21,9 +21,11 @@ public class CustomerFeedback : MonoBehaviour
     [Header("Order served")]
     [SerializeField] private string gain40Points = "+60", gain20Points = "+40", gain10Points = "+10";
 
+    [Header("Audio Feedback")]
     [SerializeField] private AudioSource customerAudioSource;
     [SerializeField] private AudioClip angrySFX;
     [SerializeField] private AudioClip happySFX;
+    [SerializeField] private AudioClip enterSFX; //played when customer enter shop
 
     public void Start()
     {
@@ -35,6 +37,16 @@ public class CustomerFeedback : MonoBehaviour
     }
 
     #region Queueing customers
+
+    public void EnterShop()
+    {
+        if (!enterSFX)
+        {
+            return;
+        }
+
+        customerAudioSource.PlayOneShot(enterSFX);
+    }
 
     public void CustomerLeaves()
     {
