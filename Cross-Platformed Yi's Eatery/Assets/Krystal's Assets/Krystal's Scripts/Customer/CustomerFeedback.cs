@@ -21,6 +21,10 @@ public class CustomerFeedback : MonoBehaviour
     [Header("Order served")]
     [SerializeField] private string gain40Points = "+60", gain20Points = "+40", gain10Points = "+10";
 
+    [SerializeField] private AudioSource customerAudioSource;
+    [SerializeField] private AudioClip angrySFX;
+    [SerializeField] private AudioClip happySFX;
+
     public void Start()
     {
         if (redText && greenText)
@@ -118,11 +122,12 @@ public class CustomerFeedback : MonoBehaviour
 
     public void PlayAngryPFX()
     {
-        if (angry_PFX != null)
+        if (angry_PFX != null && angrySFX != null)
         {
             if (!angry_PFX.isPlaying)
             {
                 angry_PFX.Play();
+                customerAudioSource.PlayOneShot(angrySFX);
             }
         }
 
@@ -130,9 +135,10 @@ public class CustomerFeedback : MonoBehaviour
 
     public void PlayHappyPFX()
     {
-        if (happy_PFX != null)
+        if (happy_PFX != null && happySFX != null)
         {
             happy_PFX.Play();
+            customerAudioSource.PlayOneShot(happySFX);
         }
 
         //if (eating_PFX)

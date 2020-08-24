@@ -38,6 +38,9 @@ public class LevelEvaluation : NetworkBehaviour
     [SerializeField] GameObject retryLevel;
     //[Scene] [SerializeField] private string gameScene = string.Empty;
 
+    [SerializeField] private AudioSource evalAudio;
+    [SerializeField] private AudioClip starSFX;
+
     #endregion
 
     public static CustomNetworkManager networkGameManager; //Network manager object
@@ -143,18 +146,24 @@ public class LevelEvaluation : NetworkBehaviour
                 filledStars[0].SetActive(true);
                 greyStars[1].SetActive(true);
                 greyStars[2].SetActive(true);
+                evalAudio.PlayOneShot(starSFX);
                 break;
 
             case 2:
                 filledStars[0].SetActive(true);
                 filledStars[1].SetActive(true);
                 greyStars[2].SetActive(true);
+                evalAudio.PlayOneShot(starSFX);
+                evalAudio.PlayOneShot(starSFX);
                 break;
 
             case 3:
                 filledStars[0].SetActive(true);
                 filledStars[1].SetActive(true);
                 filledStars[2].SetActive(true);
+                evalAudio.PlayOneShot(starSFX);
+                evalAudio.PlayOneShot(starSFX);
+                evalAudio.PlayOneShot(starSFX);
                 break;
         }
     }

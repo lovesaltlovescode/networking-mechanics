@@ -202,6 +202,7 @@ public class NetworkedWashInteraction : NetworkBehaviour
 
         //assign starttimer as timer so that it will be false
         startTimer = timer;
+        networkedPlayerInteraction.audioSource.Stop();
 
         playerState = PlayerState.FinishedWashingPlate;
 

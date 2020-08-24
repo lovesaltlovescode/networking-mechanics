@@ -174,6 +174,10 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
 
     #endregion
 
+    public AudioSource audioSource;
+    public AudioClip washSFX;
+    public AudioClip runSFX;
+
     #endregion
 
 
@@ -700,6 +704,7 @@ public class NetworkedPlayerInteraction : NetworkBehaviour
             case PlayerState.CanWashPlate:
                 //Debug.Log("NetworkedPlayerInteraction - Wash plate in sink!");
                 networkedWashInteraction.WashPlate();
+                audioSource.PlayOneShot(washSFX);
                 break;
 
             #endregion

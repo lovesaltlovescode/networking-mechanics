@@ -8,6 +8,9 @@ public class TimerScript : NetworkBehaviour
 {
     public TextMeshProUGUI timerText;
 
+    public AudioSource timerAudio;
+    public AudioClip timerSFX;
+
     [SyncVar]
     private float flashTimer;
 
@@ -29,7 +32,13 @@ public class TimerScript : NetworkBehaviour
 
         if (LevelTimer.Instance.hasLevelEnded)
         {
+            timerAudio.Stop();
             timerText.text = "CLOSED";
+        }
+
+        if (LevelTimer.Instance.levelStarted)
+        {
+            timerAudio.Play();
         }
     }
 

@@ -56,6 +56,9 @@ public class TableScript : NetworkBehaviour
     //[HideInInspector] public bool isTableDirty = false;
     public List<GameObject> dirtyDishes = new List<GameObject>();
 
+    public AudioSource tableAudio;
+    public AudioClip customersLeaveSFX;
+
     void Awake()
     {
 
@@ -335,6 +338,8 @@ public class TableScript : NetworkBehaviour
             Evaluation_CustomerService.Instance.UpdateNumCustomersServed(customersAtTable);
             GameManager.Instance.IncreaseMood(5);
         }
+
+        tableAudio.PlayOneShot(customersLeaveSFX);
 
         //clear the lists
         customersSeated.Clear();

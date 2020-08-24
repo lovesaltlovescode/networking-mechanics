@@ -44,6 +44,9 @@ public class MobileVR_OrderManagement : MonoBehaviour
         private set { hiddenOrders = value; }
     }
 
+    public AudioSource audioSource;
+    public AudioClip bellSFX;
+
     #endregion
 
     //add the passed in chicken rice order to the list of orders

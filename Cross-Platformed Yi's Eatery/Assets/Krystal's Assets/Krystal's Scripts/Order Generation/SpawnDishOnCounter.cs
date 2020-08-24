@@ -82,6 +82,8 @@ public class SpawnDishOnCounter : NetworkBehaviour
 
         //add the dish to the dish on counter array
         GameManager.Instance.dishesOnCounter[_indexNum] = newDish;
+
+        MobileVR_OrderManagement.Instance.audioSource.PlayOneShot(MobileVR_OrderManagement.Instance.bellSFX);
     }
 
     //Identifies which dish should be instantiated
