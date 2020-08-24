@@ -20167,7 +20167,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  debuggingMode: 0
+  debuggingMode: 1
   sphereVisualisation: {fileID: 0}
   spawnArea: {fileID: 949375540}
   waitingArea: {fileID: 1764966484}
